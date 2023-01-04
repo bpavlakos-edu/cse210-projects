@@ -1,7 +1,10 @@
-# cse210-student-template
-This is the starter code for students in CSE 210.
+# CSE210 Student Repository
+Bryce Pavlakos - CSE 210 Projects
 
-This repository contains the starter code for many different projects. They are arranged as follows:
+This repository contains all the work I published to github for the BYU-I course CSE210: Programming with classes. CSE210: Programming with Classes is a course that focuses on the Principles of Classes, Objects, Polymorphism, and inheritance. It also introduces us to the basics of C#, configuring VS Code for C#, and using both "git" and "github" to collaborate with a team.
+
+Information about the template I used:
+The template contained the starter code for many different projects. The starter code is arranged as follows:
 
 * `sandbox` - An empty project that you can use to play around with any concepts you like.
 * `csharp-prep` - Starter projects for each of the C# Prep assignments.
