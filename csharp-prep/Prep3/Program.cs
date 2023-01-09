@@ -15,7 +15,8 @@ class Program
             if (getRandom)
             {
                 int[] randomBounds = {1,100};
-                magicNumber = (new Random()).Next(randomBounds[0],randomBounds[1]); //Create a new random object and generate the next integer from 1 to 100
+                //I forgot that C# and Java random need +1 to pick the desired upper number, until I looked at the solution: https://github.com/byui-cse/cse210-student-sample-solutions/blob/main/csharp-prep/Prep3/Program.cs
+                magicNumber = (new Random()).Next(randomBounds[0],randomBounds[1]+1); //Create a new random object and generate the next integer from 1 to 100
                 //magicNumber = (new Random()).Next(); //Are you crazy??? Good luck guessing a number from 0 to the integer ceiling!
                 Console.WriteLine($"Randomly chose a number from {randomBounds[0]} to {randomBounds[1]}, good luck!"); //Let the user know the range
             }
