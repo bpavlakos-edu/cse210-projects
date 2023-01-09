@@ -110,6 +110,5 @@ class Program
                 Console.WriteLine("That's not a valid number, please try again!");
             }
         }
-
     }
 }
