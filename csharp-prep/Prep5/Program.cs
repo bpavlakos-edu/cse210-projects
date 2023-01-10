@@ -6,6 +6,13 @@ class Program
     {
         DisplayWelcome();
         DisplayResult(PromptUserName(),SquareNumber(PromptUserNumber()));
+        //Multi line version
+        /*
+        string uName = PromptUserName();
+        int favNum = PromptUserNumber();
+        int squareNum = SquareNumber(favNum);
+        DisplayResult(uName,squareNum);
+        */
     }
 
 
