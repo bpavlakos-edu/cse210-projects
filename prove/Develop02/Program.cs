@@ -7,11 +7,13 @@ class Program
     //Global variables
     static Journal myJournal = new Journal();
     static int unsavedChanges = 0;
+    
     static void Main(string[] args)
     {
         Console.WriteLine("Welcome to the Journal Program!");
         MenuLoop();//Initialize the menu
     }
+
     static void MenuLoop(){
         //string userInput = "";
         while(1 == 1)
@@ -63,7 +65,6 @@ class Program
                     {
                         Console.WriteLine($"Error {e.ToString()}"); //Print the exception
                     }
-                    
                 }
             }
             else if(uInput == "4" || uInput == "s")
@@ -192,6 +193,7 @@ class Program
     static string GetUnsavedChanges(){
         return GetUnsavedChanges(new string[]{"",""});
     }
+
     //Get unsaved changes quickly as a string, return nothing when 0, 
     //support putting it in parenthisis to that the UI can use it too
     static string GetUnsavedChanges(string[] cChars)

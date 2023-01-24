@@ -4,26 +4,29 @@ class Entry
     public string _textEntry = "";
     public string _prompt = "";
     public string _timestamp = "";
+    
     //Constructors
     //Blank Constructor
     public Entry()
     {
 
     }
+
     //User input constructor (requires prompt paramter)
     public Entry(string prompt)
     {
         _timestamp = GetTimestamp(); // This function could update the parameter directly instead of returning it
         _prompt = prompt;
         _textEntry = GetTextEntry();
-
     }
+
     //Entry creation functions
     public string GetTextEntry()
     {
         Console.Write(_prompt+Environment.NewLine+"> ");//Display the prompt and the "> " on the next line
         return Console.ReadLine();
     }
+
     public string GetTimestamp()
     {
         //Formatting Picked by using intellisense and the following documentation:
@@ -43,5 +46,4 @@ class Entry
         string returnStr = $"Date: {_timestamp} - Prompt: {_prompt}{Environment.NewLine}{_textEntry}";
         return returnStr;
     }
-
 }

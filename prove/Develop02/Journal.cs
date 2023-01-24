@@ -23,7 +23,8 @@ class Journal
     public Journal(){
 
     }
-    /*"Deep" cloning constructor
+
+    /*"Deep" cloning constructor (unused)
     In an old C# project of mine, I needed to clone a custom class that contained a lot of lists, 
     The solution to this problem was to use the ".ToList()" function on every list, which returns a new list, not a reference to the original
     The original cited solution is here: https://stackoverflow.com/questions/15330696/how-to-copy-list-in-c-sharp*/
@@ -33,6 +34,7 @@ class Journal
         _promptList = newJournal._promptList.ToList<String>();
     }
 
+    //Constructor from it's attibutes (unused)
     public Journal(string ownerName, List<Entry> entryList, List<String> promptList)
     {
         _ownerName = ownerName;
@@ -47,6 +49,7 @@ class Journal
     {
         _entryList.Add(new Entry(PickPrompt()));
     }
+
     //Randomly pick a prompt (probably should be private)
     public string PickPrompt()
     {
@@ -105,6 +108,7 @@ class Journal
         //The docs suggested writing it indented for user-accessible JSON files, according to the docs, JSON conversion in some places (like online) should be done with WriteIndented as false, to reduce byte size by putting it on one line
         return JsonSerializer.Serialize<Journal>(this, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
     }
+
     //Update this class by using a JSON string
     //This was put inside this class so that the JSON parsing was done using the class itself, 
     //The alternative is to use the root program class to serialize it's global "Journal" class using JSON, which would probably be easier since it'd be the first line inside the try block
@@ -123,6 +127,5 @@ class Journal
             Console.WriteLine("Failed to decode JSON, check the file for errors");
             return; //Ignore failed serializations
         }
-        
     }
 }
