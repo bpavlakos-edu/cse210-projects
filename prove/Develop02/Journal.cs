@@ -97,13 +97,18 @@ class Journal
 
     public string ToJson()
     {
-        return JsonSerializer.Serialize(this);
+        //Solution to serialzation issue found in the following stack overflow chain:
+        //1. C# Doesn't support serializing fields: http://stackoverflow.com/questions/62717934/ddg#62718200
+        //2. C# has field serialization disabled by default: https://stackoverflow.com/questions/58784499/system-text-json-jsonserializer-serialize-returns-empty-json-object#comment103854049_58784566
+        //3. How to enable serialization of fields in C#: https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/how-to?pivots=dotnet-7-0#include-fields
+        //So the solution is to add a JsonSerializerOptions object to the serialize function call with the IncludeFields option set to true
+        return JsonSerializer.Serialize<Journal>(this, new JsonSerializerOptions{IncludeFields = true});
     }
     public void FromJson(string jsonText)
     {
         try
         {
-            Journal journalFromJSON = JsonSerializer.Deserialize<Journal>(jsonText);
+            Journal journalFromJSON = JsonSerializer.Deserialize<Journal>(jsonText, new JsonSerializerOptions{IncludeFields = true});
             _ownerName = journalFromJSON._ownerName;
             _entryList = journalFromJSON._entryList.ToList<Entry>();
             _promptList = journalFromJSON._promptList.ToList<String>();

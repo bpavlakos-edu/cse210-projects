@@ -46,8 +46,24 @@ class Program
                 string filePath = GetStrInput("Enter the file name you want to load the journal data from (leave blank to cancel): ");
                 if(filePath != "")
                 {
-                    myJournal.FromJson(ReadFileLines(filePath));
-                    Console.WriteLine("Journal Data Loaded from file");
+                    try
+                    {
+                        myJournal.FromJson(ReadFileLines(filePath));
+                        Console.WriteLine("Journal Data Loaded from file");
+                    }
+                    catch(FileNotFoundException e)
+                    {
+                        Console.WriteLine($"{filePath} cannot be located, failed to load data");
+                    }
+                    catch(IOException e)
+                    {
+                        Console.WriteLine($"Error {e.ToString()}"); //Print the exception
+                    }
+                    catch(JsonException e)
+                    {
+                        Console.WriteLine($"Error {e.ToString()}"); //Print the exception
+                    }
+                    
                 }
             }
             else if(uInput == "4" || uInput == "s")
