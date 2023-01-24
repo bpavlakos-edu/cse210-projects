@@ -7,10 +7,11 @@ using System.Text.Json;
 1. Added safe file handling through the usage of try catch statements
 2. Added JSON exporting and importing (as suggested by group), with indentation enabled
 3. Added a seperate capability for exporting the journal as text
-4. Added the ability to name the Journal
+4. Added the ability to assign an owner name to the Journal, with support for basic ownership grammar rules
 5. Added a hotkey system for menu options
 6. Added "Unsaved Changes" tracking, and a dialogue to confirm exiting with unsaved changes
 7. Added lower case filtering for all user inputs
+8. Added a ToString() function for the Journal class and entry class
 */
 class Program
 {
