@@ -5,7 +5,7 @@ using System.Text.Json;
 
 /*Additional Features that exceed the requirements:
 1. Added safe file handling through the usage of try catch statements
-2. Added JSON exporting and importing, with indentation enabled
+2. Added JSON exporting and importing (as suggested by group), with indentation enabled
 3. Added a seperate capability for exporting the journal as text
 4. Added the ability to name the Journal
 5. Added a hotkey system for menu options
