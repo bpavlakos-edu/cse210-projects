@@ -5,8 +5,8 @@ using System.Text.Json;
 
 /*Additional Features that exceed the requirements:
 1. Added safe file handling through the usage of try catch statements
-2. Added JSON exporting and importing (as suggested by group), with indentation enabled
-3. Added a seperate capability for exporting the journal as text
+2. Added JSON exporting and importing (as suggested by my group), with indentation enabled
+3. Added a separate capability for exporting the journal as text
 4. Added the ability to assign an owner name to the Journal, with support for basic ownership grammar rules
 5. Added a hotkey system for menu options
 6. Added "Unsaved Changes" tracking, and a dialogue to confirm exiting with unsaved changes
