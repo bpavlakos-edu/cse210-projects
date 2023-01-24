@@ -73,7 +73,7 @@ class Journal
         return returnStr;
     }
 
-    //Get the owner name + "Journal"
+    //Get "[owner name] Journal" so we don't need to type it in manually
     public string GetOwnerName()
     {
         return _ownerName+" Journal";
@@ -102,19 +102,23 @@ class Journal
         //2. C# has field serialization disabled by default: https://stackoverflow.com/questions/58784499/system-text-json-jsonserializer-serialize-returns-empty-json-object#comment103854049_58784566
         //3. How to enable serialization of fields in C#: https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/how-to?pivots=dotnet-7-0#include-fields
         //So the solution is to add a JsonSerializerOptions object to the serialize function call with the IncludeFields option set to true
-        //The docs suggested writing it indented for files the user accesses
+        //The docs suggested writing it indented for user-accessible JSON files, according to the docs, JSON conversion in some places (like online) should be done with WriteIndented as false, to reduce byte size by putting it on one line
         return JsonSerializer.Serialize<Journal>(this, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
     }
+    //Update this class by using a JSON string
+    //This was put inside this class so that the JSON parsing was done using the class itself, 
+    //The alternative is to use the root program class to serialize it's global "Journal" class using JSON, which would probably be easier since it'd be the first line inside the try block
     public void FromJson(string jsonText)
     {
         try
         {
+            //Like the serializer, it too needs to support Fields and WriteIndented using the same settings
             Journal journalFromJSON = JsonSerializer.Deserialize<Journal>(jsonText, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
             _ownerName = journalFromJSON._ownerName;
             _entryList = journalFromJSON._entryList.ToList<Entry>();
             _promptList = journalFromJSON._promptList.ToList<String>();
         }
-        catch(ArgumentNullException)
+        catch(ArgumentNullException) //If it's null, JSON deserialization failed
         {
             Console.WriteLine("Failed to decode JSON, check the file for errors");
             return; //Ignore failed serializations

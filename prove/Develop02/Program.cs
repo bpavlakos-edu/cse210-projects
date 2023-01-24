@@ -33,7 +33,7 @@ class Program
             {
                 //Write
                 myJournal.WriteNewEntry();
-                unsavedChanges += 1;
+                unsavedChanges += 1; //Make sure the global variable is incremented
             }
             else if(uInput == "2" || uInput == "d")
             {
@@ -51,15 +51,15 @@ class Program
                         myJournal.FromJson(ReadFileLines(filePath));
                         Console.WriteLine("Journal Data Loaded from file");
                     }
-                    catch(FileNotFoundException e)
+                    catch(FileNotFoundException) //File not found, the user should know about this
                     {
                         Console.WriteLine($"{filePath} cannot be located, failed to load data");
                     }
-                    catch(IOException e)
+                    catch(IOException e) //Handle other IO Errors
                     {
                         Console.WriteLine($"Error {e.ToString()}"); //Print the exception
                     }
-                    catch(JsonException e)
+                    catch(JsonException e) //Handle JSON errors
                     {
                         Console.WriteLine($"Error {e.ToString()}"); //Print the exception
                     }
@@ -78,11 +78,11 @@ class Program
                         Console.WriteLine("Journal Data Saved to file");
                         unsavedChanges = 0;
                     }
-                    catch(IOException e)
+                    catch(IOException e) //Handle all IO errors
                     {
                         Console.Write($"Error {e.ToString()}"); //Print the exception
                     }
-                    catch(JsonException e)
+                    catch(JsonException e) //Handle JSON errors
                     {
                         Console.Write($"Error {e.ToString()}"); //Print the exception
                     }
@@ -160,13 +160,13 @@ class Program
     {
         using(StreamReader sReader = new StreamReader(filePath))
         {
-            return sReader.ReadToEnd();
+            return sReader.ReadToEnd(); //Read all lines
         }
     }
 
     //Utility functions
     //Get a string from the console
-    //Public has been added to this function to enable reuse inside other classes, it can be static since it's a string
+    //Public has been added to this function to enable reuse inside other classes, it can be static since it's a string and not a mutable type that could accidentally be referenced instead of copied
     public static string GetStrInput(string inMsg, bool newLine = false){
         if(newLine)
         {
@@ -192,16 +192,17 @@ class Program
     static string GetUnsavedChanges(){
         return GetUnsavedChanges(new string[]{"",""});
     }
-    //Get unsaved changes quickly
+    //Get unsaved changes quickly as a string, return nothing when 0, 
+    //support putting it in parenthisis to that the UI can use it too
     static string GetUnsavedChanges(string[] cChars)
     {
         if(unsavedChanges > 1)
         {
-            return cChars[0]+unsavedChanges+" Unsaved Changes"+cChars[1];
+            return cChars[0]+unsavedChanges+" Unsaved Changes"+cChars[1]; //Return "n Unsaved Changes"
         }
         else if (unsavedChanges == 1)
         {
-            return cChars[0]+"1 Unsaved Change"+cChars[1];
+            return cChars[0]+"1 Unsaved Change"+cChars[1];//Manually return "1 unsaved Change"
         }
         return ""; //Else return nothing
     }
