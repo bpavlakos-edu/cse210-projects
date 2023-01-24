@@ -2,6 +2,16 @@ using System;
 using System.IO;
 using System.Windows.Input;
 using System.Text.Json;
+
+/*Additional Features that exceed the requirements:
+1. Added safe file handling through the usage of try catch statements
+2. Added JSON exporting and importing, with indentation enabled
+3. Added a seperate capability for exporting the journal as text
+4. Added the ability to name the Journal
+5. Added a hotkey system for menu options
+6. Added "Unsaved Changes" tracking, and a dialogue to confirm exiting with unsaved changes
+7. Added lower case filtering for all user inputs
+*/
 class Program
 {
     //Global variables
@@ -109,7 +119,7 @@ class Program
                 //Quit
                 if(unsavedChanges != 0)
                 {
-                    string quitConfirmInput = GetStrInput($"Are you sure you would like to quit? You have {GetUnsavedChanges()} (Enter \"Y\" to quit): ").ToLower();
+                    string quitConfirmInput = GetStrInput($"Are you sure you would like to quit? You have {GetUnsavedChanges()} (Enter \"Y\" to quit, anything else to continue): ").ToLower();
                     if(quitConfirmInput == "y")
                     {
                         break; //Exit the while loop
