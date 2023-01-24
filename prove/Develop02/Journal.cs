@@ -102,13 +102,14 @@ class Journal
         //2. C# has field serialization disabled by default: https://stackoverflow.com/questions/58784499/system-text-json-jsonserializer-serialize-returns-empty-json-object#comment103854049_58784566
         //3. How to enable serialization of fields in C#: https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/how-to?pivots=dotnet-7-0#include-fields
         //So the solution is to add a JsonSerializerOptions object to the serialize function call with the IncludeFields option set to true
-        return JsonSerializer.Serialize<Journal>(this, new JsonSerializerOptions{IncludeFields = true});
+        //The docs suggested writing it indented for files the user accesses
+        return JsonSerializer.Serialize<Journal>(this, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
     }
     public void FromJson(string jsonText)
     {
         try
         {
-            Journal journalFromJSON = JsonSerializer.Deserialize<Journal>(jsonText, new JsonSerializerOptions{IncludeFields = true});
+            Journal journalFromJSON = JsonSerializer.Deserialize<Journal>(jsonText, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
             _ownerName = journalFromJSON._ownerName;
             _entryList = journalFromJSON._entryList.ToList<Entry>();
             _promptList = journalFromJSON._promptList.ToList<String>();

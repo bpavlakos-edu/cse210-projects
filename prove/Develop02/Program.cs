@@ -154,7 +154,8 @@ class Program
             Console.Write($"Error {e.ToString()}"); //Print the exception
         }
     }
-
+    
+    //Read all lines in a file
     static string ReadFileLines(string filePath)
     {
         using(StreamReader sReader = new StreamReader(filePath))
@@ -191,6 +192,7 @@ class Program
     static string GetUnsavedChanges(){
         return GetUnsavedChanges(new string[]{"",""});
     }
+    //Get unsaved changes quickly
     static string GetUnsavedChanges(string[] cChars)
     {
         if(unsavedChanges > 1)
