@@ -11,7 +11,7 @@ using System.Text.Json;
 5. Added a hotkey system for menu options
 6. Added "Unsaved Changes" tracking, and a dialogue to confirm exiting with unsaved changes
 7. Added lower case filtering for all user inputs
-8. Added a ToString() function for the Journal class and entry class
+8. Added a ToString() function for the Journal class and Entry class
 */
 class Program
 {
