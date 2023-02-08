@@ -15,26 +15,21 @@ class Reference{
 
     public Reference(string book, int chapter, int startVerse, int endVerse = -1)
     {
-        
+
     }
 
     public Reference(string book, int chapter, int[][] verseMatrix)
     {
-        SetRefText(book, chapter, verseMatrix);
+        _refText = book+" "+chapter+":"+VersesStringFromMatrix(verseMatrix);
     }
 
     //Single Verse Array
     public Reference(string book, int chapter, int[] singleVerseArr)
     {
-        //The syntax for a multi-dimensional array in Java is int[][], but in C# it is int[,]
-        //What I am using is a "jagged array" and it's syntax information is found here on the .NET docs: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/arrays/jagged-arrays
-        //I figure that no harm will be done as long as I process it correctly (by reading the syntax from the .NET docs)!
-        int[][] verseMatrix = new int[singleVerseArr.Length][]; //Initalize a blank jagged array of equal length to the input array
-        for(int i = 0; i < singleVerseArr.Length; i++)
-        {
-            verseMatrix[i] = new int[]{singleVerseArr[i]}; //Store the value from the input array as an entry of the new matrix
-        }
-        SetRefText(book,chapter,verseMatrix); //Now that the array has been stored in a 2d array run the normal SetRefText that accepts the 2d array as the input
+        //Found documentation on the .Join function here: https://learn.microsoft.com/en-us/dotnet/api/microsoft.visualbasic.strings.join?view=net-7.0
+        //Intellisense let me know that the parameters I want are in reverse order
+        //I initalized a new string object to use this function inline
+        _refText = book+" "+chapter+":"+string.Join(",",singleVerseArr);
     }
 
     //Getters and setters
@@ -47,14 +42,8 @@ class Reference{
     {
         _refText = refText;
     }
-    //Function overload for SetRefText() so that the 1D array constructor can use the same code the 2D array constructor uses
-    private void SetRefText(string book, int chapter, int[][] verseMatrix)
-    {
-        SetRefText(book+" "+chapter+":"+VersesStringFromMatrix(verseMatrix));
-    }
 
     //Constructor Helper Methods
-    
     private string VersesStringFromMatrix(int[][] versesArr){
         //Process the list
         string returnString = ""; //Initalize a string to store the return string in
