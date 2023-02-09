@@ -43,7 +43,7 @@ class Scripture{
             while(visibleList.Count > 0 && wordHideMax > 0) //Exit the loop when we've removed all the words or we've met the max hide count
             {
                 int hideWordIdx = new Random().Next(0, visibleList.Count); //Pick the next index
-                _wordList[hideWordIdx].SetHidden(true); //Hide the word
+                _wordList[visibleList[hideWordIdx]].SetHidden(true); //Hide the word
                 visibleList.RemoveAt(hideWordIdx); //Remove it from the visibile list, this allows us to exit the loop
                 wordHideMax--;//Decrment wordHideMax so that we have a way to exit the loop when we've met our random number
                 wordHidden = true;//We hid a word, so toggle the flag
