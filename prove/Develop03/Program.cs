@@ -11,7 +11,8 @@ class Program
     {
         while(1 == 1)
         {
-            Console.Clear();
+            //Display sequence
+            Console.Clear(); //Clear the console
             myScripture.Display();
             Console.WriteLine();//Blank Line
             string userInput = GetInputLine("Press enter to continue, type 'reset' to restart, or type 'quit' to finish:");
@@ -31,18 +32,18 @@ class Program
                     //The next turn failed, initalize exit sequence
                     if(ConfirmExit())
                     {
-                        break;
+                        break; //Quit the loop
                     }
                     else
                     {
-                        myScripture.Reset();
+                        myScripture.Reset(); //Reset the scripture
                     }
 
                 }
             }
         }
     }
-    //New line overload created to match original
+    //New line function overload created to match original project video (https://byui-cse.github.io/cse210-course-2023/unit03/develop.html)
     public static string GetInputLine(string inMsg="", bool returnLowerCase = true)
     {
         return GetInput(inMsg+Environment.NewLine, returnLowerCase);
