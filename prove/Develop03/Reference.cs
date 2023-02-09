@@ -14,10 +14,10 @@ class Reference
         _refText = refText;
     }
 
-    public Reference(string book, int chapter, int startVerse, int endVerse = -1)
+/*     public Reference(string book, int chapter, int startVerse, int endVerse = -1)
     {
 
-    }
+    } */
 
 
     //Two Dimensional  Verse Array (Jagged Array in C#)
