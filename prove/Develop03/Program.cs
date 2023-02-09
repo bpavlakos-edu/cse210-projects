@@ -40,6 +40,7 @@ class Program
                     {
                         throw new ArgumentNullException(); //0 is ignored, just treat it like pressing enter
                     }
+                    hideNum = newHideNum; //Store the new number
                 }
                 catch(OverflowException)
                 {
