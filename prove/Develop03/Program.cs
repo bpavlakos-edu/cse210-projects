@@ -9,13 +9,14 @@ class Program
     }
     static void UiLoop()
     {
+        int hideNum = 3;
         while(1 == 1)
         {
             //Display sequence
             Console.Clear(); //Clear the console
             myScripture.Display(); //Trigger the scripture display function
             Console.WriteLine();//Blank Line
-            string userInput = GetInputLine("Press enter to continue, type 'reset' to reset, type 'change' to change the scripture, or type 'quit' to finish:");
+            string userInput = GetInputLine("Press enter to continue, type a number to adjust the difficulty (negative for a random maximum), type 'reset' to reset, type 'change' to change the scripture, or type 'quit' to finish:");
             if(userInput == "quit")
             {
                 break;//Quit the loop
@@ -30,19 +31,40 @@ class Program
             }
             else
             {
-                //Unrecognized input == initalize next turn
-                if(myScripture.HideWords() == false)
+                //Handle numbers
+                try
                 {
-                    //The next turn failed, initalize exit sequence
-                    if(ConfirmExit())
+                    int newHideNum = int.Parse(userInput); //Try to get the new hide number by parsing user input
+                    if(newHideNum == 0)
                     {
-                        break; //Quit the loop
-                    }
-                    else
-                    {
-                        myScripture.Reset(); //Reset the scripture
+                        throw new ArgumentNullException(); //0 is ignored, just treat it like pressing enter
                     }
                 }
+                catch(OverflowException)
+                {
+                    throw new ArgumentNullException(); //Error, just treat it like pressing enter
+                }
+                catch(FormatException)
+                {
+                    throw new ArgumentNullException(); //Error, just treat it like pressing enter
+                }
+                catch(ArgumentNullException) //All exceptions will flow here
+                {
+                    //Unrecognized text input == initalize next turn
+                    if(myScripture.HideWords(hideNum) == false)
+                    {
+                        //The next turn failed, initalize exit sequence
+                        if(ConfirmExit())
+                        {
+                            break; //Quit the loop
+                        }
+                        else
+                        {
+                            myScripture.Reset(); //Reset the scripture
+                        }
+                    }
+                }
+
             }
         }
     }

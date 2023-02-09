@@ -36,6 +36,16 @@ class Scripture{
     //Hide word request
     public bool HideWords(int wordHideMax = 3)
     {
+        //Add randomization support
+        if(wordHideMax < 0)
+        {
+            wordHideMax = (-wordHideMax) + 1; //Convert it to a positive number, add 1 to make it the ceiling
+            if(wordHideMax > _wordList.Count + 1) //Replace numbers that exceed the list count with the list count to make it a better upper ceiling
+            {
+                wordHideMax = _wordList.Count + 1;
+            }
+            wordHideMax = (new Random().Next(1, wordHideMax)); //Pick a random number
+        }
         List<int> visibleList = GetAllVisibleIdx(); //Get the latest visible index count
         if(visibleList.Count > 0)
         {
