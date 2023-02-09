@@ -14,7 +14,7 @@ class Program
         {
             //Display sequence
             Console.Clear(); //Clear the console
-            Console.Write($"Hide Count Per Turn: {RandomNumToString(hideNum)}");
+            Console.WriteLine(RandomNumToString(hideNum)+"");
             myScripture.Display(); //Trigger the scripture display function
             Console.WriteLine();//Blank Line
             string userInput = GetInputLine("Press enter to continue, type a number to adjust the difficulty (negative for a random maximum), type 'reset' to reset, type 'change' to change the scripture, or type 'quit' to finish:");
