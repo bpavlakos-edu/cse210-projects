@@ -24,7 +24,7 @@ class Program
             {
                 myScripture.Reset(); //Reset the scripture
             }
-            else if(userInput == "new")
+            else if(userInput == "change")
             {
                 SetScripture(); //Change the scripture
             }
