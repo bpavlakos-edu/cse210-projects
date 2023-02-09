@@ -7,6 +7,7 @@ Requirements were exceeded with by the addition of the following features:
 5. Added the ability to control the number of words hidden each turn
 6. Added the ability to set the number of words hidden each turn to a random maximum by entering a negative number
 7. Added a display to tell the user how many words are removed each turn, it also uses a function from the Scripture class to accurately tell the user what the random ceiling is
+8. Added a jagged array constructor, and an array constructor for the reference class, so later it can be filled by an external source later. (Currently unused)
 */
 
 using System;

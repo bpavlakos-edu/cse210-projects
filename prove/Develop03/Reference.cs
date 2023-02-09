@@ -9,15 +9,24 @@ class Reference
         _refText = "";
     }
 
+    //The string constructor for References, very simple
     public Reference(string refText)
     {
         _refText = refText;
     }
 
-/*     public Reference(string book, int chapter, int startVerse, int endVerse = -1)
+    public Reference(string book, int chapter, int startVerse, int endVerse = -1)
     {
-
-    } */
+        string newRefText = book+" "+chapter+":"+startVerse;
+        if(endVerse > 0 && endVerse > startVerse)
+        {
+            _refText = newRefText+"-"+endVerse;//Add the next verse to the string before adding it to the attribute
+        }
+        else
+        {
+            _refText = newRefText; //No additional verses above the first one, ignore them when updating the attribute
+        }
+    }
 
 
     //Two Dimensional  Verse Array (Jagged Array in C#)
@@ -76,7 +85,7 @@ class Reference
         }
         else if(verseSet.Length > 1)
         {
-            return verseSet[0]+"-"+verseSet[verseSet.Length]; //Return the scripture as "Start-Finish"
+            return verseSet[0]+"-"+verseSet[verseSet.Length - 1]; //Return the scripture as "Start-Finish"
         }
         else
         {
