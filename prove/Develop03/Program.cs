@@ -43,11 +43,11 @@ class Program
                         }
                         hideNum = newHideNum; //Store the new number
                     }
-                    catch(OverflowException)
+                    catch(OverflowException) //Too big of a number
                     {
                         throw new ArgumentNullException(); //Error, just treat it like pressing enter
                     }
-                    catch(FormatException)
+                    catch(FormatException) //Not a number or not an integer
                     {
                         throw new ArgumentNullException(); //Error, just treat it like pressing enter
                     }
