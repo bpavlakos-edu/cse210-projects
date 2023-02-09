@@ -69,6 +69,7 @@ class Scripture{
                     returnList.Add(i); //Add it's index to the return list
                 }
             }
+            return returnList; //Return the return list
         }
         return new List<int>(0); //Return an empty list
         
