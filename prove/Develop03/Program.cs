@@ -34,7 +34,7 @@ class Program
             {
                 try//Handle numbers
                 {
-                    try //Second try statment to catch OverflowException and FormatException
+                    try //Second try statment to catch OverflowException and FormatException so they can throw ArgumentNullException
                     {
                         int newHideNum = int.Parse(userInput); //Try to get the new hide number by parsing user input
                         if(newHideNum == 0)
