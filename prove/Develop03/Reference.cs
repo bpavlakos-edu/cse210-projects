@@ -1,4 +1,5 @@
-class Reference{
+class Reference
+{
     //Attributes
     private string _refText;
 

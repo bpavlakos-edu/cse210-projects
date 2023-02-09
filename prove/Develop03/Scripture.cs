@@ -1,4 +1,5 @@
-class Scripture{
+class Scripture
+{
     //Attributes
     Reference _scripRef = new Reference();
     List<Word> _wordList = new List<Word>();
@@ -107,7 +108,7 @@ class Scripture{
         _wordList.FindAll((Word wordItem) => {return wordItem.GetHidden();}).ForEach((Word HiddenWordItem)=>{HiddenWordItem.SetHidden(false);}); //Reset all words
         /*Explanation:
         list.FindAll returns all words in _wordList that have _hidden == true
-        I then use list.ForEach on the result, and it's arrow function calls "SetHidden(false)" on each item, setting their hidden values to false
+        I then use list.ForEach on the result, and it's lambda function calls "SetHidden(false)" on each item, setting their hidden values to false
         Because each item in the FindAll list is still a memory reference to the ones in _wordList, the hidden words in _wordList have their _hidden values set to false!
         */
     }

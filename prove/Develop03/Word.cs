@@ -1,7 +1,8 @@
-class Word{
+class Word
+{
     //Attributes
-    private string _text;
-    private bool _hidden;
+    private string _text; //Stores the word's string value
+    private bool _hidden; //Controls the hidden state of the word
 
     //Constructor
     public Word()
@@ -41,7 +42,7 @@ class Word{
     public string GetDisplayString(){
         if(!_hidden)
         {
-            return _text;
+            return _text; //Return the text when it's not hidden
         }
         return new string('_',_text.Length); //Use the string constructor that accepts char and length to generate the underscore string (found with intellisense)
     }

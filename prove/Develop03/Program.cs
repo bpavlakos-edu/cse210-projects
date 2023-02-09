@@ -1,3 +1,14 @@
+/*
+Requirements were exceeded with by the addition of the following features:
+1. Added logic to force the program to hide only words that aren't hidden
+2. Added the ability to reset word hiding using the "reset" keyword
+3. Added a confirmation prompt when exiting after all words are hidden
+4. Added the ability to change the scripture by user input
+5. Added the ability to control the number of words hidden each turn
+6. Added the ability to set the number of words hidden each turn to a random maximum by entering a negative number
+7. Added a display to tell the user how many words are removed each turn, it also uses a function from the Scripture class to accurately tell the user what the random ceiling is
+*/
+
 using System;
 
 class Program
@@ -7,6 +18,7 @@ class Program
     {
         UiLoop(); //Trigger the main UI loop
     }
+    //Main Ui Loop Function
     static void UiLoop()
     {
         int hideNum = 3;//Controls the number of words to hide
