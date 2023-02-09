@@ -1,8 +1,8 @@
 class Scripture
 {
     //Attributes
-    Reference _scripRef = new Reference();
-    List<Word> _wordList = new List<Word>();
+    private Reference _scripRef = new Reference();
+    private List<Word> _wordList = new List<Word>();
 
     //Constructors
     public Scripture(){
