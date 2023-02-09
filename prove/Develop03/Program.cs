@@ -119,7 +119,7 @@ class Program
         else
         {
             //hideNum = myScripture.RandomHideMax(hideNum); //Should I write it here too?
-            return "Words Removed Each Turn: Random, 1 to "+myScripture.RandomHideMax(hideNum); //Negative numbers mean a maximum ceiling
+            return "Words Removed Each Turn: Random, 1 to "+(myScripture.RandomHideMax(hideNum)-1); //Negative numbers mean a maximum ceiling
         }
     }
 }
