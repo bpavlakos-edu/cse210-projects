@@ -32,23 +32,25 @@ class Program
             }
             else
             {
-                //Handle numbers
-                try
+                try//Handle numbers
                 {
-                    int newHideNum = int.Parse(userInput); //Try to get the new hide number by parsing user input
-                    if(newHideNum == 0)
+                    try //Second try statment to catch OverflowException and FormatException
                     {
-                        throw new ArgumentNullException(); //0 is ignored, just treat it like pressing enter
+                        int newHideNum = int.Parse(userInput); //Try to get the new hide number by parsing user input
+                        if(newHideNum == 0)
+                        {
+                            throw new ArgumentNullException(); //0 is ignored, just treat it like pressing enter
+                        }
+                        hideNum = newHideNum; //Store the new number
                     }
-                    hideNum = newHideNum; //Store the new number
-                }
-                catch(OverflowException)
-                {
-                    throw new ArgumentNullException(); //Error, just treat it like pressing enter
-                }
-                catch(FormatException)
-                {
-                    throw new ArgumentNullException(); //Error, just treat it like pressing enter
+                    catch(OverflowException)
+                    {
+                        throw new ArgumentNullException(); //Error, just treat it like pressing enter
+                    }
+                    catch(FormatException)
+                    {
+                        throw new ArgumentNullException(); //Error, just treat it like pressing enter
+                    }
                 }
                 catch(ArgumentNullException) //All exceptions will flow here
                 {
@@ -119,7 +121,7 @@ class Program
         else
         {
             //hideNum = myScripture.RandomHideMax(hideNum); //Should I write it here too?
-            return "Words Removed Each Turn: Random, 1 to "+(myScripture.RandomHideMax(hideNum)-1); //Negative numbers mean a maximum ceiling
+            return "Words Removed Each Turn (Random): 1 to "+(myScripture.RandomHideMax(hideNum)-1); //Negative numbers mean a maximum ceiling
         }
     }
 }
