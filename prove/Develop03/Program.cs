@@ -15,7 +15,7 @@ class Program
             Console.Clear(); //Clear the console
             myScripture.Display(); //Trigger the scripture display function
             Console.WriteLine();//Blank Line
-            string userInput = GetInputLine("Press enter to continue, type 'reset' to restart, or type 'quit' to finish:");
+            string userInput = GetInputLine("Press enter to continue, type 'reset' to reset, type 'change' to change the scripture, or type 'quit' to finish:");
             if(userInput == "quit")
             {
                 break;//Quit the loop
@@ -23,6 +23,10 @@ class Program
             else if(userInput == "reset")
             {
                 myScripture.Reset(); //Reset the scripture
+            }
+            else if(userInput == "new")
+            {
+                SetScripture(); //Change the scripture
             }
             else
             {
@@ -60,7 +64,25 @@ class Program
     }
     static bool ConfirmExit()
     {
-        string userInput = GetInput("Would you like to quit? (enter 'y' or 'quit' to finish, enter anything else to restart): ");
-        return  userInput == "y" || userInput == "quit"; //Return if the user input matches any of the exit keywords
+        string userInput = GetInput("Would you like to quit? (enter 'y' or 'quit' to finish, enter anything else to reset the current scripture): ");
+        return userInput == "y" || userInput == "quit"; //Return if the user input matches any of the exit keywords
+    }
+    static void SetScripture()
+    {
+        string newReference = GetInput("Enter the new scripture reference (press enter to cancel, type 'default' to load the default): ");
+        if(newReference == "default") //
+        {
+            myScripture = new Scripture("Mosiah 2:17","And behold, I tell you these things that ye may learn wisdom; that ye may learn that when ye are in the service of your fellow beings ye are only in the service of your God.");
+        }
+        else if(newReference != "") //Scripture reference isn't empty
+        {
+            string newVerseText = GetInput("Enter the new scripture text (press enter to cancel): ");
+            if(newVerseText != "")
+            {
+                myScripture = new Scripture(newReference, newVerseText);
+            }
+            //Do nothing if it's blank
+        }
+        //Do nothing if it's blank
     }
 }
