@@ -34,7 +34,7 @@ class Scripture{
     }
 
     //Hide word request
-    private bool HideWords(int wordHideMax)
+    public bool HideWords(int wordHideMax = 3)
     {
         List<int> visibleList = GetAllVisibleIdx(); //Get the latest visible index count
         if(visibleList.Count > 0)

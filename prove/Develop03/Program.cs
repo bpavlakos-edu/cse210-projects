@@ -27,7 +27,7 @@ class Program
             else
             {
                 //Unrecognized input == initalize next turn
-                if(myScripture.NextTurn() == false)
+                if(myScripture.HideWords() == false)
                 {
                     //The next turn failed, initalize exit sequence
                     if(ConfirmExit())
