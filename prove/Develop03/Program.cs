@@ -64,7 +64,6 @@ class Program
                         }
                     }
                 }
-
             }
         }
     }
@@ -84,6 +83,8 @@ class Program
         //We can't reach this code if returnLowerCase is true
         return userInput; //Return the raw input
     }
+
+    //Function to confirm the user is empty
     static bool ConfirmExit()
     {
         string userInput = GetInput("Would you like to quit? (enter 'y' or 'quit' to finish, enter anything else to reset the current scripture): ");
@@ -92,7 +93,7 @@ class Program
     static void SetScripture()
     {
         string newReference = GetInput("Enter the new scripture reference (press enter to cancel, type 'default' to load the default): ");
-        if(newReference == "default") //
+        if(newReference == "default") //Keyword to reset to the original
         {
             myScripture = new Scripture("Mosiah 2:17","And behold, I tell you these things that ye may learn wisdom; that ye may learn that when ye are in the service of your fellow beings ye are only in the service of your God.");
         }
@@ -101,7 +102,7 @@ class Program
             string newVerseText = GetInput("Enter the new scripture text (press enter to cancel): ", false);//Do not return lower case
             if(newVerseText != "") //New verse text isn't empty
             {
-                myScripture = new Scripture(newReference, newVerseText);
+                myScripture = new Scripture(newReference, newVerseText);//Create the new scripture object
             }
             //Do nothing if it's blank
         }
