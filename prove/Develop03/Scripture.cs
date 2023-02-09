@@ -39,11 +39,7 @@ class Scripture{
         //Add randomization support
         if(wordHideMax < 0)
         {
-            wordHideMax = (-wordHideMax) + 1; //Convert it to a positive number, add 1 to make it the ceiling
-            if(wordHideMax > _wordList.Count + 1) //Replace numbers that exceed the list count with the list count to make it a better upper ceiling
-            {
-                wordHideMax = _wordList.Count + 1;
-            }
+            wordHideMax = RandomHideMax(wordHideMax); //Get the actual maximum number
             wordHideMax = (new Random().Next(1, wordHideMax)); //Pick a random number
         }
         List<int> visibleList = GetAllVisibleIdx(); //Get the latest visible index count
@@ -64,6 +60,16 @@ class Scripture{
         {
             return false;//All words are hidden, so we can't hide any more words, send the result back
         }
+    }
+    //Turned into a public function so that the main program can access it for the UI loop
+    public int RandomHideMax(int newRemoveCount)
+    {
+        newRemoveCount = (-newRemoveCount) + 1; //Convert it to a positive number, add 1 to make it the ceiling
+        if(newRemoveCount > _wordList.Count + 1) //Replace numbers that exceed the list count with the list count to make it a better upper ceiling
+        {
+            newRemoveCount = _wordList.Count + 1;
+        }
+        return newRemoveCount; //Return the result
     }
     //Get the index of all visible words
     private List<int> GetAllVisibleIdx()

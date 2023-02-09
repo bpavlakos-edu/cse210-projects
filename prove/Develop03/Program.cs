@@ -9,11 +9,12 @@ class Program
     }
     static void UiLoop()
     {
-        int hideNum = 3;
+        int hideNum = 3;//Controls the number of words to hide
         while(1 == 1)
         {
             //Display sequence
             Console.Clear(); //Clear the console
+            Console.Write($"Hide Count Per Turn: {RandomNumToString(hideNum)}");
             myScripture.Display(); //Trigger the scripture display function
             Console.WriteLine();//Blank Line
             string userInput = GetInputLine("Press enter to continue, type a number to adjust the difficulty (negative for a random maximum), type 'reset' to reset, type 'change' to change the scripture, or type 'quit' to finish:");
@@ -107,5 +108,17 @@ class Program
             //Do nothing if it's blank
         }
         //Do nothing if it's blank
+    }
+    static string RandomNumToString(int hideNum)
+    {
+        if(hideNum > 0)
+        {
+            return "Words Removed Each Turn: "+hideNum;
+        }
+        else
+        {
+            //hideNum = myScripture.RandomHideMax(hideNum); //Should I write it here too?
+            return "Words Removed Each Turn: Random, 1 to "+myScripture.RandomHideMax(hideNum); //Negative numbers mean a maximum ceiling
+        }
     }
 }
