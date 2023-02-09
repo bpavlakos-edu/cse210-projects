@@ -76,8 +76,8 @@ class Program
         }
         else if(newReference != "") //Scripture reference isn't empty
         {
-            string newVerseText = GetInput("Enter the new scripture text (press enter to cancel): ");
-            if(newVerseText != "")
+            string newVerseText = GetInput("Enter the new scripture text (press enter to cancel): ", false);//Do not return lower case
+            if(newVerseText != "") //New verse text isn't empty
             {
                 myScripture = new Scripture(newReference, newVerseText);
             }
