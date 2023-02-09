@@ -16,12 +16,11 @@ class Scripture{
     //Constructor Helpter Methods
     private void StringToWords(string fullScriptureText)
     {
-        List<string> wordStrList = fullScriptureText.Replace(Environment.NewLine," ").Split(" ").ToList<string>();
-        if(wordStrList.Count() > 0)
+        List<string> splitTextList = fullScriptureText.Replace(Environment.NewLine," ").Split(" ").ToList<string>(); //Split each individual "word" into a string entry of a list
+        if(splitTextList.Count() > 0) //Only fill the list if the result of Split(" ") isn't empty
         {
-            //Only fill the list if it's not empty
             _wordList = new List<Word>(); //Clear the word list
-            wordStrList.ForEach((string newWordString) => {_wordList.Add(new Word(newWordString));});
+            splitTextList.ForEach((string newWordText) => {_wordList.Add(new Word(newWordText));}); //Fill the word list by using the Word constructor that accepts a string input, pass the entry from the .split(" ") list as the string input 
         }
     }
 
@@ -31,24 +30,29 @@ class Scripture{
     //Next turn
     public bool NextTurn()
     {
-        return HideWords(3);
+        return HideWords(3); //Hide 3 words
     }
+
+    //Hide word request
     private bool HideWords(int wordHideMax)
     {
         List<int> visibleList = GetAllVisibleIdx(); //Get the latest visible index count
         if(visibleList.Count > 0)
         {
             bool wordHidden = false;//Flag to return if a word was hidden, we could use math to detect this, but having a boolean flag is safer
-            while(visibleList.Count > 0 && wordHideMax > 0)
+            while(visibleList.Count > 0 && wordHideMax > 0) //Exit the loop when we've removed all the words or we've met the max hide count
             {
                 int hideWordIdx = new Random().Next(0, visibleList.Count); //Pick the next index
                 _wordList[hideWordIdx].SetHidden(true); //Hide the word
                 visibleList.RemoveAt(hideWordIdx); //Remove it from the visibile list, this allows us to exit the loop
                 wordHideMax--;//Decrment wordHideMax so that we have a way to exit the loop when we've met our random number
+                wordHidden = true;//We hid a word, so toggle the flag
             }
-            return wordHidden;
-        }else{
-            return false;//All words are hidden
+            return wordHidden; //Return if a word was successfully hidden
+        }
+        else
+        {
+            return false;//All words are hidden, so we can't hide any more words, send the result back
         }
     }
     //Get the index of all visible words
@@ -57,16 +61,16 @@ class Scripture{
         //After realizing that this task is too complicated for a predicate search, I've decided to do a manual search instead
         if(IsAnyVisible()) //Use the IsAnyVisible Function to check if any are visible
         {
-            List<int> returnList = new List<int>();
+            List<int> returnList = new List<int>(); //Return list
             for(int i = 0; i < _wordList.Count; i++)
             {
-                if(!_wordList[i].GetHidden()) //Use
+                if(!_wordList[i].GetHidden()) //If the current word is not hidden
                 {
-                    returnList.Add(i);
+                    returnList.Add(i); //Add it's index to the return list
                 }
             }
         }
-        return new List<int>(0);
+        return new List<int>(0); //Return an empty list
         
         //Old documentation:
         //I wanted to use the FindAll function, but that doesn't let us keep the index
@@ -74,17 +78,28 @@ class Scripture{
         //List<Word> onlyVisible = _wordList.FindAll((Word wordObj)=>{return wordObj.GetHidden() == false;}); //This works but doesn't keep track of the index
         //Here's the solution, use contains instead: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.contains?view=net-7.0
     }
-
-    //Use a 
+    //Use a "exists" search to determine if there are any words in _wordList that aren't hidden
     private bool IsAnyVisible(){
         //Actually the solution is to use "exists" instead of "contains", since "contains" is used for object values, and "exists" uses predicates (inline functions) to search
         return _wordList.Exists((Word curWord)=>{return curWord.GetHidden()==false;});
     }
+
+    //Reset Words
+    public void Reset()
+    {
+        _wordList.FindAll((Word wordItem) => {return wordItem.GetHidden();}).ForEach((Word HiddenWordItem)=>{HiddenWordItem.SetHidden(false);}); //Reset all words
+        /*Explanation:
+        list.FindAll returns all words in _wordList that have _hidden == true
+        I then use list.ForEach on the result, and it's arrow function calls "SetHidden(false)" on each item, setting their hidden values to false
+        Because each item in the FindAll list is still a memory reference to the ones in _wordList, the hidden words in _wordList have their _hidden values set to false!
+        */
+    }
+
+    //Display this entire scripture reference by writing the appropriate string values to the console
     public void Display()
     {
         Console.WriteLine(_scripRef.GetRefText()+" "+WordListToString()); //Write the scripture reference and the word 
     }
-
     //Convert the word list to a string so we can display it
     private string WordListToString()
     {
@@ -100,4 +115,6 @@ class Scripture{
         }
         return returnString; //Return the completed string
     }
+
+    
 }

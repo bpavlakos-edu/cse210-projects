@@ -14,23 +14,38 @@ class Program
             Console.Clear();
             myScripture.Display();
             Console.WriteLine();//Blank Line
-            string userInput = GetInput("");
+            string userInput = GetInputLine("Press enter to continue, type 'reset' to restart, or type 'quit' to finish:");
             if(userInput == "quit")
             {
-                break;
+                break;//Quit the loop
             }
             else if(userInput == "reset")
             {
-
+                myScripture.Reset();
             }
             else
             {
+                //Unrecognized input == initalize next turn
                 if(myScripture.NextTurn() == false)
                 {
+                    //The next turn failed, initalize exit sequence
+                    if(ConfirmExit())
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        myScripture.Reset();
+                    }
 
                 }
             }
         }
+    }
+    //New line overload created to match original
+    public static string GetInputLine(string inMsg="", bool returnLowerCase = true)
+    {
+        return GetInput(inMsg+Environment.NewLine, returnLowerCase);
     }
     public static string GetInput(string inMsg="", bool returnLowerCase = true)
     {
@@ -45,6 +60,7 @@ class Program
     }
     static bool ConfirmExit()
     {
-        return GetInput("Would you like to quit? (enter Y to quit, anything else to restart): ") == "y";
+        string userInput = GetInput("Would you like to quit? (enter 'y' or 'quit' to finish, enter anything else to restart): ");
+        return  userInput == "y" || userInput == "quit";
     }
 }
