@@ -1,7 +1,7 @@
 class Assignment
 {
-    protected string _studentName = "";
-    protected string _topic = "";
+    protected string _studentName {get; set;} = "";
+    protected string _topic {get; set;} = "";
 
     public Assignment()
     {
