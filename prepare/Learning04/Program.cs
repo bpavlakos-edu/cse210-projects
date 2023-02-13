@@ -6,9 +6,15 @@ class Program
 {
     static void Main(string[] args)
     {
-        //Base class test
+        //Assignment class test
         Assignment BaseClassTest = new Assignment("Samuel Benet", "Multiplication");
         Console.WriteLine(BaseClassTest.GetSummary());
+
+        Console.WriteLine();
+
+        //MathAssignment Class Test
+        MathAssignment MathATest = new MathAssignment("Roberto Rodriguez","Fractions","Section 7.3","Problems 8-19");
+        Console.WriteLine(MathATest.GetSummary()+Environment.NewLine+MathATest.GetHomeworkList());
 
     }
 }
