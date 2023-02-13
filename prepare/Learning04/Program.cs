@@ -7,6 +7,6 @@ class Program
     static void Main(string[] args)
     {
         Assignment BaseClassTest = new Assignment("Samuel Benet", "Multiplication");
-        Console.WriteLine(BaseClassTest.GetSummary());
+        Console.WriteLine(BaseClassTest.GetSummary());//
     }
 }
