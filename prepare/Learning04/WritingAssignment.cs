@@ -1,0 +1,4 @@
+class WritingAssignment : Assignment
+{
+    
+}
