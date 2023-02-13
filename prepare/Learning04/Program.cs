@@ -14,7 +14,14 @@ class Program
 
         //MathAssignment Class Test
         MathAssignment MathATest = new MathAssignment("Roberto Rodriguez","Fractions","Section 7.3","Problems 8-19");
-        Console.WriteLine(MathATest.GetSummary()+Environment.NewLine+MathATest.GetHomeworkList());
+        Console.WriteLine(MathATest.GetSummary());
+        Console.WriteLine(MathATest.GetHomeworkList()); //Better code readability
 
+        Console.WriteLine();
+
+        //WritingAssignment Class Test
+        WritingAssignment WritingATest = new WritingAssignment("Mary Waters","Eurpoean History", "The Causes of World War II");
+        Console.WriteLine(WritingATest.GetSummary());
+        Console.WriteLine(WritingATest.GetWritingInformation());
     }
 }
