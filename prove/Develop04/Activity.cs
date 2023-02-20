@@ -51,4 +51,73 @@ class Activity
     {
         _pauseStyle = pauseStyle;
     }
+
+    //Methods
+
+    //Main Functionality Flow
+    public void Run()
+    {
+
+    }
+
+    public void Loop()
+    {
+
+    }
+
+    public void End()
+    {
+
+    }
+    //Pausing and animations
+    public void Pause(int duration, int pauseType)
+    {
+
+    }
+    public void DisplayAnimation(int pauseType)
+    {
+
+    }
+    //User input
+    public string GetInput(string inMsg)
+    {
+        Console.Write(inMsg);
+        return Console.ReadLine();
+    }
+    public int GetIntInput(string inMsg, int min = 0, int max = 0)
+    {
+        while(true) //Repeat until a valid number is found
+        {
+            try
+            {
+                int returnInt = int.Parse(GetInput(inMsg)); //Parse the user input
+                //Determine if the current integer is a valid number
+                if(min == max) //This means no minimum or maximum was set
+                {
+                    return returnInt;//Exit the while loop by returning the value
+                }
+                else if(returnInt <= max && returnInt >= min) //is the number between the minimum and maximum?
+                {
+                    return returnInt;//Exit the while loop by returning the value
+                }
+                else //Invalid number
+                {
+                    Console.WriteLine($"That's not a number between {min} and {max}, please try again!");
+                }
+            }
+            catch(FormatException) 
+            {
+                Console.WriteLine($"That's not a valid whole number, please try again!");
+            }
+            catch(ArgumentNullException) //Empty input
+            {
+                Console.WriteLine("Please enter a number to continue!");
+            }
+            catch(OverflowException) //Overflow
+            {
+                Console.WriteLine("That's not a number the program can process, please try again!");
+            }
+        }
+    }
+
 }
