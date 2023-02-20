@@ -1,4 +1,6 @@
+using System.Collections;
 //Super Class - Activity: Contains core functionality for all Activity Sub Classes
+
 class Activity
 {
     //Attributes
@@ -94,24 +96,64 @@ class Activity
         {
             inMsg += Environment.NewLine;
         }
-        Console.Write(inMsg);
+        Console.Write(inMsg);//Write the message
+        Pause(6000,1);
     }
     //Pausing and animations
     public void Pause(int durationMsec, int pauseType)
     {
+        //Ticks documentation: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.millisecond?source=recommendations&view=net-7.0
         long curTime = (DateTime.Now).Ticks;
         long endTime = curTime + (durationMsec * 10000); //There are 10000 ticks in a milisecond according to the docs: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-7.0
         
-        Task animTask = DisplayAnimation(pauseType); //Start the async function
+        //Task animTask = DisplayAnimation(pauseType); //Start the async function
+        RequestAnimation(pauseType, durationMsec); //Start the async function
         while(curTime < endTime)
         {
 
             curTime = (DateTime.Now).Ticks;
         }
     }
-    private async Task DisplayAnimation(int pauseType, int fps = 60)
+    
+    private void RequestAnimation(int pauseType, int durationMsec, int fps = 60)
     {
-        
+        //Switch case in C#: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/selection-statements#the-switch-statement
+        switch (pauseType)
+        {
+            
+            case 0:
+                //Spinner
+                ActivateAnim(new List<object>{"-","\\","|","/"},250);
+                break;
+            case 1:
+                //Count down timer
+                int seconds = durationMsec / 1000;
+                List<Object> countDownStr = new List<Object>{""};
+                break;
+            default:
+                //No display
+                break;
+        }
+    }
+
+    //Async Documentation: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/async
+    private async Task ActivateAnim(List<object> frameChars, int framePerMsec = 1000)
+    {
+        int frame = 0;
+        int frameLen = frameChars.Count;
+        //Console.Write(frameChars[0]);//Add an extra space to overrwrite
+        Console.Write(" ");//Add an extra space to overrwrite
+        while(true)
+        {
+            Console.Write("\b \b");
+            Console.Write(frameChars[frame]);
+            Thread.Sleep(framePerMsec);
+            frame++; //Increment frame length
+        }
+    }
+    private void DisplayFrame(string frameStr, int duration)
+    {
+        Console.Write(frameStr);
     }
     //User input
     //Get a generic input from the user
