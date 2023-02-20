@@ -97,7 +97,8 @@ class Activity
             inMsg += Environment.NewLine;
         }
         Console.Write(inMsg);//Write the message
-        Pause(6000,1);
+        Pause(6000,0); //Get a spinner
+        Console.Clear();//Clear the console again
     }
     //Pausing and animations
     public void Pause(int durationMsec, int pauseType)
@@ -110,7 +111,7 @@ class Activity
         RequestAnimation(pauseType, durationMsec); //Start the async function
         while(curTime < endTime)
         {
-
+            //Run animation?
             curTime = (DateTime.Now).Ticks;
         }
     }
@@ -120,15 +121,13 @@ class Activity
         //Switch case in C#: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/selection-statements#the-switch-statement
         switch (pauseType)
         {
-            
             case 0:
                 //Spinner
-                ActivateAnim(new List<object>{"-","\\","|","/"},250);
+                ActivateLoopAnim(new List<object>{"-","\\","|","/"},250);
                 break;
             case 1:
                 //Count down timer
-                int seconds = durationMsec / 1000;
-                List<Object> countDownStr = new List<Object>{""};
+                ActivateAnimTimerMsec(durationMsec);
                 break;
             default:
                 //No display
@@ -137,24 +136,50 @@ class Activity
     }
 
     //Async Documentation: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/async
-    private async Task ActivateAnim(List<object> frameChars, int framePerMsec = 1000)
+    private void ActivateLoopAnim(List<object> frameChars, int msecPerFrame = 1000)
     {
         int frame = 0;
         int frameLen = frameChars.Count;
         //Console.Write(frameChars[0]);//Add an extra space to overrwrite
-        Console.Write(" ");//Add an extra space to overrwrite
+        Console.Write(" ");//Add an extra space to overrwrite by a frame
         while(true)
         {
-            Console.Write("\b \b");
-            Console.Write(frameChars[frame]);
-            Thread.Sleep(framePerMsec);
-            frame++; //Increment frame length
+            DisplayFrame(frameChars[frame % frameLen], msecPerFrame);
+            frame++; //Increment current frame
         }
     }
-    private void DisplayFrame(string frameStr, int duration)
+    private void ActivateAnimTimer(int durationSec, bool countdownFlag = true)
     {
-        Console.Write(frameStr);
+        for(int i = 0; i < durationSec; i++)
+        {
+            if(countdownFlag) //Countdown
+            {
+                DisplayFrame(durationSec - i, 1000);
+            }
+            else //Count up timer
+            {
+                DisplayFrame(i, 1000);
+            }
+            
+            //3-line version:
+            //int boolInt = BitConverter.ToInt32(BitConverter.GetBytes(countdownFlag)); //Convert the boolean to an integer //From: https://learn.microsoft.com/en-us/dotnet/api/system.boolean?view=net-7.0#work-with-booleans-as-binary-values
+            //int iValue = (boolInt * durationSec) + (i * (1 - (2 * boolInt))); //Deactivate durationSec when false, flip i negative when true
+            //DisplayFrame(iValue, 1000); //Display the result
+        }
     }
+    private void ActivateAnimTimerMsec(int durationMsec, bool countdownFlag = true)
+    {
+        ActivateAnimTimer(durationMsec / 1000, countdownFlag);
+    }
+    
+
+    private void DisplayFrame(object frameStr, int msecPerFrame)
+    {
+        Console.Write("\b \b"); //Backspace to clear
+        Console.Write(frameStr); //
+        Thread.Sleep(msecPerFrame);
+    }
+
     //User input
     //Get a generic input from the user
     public string GetInput(string inMsg)
