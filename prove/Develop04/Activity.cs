@@ -159,8 +159,8 @@ class Activity
         //Task animTask = RequestAnimation(durationMsec, pauseType); //An actual async call, since I noticed task was the actual return type
         //var test = new Thread(RequestAnimation(durationMsec, pauseType)); //Threading example: https://learn.microsoft.com/en-us/dotnet/standard/threading/pausing-and-resuming-threads
         //Wait and start were located here: https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/task-based-asynchronous-programming#creating-and-running-tasks-explicitly
-        animTask.Start(); //Start the animation task
-        tokenSource.CancelAfter(durationMsec); //Request cancellation after the duration in msec
+        animTask.RunSynchronously(); //Start the animation task
+        //tokenSource.CancelAfter(durationMsec); //Request cancellation after the duration in msec
         Thread.Sleep(durationMsec); //Sleep
         
         /*if(animTask.Status != TaskStatus.RanToCompletion)
@@ -339,11 +339,13 @@ class Activity
             //Console.Write(" ");//Add an extra space to overrwrite by a frame
             if(countdownFlag) //Countdown
             {
-                DisplayFrame(durationSec - i, 1000,((i-1)/10)+1);
+                int lastLength = ((i-1) + "").Replace("-","").Length; //Get the length of the previous string, ignore the negative sign (for 0)
+                DisplayFrame(durationSec - i, 1000, lastLength);
             }
             else //Count up timer
             {
-                DisplayFrame(i, 1000, ((i-1)/10)+1);
+                int lastLength = ((i-1) + "").Replace("-","").Length; //Get the length of the previous string, ignore the negative sign (for 0)
+                DisplayFrame(i, 1000, lastLength);
             }
             //Console.Write("\b \b");//Erase the final frame
             
@@ -371,13 +373,12 @@ class Activity
         }
         else //Different length
         {
-            
             //Backspace for each additional length
             for(int i = 0; i < lastFrameLength; i++)
             {
-                Console.Write("\b");
+                Console.Write("\b \b");
             }
-            Console.Write(" \b");//Add the extra space
+            //Console.Write("");//Add the extra space
         }
         Console.Write(frameObj); //Write this frame
         Thread.Sleep(msecPerFrame); //Make the thread sleep

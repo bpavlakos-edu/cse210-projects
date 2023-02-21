@@ -17,7 +17,7 @@ class BreathingActivity : Activity
     //And also noticing that I had the wrong function name!!!
     public override void Loop(int durationMsec)
     {
-        int cycleTime = GetIntInput("Enter how long you you will hold a breath (in seconds): ",1,9) * 1000; //Custom input for breathing length
+        int cycleTime = GetIntInput("Enter how long you you will hold a breath (in seconds): ",1,15) * 1000; //Custom input for breathing length
         TransitionLoad("Get ready...");
 
         long[] tickTimes = GetTickStartEnd(durationMsec);
