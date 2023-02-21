@@ -33,7 +33,7 @@ class Program
                 //Display the UI options
                 for(int i=0; i<optionName.Count; i++)
                 {
-                    Console.WriteLine($"{i+1}. {optionName}");
+                    Console.WriteLine($"{i+1}. {optionName[i]}");
                 }
                 Console.WriteLine("");
                 string userInput = GetInput("Please select an option.").ToLower();
@@ -41,7 +41,8 @@ class Program
                 {
                     try
                     {
-                        int electionIdx = int.Parse(userInput) - 1; //Get the action index
+                        int selectionIdx = int.Parse(userInput) - 1; //Get the action index
+                        UiActions[selectionIdx].Invoke();//Activate the chosen option
                     }
                     catch (IndexOutOfRangeException) //Invalid index
                     {
