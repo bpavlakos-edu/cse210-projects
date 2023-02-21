@@ -10,6 +10,13 @@ class Activity
     protected int _pauseStyle;
 
     //Constructors
+    public Activity()
+    {
+        _name = "";
+        _description = "";
+        _messageList = new List<string>();
+        _pauseStyle = -1;
+    }
 
     //Fill Attribute Constructor
     public Activity(string name, string description, List<string> messageList, int pauseStyle)
