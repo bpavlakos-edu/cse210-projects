@@ -1,5 +1,11 @@
 //Mindfullness program
 //Week 08
+//Created By Bryce Pavlakos
+
+/*Ehnacement list:
+1. Created a UI system that processes User input, hotkeys, and
+2. Gave the program the ability to force unique prompts, and keep track of when to reset the list
+*/
 
 using System;
 

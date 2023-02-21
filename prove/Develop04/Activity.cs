@@ -189,7 +189,7 @@ class Activity
             string returnStr = "";
             if(selectionListCopy.Count == 0) //Selection list has no items
             {
-                Console.WriteLine("Resetting remove list!");
+                Console.WriteLine("Resetting remove list!"); //Debugging
                 removeList = new List<string>(); //Reset the remove list (it's mutable so we can affect it from here)
                 returnStr = GetRandomMsg(selectionList); //Use the original list as the call instead 
             }
