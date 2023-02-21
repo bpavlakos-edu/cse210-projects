@@ -114,6 +114,7 @@ class Activity
     //Intro and outro helpers
     protected int ShowIntro()
     {
+        Console.Clear();
         //Messages are matching the syntax as shown in the example here: https://byui-cse.github.io/cse210-course-2023/unit04/develop.html
         //Print Welcome
         Console.WriteLine($"Welcome to the {_name}.");
@@ -148,14 +149,23 @@ class Activity
     //Pausing
     protected void Pause(int durationMsec, int pauseType)
     {
+        //Cancellation token (see https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/how-to-cancel-a-task-and-its-children)
+        var tokenSource = new CancellationTokenSource();
+        var token = tokenSource.Token;
+
         //How to initalize an async function: https://youtu.be/V2sMXJnDEjM?t=139
         //Intellisense helped me figure out the actual syntax for this:
-        //Task animTask = new Task(new Action(async ()=>{await RequestAnimation(durationMsec, pauseType);})); //Start the async function, using the task data type, action data type, and finally a lambda function to call the animation request function
-        Task animTask = RequestAnimation(durationMsec, pauseType); //An actual async call, since I noticed task was the actual return type
+        Task animTask = new Task(new Action(async ()=>{await RequestAnimation(durationMsec, pauseType);}),token); //Start the async function, using the task data type, action data type, and finally a lambda function to call the animation request function
+        //Task animTask = RequestAnimation(durationMsec, pauseType); //An actual async call, since I noticed task was the actual return type
+        //var test = new Thread(RequestAnimation(durationMsec, pauseType)); //Threading example: https://learn.microsoft.com/en-us/dotnet/standard/threading/pausing-and-resuming-threads
         //Wait and start were located here: https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/task-based-asynchronous-programming#creating-and-running-tasks-explicitly
         animTask.Start(); //Start the animation task
         Thread.Sleep(durationMsec); //Sleep
-        animTask.Wait(); //Wait for the display function to end
+        if(animTask.Status != TaskStatus.RanToCompletion)
+        {
+            tokenSource.Cancel();
+        }
+        //animTask.Wait(); //Wait for the display function to end
     }
 
     //Combining Pause with a console write
