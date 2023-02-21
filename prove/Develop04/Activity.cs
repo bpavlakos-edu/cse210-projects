@@ -325,7 +325,7 @@ class Activity
         //Console.Write(frameChars[0]);//Add an extra space to overrwrite
         for(int curFrame= 0; curFrame <= maxFrame; curFrame++)
         {
-            Console.Write(" ");//Add an extra space to overrwrite by a frame
+            //Console.Write(" ");//Add an extra space to overrwrite by a frame
             DisplayFrame(frameChars[curFrame % frameLen], msecPerFrame); //Increment current frame, and ensure it doesn't exceed the animation length
             //Console.Write("\b \b");//Erase the final frame
         }
@@ -333,27 +333,27 @@ class Activity
     //Countdown timer or just a regular timer
     private void ActivateAnimTimer(int durationSec, bool countdownFlag = true)
     {
-        Console.Write(" ");//Add an extra space to overrwrite by a frame
+        //Console.Write(" ");//Add an extra space to overrwrite by a frame
         for(int i = 0; i < durationSec; i++)
         {
-            Console.Write(" ");//Add an extra space to overrwrite by a frame
+            //Console.Write(" ");//Add an extra space to overrwrite by a frame
             if(countdownFlag) //Countdown
             {
-                DisplayFrame(durationSec - i, 1000,(i-1)/10);
+                DisplayFrame(durationSec - i, 1000,((i-1)/10)+1);
             }
             else //Count up timer
             {
-                DisplayFrame(i, 1000, (i-1)/10);
+                DisplayFrame(i, 1000, ((i-1)/10)+1);
             }
-            Console.Write("\b \b");//Erase the final frame
+            //Console.Write("\b \b");//Erase the final frame
             
             //3-line version:
             //int boolInt = BitConverter.ToInt32(BitConverter.GetBytes(countdownFlag)); //Convert the boolean to an integer //From: https://learn.microsoft.com/en-us/dotnet/api/system.boolean?view=net-7.0#work-with-booleans-as-binary-values
             //int iValue = (boolInt * durationSec) + (i * (1 - (2 * boolInt))); //Deactivate durationSec when false, flip i negative when true
             //DisplayFrame(iValue, 1000); //Display the result
         }
-        Console.Write("\b \b");//Erase the final frame
-        Console.WriteLine("");
+        //Console.Write("\b \b");//Erase the final frame
+        //Console.WriteLine("");
     }
     //Function overload for using MSEC instead of seconds
     private void ActivateAnimTimerMsec(int durationMsec, bool countdownFlag = true)
@@ -366,19 +366,22 @@ class Activity
     {
         if(lastFrameLength == 1) //Normal display length 
         {
+            //Gained additional understanding of what this is doing by reading this stack overflow post: https://stackoverflow.com/questions/5195692/is-there-a-way-to-delete-a-character-that-has-just-been-written-using-console-wr
             Console.Write("\b \b"); //Backspace to clear
         }
         else //Different length
         {
-            Console.Write("\b");
+            
             //Backspace for each additional length
             for(int i = 0; i < lastFrameLength; i++)
             {
                 Console.Write("\b");
             }
+            Console.Write(" \b");//Add the extra space
         }
         Console.Write(frameObj); //Write this frame
         Thread.Sleep(msecPerFrame); //Make the thread sleep
+        //Console.Write("\b");
     }
     //Function overload for display frame for code completion to recognize
     /*private void DisplayFrame(string frameStr, int msecPerFrame)
