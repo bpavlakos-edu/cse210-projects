@@ -249,7 +249,7 @@ class Activity
     }*/
 
     //Pick an item from the list at random
-    public string GetRandomMsg(List<string> selectionList)
+    protected string GetRandomMsg(List<string> selectionList)
     {
         if(selectionList.Count > 1)
         {
@@ -266,7 +266,7 @@ class Activity
     }
 
     //Overload to handle a second list input, which keeps track of which items have been used already
-    public string GetRandomMsg(List<string> selectionList, List<string> removeList)
+    protected string GetRandomMsg(List<string> selectionList, List<string> removeList)
     {
         if(selectionList.Count > 0) //Accept lists with a item count greater than 0
         {
@@ -300,7 +300,7 @@ class Activity
 
     //Calcuations
     //Pointlessly created a function to do this, in the hopes that the code that uses it would be one line, instead I just made a way to get a start and end duration from miliseconds
-    public long[] GetTickStartEnd(int durationMsec)
+    protected long[] GetTickStartEnd(int durationMsec)
     {
         //Ticks documentation: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.millisecond?source=recommendations&view=net-7.0
         long curTime = (DateTime.Now).Ticks;
@@ -310,13 +310,13 @@ class Activity
 
     //User input
     //Get a generic input from the user
-    public string GetInput(string inMsg)
+    protected string GetInput(string inMsg)
     {
         Console.Write(inMsg);
         return Console.ReadLine();
     }
     //Get a whole number from a user (supports minimum and maximum)
-    public int GetIntInput(string inMsg, int min = 0, int max = 0)
+    protected int GetIntInput(string inMsg, int min = 0, int max = 0)
     {
         while(true) //Repeat until a valid number is found
         {
