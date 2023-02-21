@@ -17,7 +17,21 @@ class BreathingActivity : Activity
     //And also noticing that I had the wrong function name!!!
     public override void Loop(int durationMsec)
     {
-        int GapTime = GetIntInput("Enter how long you you will hold a breath (in seconds): ",0,10)*1000;
+        int GapTime = GetIntInput("Enter how long you you will hold a breath (in seconds): ",1,9) * 1000;
         TransitionLoad("Get ready...");
+
+        long[] tickTimes = GetTickStartEnd(durationMsec);
+        long curTime = tickTimes[0]; //Get the start time
+
+        while(curTime < tickTimes[1])
+        {
+            Console.Write(_messageList[0]+" "); //Breathe in
+            Pause(GapTime,_pauseStyle);
+            Console.Write(_messageList[1]+" "); //Breathe out
+            Pause(GapTime,_pauseStyle);
+            Console.WriteLine("");
+            curTime = (DateTime.Now).Ticks;
+        }
+        
     }
 }

@@ -202,11 +202,11 @@ class Activity
         {
             if(countdownFlag) //Countdown
             {
-                DisplayFrame(durationSec - i, 1000);
+                DisplayFrame(durationSec - i, 1000,(i-1)/10);
             }
             else //Count up timer
             {
-                DisplayFrame(i, 1000);
+                DisplayFrame(i, 1000, (i-1)/10);
             }
             
             //3-line version:
@@ -224,11 +224,23 @@ class Activity
     }
 
     //Display a single animation frame, accepts objects so that numbers are handled too
-    private void DisplayFrame(object frameObj, int msecPerFrame)
+    private void DisplayFrame(object frameObj, int msecPerFrame, int lastFrameLength = 1)
     {
-        Console.Write("\b \b"); //Backspace to clear
+        if(lastFrameLength == 1) //Normal display length 
+        {
+            Console.Write("\b \b"); //Backspace to clear
+        }
+        else //Different length
+        {
+            Console.Write("\b");
+            //Backspace for each additional length
+            for(int i = 0; i < lastFrameLength; i++)
+            {
+                Console.Write(" \b");
+            }
+        }
         Console.Write(frameObj); //Write this frame
-        Thread.Sleep(msecPerFrame); //Make the tread sleep
+        Thread.Sleep(msecPerFrame); //Make the thread sleep
     }
     //Function overload for display frame for code completion to recognize
     /*private void DisplayFrame(string frameStr, int msecPerFrame)
