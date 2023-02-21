@@ -5,6 +5,8 @@
 /*Ehnacement list:
 1. Created a UI system that processes User input, hotkeys, and
 2. Gave the program the ability to force unique prompts, and keep track of when to reset the list
+3. Gave the Activities the ability to detect the final cycle
+Todo: 4. Gave the actvities the ability to display "Overtime" in the end sequence
 */
 
 using System;
@@ -12,7 +14,8 @@ using System;
 class Program
 {
     //Global Activity Class Setup
-    static BreathingActivity bAct = new BreathingActivity(
+    static BreathingActivity bAct = new BreathingActivity
+    (
         "Breathing Activity",
         "This activity will help you relax by walking your through breathing in and out slowly. Clear your mind and focus on your breathing.",
         new List<string>
@@ -22,7 +25,8 @@ class Program
         },
         1
     );
-    static ReflectionActivity rAct = new ReflectionActivity(
+    static ReflectionActivity rAct = new ReflectionActivity
+    (
         "Reflection Activity",
         "This activity will help you reflect on times in your life when you have shown strength and resilience. This will help you recognize the power you have and how you can use it in other aspects of your life.",
         new List<string>
@@ -46,7 +50,19 @@ class Program
             "How can you keep this experience in mind in the future?"
         }
     );
-    //ListingActivity lAct = new ListingActivity();
+    ListingActivity lAct = new ListingActivity
+    (
+        "Listing Activity",
+        "This activity will help you reflect on the good things in your life by having you list as many things as you can in a certain area.",
+        new List<string>{
+            "Who are people that you appreciate?",
+            "What are personal strengths of yours?",
+            "Who are people that you have helped this week?",
+            "When have you felt the Holy Ghost this month?",
+            "Who are some of your personal heroes?"
+        },
+        -1 //No Animation Loop
+    );
     
     //Global UI Class setup?
     //UiMenu UiMain = new UiMenu()

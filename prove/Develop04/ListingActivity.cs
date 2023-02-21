@@ -10,4 +10,11 @@ class ListingActivity : Activity
     {
         //ToList is handled by the base class constructor
     }
+
+    //Methods
+
+    public override void Loop(int durationMsec)
+    {
+        Console.Write("List as many responses as you can to the following prompt:");
+    }
 }
