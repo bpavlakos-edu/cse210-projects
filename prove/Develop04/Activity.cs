@@ -67,10 +67,11 @@ class Activity
     protected void Loop(int durationMsec)
     {
         Console.WriteLine("My extra message will start here.");
+        Console.WriteLine("");
         GetInput("Press enter to start");
         
         long[] tickTimes = GetTickStartEnd(durationMsec); //Store the start and end time
-        long curTime = tickTimes[0];
+        long curTime = tickTimes[0]; //Item 0 is the current time in ticks
         
         int delayDurationMsec = 2000;
         List<string> previousMessageList = new List<string>(); //Keep track of what messages were used
@@ -84,7 +85,7 @@ class Activity
             Console.Write("Random List Item: "+ nextItem+" ");
             
             Pause(delayDurationMsec,_pauseStyle); //Request a pause using this activity's pause type
-            curTime = (DateTime.Now).Ticks;
+            curTime = (DateTime.Now).Ticks; //Update the current time
         }
 
         //Extra end behavior code can go here
@@ -92,8 +93,9 @@ class Activity
 
     protected void End(int durationMsec)
     {
-        Console.WriteLine("Well done!");
-        TransitionLoad($"You have completed another {durationMsec / 1000} seconds of {_name}",true,false);
+        Console.WriteLine("");
+        TransitionLoad("Well done!",true,false,3000);
+        TransitionLoad($"You have completed another {durationMsec / 1000} seconds of {_name}.",true,false);
     }
 
     //Intro and outro helpers
@@ -113,7 +115,7 @@ class Activity
         TransitionLoad("Get ready...");
         return durationMsec;
     }
-    protected void TransitionLoad(string inMsg = "Get ready...", bool newLine = true, bool clearAllStart = true)
+    protected void TransitionLoad(string inMsg = "Get ready...", bool newLine = true, bool clearAllStart = true, int durationMsec=6000)
     {
         //Flag to clear console at start
         if(clearAllStart)
@@ -126,7 +128,7 @@ class Activity
             inMsg += Environment.NewLine;
         }
         Console.Write(inMsg);//Write the message
-        Pause(6000,0); //Get a spinner
+        Pause(durationMsec,0); //Get a spinner
         Console.Clear();//Clear the console at the end
     }
     //Pausing
