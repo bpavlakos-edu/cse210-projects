@@ -25,12 +25,14 @@ class BreathingActivity : Activity
 
         while(curTime < tickTimes[1])
         {
-            Console.Write(_messageList[0]+" "); //Breathe in
+            //Breathe in
+            Console.Write(_messageList[0]+" ");
             Pause(GapTime,_pauseStyle);
-            Console.Write(_messageList[1]+" "); //Breathe out
+            //Breathe out
+            Console.Write(_messageList[1]+" "); 
             Pause(GapTime,_pauseStyle);
-            Console.WriteLine("");
-            curTime = (DateTime.Now).Ticks;
+            Console.WriteLine(""); //Next step
+            curTime = (DateTime.Now).Ticks; //Update timer
         }
         
     }
