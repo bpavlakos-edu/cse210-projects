@@ -22,14 +22,13 @@ class BreathingActivity : Activity
 
         long[] tickTimes = GetTickStartEnd(durationMsec);
         long curTime = tickTimes[0]; //Get the start time
-
-        bool finalSet = false;
+        
         //Main sequence loop
         while(curTime < tickTimes[1])
         {
-            if(curTime + ((2 * durationMsec) * 10000) >= tickTimes[1]) //Check for final set
+            bool lastCycle = curTime + ((2 * durationMsec) * 10000) >= tickTimes[1];
+            if(lastCycle) //Check for final set
             {
-                finalSet = true;
                 Console.WriteLine("Final Set!");
             }
             //Breathe in
@@ -38,12 +37,13 @@ class BreathingActivity : Activity
             //Breathe out
             Console.Write(_messageList[1]+" "); 
             Pause(GapTime,_pauseStyle);
-            if(!finalSet) //Don't make a new line on the final set
+            if(!lastCycle) //Don't make a new line on the final set
             {
                 Console.WriteLine(""); //Next step
             }
             curTime = (DateTime.Now).Ticks; //Update timer
         }
-        
+
+        //Return overtime
     }
 }

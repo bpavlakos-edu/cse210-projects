@@ -45,25 +45,26 @@ class ReflectionActivity : Activity
         long[] tickTimes = GetTickStartEnd(durationMsec); //Get the start and end times
         long curTime = tickTimes[0]; //Initalize curTime to the start time
         
+        //Loop setup
         List<string> usedPrompts = new List<string>(); //List to store the used prompts
         int cyclePauseMsec = 10 * 1000; //each prompt should get a 10 second pause
-        bool lastCycle = false;
         while (curTime < tickTimes[1])
         {
-            if(curTime + (cyclePauseMsec * 10000) >= tickTimes[1])//Check if this is the last cycle
+            bool lastCycle = curTime + (cyclePauseMsec * 10000) >= tickTimes[1]; //Check if this is the last cycle
+            if(lastCycle)
             {
-                lastCycle = true;
-                Console.WriteLine("");
+                Console.WriteLine("Final Question:");
             }
             //Display the prompt
             string curPrompt = GetRandomMsg(_refQuestions, usedPrompts); //Get a random question
             Console.Write($"> {curPrompt} ");
             //Console.Write($"> {GetRandomMsg(_refQuestions, usedPrompts)} ");//Single Line version
             Pause(cyclePauseMsec, 0);//Spinner pause type
-            if(!lastCycle)
-            {
-                Console.WriteLine("");//Only print a line on every cycle except the last
-            }
+    
+            //Use the spinner animation to generate the new line instead
+            curTime = (DateTime.Now).Ticks; //Update the current time
         }
+
+        //Return overtime
     }
 }

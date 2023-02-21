@@ -154,7 +154,112 @@ class Activity
         Thread.Sleep(durationMsec); //Sleep
         animTask.Wait(); //Wait for the display function to end
     }
-    
+
+    //Pick an item from the list at random
+    protected string GetRandomMsg(List<string> selectionList)
+    {
+        if(selectionList.Count > 1)
+        {
+            return selectionList[new Random().Next(selectionList.Count())];
+        }
+        else if(selectionList.Count == 1)
+        {
+            return selectionList[0];
+        }
+        else //Empty list
+        {
+            return "";
+        }
+    }
+
+    //Overload to handle a second list input, which keeps track of which items have been used already
+    protected string GetRandomMsg(List<string> selectionList, List<string> removeList)
+    {
+        if(selectionList.Count > 0) //Accept lists with a item count greater than 0
+        {
+            List<string> selectionListCopy = selectionList.ToList<string>();//Copy the list so we don't modify the original
+            //Remove all instances of the remove list values
+            for (int i =0;i<removeList.Count;i++)
+            {
+                while(selectionListCopy.Contains(removeList[i]))
+                {
+                    selectionListCopy.Remove(removeList[i]);
+                }
+            }
+            string returnStr = "";
+            if(selectionListCopy.Count == 0) //Selection list has no items
+            {
+                Console.WriteLine("Resetting remove list!");
+                removeList = new List<string>(); //Reset the remove list (it's mutable so we can affect it from here)
+                returnStr = GetRandomMsg(selectionList); //Use the original list as the call instead 
+            }
+            else //We can choose a random item
+            {
+                returnStr = GetRandomMsg(selectionListCopy);//Call the function using
+            }
+            removeList.Add(returnStr); //Regardless of what happens, add the newly picked string to the removeList, which will change the original list because of mutability
+            return returnStr; //Return the return string
+        }
+        else //Return "" for 0 length strings
+        {
+            return "";
+        }
+    }
+
+    //Calcuations
+    //Pointlessly created a function to do this, in the hopes that the code that uses it would be one line, instead I just made a way to get a start and end duration from miliseconds
+    protected long[] GetTickStartEnd(int durationMsec)
+    {
+        //Ticks documentation: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.millisecond?source=recommendations&view=net-7.0
+        long curTime = (DateTime.Now).Ticks;
+        long endTime = curTime + (durationMsec * 10000); //There are 10000 ticks in a milisecond according to the docs: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-7.0
+        return new long[]{curTime, endTime};
+    }
+
+    //User input
+    //Get a generic input from the user
+    protected string GetInput(string inMsg)
+    {
+        Console.Write(inMsg);
+        return Console.ReadLine();
+    }
+    //Get a whole number from a user (supports minimum and maximum)
+    protected int GetIntInput(string inMsg, int min = 0, int max = 0)
+    {
+        while(true) //Repeat until a valid number is found
+        {
+            //Catch parsing errors
+            try 
+            {
+                int returnInt = int.Parse(GetInput(inMsg)); //Parse the user input
+                //Determine if the current integer is a valid number
+                if(min == max) //This means no minimum or maximum was set
+                {
+                    return returnInt;//Exit the while loop by returning the value
+                }
+                else if(returnInt <= max && returnInt >= min) //is the number between the minimum and maximum?
+                {
+                    return returnInt;//Exit the while loop by returning the value
+                }
+                else //Invalid number
+                {
+                    Console.WriteLine($"That's not a number between {min} and {max}, please try again!");
+                }
+            }
+            catch(FormatException) //Not a number
+            {
+                Console.WriteLine($"That's not a valid whole number, please try again!");
+            }
+            catch(ArgumentNullException) //Empty input
+            {
+                Console.WriteLine("Please enter a number to continue!");
+            }
+            catch(OverflowException) //Overflow
+            {
+                Console.WriteLine("That's not a number the program can process, please try again!");
+            }
+        }
+    }
 
     //Animation helpers
     protected async Task RequestAnimation(int durationMsec, int pauseType, int fps = 60)
@@ -251,109 +356,4 @@ class Activity
     {
         DisplayFrame(frameStr, msecPerFrame);
     }*/
-
-    //Pick an item from the list at random
-    protected string GetRandomMsg(List<string> selectionList)
-    {
-        if(selectionList.Count > 1)
-        {
-            return selectionList[new Random().Next(selectionList.Count())];
-        }
-        else if(selectionList.Count == 1)
-        {
-            return selectionList[0];
-        }
-        else //Empty list
-        {
-            return "";
-        }
-    }
-
-    //Overload to handle a second list input, which keeps track of which items have been used already
-    protected string GetRandomMsg(List<string> selectionList, List<string> removeList)
-    {
-        if(selectionList.Count > 0) //Accept lists with a item count greater than 0
-        {
-            List<string> selectionListCopy = selectionList.ToList<string>();//Copy the list so we don't modify the original
-            //Remove all instances of the remove list values
-            for (int i =0;i<removeList.Count;i++)
-            {
-                while(selectionListCopy.Contains(removeList[i]))
-                {
-                    selectionListCopy.Remove(removeList[i]);
-                }
-            }
-            string returnStr = "";
-            if(selectionListCopy.Count == 0) //Selection list has no items
-            {
-                removeList = new List<string>(); //Reset the remove list (it's mutable so we can affect it from here)
-                returnStr = GetRandomMsg(selectionList); //Use the original list as the call instead 
-            }
-            else //We can choose a random item
-            {
-                returnStr = GetRandomMsg(selectionListCopy);//Call the function using
-            }
-            removeList.Add(returnStr); //Regardless of what happens, add the newly picked string to the removeList, which will change the original list because of mutability
-            return returnStr; //Return the return string
-        }
-        else //Return "" for 0 length strings
-        {
-            return "";
-        }
-    }
-
-    //Calcuations
-    //Pointlessly created a function to do this, in the hopes that the code that uses it would be one line, instead I just made a way to get a start and end duration from miliseconds
-    protected long[] GetTickStartEnd(int durationMsec)
-    {
-        //Ticks documentation: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.millisecond?source=recommendations&view=net-7.0
-        long curTime = (DateTime.Now).Ticks;
-        long endTime = curTime + (durationMsec * 10000); //There are 10000 ticks in a milisecond according to the docs: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-7.0
-        return new long[]{curTime, endTime};
-    }
-
-    //User input
-    //Get a generic input from the user
-    protected string GetInput(string inMsg)
-    {
-        Console.Write(inMsg);
-        return Console.ReadLine();
-    }
-    //Get a whole number from a user (supports minimum and maximum)
-    protected int GetIntInput(string inMsg, int min = 0, int max = 0)
-    {
-        while(true) //Repeat until a valid number is found
-        {
-            //Catch parsing errors
-            try 
-            {
-                int returnInt = int.Parse(GetInput(inMsg)); //Parse the user input
-                //Determine if the current integer is a valid number
-                if(min == max) //This means no minimum or maximum was set
-                {
-                    return returnInt;//Exit the while loop by returning the value
-                }
-                else if(returnInt <= max && returnInt >= min) //is the number between the minimum and maximum?
-                {
-                    return returnInt;//Exit the while loop by returning the value
-                }
-                else //Invalid number
-                {
-                    Console.WriteLine($"That's not a number between {min} and {max}, please try again!");
-                }
-            }
-            catch(FormatException) //Not a number
-            {
-                Console.WriteLine($"That's not a valid whole number, please try again!");
-            }
-            catch(ArgumentNullException) //Empty input
-            {
-                Console.WriteLine("Please enter a number to continue!");
-            }
-            catch(OverflowException) //Overflow
-            {
-                Console.WriteLine("That's not a number the program can process, please try again!");
-            }
-        }
-    }
 }
