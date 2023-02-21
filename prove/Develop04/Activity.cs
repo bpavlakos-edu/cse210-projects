@@ -66,20 +66,27 @@ class Activity
 
     protected void Loop(int durationMsec)
     {
+        Console.WriteLine("My extra message will start here");
         GetInput("Press enter to start");
         long curTime = (DateTime.Now).Ticks;
         long endTime = curTime + (durationMsec * 10000); //There are 10000 ticks in a milisecond according to the docs: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-7.0
         
         int delayDurationMsec = 2000;
+        List<string> previousMessageList = new List<string>(); //Keep track of what messages were used
         while(curTime < endTime)
         {
-            Console.WriteLine("Test message");
+            Console.WriteLine("My test message");
+
+            //Pick the next item
+            string nextItem = GetRandomMsg(_messageList, previousMessageList); //Use the GetRandomMsg method that accepts a removal list as well
+            
+            Console.Write("Random List Item: "+ nextItem);
             
             Pause(delayDurationMsec,_pauseStyle); //Request a pause using this activity's pause type
             curTime = (DateTime.Now).Ticks;
         }
 
-        //Extra end code can go here
+        //Extra end behavior code can go here
     }
 
     protected void End(int durationMsec)
@@ -95,9 +102,11 @@ class Activity
         //Print Welcome
         Console.WriteLine($"Welcome to the {_name}.");
         Console.WriteLine("");
+        
         //Print Description
         Console.WriteLine(_description);
         Console.WriteLine("");
+        
         //Get the duration to return it at the end
         int durationMsec = GetIntInput("How long, in seconds, would you like for your session? ") * 1000; //Remember, thread.sleep is in msec, but datetime is in ticks
         TransitionLoad("Get ready...");
@@ -127,7 +136,7 @@ class Activity
         
         //How to initalize an async function: https://youtu.be/V2sMXJnDEjM?t=139
         //Intellisense helped me figure out the actual syntax for this:
-        Task animTask = new Task(new Action(async ()=>{await RequestAnimation(durationMsec, pauseType);})); //Start the async function
+        Task animTask = new Task(new Action(async ()=>{await RequestAnimation(durationMsec, pauseType);})); //Start the async function, using the task data type, action data type, and finally a lambda function to call the animation request function
         //Wait and start were located here
         animTask.Start();
         /*while(curTime < endTime)
@@ -136,7 +145,7 @@ class Activity
             curTime = (DateTime.Now).Ticks; //Update current time
         }*/
         Thread.Sleep(durationMsec);
-        animTask.Wait();
+        animTask.Wait(); //Wait for the display function to end
     }
     
 
@@ -241,25 +250,34 @@ class Activity
     //Overload to handle a second list input, which keeps track of which items have been used already
     public string GetRandomMsg(List<string> selectionList, List<string> removeList)
     {
-        List<string> selectionListCopy = selectionList.ToList<string>();//Copy the list so we don't modify the original
-        //Remove all instances of the remove list values
-        for (int i =0;i<removeList.Count;i++)
+        if(selectionList.Count > 0) //Accept lists with a item count greater than 0
         {
-            while(selectionListCopy.Contains(removeList[i]))
+            List<string> selectionListCopy = selectionList.ToList<string>();//Copy the list so we don't modify the original
+            //Remove all instances of the remove list values
+            for (int i =0;i<removeList.Count;i++)
             {
-                selectionListCopy.Remove(removeList[i]);
+                while(selectionListCopy.Contains(removeList[i]))
+                {
+                    selectionListCopy.Remove(removeList[i]);
+                }
             }
+            string returnStr = "";
+            if(selectionListCopy.Count == 0) //Selection list has no items
+            {
+                removeList = new List<string>(); //Reset the remove list (it's mutable so we can affect it from here)
+                returnStr = GetRandomMsg(selectionList); //Use the original list as the call instead 
+            }
+            else //We can choose a random item
+            {
+                returnStr = GetRandomMsg(selectionListCopy);//Call the function using
+            }
+            removeList.Add(returnStr); //Regardless of what happens, add the newly picked string to the removeList, which will change the original list because of mutability
+            return returnStr; //Return the return string
         }
-        if(selectionListCopy.Count == 0) //Selection list has no items
+        else //Return "" for 0 length strings
         {
-            removeList = new List<string>(); //Reset the remove list (it's mutable so we can affect it from here)
-            return GetRandomMsg(selectionList); //Use the original list as the call instead 
+            return "";
         }
-        else
-        {
-            return GetRandomMsg(selectionListCopy);//Call the function using
-        }
-        
     }
 
     //User input
