@@ -25,7 +25,7 @@ class Program
 
     static void TestActivity()
     {
-        Activity testActivity = new Activity("My Activity","My Activity Introduction",new List<string>{"A","B","C"},0);
+        Activity testActivity = new Activity("My Activity","Description goes here",new List<string>{"Item A","Item B","Item C"},1);
         testActivity.Run();
     }
 }

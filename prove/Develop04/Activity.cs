@@ -66,21 +66,22 @@ class Activity
 
     protected void Loop(int durationMsec)
     {
-        Console.WriteLine("My extra message will start here");
+        Console.WriteLine("My extra message will start here.");
         GetInput("Press enter to start");
-        long curTime = (DateTime.Now).Ticks;
-        long endTime = curTime + (durationMsec * 10000); //There are 10000 ticks in a milisecond according to the docs: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-7.0
+        
+        long[] tickTimes = GetTickStartEnd(durationMsec); //Store the start and end time
+        long curTime = tickTimes[0];
         
         int delayDurationMsec = 2000;
         List<string> previousMessageList = new List<string>(); //Keep track of what messages were used
-        while(curTime < endTime)
+        while(curTime < tickTimes[1])
         {
             Console.WriteLine("My test message");
 
             //Pick the next item
             string nextItem = GetRandomMsg(_messageList, previousMessageList); //Use the GetRandomMsg method that accepts a removal list as well
             
-            Console.Write("Random List Item: "+ nextItem);
+            Console.Write("Random List Item: "+ nextItem+" ");
             
             Pause(delayDurationMsec,_pauseStyle); //Request a pause using this activity's pause type
             curTime = (DateTime.Now).Ticks;
@@ -112,9 +113,10 @@ class Activity
         TransitionLoad("Get ready...");
         return durationMsec;
     }
-    protected void TransitionLoad(string inMsg = "Get ready...", bool newLine = true, bool clearAll = true)
+    protected void TransitionLoad(string inMsg = "Get ready...", bool newLine = true, bool clearAllStart = true)
     {
-        if(clearAll)
+        //Flag to clear console at start
+        if(clearAllStart)
         {
             Console.Clear();//Clear the console first
         }
@@ -125,26 +127,17 @@ class Activity
         }
         Console.Write(inMsg);//Write the message
         Pause(6000,0); //Get a spinner
-        Console.Clear();//Clear the console again
+        Console.Clear();//Clear the console at the end
     }
     //Pausing
     protected void Pause(int durationMsec, int pauseType)
     {
-        //Ticks documentation: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.millisecond?source=recommendations&view=net-7.0
-        long curTime = (DateTime.Now).Ticks;
-        long endTime = curTime + (durationMsec * 10000); //There are 10000 ticks in a milisecond according to the docs: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-7.0
-        
         //How to initalize an async function: https://youtu.be/V2sMXJnDEjM?t=139
         //Intellisense helped me figure out the actual syntax for this:
         Task animTask = new Task(new Action(async ()=>{await RequestAnimation(durationMsec, pauseType);})); //Start the async function, using the task data type, action data type, and finally a lambda function to call the animation request function
-        //Wait and start were located here
+        //Wait and start were located here: https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/task-based-asynchronous-programming#creating-and-running-tasks-explicitly
         animTask.Start();
-        /*while(curTime < endTime)
-        {
-            //Run animation?
-            curTime = (DateTime.Now).Ticks; //Update current time
-        }*/
-        Thread.Sleep(durationMsec);
+        Thread.Sleep(durationMsec); //Sleep
         animTask.Wait(); //Wait for the display function to end
     }
     
@@ -188,7 +181,8 @@ class Activity
         {
             DisplayFrame(frameChars[curFrame % frameLen], msecPerFrame); //Increment current frame, and ensure it doesn't exceed the animation length
         }
-        Console.WriteLine();
+        Console.Write("\b \b");//Erase the final frame
+        Console.WriteLine("");
     }
     //Countdown timer or just a regular timer
     private void ActivateAnimTimer(int durationSec, bool countdownFlag = true)
@@ -210,6 +204,8 @@ class Activity
             //int iValue = (boolInt * durationSec) + (i * (1 - (2 * boolInt))); //Deactivate durationSec when false, flip i negative when true
             //DisplayFrame(iValue, 1000); //Display the result
         }
+        Console.Write("\b \b");//Erase the final frame
+        Console.WriteLine("");
     }
     //Function overload for using MSEC instead of seconds
     private void ActivateAnimTimerMsec(int durationMsec, bool countdownFlag = true)
@@ -280,6 +276,16 @@ class Activity
         }
     }
 
+    //Calcuations
+    //Pointlessly created a function to do this, in the hopes that the code that uses it would be one line, instead I just made a way to get a start and end duration from miliseconds
+    public long[] GetTickStartEnd(int durationMsec)
+    {
+        //Ticks documentation: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.millisecond?source=recommendations&view=net-7.0
+        long curTime = (DateTime.Now).Ticks;
+        long endTime = curTime + (durationMsec * 10000); //There are 10000 ticks in a milisecond according to the docs: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-7.0
+        return new long[]{curTime, endTime};
+    }
+
     //User input
     //Get a generic input from the user
     public string GetInput(string inMsg)
@@ -287,7 +293,7 @@ class Activity
         Console.Write(inMsg);
         return Console.ReadLine();
     }
-    //Get a number from a user
+    //Get a whole number from a user (supports minimum and maximum)
     public int GetIntInput(string inMsg, int min = 0, int max = 0)
     {
         while(true) //Repeat until a valid number is found
@@ -324,7 +330,4 @@ class Activity
             }
         }
     }
-
-    
-
 }
