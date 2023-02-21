@@ -119,14 +119,14 @@ class Activity
     
 
     //Animation helpers
-    protected async Task RequestAnimation(int pauseType, int durationMsec, int fps = 60)
+    protected async Task RequestAnimation(int durationMsec, int pauseType, int fps = 60)
     {
         //Switch case in C#: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/selection-statements#the-switch-statement
         switch (pauseType)
         {
             case 0:
                 //Spinner
-                ActivateLoopAnim(new List<object>{"-","\\","|","/"}, 250, durationMsec);
+                ActivateLoopAnim(durationMsec, new List<object>{"-","\\","|","/"}, 250);
                 break;
             case 1:
                 //Count down timer
@@ -143,7 +143,7 @@ class Activity
     }
 
     //Activate a loop animation
-    private void ActivateLoopAnim(List<object> frameChars, int msecPerFrame, int durationMsec)
+    private void ActivateLoopAnim(int durationMsec, List<object> frameChars, int msecPerFrame)
     //Async Documentation: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/async
     //Documentation for generic lists (list<object>): https://learn.microsoft.com/en-us/dotnet/api/system.collections.arraylist?view=net-7.0#remarks
     {
