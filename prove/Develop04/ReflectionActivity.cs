@@ -24,4 +24,9 @@ class ReflectionActivity : Activity
         _refQuestions = refQuestions.ToList<string>(); //Use toList to erase the reference to the original list
     }
 
+    public override void Loop(int durationMsec)
+    {
+        
+    }
+
 }

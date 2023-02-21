@@ -64,9 +64,13 @@ class Activity
     //Methods
 
     //Main Functionality Flow (Run and loop are Placeholders/templates for subclass overrides)
-    public void Run()
+    public void Run(bool skipReady = false)
     {
         int durationMsec = ShowIntro();
+        if(!skipReady) //Added a flag for the breathing activity to use
+        {
+            TransitionLoad("Get ready...");
+        }
         Loop(durationMsec);
         End(durationMsec);
     }
@@ -74,7 +78,6 @@ class Activity
     //Override documentation found here: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/override#example
     public virtual void Loop(int durationMsec)
     {
-        TransitionLoad("Get ready...");
         Console.WriteLine("My extra message will start here.");
         Console.WriteLine("");
         GetInput("Press enter to start");

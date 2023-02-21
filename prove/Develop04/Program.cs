@@ -6,7 +6,28 @@ using System;
 class Program
 {
     static BreathingActivity bAct = new BreathingActivity("Breathing Activity","This activity will help you relax by walking your through breathing in and out slowly. Clear your mind and focus on your breathing.",new List<string>{"Breathe in...","Breathe out..."},1);
-    //ReflectionActivity rAct = new ReflectionActivity();
+    static ReflectionActivity rAct = new ReflectionActivity(
+        "Reflection Activity",
+        "This activity will help you reflect on times in your life when you have shown strength and resilience. This will help you recognize the power you have and how you can use it in other aspects of your life.",
+        new List<string>{
+            "Think of a time when you stood up for someone else.",
+            "Think of a time when you did something really difficult.",
+            "Think of a time when you helped someone in need.",
+            "Think of a time when you did something truly selfless."
+        }, 
+        0, 
+        new List<string>{
+            "Why was this experience meaningful to you?",
+            "Have you ever done anything like this before?",
+            "How did you get started?",
+            "How did you feel when it was complete?",
+            "What made this time different than other times when you were not as successful?",
+            "What is your favorite thing about this experience?",
+            "What could you learn from this experience that applies to other situations?",
+            "What did you learn about yourself through this experience?",
+            "How can you keep this experience in mind in the future?"
+        }
+    );
     //ListingActivity lAct = new ListingActivity();
     static void Main(string[] args)
     {
@@ -16,8 +37,8 @@ class Program
     {
         //Ui setup
         List<Action> UiActions = new List<Action>(); //Create a list of lambda function calls
-        UiActions.Add(new Action(()=>{bAct.Run();}));//Breathing activity
-        UiActions.Add(new Action(()=>{}));//Reflection activity
+        UiActions.Add(new Action(()=>{bAct.Run(true);}));//Breathing activity
+        UiActions.Add(new Action(()=>{rAct.Run();}));//Reflection activity
         UiActions.Add(new Action(()=>{}));//Listing Activity Start
         //Additional functionality
         UiActions.Add(new Action(()=>{throw new OperationCanceledException();})); //Quit
