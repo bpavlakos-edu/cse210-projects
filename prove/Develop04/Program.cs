@@ -37,8 +37,7 @@ class Program
                 {
                     Console.WriteLine($"{i+1}. {optionName[i]}");
                 }
-                Console.WriteLine("");
-                string userInput = GetInput("Select a choice or hotkey from the menu: ").ToLower();
+                string userInput = GetInput("Select a choice or [hotkey] from the menu: ").ToLower();
                 try
                 {
                     try
