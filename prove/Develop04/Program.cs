@@ -5,19 +5,18 @@ using System;
 
 class Program
 {
-    //BreathingActivity bAct = new BreathingActivity();
+    static BreathingActivity bAct = new BreathingActivity("Breathing Activity","This activity will help you relax by walking your through breathing in and out slowly. Clear your mind and focus on your breathing.",new List<string>{"Breathe in...","Breathe out..."},1);
     //ReflectionActivity rAct = new ReflectionActivity();
     //ListingActivity lAct = new ListingActivity();
     static void Main(string[] args)
     {
-        //TestActivity();
         UiLoop();
     }
     static void UiLoop()
     {
         //Ui setup
         List<Action> UiActions = new List<Action>(); //Create a list of lambda function calls
-        UiActions.Add(new Action(()=>{TestActivity();}));//Breathing activity
+        UiActions.Add(new Action(()=>{bAct.Run();}));//Breathing activity
         UiActions.Add(new Action(()=>{}));//Reflection activity
         UiActions.Add(new Action(()=>{}));//Listing Activity Start
         //Additional functionality
