@@ -19,7 +19,7 @@ class Program
         List<Action> UiActions = new List<Action>(); //Create a list of lambda function calls
         UiActions.Add(new Action(()=>{}));//Breathing activity
         UiActions.Add(new Action(()=>{}));//Reflection activity
-        UiActions.Add(new Action(()=>{})); //
+        UiActions.Add(new Action(()=>{}));//Listing Activity Start
         //Additional functionality
         UiActions.Add(new Action(()=>{throw new OperationCanceledException();})); //Quit
         List<String> optionName = new List<string>{"[B]reathing Activity","[R]eflection Activity","[L]isting Activity","Quit"};
@@ -30,13 +30,18 @@ class Program
         {
             while(true)
             {
+                //Display the options
 
                 string userInput = GetInput("Please select an option.");
                 try
                 {
                     try
                     {
-                        int electionIdx = int.Parse(userInput);
+                        int electionIdx = int.Parse(userInput) + 1; //Get the action index
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        throw new ArgumentNullException();
                     }
                     catch (OverflowException)
                     {
@@ -50,7 +55,7 @@ class Program
                 }
                 catch(ArgumentNullException)
                 {
-
+                    //Text
                 }
             }
         } 
