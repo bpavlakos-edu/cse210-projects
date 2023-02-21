@@ -32,11 +32,9 @@ class BreathingActivity : Activity
                 Console.WriteLine("Final Set!");
             }
             //Breathe in
-            Console.Write(_messageList[0]+" ");
-            Pause(GapTime,_pauseStyle);
+            PauseMsg(_messageList[0]+" ",GapTime,_pauseStyle);
             //Breathe out
-            Console.Write(_messageList[1]+" "); 
-            Pause(GapTime,_pauseStyle);
+            PauseMsg(_messageList[1]+" ",GapTime,_pauseStyle);
             if(!lastCycle) //Don't make a new line on the final set
             {
                 Console.WriteLine(""); //Next step

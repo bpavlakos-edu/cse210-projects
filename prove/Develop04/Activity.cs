@@ -139,8 +139,7 @@ class Activity
         {
             inMsg += Environment.NewLine;
         }
-        Console.Write(inMsg);//Write the message
-        Pause(durationMsec,0); //Get a spinner
+        PauseMsg(inMsg,durationMsec,0);//Write the message //Get a spinner
         Console.Clear();//Clear the console at the end
     }
     //Pausing
@@ -153,6 +152,13 @@ class Activity
         animTask.Start();
         Thread.Sleep(durationMsec); //Sleep
         animTask.Wait(); //Wait for the display function to end
+    }
+
+    //Combining Pause with a console write
+    protected void PauseMsg(string inMsg, int durationMsec, int pauseType)
+    {
+        Console.Write(inMsg);
+        Pause(durationMsec, pauseType);
     }
 
     //Pick an item from the list at random

@@ -38,8 +38,7 @@ class ReflectionActivity : Activity
 
         //Prepare for main loop
         Console.WriteLine("Now ponder on each of the following questions as they are related to this experience.");
-        Console.Write("You may begin in: ");
-        Pause(5000,1); //Countdown timer
+        PauseMsg("You may begin in: ",5000,1); //Countdown timer
         Console.Clear(); //Clear the console
 
         long[] tickTimes = GetTickStartEnd(durationMsec); //Get the start and end times
@@ -57,9 +56,8 @@ class ReflectionActivity : Activity
             }
             //Display the prompt
             string curPrompt = GetRandomMsg(_refQuestions, usedPrompts); //Get a random question
-            Console.Write($"> {curPrompt} ");
-            //Console.Write($"> {GetRandomMsg(_refQuestions, usedPrompts)} ");//Single Line version
-            Pause(cyclePauseMsec, 0);//Spinner pause type
+            //PauseMsg($"> {GetRandomMsg(_refQuestions, usedPrompts)} ",cyclePauseMsec, 0);//Single Line version
+            PauseMsg($"> {curPrompt} ", cyclePauseMsec, 0); //Spinner pause type
     
             //Use the spinner animation to generate the new line instead
             curTime = (DateTime.Now).Ticks; //Update the current time
