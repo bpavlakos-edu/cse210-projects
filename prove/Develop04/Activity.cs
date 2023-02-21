@@ -264,6 +264,8 @@ class Activity
     //Animation helpers
     protected async Task RequestAnimation(int durationMsec, int pauseType, int fps = 60)
     {
+        //There is an error here, saying that because I'm not using "await" this is not asyncronous, but I am calling it using an await from a task action
+        //Using Await on this method's call would require adding "async" to the Pause() method, which is not practical
         //Console.WriteLine($"Requesting animation type {pauseType}");
         //Switch case in C#: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/selection-statements#the-switch-statement
         switch (pauseType)

@@ -9,7 +9,7 @@ class BreathingActivity : Activity
     //Fill all parameters
     public BreathingActivity(string name, string description, List<string> messageList, int pauseStyle) : base(name, description, messageList, pauseStyle)
     {
-
+        //ToList is handled by the base class constructor
     }
     //Main functionality Loop (attempting to override the original)
     //Override documentation found here: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/override#example
