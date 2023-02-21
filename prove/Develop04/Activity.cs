@@ -64,17 +64,17 @@ class Activity
         End();
     }
 
-    public void Loop(int durationMsec)
+    protected void Loop(int durationMsec)
     {
 
     }
 
-    public void End()
+    protected void End()
     {
 
     }
     //Intro and outro helpers
-    public int ShowIntro()
+    protected int ShowIntro()
     {
         //Messages are matching the syntax as shown in the example here: https://byui-cse.github.io/cse210-course-2023/unit04/develop.html
         //Print Welcome
@@ -88,7 +88,7 @@ class Activity
         TransitionLoad("Get ready...");
         return durationMsec;
     }
-    public void TransitionLoad(string inMsg = "Get ready...", bool newLine = true)
+    protected void TransitionLoad(string inMsg = "Get ready...", bool newLine = true)
     {
         Console.Clear();//Clear the console first
         //Newline Flag
@@ -100,8 +100,8 @@ class Activity
         Pause(6000,0); //Get a spinner
         Console.Clear();//Clear the console again
     }
-    //Pausing and animations
-    public void Pause(int durationMsec, int pauseType)
+    //Pausing
+    protected void Pause(int durationMsec, int pauseType)
     {
         //Ticks documentation: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.millisecond?source=recommendations&view=net-7.0
         long curTime = (DateTime.Now).Ticks;
@@ -109,47 +109,58 @@ class Activity
         
         //Task animTask = DisplayAnimation(pauseType); //Start the async function
         RequestAnimation(pauseType, durationMsec); //Start the async function
+
         while(curTime < endTime)
         {
             //Run animation?
-            curTime = (DateTime.Now).Ticks;
+            curTime = (DateTime.Now).Ticks; //Update current time
         }
     }
     
-    private void RequestAnimation(int pauseType, int durationMsec, int fps = 60)
+
+    //Animation helpers
+    protected async Task RequestAnimation(int pauseType, int durationMsec, int fps = 60)
     {
         //Switch case in C#: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/selection-statements#the-switch-statement
         switch (pauseType)
         {
             case 0:
                 //Spinner
-                ActivateLoopAnim(new List<object>{"-","\\","|","/"},250);
+                ActivateLoopAnim(new List<object>{"-","\\","|","/"}, 250, durationMsec);
                 break;
             case 1:
                 //Count down timer
                 ActivateAnimTimerMsec(durationMsec);
                 break;
+            case 2:
+                //Count up timer
+                ActivateAnimTimerMsec(durationMsec, false);
+                break;
             default:
-                //No display
+                //No display (such as -1 which means the loop handles the request)
                 break;
         }
     }
 
+    //Activate a loop animation
+    private void ActivateLoopAnim(List<object> frameChars, int msecPerFrame, int durationMsec)
     //Async Documentation: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/async
-    private void ActivateLoopAnim(List<object> frameChars, int msecPerFrame = 1000)
+    //Documentation for generic lists (list<object>): https://learn.microsoft.com/en-us/dotnet/api/system.collections.arraylist?view=net-7.0#remarks
     {
-        int frame = 0;
         int frameLen = frameChars.Count;
+        int maxFrame = (durationMsec / msecPerFrame); //Automatically calculate the maximum frame
+
         //Console.Write(frameChars[0]);//Add an extra space to overrwrite
         Console.Write(" ");//Add an extra space to overrwrite by a frame
-        while(true)
+        for(int curFrame= 0; curFrame <= maxFrame; curFrame++)
         {
-            DisplayFrame(frameChars[frame % frameLen], msecPerFrame);
-            frame++; //Increment current frame
+            DisplayFrame(frameChars[curFrame % frameLen], msecPerFrame); //Increment current frame, and ensure it doesn't exceed the animation length
         }
     }
+    //Countdown timer or just a regular timer
     private void ActivateAnimTimer(int durationSec, bool countdownFlag = true)
     {
+        Console.Write(" ");//Add an extra space to overrwrite by a frame
         for(int i = 0; i < durationSec; i++)
         {
             if(countdownFlag) //Countdown
@@ -167,17 +178,23 @@ class Activity
             //DisplayFrame(iValue, 1000); //Display the result
         }
     }
+    //Function overload for using MSEC instead of seconds
     private void ActivateAnimTimerMsec(int durationMsec, bool countdownFlag = true)
     {
         ActivateAnimTimer(durationMsec / 1000, countdownFlag);
     }
-    
 
-    private void DisplayFrame(object frameStr, int msecPerFrame)
+    //Display a single animation frame, accepts objects so that numbers are handled too
+    private void DisplayFrame(object frameObj, int msecPerFrame)
     {
         Console.Write("\b \b"); //Backspace to clear
-        Console.Write(frameStr); //
-        Thread.Sleep(msecPerFrame);
+        Console.Write(frameObj); //Write this frame
+        Thread.Sleep(msecPerFrame); //Make the tread sleep
+    }
+    //Function overload for 
+    private void DisplayFrame(string frameStr, int msecPerFrame)
+    {
+        DisplayFrame(frameStr, msecPerFrame);
     }
 
     //User input
