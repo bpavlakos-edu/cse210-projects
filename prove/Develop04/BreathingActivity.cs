@@ -17,7 +17,7 @@ class BreathingActivity : Activity
     //And also noticing that I had the wrong function name!!!
     public override void Loop(int durationMsec)
     {
-        Console.WriteLine("Alternate Function Activated");
-        Pause(1000,0);
+        int GapTime = GetIntInput("Enter how long you you will hold a breath (in seconds): ",0,10)*1000;
+        TransitionLoad("Get ready...");
     }
 }

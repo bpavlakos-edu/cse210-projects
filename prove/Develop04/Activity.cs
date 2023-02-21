@@ -74,6 +74,7 @@ class Activity
     //Override documentation found here: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/override#example
     public virtual void Loop(int durationMsec)
     {
+        TransitionLoad("Get ready...");
         Console.WriteLine("My extra message will start here.");
         Console.WriteLine("");
         GetInput("Press enter to start");
@@ -120,7 +121,6 @@ class Activity
         
         //Get the duration to return it at the end
         int durationMsec = GetIntInput("How long, in seconds, would you like for your session? ") * 1000; //Remember, thread.sleep is in msec, but datetime is in ticks
-        TransitionLoad("Get ready...");
         return durationMsec;
     }
     protected void TransitionLoad(string inMsg = "Get ready...", bool newLine = true, bool clearAllStart = true, int durationMsec=4000)
