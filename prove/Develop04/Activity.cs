@@ -85,7 +85,7 @@ class Activity
     protected void End(int durationMsec)
     {
         Console.WriteLine("Well done!");
-        TransitionLoad($"You have completed another {durationMsec / 1000} seconds of {_name}");
+        TransitionLoad($"You have completed another {durationMsec / 1000} seconds of {_name}",true,false);
     }
 
     //Intro and outro helpers
@@ -103,9 +103,12 @@ class Activity
         TransitionLoad("Get ready...");
         return durationMsec;
     }
-    protected void TransitionLoad(string inMsg = "Get ready...", bool newLine = true)
+    protected void TransitionLoad(string inMsg = "Get ready...", bool newLine = true, bool clearAll = true)
     {
-        Console.Clear();//Clear the console first
+        if(clearAll)
+        {
+            Console.Clear();//Clear the console first
+        }
         //Newline Flag
         if(newLine)
         {
@@ -122,7 +125,8 @@ class Activity
         long curTime = (DateTime.Now).Ticks;
         long endTime = curTime + (durationMsec * 10000); //There are 10000 ticks in a milisecond according to the docs: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-7.0
         
-        //Intellisense helped me figure out the syntax for this:
+        //How to initalize an async function: https://youtu.be/V2sMXJnDEjM?t=139
+        //Intellisense helped me figure out the actual syntax for this:
         Task animTask = new Task(new Action(async ()=>{await RequestAnimation(durationMsec, pauseType);})); //Start the async function
         //Wait and start were located here
         animTask.Start();
@@ -132,13 +136,14 @@ class Activity
             curTime = (DateTime.Now).Ticks; //Update current time
         }*/
         Thread.Sleep(durationMsec);
+        animTask.Wait();
     }
     
 
     //Animation helpers
     protected async Task RequestAnimation(int durationMsec, int pauseType, int fps = 60)
     {
-        Console.WriteLine($"Requesting animation type{pauseType}");
+        //Console.WriteLine($"Requesting animation type {pauseType}");
         //Switch case in C#: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/selection-statements#the-switch-statement
         switch (pauseType)
         {
@@ -174,6 +179,7 @@ class Activity
         {
             DisplayFrame(frameChars[curFrame % frameLen], msecPerFrame); //Increment current frame, and ensure it doesn't exceed the animation length
         }
+        Console.WriteLine();
     }
     //Countdown timer or just a regular timer
     private void ActivateAnimTimer(int durationSec, bool countdownFlag = true)
