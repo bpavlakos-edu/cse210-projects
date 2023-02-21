@@ -61,18 +61,33 @@ class Activity
     {
         int durationMsec = ShowIntro();
         Loop(durationMsec);
-        End();
+        End(durationMsec);
     }
 
     protected void Loop(int durationMsec)
     {
+        GetInput("Press enter to start");
+        long curTime = (DateTime.Now).Ticks;
+        long endTime = curTime + (durationMsec * 10000); //There are 10000 ticks in a milisecond according to the docs: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-7.0
+        
+        int delayDurationMsec = 2000;
+        while(curTime < endTime)
+        {
+            Console.WriteLine("Test message");
+            
+            Pause(delayDurationMsec,_pauseStyle); //Request a pause using this activity's pause type
+            curTime += 10000 * delayDurationMsec;
+        }
 
+        //Extra end code can go here
     }
 
-    protected void End()
+    protected void End(int durationMsec)
     {
-
+        Console.WriteLine("Well done!");
+        TransitionLoad($"You have completed another {durationMsec / 1000} seconds of {_name}");
     }
+
     //Intro and outro helpers
     protected int ShowIntro()
     {
@@ -111,12 +126,14 @@ class Activity
         Task animTask = new Task(new Action(async ()=>{await RequestAnimation(pauseType, durationMsec);})); //Start the async function
         //Wait and start were located here
         animTask.Start();
-        while(curTime < endTime)
+        /*while(curTime < endTime)
         {
             //Run animation?
             curTime = (DateTime.Now).Ticks; //Update current time
-        }
+        }*/
+        Thread.SpinWait(durationMsec);
         animTask.Wait();
+        
     }
     
 
@@ -197,6 +214,47 @@ class Activity
     private void DisplayFrame(string frameStr, int msecPerFrame)
     {
         DisplayFrame(frameStr, msecPerFrame);
+    }
+
+    //Pick an item from the list at random
+    public string GetRandomMsg(List<string> selectionList)
+    {
+        if(selectionList.Count > 1)
+        {
+            return selectionList[new Random().Next(selectionList.Count())];
+        }
+        else if(selectionList.Count == 1)
+        {
+            return selectionList[0];
+        }
+        else //Empty list
+        {
+            return "";
+        }
+    }
+
+    //Overload to handle a second list input, which keeps track of which items have been used already
+    public string GetRandomMsg(List<string> selectionList, List<string> removeList)
+    {
+        List<string> selectionListCopy = selectionList.ToList<string>();//Copy the list so we don't modify the original
+        //Remove all instances of the remove list values
+        for (int i =0;i<removeList.Count;i++)
+        {
+            while(selectionListCopy.Contains(removeList[i]))
+            {
+                selectionListCopy.Remove(removeList[i]);
+            }
+        }
+        if(selectionListCopy.Count == 0) //Selection list has no items
+        {
+            removeList = new List<string>(); //Reset the remove list (it's mutable so we can affect it from here)
+            return GetRandomMsg(selectionList); //Use the original list as the call instead 
+        }
+        else
+        {
+            return GetRandomMsg(selectionListCopy);//Call the function using
+        }
+        
     }
 
     //User input

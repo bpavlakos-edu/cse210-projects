@@ -11,7 +11,7 @@ class Program
     static void Main(string[] args)
     {
         TestActivity();
-        //UiLoop();    
+        //UiLoop();
     }
     static void UiLoop()
     {
@@ -25,7 +25,7 @@ class Program
 
     static void TestActivity()
     {
-        Activity testActivity = new Activity("My Activity","MyActivity",new List<string>{"A","B"},1);
+        Activity testActivity = new Activity("My Activity","My Activity Introduction",new List<string>{"A","B","C"},0);
         testActivity.Run();
     }
 }
