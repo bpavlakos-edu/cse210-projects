@@ -280,20 +280,22 @@ class Activity
         //Switch case in C#: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/selection-statements#the-switch-statement
         switch (pauseType)
         {
+            //Found the syntax for task factory on this stack overflow post: https://stackoverflow.com/a/12144426 (Main post: https://stackoverflow.com/questions/12144077/async-await-when-to-return-a-task-vs-void)
             case 0:
                 //Spinner
-                ActivateLoopAnim(durationMsec, new List<string>{"-","\\","|","/"}, 250);
+                await Task.Factory.StartNew(() => {ActivateLoopAnim(durationMsec, new List<string>{"-","\\","|","/"}, 250);});
                 break;
             case 1:
                 //Count down timer
-                ActivateAnimTimerMsec(durationMsec);
+                await Task.Factory.StartNew(() => {ActivateAnimTimerMsec(durationMsec);});
                 break;
             case 2:
                 //Count up timer
-                ActivateAnimTimerMsec(durationMsec, false);
+                await Task.Factory.StartNew(() => {ActivateAnimTimerMsec(durationMsec, false);});
                 break;
             default:
                 //No display (such as -1 which means the loop handles the request)
+                await Task.Factory.StartNew(() => {}); //Do nothing
                 break;
         }
     }
