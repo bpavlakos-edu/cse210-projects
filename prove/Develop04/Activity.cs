@@ -173,6 +173,7 @@ class Activity
     {
         Console.Write(inMsg);
         Pause(durationMsec, pauseType);
+        //Console.WriteLine("");
     }
 
     //Pick an item from the list at random
@@ -319,13 +320,12 @@ class Activity
         int maxFrame = (durationMsec / msecPerFrame); //Automatically calculate the maximum frame
 
         //Console.Write(frameChars[0]);//Add an extra space to overrwrite
-        Console.Write(" ");//Add an extra space to overrwrite by a frame
         for(int curFrame= 0; curFrame <= maxFrame; curFrame++)
         {
+            Console.Write(" ");//Add an extra space to overrwrite by a frame
             DisplayFrame(frameChars[curFrame % frameLen], msecPerFrame); //Increment current frame, and ensure it doesn't exceed the animation length
+            Console.Write("\b \b");//Erase the final frame
         }
-        Console.Write("\b \b");//Erase the final frame
-        Console.WriteLine("");
     }
     //Countdown timer or just a regular timer
     private void ActivateAnimTimer(int durationSec, bool countdownFlag = true)
@@ -333,6 +333,7 @@ class Activity
         Console.Write(" ");//Add an extra space to overrwrite by a frame
         for(int i = 0; i < durationSec; i++)
         {
+            Console.Write(" ");//Add an extra space to overrwrite by a frame
             if(countdownFlag) //Countdown
             {
                 DisplayFrame(durationSec - i, 1000,(i-1)/10);
@@ -341,6 +342,7 @@ class Activity
             {
                 DisplayFrame(i, 1000, (i-1)/10);
             }
+            Console.Write("\b \b");//Erase the final frame
             
             //3-line version:
             //int boolInt = BitConverter.ToInt32(BitConverter.GetBytes(countdownFlag)); //Convert the boolean to an integer //From: https://learn.microsoft.com/en-us/dotnet/api/system.boolean?view=net-7.0#work-with-booleans-as-binary-values

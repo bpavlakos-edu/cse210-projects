@@ -49,7 +49,7 @@ class ReflectionActivity : Activity
         int cyclePauseMsec = 10 * 1000; //each prompt should get a 10 second pause
         while (curTime < tickTimes[1])
         {
-            bool lastCycle = curTime + (cyclePauseMsec * 10000) >= tickTimes[1]; //Check if this is the last cycle
+            bool lastCycle = (curTime + (cyclePauseMsec * 10000) >= tickTimes[1]); //Check if this is the last cycle
             if(lastCycle)
             {
                 Console.WriteLine("Final Question:");

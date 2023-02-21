@@ -26,7 +26,7 @@ class BreathingActivity : Activity
         //Main sequence loop
         while(curTime < tickTimes[1])
         {
-            bool lastCycle = curTime + ((2 * durationMsec) * 10000) >= tickTimes[1];
+            bool lastCycle = (curTime + ((2 * durationMsec) * 10000) >= tickTimes[1]);
             if(lastCycle) //Check for final set
             {
                 Console.WriteLine("Final Set!");
@@ -37,7 +37,7 @@ class BreathingActivity : Activity
             PauseMsg(_messageList[1]+" ",GapTime,_pauseStyle);
             if(!lastCycle) //Don't make a new line on the final set
             {
-                Console.WriteLine(""); //Next step
+                //Console.WriteLine(""); //Next step
             }
             curTime = (DateTime.Now).Ticks; //Update timer
         }
