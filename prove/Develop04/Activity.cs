@@ -160,11 +160,13 @@ class Activity
         //var test = new Thread(RequestAnimation(durationMsec, pauseType)); //Threading example: https://learn.microsoft.com/en-us/dotnet/standard/threading/pausing-and-resuming-threads
         //Wait and start were located here: https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/task-based-asynchronous-programming#creating-and-running-tasks-explicitly
         animTask.Start(); //Start the animation task
+        tokenSource.CancelAfter(durationMsec); //Request cancellation after the duration in msec
         Thread.Sleep(durationMsec); //Sleep
-        if(animTask.Status != TaskStatus.RanToCompletion)
+        
+        /*if(animTask.Status != TaskStatus.RanToCompletion)
         {
             tokenSource.Cancel();
-        }
+        }*/
         //animTask.Wait(); //Wait for the display function to end
     }
 

@@ -17,7 +17,7 @@ class BreathingActivity : Activity
     //And also noticing that I had the wrong function name!!!
     public override void Loop(int durationMsec)
     {
-        int GapTime = GetIntInput("Enter how long you you will hold a breath (in seconds): ",1,9) * 1000; //Custom input for breathing length
+        int cycleTime = GetIntInput("Enter how long you you will hold a breath (in seconds): ",1,9) * 1000; //Custom input for breathing length
         TransitionLoad("Get ready...");
 
         long[] tickTimes = GetTickStartEnd(durationMsec);
@@ -26,15 +26,15 @@ class BreathingActivity : Activity
         //Main sequence loop
         while(curTime < tickTimes[1])
         {
-            bool lastCycle = (curTime + ((2 * durationMsec) * 10000) >= tickTimes[1]);
+            bool lastCycle = (curTime + ((2 * cycleTime) * 10000) >= tickTimes[1]);
             if(lastCycle) //Check for final set
             {
                 Console.WriteLine("Final Set!");
             }
             //Breathe in
-            PauseMsg(_messageList[0]+" ",GapTime,_pauseStyle);
+            PauseMsg(_messageList[0]+" ",cycleTime,_pauseStyle);
             //Breathe out
-            PauseMsg(_messageList[1]+" ",GapTime,_pauseStyle);
+            PauseMsg(_messageList[1]+" ",cycleTime,_pauseStyle);
             if(!lastCycle) //Don't make a new line on the final set
             {
                 //Console.WriteLine(""); //Next step
