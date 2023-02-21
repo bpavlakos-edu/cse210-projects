@@ -76,7 +76,7 @@ class Activity
             Console.WriteLine("Test message");
             
             Pause(delayDurationMsec,_pauseStyle); //Request a pause using this activity's pause type
-            curTime += 10000 * delayDurationMsec;
+            curTime = (DateTime.Now).Ticks;
         }
 
         //Extra end code can go here
@@ -123,7 +123,7 @@ class Activity
         long endTime = curTime + (durationMsec * 10000); //There are 10000 ticks in a milisecond according to the docs: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-7.0
         
         //Intellisense helped me figure out the syntax for this:
-        Task animTask = new Task(new Action(async ()=>{await RequestAnimation(pauseType, durationMsec);})); //Start the async function
+        Task animTask = new Task(new Action(async ()=>{await RequestAnimation(durationMsec, pauseType);})); //Start the async function
         //Wait and start were located here
         animTask.Start();
         /*while(curTime < endTime)
@@ -131,15 +131,14 @@ class Activity
             //Run animation?
             curTime = (DateTime.Now).Ticks; //Update current time
         }*/
-        Thread.SpinWait(durationMsec);
-        animTask.Wait();
-        
+        Thread.Sleep(durationMsec);
     }
     
 
     //Animation helpers
     protected async Task RequestAnimation(int durationMsec, int pauseType, int fps = 60)
     {
+        Console.WriteLine($"Requesting animation type{pauseType}");
         //Switch case in C#: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/selection-statements#the-switch-statement
         switch (pauseType)
         {
@@ -211,10 +210,10 @@ class Activity
         Thread.Sleep(msecPerFrame); //Make the tread sleep
     }
     //Function overload for display frame for code completion to recognize
-    private void DisplayFrame(string frameStr, int msecPerFrame)
+    /*private void DisplayFrame(string frameStr, int msecPerFrame)
     {
         DisplayFrame(frameStr, msecPerFrame);
-    }
+    }*/
 
     //Pick an item from the list at random
     public string GetRandomMsg(List<string> selectionList)
