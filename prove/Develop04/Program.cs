@@ -10,8 +10,8 @@ class Program
     //ListingActivity lAct = new ListingActivity();
     static void Main(string[] args)
     {
-        TestActivity();
-        //UiLoop();
+        //TestActivity();
+        UiLoop();
     }
     static void UiLoop()
     {
@@ -22,47 +22,55 @@ class Program
         UiActions.Add(new Action(()=>{}));//Listing Activity Start
         //Additional functionality
         UiActions.Add(new Action(()=>{throw new OperationCanceledException();})); //Quit
-        List<String> optionName = new List<string>{"[B]reathing Activity","[R]eflection Activity","[L]isting Activity","Quit"};
-        List<String> hotkeyList = new List<string>{"b","r"};
+        List<String> optionName = new List<string>{"[B]reathing Activity","[R]eflection Activity","[L]isting Activity","[Q]uit"};
+        List<String> hotkeyList = new List<string>{"b","r","l","q"};
 
         //Ui Loop
         try
         {
             while(true)
             {
-                //Display the options
-
-                string userInput = GetInput("Please select an option.");
+                //Display the UI options
+                for(int i=0; i<optionName.Count; i++)
+                {
+                    Console.WriteLine($"{i+1}. {optionName}");
+                }
+                Console.WriteLine("");
+                string userInput = GetInput("Please select an option.").ToLower();
                 try
                 {
                     try
                     {
-                        int electionIdx = int.Parse(userInput) + 1; //Get the action index
+                        int electionIdx = int.Parse(userInput) - 1; //Get the action index
                     }
-                    catch (IndexOutOfRangeException)
+                    catch (IndexOutOfRangeException) //Invalid index
                     {
-                        throw new ArgumentNullException();
+                        throw new ArgumentNullException(); //Treat it like text input
                     }
-                    catch (OverflowException)
+                    catch (OverflowException) //Integer overflow
                     {
-                        throw new ArgumentNullException();
+                        throw new ArgumentNullException(); //Treat it like text input
                     }
-                    catch (FormatException)
+                    catch (FormatException) //Not a number
                     {
-                        throw new ArgumentNullException();
+                        throw new ArgumentNullException(); //Treat it like text input
                     }
                     
                 }
-                catch(ArgumentNullException)
+                catch(ArgumentNullException) //Funnel every error into ArgumentNullException
                 {
-                    //Text
+                    //Text input
+                    if(hotkeyList.Contains(userInput))
+                    {
+                        UiActions[hotkeyList.IndexOf(userInput)].Invoke(); //Activate the UI option
+                    }
                 }
             }
         } 
         //Title of: https://stackoverflow.com/questions/10226314/what-is-the-best-way-to-catch-operation-cancelled-by-user-exception helped me find this exception type using intellisense
         catch(OperationCanceledException) //Intentional exit exception 
         {
-            
+            //Do nothing
         }
         
     }
