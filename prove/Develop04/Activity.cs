@@ -104,7 +104,7 @@ class Activity
     {
         Console.WriteLine("");
         TransitionLoad("Well done!",true,false);
-        TransitionLoad($"You have completed another {durationMsec / 1000} seconds of {_name}.",true,false);
+        TransitionLoad($"You have completed another {durationMsec / 1000} seconds of the {_name.ToLower()}.",true,false);
     }
 
     //Intro and outro helpers
