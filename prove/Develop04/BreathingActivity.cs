@@ -37,7 +37,7 @@ class BreathingActivity : Activity
             PauseMsg(_messageList[1]+" ",cycleTime,_pauseStyle);
             if(!lastCycle) //Don't make a new line on the final set
             {
-                //Console.WriteLine(""); //Next step
+                Console.WriteLine(""); //Next step
             }
             curTime = (DateTime.Now).Ticks; //Update timer
         }

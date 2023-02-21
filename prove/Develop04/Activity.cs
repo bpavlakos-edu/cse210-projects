@@ -175,7 +175,7 @@ class Activity
     {
         Console.Write(inMsg);
         Pause(durationMsec, pauseType);
-        //Console.WriteLine("");
+        Console.WriteLine("");
     }
 
     //Pick an item from the list at random
@@ -296,7 +296,8 @@ class Activity
             //Found the syntax for task factory on this stack overflow post: https://stackoverflow.com/a/12144426 (Main post: https://stackoverflow.com/questions/12144077/async-await-when-to-return-a-task-vs-void)
             case 0:
                 //Spinner
-                await Task.Factory.StartNew(() => {ActivateLoopAnim(durationMsec, new List<string>{"-","\\","|","/"}, 250);});
+                //await Task.Factory.StartNew(() => {ActivateLoopAnim(durationMsec, new List<string>{"-","\\","|","/"}, 250);});
+                await Task.Factory.StartNew(() => {ActivateLoopAnim(durationMsec, new List<string>{"1","2","3","4"}, 250);});//Debugging
                 break;
             case 1:
                 //Count down timer
@@ -326,7 +327,7 @@ class Activity
         {
             Console.Write(" ");//Add an extra space to overrwrite by a frame
             DisplayFrame(frameChars[curFrame % frameLen], msecPerFrame); //Increment current frame, and ensure it doesn't exceed the animation length
-            Console.Write("\b \b");//Erase the final frame
+            //Console.Write("\b \b");//Erase the final frame
         }
     }
     //Countdown timer or just a regular timer
@@ -373,7 +374,7 @@ class Activity
             //Backspace for each additional length
             for(int i = 0; i < lastFrameLength; i++)
             {
-                Console.Write(" \b");
+                Console.Write("\b");
             }
         }
         Console.Write(frameObj); //Write this frame
