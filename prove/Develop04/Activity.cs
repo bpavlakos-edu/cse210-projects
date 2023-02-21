@@ -102,7 +102,7 @@ class Activity
     protected void End(int durationMsec)
     {
         Console.WriteLine("");
-        TransitionLoad("Well done!",true,false,3000);
+        TransitionLoad("Well done!",true,false);
         TransitionLoad($"You have completed another {durationMsec / 1000} seconds of {_name}.",true,false);
     }
 
@@ -123,7 +123,7 @@ class Activity
         TransitionLoad("Get ready...");
         return durationMsec;
     }
-    protected void TransitionLoad(string inMsg = "Get ready...", bool newLine = true, bool clearAllStart = true, int durationMsec=6000)
+    protected void TransitionLoad(string inMsg = "Get ready...", bool newLine = true, bool clearAllStart = true, int durationMsec=4000)
     {
         //Flag to clear console at start
         if(clearAllStart)
