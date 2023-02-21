@@ -159,7 +159,7 @@ class Activity
         //Task animTask = RequestAnimation(durationMsec, pauseType); //An actual async call, since I noticed task was the actual return type
         //var test = new Thread(RequestAnimation(durationMsec, pauseType)); //Threading example: https://learn.microsoft.com/en-us/dotnet/standard/threading/pausing-and-resuming-threads
         //Wait and start were located here: https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/task-based-asynchronous-programming#creating-and-running-tasks-explicitly
-        animTask.RunSynchronously(); //Start the animation task
+        animTask.Start(); //Start the animation task
         //tokenSource.CancelAfter(durationMsec); //Request cancellation after the duration in msec
         Thread.Sleep(durationMsec); //Sleep
         
@@ -167,7 +167,7 @@ class Activity
         {
             tokenSource.Cancel();
         }*/
-        //animTask.Wait(); //Wait for the display function to end
+        animTask.Wait(); //Wait for the display function to end
     }
 
     //Combining Pause with a console write
