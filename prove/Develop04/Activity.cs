@@ -107,14 +107,16 @@ class Activity
         long curTime = (DateTime.Now).Ticks;
         long endTime = curTime + (durationMsec * 10000); //There are 10000 ticks in a milisecond according to the docs: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-7.0
         
-        //Task animTask = DisplayAnimation(pauseType); //Start the async function
-        RequestAnimation(pauseType, durationMsec); //Start the async function
-
+        //Intellisense helped me figure out the syntax for this:
+        Task animTask = new Task(new Action(async ()=>{await RequestAnimation(pauseType, durationMsec);})); //Start the async function
+        //Wait and start were located here
+        animTask.Start();
         while(curTime < endTime)
         {
             //Run animation?
             curTime = (DateTime.Now).Ticks; //Update current time
         }
+        animTask.Wait();
     }
     
 
@@ -126,7 +128,7 @@ class Activity
         {
             case 0:
                 //Spinner
-                ActivateLoopAnim(durationMsec, new List<object>{"-","\\","|","/"}, 250);
+                ActivateLoopAnim(durationMsec, new List<string>{"-","\\","|","/"}, 250);
                 break;
             case 1:
                 //Count down timer
@@ -143,7 +145,7 @@ class Activity
     }
 
     //Activate a loop animation
-    private void ActivateLoopAnim(int durationMsec, List<object> frameChars, int msecPerFrame)
+    private void ActivateLoopAnim(int durationMsec, List<string> frameChars, int msecPerFrame)
     //Async Documentation: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/async
     //Documentation for generic lists (list<object>): https://learn.microsoft.com/en-us/dotnet/api/system.collections.arraylist?view=net-7.0#remarks
     {

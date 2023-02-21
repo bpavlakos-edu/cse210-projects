@@ -10,7 +10,8 @@ class Program
     //ListingActivity lAct = new ListingActivity();
     static void Main(string[] args)
     {
-        UiLoop();    
+        TestActivity();
+        //UiLoop();    
     }
     static void UiLoop()
     {
@@ -20,5 +21,11 @@ class Program
     {
         Console.Write(inMsg);
         return Console.ReadLine();
+    }
+
+    static void TestActivity()
+    {
+        Activity testActivity = new Activity("My Activity","MyActivity",new List<string>{"A","B"},1);
+        testActivity.Run();
     }
 }
