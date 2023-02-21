@@ -17,7 +17,7 @@ class Program
     {
         //Ui setup
         List<Action> UiActions = new List<Action>(); //Create a list of lambda function calls
-        UiActions.Add(new Action(()=>{}));//Breathing activity
+        UiActions.Add(new Action(()=>{TestActivity();}));//Breathing activity
         UiActions.Add(new Action(()=>{}));//Reflection activity
         UiActions.Add(new Action(()=>{}));//Listing Activity Start
         //Additional functionality
@@ -31,12 +31,14 @@ class Program
             while(true)
             {
                 //Display the UI options
+                Console.Clear();
+                Console.WriteLine("Menu Options:");
                 for(int i=0; i<optionName.Count; i++)
                 {
                     Console.WriteLine($"{i+1}. {optionName[i]}");
                 }
                 Console.WriteLine("");
-                string userInput = GetInput("Please select an option.").ToLower();
+                string userInput = GetInput("Select a choice or hotkey from the menu: ").ToLower();
                 try
                 {
                     try
@@ -69,9 +71,10 @@ class Program
             }
         } 
         //Title of: https://stackoverflow.com/questions/10226314/what-is-the-best-way-to-catch-operation-cancelled-by-user-exception helped me find this exception type using intellisense
-        catch(OperationCanceledException) //Intentional exit exception 
+        catch(OperationCanceledException) //Intentional exit exception, also what is run when the QUIT keyword is used
         {
             //Do nothing
+            Console.WriteLine("Now exiting...");
         }
         
     }
