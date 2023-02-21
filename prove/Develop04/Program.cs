@@ -41,6 +41,11 @@ class Program
         }
     );
     //ListingActivity lAct = new ListingActivity();
+    
+    //Global UI Class setup?
+    //UiMenu UiMain = new UiMenu()
+    //Setup items
+    //UiMain.AddOption(new UiOption(HotkeyString, Action));
     static void Main(string[] args)
     {
         UiLoop();

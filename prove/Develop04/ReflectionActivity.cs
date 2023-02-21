@@ -26,7 +26,21 @@ class ReflectionActivity : Activity
 
     public override void Loop(int durationMsec)
     {
+        //Pick and display the prompt
+        Console.WriteLine("Consider the following prompt:");
+        Console.WriteLine("");
+        Console.WriteLine($" --- {GetRandomMsg(_messageList)} ---"); //Use GetRandomMessage to pick the prompt
+        Console.WriteLine("");
+        //Wait for user input
+        GetInput("When you have something in mind, press enter to continue.");
+        Console.WriteLine("");
         
+        Console.WriteLine("Now ponder on each of the following questions as they are related to this experience.");
+        Console.Write("You may begin in: ");
+        Pause(5000,1); //Countdown timer
+
+        Console.Clear();
+
     }
 
 }

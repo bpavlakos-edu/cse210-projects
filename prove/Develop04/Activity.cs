@@ -71,8 +71,8 @@ class Activity
         {
             TransitionLoad("Get ready...");
         }
-        Loop(durationMsec);
-        End(durationMsec);
+        Loop(durationMsec); //Start the main loop
+        End(durationMsec); //Initalize the end sequence
     }
 
     //Override documentation found here: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/override#example
@@ -108,6 +108,7 @@ class Activity
         Console.WriteLine("");
         TransitionLoad("Well done!",true,false);
         TransitionLoad($"You have completed another {durationMsec / 1000} seconds of the {_name.ToLower()}.",true,false);
+        //Ask if the user wants to restart
     }
 
     //Intro and outro helpers
