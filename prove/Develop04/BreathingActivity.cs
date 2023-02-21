@@ -7,7 +7,7 @@ class BreathingActivity : Activity
 
     }
     //Fill all parameters
-    public BreathingActivity(string name, string description, List<string> messageList, int pauseStyle) : base(name, description, messageList.ToList<string>(), pauseStyle)
+    public BreathingActivity(string name, string description, List<string> messageList, int pauseStyle) : base(name, description, messageList, pauseStyle)
     {
 
     }
@@ -36,7 +36,7 @@ class BreathingActivity : Activity
             //Breathe out
             Console.Write(_messageList[1]+" "); 
             Pause(GapTime,_pauseStyle);
-            if(!finalSet)
+            if(!finalSet) //Don't make a new line on the final set
             {
                 Console.WriteLine(""); //Next step
             }
