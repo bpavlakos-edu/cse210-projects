@@ -191,7 +191,7 @@ class Activity
         Console.Write(frameObj); //Write this frame
         Thread.Sleep(msecPerFrame); //Make the tread sleep
     }
-    //Function overload for 
+    //Function overload for display frame for code completion to recognize
     private void DisplayFrame(string frameStr, int msecPerFrame)
     {
         DisplayFrame(frameStr, msecPerFrame);
