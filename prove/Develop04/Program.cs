@@ -15,7 +15,51 @@ class Program
     }
     static void UiLoop()
     {
+        //Ui setup
+        List<Action> UiActions = new List<Action>(); //Create a list of lambda function calls
+        UiActions.Add(new Action(()=>{}));//Breathing activity
+        UiActions.Add(new Action(()=>{}));//Reflection activity
+        UiActions.Add(new Action(()=>{})); //
+        //Additional functionality
+        UiActions.Add(new Action(()=>{throw new OperationCanceledException();})); //Quit
+        List<String> optionName = new List<string>{"[B]reathing Activity","[R]eflection Activity","[L]isting Activity","Quit"};
+        List<String> hotkeyList = new List<string>{"b","r"};
 
+        //Ui Loop
+        try
+        {
+            while(true)
+            {
+
+                string userInput = GetInput("Please select an option.");
+                try
+                {
+                    try
+                    {
+                        int electionIdx = int.Parse(userInput);
+                    }
+                    catch (OverflowException)
+                    {
+                        throw new ArgumentNullException();
+                    }
+                    catch (FormatException)
+                    {
+                        throw new ArgumentNullException();
+                    }
+                    
+                }
+                catch(ArgumentNullException)
+                {
+
+                }
+            }
+        } 
+        //Title of: https://stackoverflow.com/questions/10226314/what-is-the-best-way-to-catch-operation-cancelled-by-user-exception helped me find this exception type using intellisense
+        catch(OperationCanceledException) //Intentional exit exception 
+        {
+            
+        }
+        
     }
     static string GetInput(string inMsg)
     {
