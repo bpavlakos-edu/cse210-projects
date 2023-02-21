@@ -11,9 +11,9 @@ class BreathingActivity : Activity
     {
 
     }
-    //Main functionality loop (attempting to override the original)
+    //Main functionality Loop (attempting to override the original)
     //Override documentation found here: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/override#example
-    public override void loop(int durationMsec)
+    public override void Loop(int durationMsec)
     {
         Console.WriteLine("Alternate Function Activated");
         Pause(1000,0);

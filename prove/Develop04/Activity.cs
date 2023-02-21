@@ -72,7 +72,7 @@ class Activity
     }
 
     //Override documentation found here: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/override#example
-    protected virtual void Loop(int durationMsec)
+    public virtual void Loop(int durationMsec)
     {
         Console.WriteLine("My extra message will start here.");
         Console.WriteLine("");
