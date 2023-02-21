@@ -127,7 +127,7 @@ class Activity
         int durationMsec = GetIntInput("How long, in seconds, would you like for your session? ") * 1000; //Remember, thread.sleep is in msec, but datetime is in ticks
         return durationMsec;
     }
-    protected void TransitionLoad(string inMsg = "Get ready...", bool newLine = true, bool clearAllStart = true, int durationMsec=4000)
+    protected void TransitionLoad(string inMsg = "Get ready...", bool newLine = true, bool clearAllStart = true, int durationMsec=4000, bool clearAllEnd = true)
     {
         //Flag to clear console at start
         if(clearAllStart)
@@ -140,16 +140,20 @@ class Activity
             inMsg += Environment.NewLine;
         }
         PauseMsg(inMsg,durationMsec,0);//Write the message //Get a spinner
-        Console.Clear();//Clear the console at the end
+        if(clearAllEnd) //Added a flag for this functionality
+        {
+            Console.Clear();//Clear the console at the end
+        }
     }
     //Pausing
     protected void Pause(int durationMsec, int pauseType)
     {
         //How to initalize an async function: https://youtu.be/V2sMXJnDEjM?t=139
         //Intellisense helped me figure out the actual syntax for this:
-        Task animTask = new Task(new Action(async ()=>{await RequestAnimation(durationMsec, pauseType);})); //Start the async function, using the task data type, action data type, and finally a lambda function to call the animation request function
+        //Task animTask = new Task(new Action(async ()=>{await RequestAnimation(durationMsec, pauseType);})); //Start the async function, using the task data type, action data type, and finally a lambda function to call the animation request function
+        Task animTask = RequestAnimation(durationMsec, pauseType); //An actual async call, since I noticed task was the actual return type
         //Wait and start were located here: https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/task-based-asynchronous-programming#creating-and-running-tasks-explicitly
-        animTask.Start();
+        animTask.Start(); //Start the animation task
         Thread.Sleep(durationMsec); //Sleep
         animTask.Wait(); //Wait for the display function to end
     }
