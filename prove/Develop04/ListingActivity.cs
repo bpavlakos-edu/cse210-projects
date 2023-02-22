@@ -59,7 +59,10 @@ class ListingActivity : Activity
         Thread.Sleep(msecDelay);
         if(ToggleLoopExited())//_loopExited was false, but is now set to true (We can print the marker)
         {
-            
+            int tempLeft = Console.CursorLeft;
+            Console.CursorLeft = 0;
+            Console.Write("*>");
+            Console.CursorLeft = tempLeft;
         }
         //_loopExited was true, but is now set to false (We cannot print the marker the loop has finished)
     }
