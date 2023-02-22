@@ -35,10 +35,8 @@ class BreathingActivity : Activity
             PauseMsg(_messageList[0]+" ",cycleTime,1);
             //Breathe out
             PauseMsg(_messageList[1]+" ",cycleTime,1);
-            if(!lastCycle) //Don't make a new line on the final set
-            {
-                Console.WriteLine(""); //Next step
-            }
+            Console.WriteLine(""); //Next step (Changed to flush buffer before next spinner)
+
             curTime = (DateTime.Now).Ticks; //Update timer
         }
 

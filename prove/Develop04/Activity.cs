@@ -140,7 +140,7 @@ class Activity
         {
             inMsg += Environment.NewLine;
         }
-        PauseMsg(inMsg,durationMsec,_spinnerStyle);//Write the message //Get a spinner
+        PauseMsg(inMsg,durationMsec,_spinnerStyle, true);//Write the message //Get a spinner
         if(clearAllEnd) //Added a flag for this functionality
         {
             Console.Clear();//Clear the console at the end

@@ -89,6 +89,7 @@ class Program
                 new UiOption(new Action(()=>{StartActivity(0);}),"Start [B]reathing Activity","b"),
                 new UiOption(new Action(()=>{StartActivity(1);}),"Start [R]eflection Activity","r"),
                 new UiOption(new Action(()=>{StartActivity(2);}),"Start [L]isting Activity","l"),
+                // new UiOption(new Action(()=>{StartActivity(2);}),"Start S[p]inner Activity","p"),
                 new UiOption(new Action(()=>{SetSpinnerStyleMenu();activityTracker[3]++;}),"[S]et Spinner Style","s"), //Its not really an activity! But we are tracking it for fun
                 new UiOption(new Action(()=>{DisplayStats();}),"[D]isplay Activity Statistics","d"),
                 new UiOption(new Action(()=>{throw new OperationCanceledException();}),"[Q]uit Program","q")
