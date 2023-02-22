@@ -112,10 +112,46 @@ class UiMenu
         }
     }
 
-    static string GetInput(string inMsg)
+    private string GetInput(string inMsg)
     {
         Console.Write(inMsg);
         return Console.ReadLine();
+    }
+    private int GetIntInput(string inMsg, int min = 0, int max = 0)
+    {
+        while(true) //Repeat until a valid number is found
+        {
+            //Catch parsing errors
+            try 
+            {
+                int returnInt = int.Parse(GetInput(inMsg)); //Parse the user input
+                //Determine if the current integer is a valid number
+                if(min == max) //This means no minimum or maximum was set
+                {
+                    return returnInt;//Exit the while loop by returning the value
+                }
+                else if(returnInt <= max && returnInt >= min) //is the number between the minimum and maximum?
+                {
+                    return returnInt;//Exit the while loop by returning the value
+                }
+                else //Invalid number
+                {
+                    Console.WriteLine($"That's not a number between {min} and {max}, please try again!");
+                }
+            }
+            catch(FormatException) //Not a number
+            {
+                Console.WriteLine($"That's not a valid whole number, please try again!");
+            }
+            catch(ArgumentNullException) //Empty input
+            {
+                Console.WriteLine("Please enter a number to continue!");
+            }
+            catch(OverflowException) //Overflow
+            {
+                Console.WriteLine("That's not a number the program can process, please try again!");
+            }
+        }
     }
 }
 
