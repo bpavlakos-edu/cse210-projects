@@ -26,6 +26,15 @@ class ReflectionActivity : Activity
 
     public override void Loop(int durationMsec)
     {
+        //Special input
+        int cyclePauseSec = GetIntInput("How much time do you want to think about each question? (Enter 0 for default): ",0,120);
+        if(cyclePauseSec == 0)
+        {
+            cyclePauseSec = 10;
+        }
+
+        TransitionLoad("Get ready...");//Get Ready
+
         //Pick and display the prompt
         Console.WriteLine("Consider the following prompt:");
         Console.WriteLine("");
@@ -46,7 +55,7 @@ class ReflectionActivity : Activity
         
         //Loop setup
         List<string> usedPrompts = new List<string>(); //List to store the used prompts
-        int cyclePauseMsec = 10 * 1000; //each prompt should get a 10 second pause
+        int cyclePauseMsec = cyclePauseSec * 1000; //each prompt should get a 10 second pause
         while (curTime < tickTimes[1])
         {
             bool lastCycle = (curTime + (cyclePauseMsec * 10000) >= tickTimes[1]); //Check if this is the last cycle

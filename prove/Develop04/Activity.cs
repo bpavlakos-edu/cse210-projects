@@ -290,6 +290,13 @@ class Activity
                 {
                     return returnInt;//Exit the while loop by returning the value
                 }
+                /*
+                else if((min > max) && returnInt >= min)
+                {
+                    //Minimum only
+                    return returnInt;
+                }
+                */
                 else if(returnInt <= max && returnInt >= min) //is the number between the minimum and maximum?
                 {
                     return returnInt;//Exit the while loop by returning the value

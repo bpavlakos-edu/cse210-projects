@@ -13,6 +13,7 @@
 8. Created a UI Menu Class that can be quickly implemented in other programs
 9. Tracked the number of times a user picked an activity, and added an option to display them
 10. Utilized the UiMenu Class to pick spinner types, as a way to demonstrate that UiMenus can be nested
+11. Added time control to the breathing activity and Listing Activity
 Todo: 4. Gave the actvities the ability to display "Overtime" in the end sequence
 */
 
@@ -124,7 +125,7 @@ class Program
         }
         else if(activityIndex == 1)
         {
-            rAct.Run();
+            rAct.Run(true);
         }
         else if(activityIndex == 2)
         {
