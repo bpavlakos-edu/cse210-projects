@@ -39,6 +39,7 @@ class BreathingActivity : Activity
 
             curTime = (DateTime.Now).Ticks; //Update timer
         }
+        Console.Clear(); //Flush buffer before exit!
 
         //Return overtime
     }

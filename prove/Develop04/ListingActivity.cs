@@ -46,6 +46,7 @@ class ListingActivity : Activity
             s_string="";
         }
         Console.WriteLine($"You listed {enterCounter} item{s_string}!");
+        Console.WriteLine("");
         //if(!_loopExited)
     }
 

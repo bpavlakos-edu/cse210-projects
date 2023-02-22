@@ -106,7 +106,6 @@ class Activity
 
     protected void End(int durationMsec)
     {
-        Console.WriteLine("");
         TransitionLoad("Well done!",true,false);
         TransitionLoad($"You have completed another {durationMsec / 1000} seconds of the {_name.ToLower()}.",true,true);
         //Ask if the user wants to restart

@@ -71,7 +71,7 @@ class ReflectionActivity : Activity
             //Use the spinner animation to generate the new line instead
             curTime = (DateTime.Now).Ticks; //Update the current time
         }
-
+        Console.WriteLine("");
         //Return overtime
     }
 }
