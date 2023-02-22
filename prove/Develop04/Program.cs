@@ -80,13 +80,14 @@ class Program
     {
 
         //UI Setup
-        UiMenu UserInterface = new UiMenu(
+        UiMenu UserInterface = new UiMenu
+        (
             new List<UiOption>()
             {
                 new UiOption(new Action(()=>{StartActivity(0);}),"Start [B]reathing Activity","b"),
                 new UiOption(new Action(()=>{StartActivity(1);}),"Start [R]eflection Activity","r"),
                 new UiOption(new Action(()=>{StartActivity(2);}),"Start [L]isting Activity","l"),
-                new UiOption(new Action(()=>{SetSpinnerStyle();activityTracker[3]++;}),"[S]et Spinner Style","s"), //Its not really an activity! But we are tracking it for fun
+                new UiOption(new Action(()=>{SetSpinnerStyleMenu();activityTracker[3]++;}),"[S]et Spinner Style","s"), //Its not really an activity! But we are tracking it for fun
                 new UiOption(new Action(()=>{DisplayStats();}),"[D]isplay Activity Statistics","d"),
                 new UiOption(new Action(()=>{throw new OperationCanceledException();}),"[Q]uit Program","q")
             }
@@ -167,6 +168,35 @@ class Program
             new Activity().ShowSpinner(newSpinner, 1500);
         }
         //Exit
+    }
+
+    static void SetSpinnerStyleMenu()
+    {
+        int newSpinner = -1; //A variable to store the result of the menu (variable reference will be captured by lambda functions)
+        //Create a new UI to initalize
+        UiMenu spinnerMenu = new UiMenu
+        (
+            new List<UiOption>
+            {
+                new UiOption(new Action(()=>{newSpinner = 0;}),"[R]egular","e"), //Each option should change the new spinner value
+                new UiOption(new Action(()=>{newSpinner = 3;}),"Re[V]erse","v"),
+                new UiOption(new Action(()=>{newSpinner = 4;}),"Poin[T]er","t"),
+                new UiOption(new Action(()=>{newSpinner = 5;}),"Rever[S]e Pointer","s"),
+                new UiOption(new Action(()=>{newSpinner = 6;}),"[W]eird","w"),
+                new UiOption(new Action(()=>{newSpinner = 7;}),"[M]ath","m"),
+                new UiOption(new Action(()=>{throw new OperationCanceledException();}),"[B]ack","b") //Equivalent to exit (don't change the spinner value)
+            },
+            "" //No Exit Message
+        );
+        spinnerMenu.UiLoop();//Trigger the loop
+        if(newSpinner != -1)//Set the spinner if it's not the default value (which means exit)
+        {
+            bAct.SetSpinnerStyle(newSpinner);
+            rAct.SetSpinnerStyle(newSpinner);
+            lAct.SetSpinnerStyle(newSpinner);
+            new Activity().ShowSpinner(newSpinner, 1500);
+        }
+        //Go back to the previous menu
     }
 
     //User input
