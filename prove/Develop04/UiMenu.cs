@@ -3,25 +3,34 @@ class UiMenu
 
     //Attributes
     private List<UiOption> _optionList;
+    private string _exitMsg = "Now exiting...";
 
     //Constructors
-    public UiMenu(List<UiOption> optionList)
+    public UiMenu(List<UiOption> optionList, string exitMsg = "Now exiting...")
     {
         _optionList = optionList.ToList<UiOption>();
+        _exitMsg = exitMsg;
     }
 
 
     //Public and private Methods
     public void UiLoop()
     {
-        while(true)
+        try
         {
-            displayOptions();
-            string userInput = GetInput("Select a choice or [hotkey] from the menu: ").ToLower();
-            if(!TryParseIndex(userInput)) //If parsing the index fails
+            while(true)
             {
-                FindHotkey(userInput); //Try using a hotkey instead
+                displayOptions();
+                string userInput = GetInput("Select a choice or [hotkey] from the menu: ").ToLower();
+                if(!TryParseIndex(userInput)) //If parsing the index fails
+                {
+                    FindHotkey(userInput); //Try using a hotkey instead
+                }
             }
+        }
+        catch (OperationCanceledException)
+        {
+
         }
     }
 
