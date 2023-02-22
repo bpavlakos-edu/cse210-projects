@@ -100,8 +100,9 @@ class UiMenu
                 ActivateOption(returnInt); //Activate the selected index if possible
                 return true; //Menu successfully activated
             }
-            //Catch Statements have been condensed for readability, basically they just throw the "ArgumentNullException" so that the next code is run
+            //Catch Statements have been condensed for readability, basically they just throw the "ArgumentNullException" so that the next code (checking for hotkeys) is run, regardless of the known exception
             catch (IndexOutOfRangeException) {throw new ArgumentNullException();} //Invalid index, treat it like text input (Comes from ActivateOption())
+            catch (ArgumentOutOfRangeException) {throw new ArgumentNullException();} //Invalid index, apparently when an IndexError is thrown from an attirbute, it's a different error...
             catch (OverflowException){throw new ArgumentNullException();} //Integer overflow, treat it like text input
             catch (FormatException){throw new ArgumentNullException();} //Not a number, treat it like text input
         }
@@ -137,6 +138,12 @@ class UiMenu
     {
         Console.Write(inMsg);
         return Console.ReadLine();
+        //Todo: Add a thread based timeout!
+        //Start Timer Thread
+        //Start console read Thread
+        //Timer.Join(Msec)
+        //If ConsoleRead.Join(1);
+        //If Console Read times out, throw an error or return null
     }
     private int GetIntInput(string inMsg, int min = 0, int max = 0)
     {

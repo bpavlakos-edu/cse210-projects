@@ -14,7 +14,7 @@
 9. Tracked the number of times a user picked an activity, and added an option to display them
 10. Utilized the UiMenu Class to pick spinner types, as a way to demonstrate that UiMenus can be nested
 11. Added time control to the breathing activity and Listing Activity
-Todo: 4. Gave the actvities the ability to display "Overtime" in the end sequence
+12. Gave the actvities the ability to display "Overtime" in the end sequence
 */
 
 using System;
@@ -200,7 +200,7 @@ class Program
             bAct.SetSpinnerStyle(newSpinner);
             rAct.SetSpinnerStyle(newSpinner);
             lAct.SetSpinnerStyle(newSpinner);
-            new Activity().ShowSpinner(newSpinner, 1500);
+            new Activity().ShowSpinner(newSpinner, 3500);
         }
         //Go back to the previous menu
     }

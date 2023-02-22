@@ -565,13 +565,13 @@ class Activity
     protected long CalcOvertime(long endTime, long targetEndTime, int tickMsecThreshold = 250)
     {
         long tickDifference = endTime - targetEndTime;
-        if(tickDifference > ((long)(tickMsecThreshold * 10000)))
+        if(tickDifference >= ((long)(tickMsecThreshold * 10000)))
         {
-            return tickDifference;
+            return tickDifference; //Threshold exceeded
         }
         else
         {
-            return 0;
+            return 0; //Not long enough
         }
     }
 }
