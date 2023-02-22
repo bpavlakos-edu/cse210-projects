@@ -310,6 +310,11 @@ class Activity
         }
     }
 
+    public void ShowSpinner(int spinnerId, int msecDelay)
+    {
+        PauseMsg("You have selected the following spinner: ",2500, spinnerId);
+    }
+
     //Animation helpers
     protected void RequestAnimation(int durationMsec, int pauseType, int fps = 60)
     {
