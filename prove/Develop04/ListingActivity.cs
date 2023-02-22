@@ -1,8 +1,9 @@
 class ListingActivity : Activity
 {
-    //Hidden attributes
-    private bool _loopExited = false;
+    //Hidden attribute
+    private bool _timeExpired = false; //A flag to tell the threaded function whether it can display that the current prompt is the last one
     //Constructors
+    //Blank
     public ListingActivity() : base()
     {
 
@@ -14,9 +15,10 @@ class ListingActivity : Activity
     }
 
     //Methods
-
+    //New loop functionality, overrides the original, so that's it's triggered on "run"
     public override void Loop(int durationMsec)
     {
+        _timeExpired = false; //Reset the global variable
         Console.WriteLine("List as many responses as you can to the following prompt:");
         Console.WriteLine("");
         Console.WriteLine($" --- {GetRandomMsg(_messageList)} ---");//Use GetRandomMessage to pick the prompt
@@ -50,8 +52,8 @@ class ListingActivity : Activity
 
     private bool ToggleLoopExited()
     {
-        _loopExited = !_loopExited; //Invert the status of LoopExited, true -> false, false -> true
-        return _loopExited; //Return the current status
+        _timeExpired = !_timeExpired; //Invert the status of LoopExited, true -> false, false -> true
+        return _timeExpired; //Return the current status
     }
 
     private void TimerExpireNotification(int msecDelay)

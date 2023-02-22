@@ -204,14 +204,14 @@ class Activity
         Console.WriteLine("");
     }
 
-    //Pick an item from the list at random
+    //Pick an item from the list at random, including duplicates
     protected string GetRandomMsg(List<string> selectionList)
     {
         if(selectionList.Count > 1)
         {
             return selectionList[new Random().Next(selectionList.Count())];
         }
-        else if(selectionList.Count == 1)
+        else if(selectionList.Count == 1) //Single item list
         {
             return selectionList[0];
         }
@@ -227,7 +227,7 @@ class Activity
         if(selectionList.Count > 0) //Accept lists with a item count greater than 0
         {
             List<string> selectionListCopy = selectionList.ToList<string>();//Copy the list so we don't modify the original
-            //Remove all instances of the remove list values
+            //Remove all instances of the remove list items from the selection list
             for (int i =0;i<removeList.Count;i++)
             {
                 while(selectionListCopy.Contains(removeList[i]))
@@ -235,7 +235,7 @@ class Activity
                     selectionListCopy.Remove(removeList[i]);
                 }
             }
-            string returnStr = "";
+            string returnStr = ""; //Initalize the return string
             if(selectionListCopy.Count == 0) //Selection list has no items
             {
                 Console.WriteLine("Resetting remove list!"); //Debugging
