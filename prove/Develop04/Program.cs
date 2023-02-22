@@ -171,6 +171,7 @@ class Program
         //Exit
     }
 
+    //A complex example of the UiMenu class, it "returns" by updating a variable captured in the Action's Lambda function
     static void SetSpinnerStyleMenu()
     {
         int newSpinner = -1; //A variable to store the result of the menu (variable reference will be captured by lambda functions)
