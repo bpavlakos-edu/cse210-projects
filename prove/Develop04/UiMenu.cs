@@ -73,7 +73,7 @@ class UiMenu
             {
                 //Valid index
                 int returnInt = int.Parse(inputStr) - 1; //Get the action index
-                _optionList[returnInt].Activate(); //Activate the selected index if possible
+                ActivateOption(returnInt); //Activate the selected index if possible
                 return true;
             }
             catch (IndexOutOfRangeException) //Invalid index
@@ -95,22 +95,26 @@ class UiMenu
         }
     }
 
-    private void ActivateOption(int index)
-    {
-        _optionList[index].Activate();
-    }
-
     private void FindHotkey(string hotkey)
     {
         for(int i = 0; i < _optionList.Count; i++)
         {
             if(_optionList[i].CheckHotkey(hotkey))
             {
-                _optionList[i].Activate();//Activate this option
+                ActivateOption(i);//Activate this option
                 break;
             }
         }
     }
+
+    //Activate an option from the option list
+    private void ActivateOption(int index)
+    {
+        UiOption optionObj = _optionList[index]; //Trigger any index errors here
+        Console.Clear();//So we can clear the console before we...
+        optionObj.Activate();//Activate!
+    }
+
 
     private string GetInput(string inMsg)
     {

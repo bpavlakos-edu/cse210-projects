@@ -9,6 +9,8 @@
 4. Gave the program Threaded spinners
 5. Gave the program 6 additional spinners
 6. Gave the program the ability to set the spinner type from the menu
+7. Created a UI Menu Class that can be used in other programs
+8. Tracked the number of times
 Todo: 4. Gave the actvities the ability to display "Overtime" in the end sequence
 */
 
@@ -67,7 +69,7 @@ class Program
         0 //Default spinner
     );
 
-    static int[] activtyTracker = {0,0,0};
+    static int[] activityTracker = {0,0,0,0};
     
     //Global UI Class setup?
     //UiMenu UiMain = new UiMenu()
@@ -77,10 +79,10 @@ class Program
     {
         //Ui setup
         List<Action> uiActions = new List<Action>(); //Create a list of lambda function calls
-        uiActions.Add(new Action(()=>{bAct.Run(true);}));//Breathing activity
-        uiActions.Add(new Action(()=>{rAct.Run();}));//Reflection activity
-        uiActions.Add(new Action(()=>{lAct.Run();}));//Listing Activity Start
-        uiActions.Add(new Action(()=>{SetSpinnerStyle();}));//Set the spinner style //Additional functionality
+        uiActions.Add(new Action(()=>{StartActivity(0);}));//Breathing activity
+        uiActions.Add(new Action(()=>{StartActivity(1);}));//Reflection activity
+        uiActions.Add(new Action(()=>{StartActivity(2);}));//Listing Activity Start
+        uiActions.Add(new Action(()=>{SetSpinnerStyle();activityTracker[3]++;}));//Set the spinner style //Additional functionality
         uiActions.Add(new Action(()=>{throw new OperationCanceledException();})); //Quit
         List<string> optionNames = new List<string>{"Start [B]reathing Activity","Start [R]eflection Activity","Start [L]isting Activity","[S]et Spinner Style","[Q]uit Program"};
         List<string> hotkeyList = new List<string>{"b","r","l","s","q"};
@@ -88,6 +90,33 @@ class Program
         UiMenu UserInterface = new UiMenu(uiActions,optionNames,hotkeyList); //New Custom class
 
         UserInterface.UiLoop(); //Start the custom class UI loop
+    }
+
+    static void StartActivity(int activityIndex)
+    {
+        if(activityIndex == 0)
+        {
+            bAct.Run();
+        }
+        else if(activityIndex == 1)
+        {
+            rAct.Run();
+        }
+        else if(activityIndex == 2)
+        {
+            lAct.Run();
+        }
+        activityTracker[activityIndex]++; //Increase the counter
+    }
+
+    static void DisplayStats()
+    {
+        Console.WriteLine("Activity Completions: ");
+        Console.WriteLine(bAct.GetName()+": ");
+        Console.WriteLine(bAct.GetName()+": ");
+        Console.WriteLine(bAct.GetName()+": ");
+        Console.WriteLine($"Opened Spinner Settings: {activityTracker[3]}");
+        GetInput("Press Enter to Continue");
     }
     
     static void TestActivity()
