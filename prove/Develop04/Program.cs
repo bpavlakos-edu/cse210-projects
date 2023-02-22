@@ -16,7 +16,7 @@ Ehancement list:
 10. Tracked the number of times a user picked an activity, and added an option to display them
 11. Utilized the UiMenu Class to pick spinner types, as a way to demonstrate that UiMenus can be nested
 12. Added time control to the breathing activity and Listing Activity
-13. Gave the actvities the ability to display "Overtime" in the end sequence
+13. Gave the activities the ability to display "Overtime" in the end sequence
 14. Gave the user the option to disable threading, since it can be unpredictable on different hardware. Used the UiMenu to control it
 Additional Improvements that could be made in the future:
 * Activity Import and exporting from a sub menu (JSON serialization)
