@@ -129,6 +129,7 @@ class Program
                         UiActions[hotkeyList.IndexOf(userInput)].Invoke(); //Activate the UI option
                     }
                 }
+                Console.Clear(); //Reset the console before printing
             }
         } 
         //Title of: https://stackoverflow.com/questions/10226314/what-is-the-best-way-to-catch-operation-cancelled-by-user-exception helped me find this exception type using intellisense
@@ -137,6 +138,7 @@ class Program
             //Do nothing
             Console.WriteLine("Now exiting...");
         }
+        
         
     }
     
@@ -158,7 +160,7 @@ class Program
             Console.WriteLine((i+1)+". "+spinnerNames[i]);
         }
 
-        int newSpinner = GetIntInput("Which spinner would you like to choose? [Enter 0 to cancel]",0,6);
+        int newSpinner = GetIntInput("Which spinner would you like to choose? (Enter 0 to cancel): ",0,6);
 
         if(newSpinner != 0)
         {

@@ -147,7 +147,7 @@ class Activity
         }
     }
     //Pausing
-    protected void Pause(int durationMsec, int pauseType)
+    protected void Pause(int durationMsec, int pauseType, bool runSingleThread = false)
     {
         //Async was removed because of the bugs it created
 
@@ -157,50 +157,54 @@ class Activity
         Console.CursorVisible = false;
 
         //Non-threaded, for debugging
-        //RequestAnimation(durationMsec, pauseType);
-        
-        
-        //Threaded version is WIP
-        Thread animThread = new Thread(()=>{RequestAnimation(durationMsec, pauseType);});
-        animThread.Start();
-        
-        //Thread.Sleep(durationMsec); //Delay for specified time
-        
-        //Use a seperate thread to wait
-        Thread delayTimer = new Thread(()=>{Thread.Sleep(durationMsec);}); 
-        delayTimer.Start();//Start the timer thread
-        //Record the actual timer desync
-        bool timerSync = delayTimer.Join(durationMsec); //Using Join with a time parameter will make it timeout after a specified time, it returns the status on completion or timeout
-        long delayOffset = (DateTime.Now).Ticks; //Record then the delay timed out
-        if(!timerSync) //The timer timed out!
+        if(runSingleThread)
         {
-            delayTimer.Join(); //Wait for the timer to end
-            delayOffset = ((DateTime.Now).Ticks) - delayOffset; //Record how long it took to re-sync
+            RequestAnimation(durationMsec, pauseType);
         }
         else
         {
-            delayOffset = 0;
-        }
+            //Threaded version is WIP, but good enough for the activities to work
+            Thread animThread = new Thread(()=>{RequestAnimation(durationMsec, pauseType);});
+            animThread.Start();
 
-        //Animation Termination Detection
-        //Join with timespan https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread.join?view=net-7.0#system-threading-thread-join(system-timespan)
-        TimeSpan graceWindow = new TimeSpan(delayOffset);
-        bool terminated = animThread.Join(graceWindow);//Order it to join in 0 msec
-        if(!terminated)
-        {
-            animThread.Interrupt(); //Forcibly end a thread early
-        }
+            //Thread.Sleep(durationMsec); //Delay for specified time
 
-        //Console.Beep(); //This fixes it completely!!!
+            //Use a seperate thread to wait
+            Thread delayTimer = new Thread(()=>{Thread.Sleep(durationMsec);}); 
+            delayTimer.Start();//Start the timer thread
+            //Record the actual timer desync
+            bool timerSync = delayTimer.Join(durationMsec); //Using Join with a time parameter will make it timeout after a specified time, it returns the status on completion or timeout
+            long delayOffset = (DateTime.Now).Ticks; //Record then the delay timed out
+            if(!timerSync) //The timer timed out!
+            {
+                delayTimer.Join(); //Wait for the timer to end
+                delayOffset = ((DateTime.Now).Ticks) - delayOffset; //Record how long it took to re-sync
+            }
+            else
+            {
+                delayOffset = 0;
+            }
+
+            //Animation Termination Detection
+            //Join with timespan https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread.join?view=net-7.0#system-threading-thread-join(system-timespan)
+            TimeSpan graceWindow = new TimeSpan(delayOffset);
+            bool terminated = animThread.Join(graceWindow);//Order it to join in 0 msec
+            if(!terminated)
+            {
+                animThread.Interrupt(); //Forcibly end a thread early
+            }
+
+            //Console.Beep(); //This fixes it completely!!!
+        }
         
         Console.CursorVisible = true; //Re-enable the cursor display
     }
 
     //Combining Pause with a console write
-    protected void PauseMsg(string inMsg, int durationMsec, int pauseType)
+    protected void PauseMsg(string inMsg, int durationMsec, int pauseType, bool runSingleThread = false)
     {
         Console.Write(inMsg);
-        Pause(durationMsec, pauseType);
+        Pause(durationMsec, pauseType, runSingleThread);
         Console.WriteLine("");
     }
 
@@ -312,7 +316,7 @@ class Activity
 
     public void ShowSpinner(int spinnerId, int msecDelay)
     {
-        PauseMsg("You have selected the following spinner: ",2500, spinnerId);
+        PauseMsg("You have selected the following spinner: ",2500, spinnerId, true);
     }
 
     //Animation helpers
