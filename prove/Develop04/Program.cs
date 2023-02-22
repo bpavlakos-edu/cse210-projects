@@ -22,6 +22,7 @@ Additional Improvements that could be made in the future:
 * Prompt Modification in the program from a sub menu that detects a class, and any members it might have
 * Programically generating menu settings, or using functions to generate a repetative menu type as a template, that multiple places use and fill with parameters
 * Add additional functionality to the UiMenu class, to make it even more useful
+* Add the ability to restart an activity
 */
 
 using System;
