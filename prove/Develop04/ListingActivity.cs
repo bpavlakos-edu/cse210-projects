@@ -27,6 +27,7 @@ class ListingActivity : Activity
         long curTime = tickTimes[0]; //Initalize curTime to the start time
 
         //Loop setup
+        new Thread(()=>{TimerExpireNotification(durationMsec - 100);}).Start(); //Start the notification thread, give it a 100msec head start
         int enterCounter = 0;
         while(curTime < tickTimes[1])
         {
