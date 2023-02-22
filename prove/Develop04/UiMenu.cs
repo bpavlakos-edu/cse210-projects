@@ -26,17 +26,26 @@ class UiMenu
                 {
                     FindHotkey(userInput); //Try using a hotkey instead
                 }
+                Console.Clear(); //Reset the console before printing
             }
         }
+        //The title of: https://stackoverflow.com/questions/10226314/what-is-the-best-way-to-catch-operation-cancelled-by-user-exception helped me find this exception type using intellisense
         catch (OperationCanceledException)
         {
-
+            if(_exitMsg != "")
+            {
+                //Do nothing
+                Console.WriteLine(_exitMsg);
+            }
         }
     }
 
     //Display Menu Options
     private void displayOptions()
     {
+        //Display the UI options
+        Console.Clear();
+        Console.WriteLine("Menu Options:");
         for(int i = 0; i < _optionList.Count; i++)
         {
             Console.WriteLine($"{i+1}. {_optionList[i].GetName()}");

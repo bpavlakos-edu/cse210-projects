@@ -134,14 +134,12 @@ class Program
                 Console.Clear(); //Reset the console before printing
             }
         } 
-        //Title of: https://stackoverflow.com/questions/10226314/what-is-the-best-way-to-catch-operation-cancelled-by-user-exception helped me find this exception type using intellisense
+        
         catch(OperationCanceledException) //Intentional exit exception, also what is run when the QUIT keyword is used
         {
             //Do nothing
             Console.WriteLine("Now exiting...");
         }
-        
-        
     }
     
 
