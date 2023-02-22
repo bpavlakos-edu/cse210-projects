@@ -142,6 +142,7 @@ class Activity
         int durationMsec = GetIntInput("How long, in seconds, would you like for your session? ") * 1000; //Remember, thread.sleep is in msec, but datetime is in ticks
         return durationMsec;
     }
+    //Load a transition
     protected void TransitionLoad(string inMsg = "Get ready...", bool newLine = true, bool clearAllStart = true, int durationMsec=4000, bool clearAllEnd = true)
     {
         //Flag to clear console at start
@@ -171,7 +172,7 @@ class Activity
         Console.CursorVisible = false;
 
         //Non-threaded, for debugging
-        if(runSingleThread)
+        if(runSingleThread || !_allowThreading)
         {
             RequestAnimation(durationMsec, pauseType);
         }

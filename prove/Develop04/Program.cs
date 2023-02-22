@@ -92,7 +92,7 @@ class Program
                 new UiOption(new Action(()=>{StartActivity(2);}),"Start [L]isting Activity","l"),
                 // new UiOption(new Action(()=>{StartActivity(2);}),"Start S[p]inner Activity","p"),
                 new UiOption(new Action(()=>{SetSpinnerStyleMenu();activityTracker[3]++;}),"[S]et Spinner Style","s"), //Its not really an activity! But we are tracking it for fun
-                new UiOption(new Action(()=>{ThreadingOptionMenu();}),"Change [T]hreading Settings","t"), //Its not really an activity! But we are tracking it for fun
+                new UiOption(new Action(()=>{ThreadingOptionMenu();}),"Enable / Disable [T]hreading","t"), //Its not really an activity! But we are tracking it for fun
                 new UiOption(new Action(()=>{DisplayStats();}),"[D]isplay Activity Statistics","d"),
                 new UiOption(new Action(()=>{throw new OperationCanceledException();}),"[Q]uit Program","q")
             }
@@ -216,7 +216,7 @@ class Program
             {   //Each option should change the new spinner value, and then throw the exception to exit
                 new UiOption(new Action(()=>{newSetting = true; throw new OperationCanceledException();}),"[E]nable Threading","e"),
                 new UiOption(new Action(()=>{newSetting = false; throw new OperationCanceledException();}),"[D]isable Threading","d"),
-                new UiOption(new Action(()=>{throw new OperationCanceledException();}),$"Go [B]ack, and keep Current Setting: {disabledEnabled(newSetting)}","b") //Equivalent to exit (don't change the spinner value)
+                new UiOption(new Action(()=>{throw new OperationCanceledException();}),$"Go [B]ack, and keep current setting: {DisabledEnabled(newSetting,true)}","b") //Equivalent to exit (don't change the spinner value)
             },
             "" //No exit message
         );
@@ -228,21 +228,9 @@ class Program
             rAct.SetAllowThreading(newSetting);
             lAct.SetAllowThreading(newSetting);
             
-            GetInput($"Threading {disabledEnabled(newSetting)}, press enter to continue");//Let the user know the option changed
+            GetInput($"Threading {DisabledEnabled(newSetting)}, press enter to continue");//Let the user know the option changed
         }
         //Go back to the previous menu
-    }
-
-    //Simple string helper, didn't want to repeat it twice, this allows it to be used for other settings too!
-
-    static string disabledEnabled(bool status)
-    {
-        string disOrEn = "dis";
-        if(status) //When it's enabled
-        {
-            disOrEn = "en";
-        }
-        return $"{disOrEn}abled";
     }
 
     //User input
@@ -287,5 +275,33 @@ class Program
                 Console.WriteLine("That's not a number the program can process, please try again!");
             }
         }
+    }
+
+    //String Helpers
+
+    //Simple string helper, didn't want to repeat it twice, this allows it to be used for other settings too!
+
+    static string DisabledEnabled(bool status, bool capitalize = false)
+    {
+        string disOrEn = "dis";
+        if(status) //When it's enabled
+        {
+            disOrEn = "en";
+        }
+        if(!capitalize)
+        {
+            return $"{disOrEn}abled";
+        }
+        else
+        {
+            return $"{CapitalizeString(disOrEn)}abled";
+        }
+    }
+
+    //Capitalize as string, why is this not built in?
+    //Also string builders are what you use for doing this right: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/strings/#accessing-individual-characters
+    static string CapitalizeString(string inputStr)
+    {
+        return inputStr.Substring(0,1).ToUpper()+inputStr.Substring(1).ToLower();
     }
 }
