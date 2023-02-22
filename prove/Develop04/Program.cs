@@ -2,7 +2,8 @@
 //Week 08
 //Created By Bryce Pavlakos
 
-/*Ehancement list:
+/*
+Ehancement list:
 1. Created a UI system that processes User input, hotkeys, and runs functions based on their position in the list
 2. Gave the program the ability to force unique prompts, and keep track of when to reset the list (listing activity only)
 3. Gave the Activities the ability to detect the final cycle, and notify the user
@@ -15,6 +16,7 @@
 10. Utilized the UiMenu Class to pick spinner types, as a way to demonstrate that UiMenus can be nested
 11. Added time control to the breathing activity and Listing Activity
 12. Gave the actvities the ability to display "Overtime" in the end sequence
+13. Gave the user the option to disable threading, since it can be unpredictable on different hardware
 */
 
 using System;
