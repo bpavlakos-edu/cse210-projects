@@ -4,10 +4,11 @@ using System.Collections;
 class Activity
 {
     //Attributes
-    protected string _name;
-    protected string _description;
-    protected List<string> _messageList;
-    protected int _spinnerStyle;
+    private string _name; //Private because only
+    private string _description;
+    protected List<string> _messageList; //Protected because it needs to be passed to GetRandomMessages as a parameter inside the main loop
+    private int _spinnerStyle; //Protected because it needs to be accessible in the main loop
+    private int _lastFrameLengthMem = 0; //Completely private attribute, enables the last frame length of an animation to be stored to memory
 
     //Constructors
     public Activity()
@@ -260,7 +261,8 @@ class Activity
     }
 
     //Calcuations
-    //Pointlessly created a function to do this, in the hopes that the code that uses it would be one line, instead I just made a way to get a start and end duration from miliseconds
+    //Pointlessly created a function to do this, in the hopes that the code that uses it would be one line, 
+    //Instead I just made a way to get a start and end duration in ticks, calculated from a milisecond delay from the current time
     protected long[] GetTickStartEnd(int durationMsec)
     {
         //Ticks documentation: https://learn.microsoft.com/en-us/dotnet/api/system.datetime.millisecond?source=recommendations&view=net-7.0
@@ -321,7 +323,7 @@ class Activity
         }
     }
 
-    public void ShowSpinner(int spinnerId, int msecDelay)
+    public void ShowSpinner(int spinnerId, int msecDelay) //Public so we can display the new spinner!
     {
         PauseMsg("You have selected the following spinner: ",msecDelay, spinnerId, true);
     }
@@ -400,7 +402,7 @@ class Activity
                 curFrame = maxFrame;//Exit the loop
             }
         }
-        lastFrameLengthMem = 0; //Animation has completed, reset the global variable
+        _lastFrameLengthMem = 0; //Animation has completed, reset the global variable
     }
     //Countdown timer or just a regular timer
     private void ActivateAnimTimer(int durationSec, bool countdownFlag = true)
@@ -435,7 +437,7 @@ class Activity
             //DisplayFrame(iValue, 1000); //Display the result
         }
 
-        lastFrameLengthMem = 0; //Animation has completed, reset the global variable
+        _lastFrameLengthMem = 0; //Animation has completed, reset the global variable
     }
     //Function overload for using MSEC instead of seconds
     private void ActivateAnimTimerMsec(int durationMsec, bool countdownFlag = true)
@@ -444,7 +446,6 @@ class Activity
     }
 
     //Display a single animation frame, accepts objects so that numbers are handled too
-    private int lastFrameLengthMem = 0; //Private attribute, enables the last frame length to be stored to memory
     private bool DisplayFrame(object frameObj, int msecPerFrame, int lastFrameLength = 1)
     {
         //Thread checkpoints for triggering alternate code on exceptions
@@ -458,7 +459,7 @@ class Activity
             {
                 long renderTicksStart = (DateTime.Now).Ticks; //Time how long rendering takes
                 //Allocate space to print
-                if(lastFrameLengthMem == 0) //Last length was 0
+                if(_lastFrameLengthMem == 0) //Last length was 0
                 {
                     //Console.Write(new string('\b',$"{frame}".Length)); //Create a space to write on
                     Console.Write(new string(' ',$"{frameObj}".Length)); //Create a space to write on
@@ -468,15 +469,15 @@ class Activity
                 else
                 {
                     // Console.Write(new string((lastFrameLengthMem+" ").ToCharArray()[0],lastFrameLengthMem));
-                    Console.Write(new string(' ',lastFrameLengthMem));
+                    Console.Write(new string(' ',_lastFrameLengthMem));
                     madeSpace = true;
-                    Console.Write(new string('\b',lastFrameLengthMem));
+                    Console.Write(new string('\b',_lastFrameLengthMem));
                 }
                 writing = true; //Thread checkpoint 2
 
                 //Write the next frame
-                lastFrameLengthMem = $"{frameObj}".Length; //Update the last frame length memory
-                Console.Write($"{frameObj}{new string('\b',lastFrameLengthMem)}"); //Print this frame, and go back to it's start
+                _lastFrameLengthMem = $"{frameObj}".Length; //Update the last frame length memory
+                Console.Write($"{frameObj}{new string('\b',_lastFrameLengthMem)}"); //Print this frame, and go back to it's start
                 
                 //Update variables for threading exceptions
                 lastPos = Console.GetCursorPosition();//Store the updated position
@@ -510,7 +511,7 @@ class Activity
                 Console.SetCursorPosition(lastPos.Left, lastPos.Top); //Return to the last recorded position before the exception
                 Console.Write(" \b"); //Clear the final character
                 Console.SetCursorPosition(newPos.Left,newPos.Top); //Go back to the position we interrupted
-                lastFrameLengthMem = 0; //Clear the last frame length memory, because we've started another animation
+                _lastFrameLengthMem = 0; //Clear the last frame length memory, because we've started another animation
             }
             else if(writing) //We are going to write, but we stopped
             {
@@ -521,7 +522,7 @@ class Activity
             else if(madeSpace) //We made space, but didn't backspace yet
             {
                 //Console.ForegroundColor = ConsoleColor.DarkBlue;
-                Console.Write((new string('\b',lastFrameLengthMem))+(new string('S',lastFrameLengthMem))+(new string('\b',lastFrameLengthMem)));//Backspace
+                Console.Write((new string('\b',_lastFrameLengthMem))+(new string('S',_lastFrameLengthMem))+(new string('\b',_lastFrameLengthMem)));//Backspace
             }
             else //We haven't even made space yet!
             {

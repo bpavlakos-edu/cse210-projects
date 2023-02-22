@@ -1,7 +1,7 @@
 class ReflectionActivity : Activity
 {
     //New Attributes
-    List<string> _refQuestions;
+    private List<string> _refQuestions;
 
     //Constructor
     public ReflectionActivity() : base()
@@ -66,7 +66,7 @@ class ReflectionActivity : Activity
             //Display the prompt
             string curPrompt = GetRandomMsg(_refQuestions, usedPrompts); //Get a random question
             //PauseMsg($"> {GetRandomMsg(_refQuestions, usedPrompts)} ",cyclePauseMsec, _spinnerStyle);//Single Line version
-            PauseMsg($"> {curPrompt} ", cyclePauseMsec, _spinnerStyle); //Spinner pause type
+            PauseMsg($"> {curPrompt} ", cyclePauseMsec, base.GetSpinnerStyle()); //Spinner pause type
     
             //Use the spinner animation to generate the new line instead
             curTime = (DateTime.Now).Ticks; //Update the current time
