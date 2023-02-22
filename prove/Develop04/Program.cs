@@ -7,6 +7,7 @@
 2. Gave the program the ability to force unique prompts, and keep track of when to reset the list
 3. Gave the Activities the ability to detect the final cycle
 4. Gave the program Threaded spinners
+5. Gave the program additional spinners
 Todo: 4. Gave the actvities the ability to display "Overtime" in the end sequence
 */
 

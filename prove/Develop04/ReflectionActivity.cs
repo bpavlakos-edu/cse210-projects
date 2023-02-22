@@ -9,7 +9,7 @@ class ReflectionActivity : Activity
         //ToList is handled by the base class constructor
     }
     //Fill All Attributes
-    public ReflectionActivity(string name, string description, List<string>messageList, int pauseStyle, List<string> refQuestions) : base(name, description, messageList, pauseStyle)
+    public ReflectionActivity(string name, string description, List<string>messageList, int spinnerStyle, List<string> refQuestions) : base(name, description, messageList, spinnerStyle)
     {
         _refQuestions = refQuestions.ToList<string>(); //Use toList to erase the reference to the original list
     }

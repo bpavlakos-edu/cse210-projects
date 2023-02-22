@@ -7,7 +7,7 @@ class Activity
     protected string _name;
     protected string _description;
     protected List<string> _messageList;
-    protected int _pauseStyle;
+    protected int _spinnerStyle;
 
     //Constructors
     public Activity()
@@ -15,16 +15,16 @@ class Activity
         _name = "";
         _description = "";
         _messageList = new List<string>();
-        _pauseStyle = -1;
+        _spinnerStyle = -1;
     }
 
     //Fill Attribute Constructor
-    public Activity(string name, string description, List<string> messageList, int pauseStyle)
+    public Activity(string name, string description, List<string> messageList, int spinnerStyle)
     {
         _name = name;
         _description = description;
         _messageList = messageList.ToList<string>();
-        _pauseStyle = pauseStyle;
+        _spinnerStyle = spinnerStyle;
     }
 
     //Getters and Setters
@@ -52,13 +52,13 @@ class Activity
     {
         _messageList = messageList.ToList<string>(); //Clone the list so the input list isn't changed
     }
-    public int GetPauseStyle()
+    public int GetSpinnerStyle()
     {
-        return _pauseStyle;
+        return _spinnerStyle;
     }
-    public void SetPauseStyle(int pauseStyle)
+    public void SetSpinnerStyle(int spinnerStyle)
     {
-        _pauseStyle = pauseStyle;
+        _spinnerStyle = spinnerStyle;
     }
 
     //Methods
@@ -96,7 +96,7 @@ class Activity
             
             Console.Write("Random List Item: "+ nextItem+" ");
             
-            Pause(delayDurationMsec,_pauseStyle); //Request a pause using this activity's pause type
+            Pause(delayDurationMsec,_spinnerStyle); //Request a pause using this activity's pause type
             curTime = (DateTime.Now).Ticks; //Update the current time
         }
 

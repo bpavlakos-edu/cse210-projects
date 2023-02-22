@@ -7,7 +7,7 @@ class BreathingActivity : Activity
 
     }
     //Fill all parameters
-    public BreathingActivity(string name, string description, List<string> messageList, int pauseStyle) : base(name, description, messageList, pauseStyle)
+    public BreathingActivity(string name, string description, List<string> messageList, int spinnerStyle) : base(name, description, messageList, spinnerStyle)
     {
         //ToList is handled by the base class constructor
     }
@@ -32,9 +32,9 @@ class BreathingActivity : Activity
                 Console.WriteLine("Final Set!");
             }
             //Breathe in
-            PauseMsg(_messageList[0]+" ",cycleTime,_pauseStyle);
+            PauseMsg(_messageList[0]+" ",cycleTime,1);
             //Breathe out
-            PauseMsg(_messageList[1]+" ",cycleTime,_pauseStyle);
+            PauseMsg(_messageList[1]+" ",cycleTime,1);
             if(!lastCycle) //Don't make a new line on the final set
             {
                 Console.WriteLine(""); //Next step

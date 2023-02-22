@@ -9,7 +9,7 @@ class ListingActivity : Activity
 
     }
     //Fill all attributes
-    public ListingActivity(string name, string description, List<string> messageList, int pauseStyle) : base(name,description, messageList, pauseStyle)
+    public ListingActivity(string name, string description, List<string> messageList, int spinnerStyle) : base(name,description, messageList, spinnerStyle)
     {
         //ToList is handled by the base class constructor
     }
