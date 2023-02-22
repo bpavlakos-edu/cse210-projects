@@ -108,10 +108,10 @@ class Activity
         //Extra end behavior code can go here
     }
 
-    protected void End(int durationMsec, string overtimeStr = "")
+    protected void End(int durationMsec, string overtimeStr = ".")
     {
         TransitionLoad("Well done!",true,false);
-        TransitionLoad($"You have completed another {durationMsec / 1000} seconds of the {_name.ToLower()}.",true,true);
+        TransitionLoad($"You have completed another {durationMsec / 1000} seconds of the {_name.ToLower()}{overtimeStr}",true,true);
         //Ask if the user wants to restart
     }
 
@@ -540,11 +540,11 @@ class Activity
     {
         if(overtimeTicks > 0)
         {
-            return TicksToSecondStr(overtimeTicks);
+            return ", and {TicksToSecondStr(overtimeTicks) seconds of overtime}!";
         }
         else
         {
-            return "";
+            return ".";
         }
     }
     //Override for overtime string
