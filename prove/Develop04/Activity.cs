@@ -107,7 +107,7 @@ class Activity
     {
         Console.WriteLine("");
         TransitionLoad("Well done!",true,false);
-        TransitionLoad($"You have completed another {durationMsec / 1000} seconds of the {_name.ToLower()}.",true,false);
+        TransitionLoad($"You have completed another {durationMsec / 1000} seconds of the {_name.ToLower()}.",true,true);
         //Ask if the user wants to restart
     }
 
@@ -333,6 +333,22 @@ class Activity
             case 2:
                 //Count up timer
                 ActivateAnimTimerMsec(durationMsec, false);
+                break;
+            case 3:
+                //Reverse Spinner
+                ActivateLoopAnim(durationMsec, new List<string>{"-","/","|","\\"}, 250);
+                break;
+            case 4:
+                //Clockwise pointer
+                ActivateLoopAnim(durationMsec, new List<string>{"^",">","v","<"}, 250);
+                break;
+            case 5:
+                //Counter-clockwise Pointer
+                ActivateLoopAnim(durationMsec, new List<string>{"^","<","v",">"}, 250);
+                break;
+            case 6:
+                //Weird
+                ActivateLoopAnim(durationMsec, new List<string>{"~","\\",":","/","~"}, 250);
                 break;
             default:
                 //No display (such as -1 which means the loop handles the request)

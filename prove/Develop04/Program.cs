@@ -3,9 +3,10 @@
 //Created By Bryce Pavlakos
 
 /*Ehnacement list:
-1. Created a UI system that processes User input, hotkeys, and
+1. Created a UI system that processes User input, hotkeys, and runs functions based on their position in the list
 2. Gave the program the ability to force unique prompts, and keep track of when to reset the list
 3. Gave the Activities the ability to detect the final cycle
+4. Gave the program Threaded spinners
 Todo: 4. Gave the actvities the ability to display "Overtime" in the end sequence
 */
 
