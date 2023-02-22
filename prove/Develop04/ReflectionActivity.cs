@@ -1,7 +1,7 @@
 class ReflectionActivity : Activity
 {
     //New Attributes
-    private List<string> _refQuestions;
+    private List<string> _refQuestions; //Private, because no other class extends this class
 
     //Constructor
     public ReflectionActivity() : base()
