@@ -83,9 +83,10 @@ class Program
         uiActions.Add(new Action(()=>{StartActivity(1);}));//Reflection activity
         uiActions.Add(new Action(()=>{StartActivity(2);}));//Listing Activity Start
         uiActions.Add(new Action(()=>{SetSpinnerStyle();activityTracker[3]++;}));//Set the spinner style //Additional functionality
+        uiActions.Add(new Action(()=>{DisplayStats();}));
         uiActions.Add(new Action(()=>{throw new OperationCanceledException();})); //Quit
-        List<string> optionNames = new List<string>{"Start [B]reathing Activity","Start [R]eflection Activity","Start [L]isting Activity","[S]et Spinner Style","[Q]uit Program"};
-        List<string> hotkeyList = new List<string>{"b","r","l","s","q"};
+        List<string> optionNames = new List<string>{"Start [B]reathing Activity","Start [R]eflection Activity","Start [L]isting Activity","[S]et Spinner Style","[D]isplay Activity Statistics","[Q]uit Program"};
+        List<string> hotkeyList = new List<string>{"b","r","l","s","d","q"};
 
         UiMenu UserInterface = new UiMenu(uiActions,optionNames,hotkeyList); //New Custom class
 
