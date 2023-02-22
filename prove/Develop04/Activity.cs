@@ -151,6 +151,11 @@ class Activity
     {
         //Async was removed because of the bugs it created
 
+        //Disable the cursor marker
+        //Credit: http://dontcodetired.com/blog/post/Creating-a-Spinner-Animation-in-a-Console-Application-in-C
+        //Microsoft Docs: http://msdn.microsoft.com/en-us/library/system.console.cursorvisible%28v=vs.110%29.aspx
+        Console.CursorVisible = false;
+
         //Non-threaded, for debugging
         RequestAnimation(durationMsec, pauseType);
         
@@ -188,6 +193,7 @@ class Activity
 
         //Console.Beep(); //This fixes it completely!!!
         */
+        Console.CursorVisible = true; //Re-enable the cursor display
     }
 
     //Combining Pause with a console write
