@@ -179,6 +179,8 @@ class Activity
         else
         {
             //Threaded version is WIP, but good enough for the activities to work
+            //This was the tutorial I followed to create the threading example in my Offline C# sandbox: https://www.youtube.com/watch?v=rUbmW4qAh8w
+            //I used the threading example in my Offline C# sandbox to re-learn threading syntax, and use it to create this function
             Thread animThread = new Thread(()=>{RequestAnimation(durationMsec, pauseType);});
             animThread.Start();
 
