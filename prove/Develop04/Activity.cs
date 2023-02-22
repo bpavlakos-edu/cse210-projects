@@ -149,25 +149,9 @@ class Activity
     //Pausing
     protected void Pause(int durationMsec, int pauseType)
     {
-        //Cancellation token (see https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/how-to-cancel-a-task-and-its-children)
-        var tokenSource = new CancellationTokenSource();
-        var token = tokenSource.Token;
-
-        //How to initalize an async function: https://youtu.be/V2sMXJnDEjM?t=139
-        //Intellisense helped me figure out the actual syntax for this:
-        Task animTask = new Task(new Action(async ()=>{await RequestAnimation(durationMsec, pauseType);}),token); //Start the async function, using the task data type, action data type, and finally a lambda function to call the animation request function
-        //Task animTask = RequestAnimation(durationMsec, pauseType); //An actual async call, since I noticed task was the actual return type
-        //var test = new Thread(RequestAnimation(durationMsec, pauseType)); //Threading example: https://learn.microsoft.com/en-us/dotnet/standard/threading/pausing-and-resuming-threads
-        //Wait and start were located here: https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/task-based-asynchronous-programming#creating-and-running-tasks-explicitly
-        animTask.Start(); //Start the animation task
-        //tokenSource.CancelAfter(durationMsec); //Request cancellation after the duration in msec
-        Thread.Sleep(durationMsec); //Sleep
-        
-        /*if(animTask.Status != TaskStatus.RanToCompletion)
-        {
-            tokenSource.Cancel();
-        }*/
-        animTask.Wait(); //Wait for the display function to end
+        //Async was removed because of the bugs it created
+        //Threading was also experimented with, but ultimately they harmed the stability of the program
+        RequestAnimation(durationMsec, pauseType);
     }
 
     //Combining Pause with a console write
@@ -285,7 +269,7 @@ class Activity
     }
 
     //Animation helpers
-    protected async Task RequestAnimation(int durationMsec, int pauseType, int fps = 60)
+    protected void RequestAnimation(int durationMsec, int pauseType, int fps = 60)
     {
         //There is an error here, saying that because I'm not using "await" this is not asyncronous, but I am calling it using an await from a task action
         //Using Await on this method's call would require adding "async" to the Pause() method, which is not practical
@@ -297,19 +281,19 @@ class Activity
             case 0:
                 //Spinner
                 //await Task.Factory.StartNew(() => {ActivateLoopAnim(durationMsec, new List<string>{"-","\\","|","/"}, 250);});
-                await Task.Factory.StartNew(() => {ActivateLoopAnim(durationMsec, new List<string>{"1","2","3","4"}, 250);});//Debugging
+                ActivateLoopAnim(durationMsec, new List<string>{"1","2","3","4"}, 250);;//Debugging
                 break;
             case 1:
                 //Count down timer
-                await Task.Factory.StartNew(() => {ActivateAnimTimerMsec(durationMsec);});
+                ActivateAnimTimerMsec(durationMsec);
                 break;
             case 2:
                 //Count up timer
-                await Task.Factory.StartNew(() => {ActivateAnimTimerMsec(durationMsec, false);});
+                ActivateAnimTimerMsec(durationMsec, false);
                 break;
             default:
                 //No display (such as -1 which means the loop handles the request)
-                await Task.Factory.StartNew(() => {}); //Do nothing
+                //Do nothing
                 break;
         }
     }
@@ -319,43 +303,14 @@ class Activity
     //Async Documentation: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/async
     //Documentation for generic lists (list<object>): https://learn.microsoft.com/en-us/dotnet/api/system.collections.arraylist?view=net-7.0#remarks
     {
-        int frameLen = frameChars.Count;
-        int maxFrame = (durationMsec / msecPerFrame); //Automatically calculate the maximum frame
-
-        //Console.Write(frameChars[0]);//Add an extra space to overrwrite
-        for(int curFrame= 0; curFrame <= maxFrame; curFrame++)
-        {
-            //Console.Write(" ");//Add an extra space to overrwrite by a frame
-            DisplayFrame(frameChars[curFrame % frameLen], msecPerFrame); //Increment current frame, and ensure it doesn't exceed the animation length
-            //Console.Write("\b \b");//Erase the final frame
-        }
+        //Replacing With Threaded Version
+        Console.Write("Placeholder Spinner");
     }
     //Countdown timer or just a regular timer
     private void ActivateAnimTimer(int durationSec, bool countdownFlag = true)
     {
-        //Console.Write(" ");//Add an extra space to overrwrite by a frame
-        for(int i = 0; i < durationSec; i++)
-        {
-            //Console.Write(" ");//Add an extra space to overrwrite by a frame
-            if(countdownFlag) //Countdown
-            {
-                int lastLength = ((i-1) + "").Replace("-","").Length; //Get the length of the previous string, ignore the negative sign (for 0)
-                DisplayFrame(durationSec - i, 1000, lastLength);
-            }
-            else //Count up timer
-            {
-                int lastLength = ((i-1) + "").Replace("-","").Length; //Get the length of the previous string, ignore the negative sign (for 0)
-                DisplayFrame(i, 1000, lastLength);
-            }
-            //Console.Write("\b \b");//Erase the final frame
-            
-            //3-line version:
-            //int boolInt = BitConverter.ToInt32(BitConverter.GetBytes(countdownFlag)); //Convert the boolean to an integer //From: https://learn.microsoft.com/en-us/dotnet/api/system.boolean?view=net-7.0#work-with-booleans-as-binary-values
-            //int iValue = (boolInt * durationSec) + (i * (1 - (2 * boolInt))); //Deactivate durationSec when false, flip i negative when true
-            //DisplayFrame(iValue, 1000); //Display the result
-        }
-        //Console.Write("\b \b");//Erase the final frame
-        //Console.WriteLine("");
+        //Replacing With Threaded Version
+        Console.Write("Placeholder Countdown");
     }
     //Function overload for using MSEC instead of seconds
     private void ActivateAnimTimerMsec(int durationMsec, bool countdownFlag = true)
@@ -366,27 +321,6 @@ class Activity
     //Display a single animation frame, accepts objects so that numbers are handled too
     private void DisplayFrame(object frameObj, int msecPerFrame, int lastFrameLength = 1)
     {
-        if(lastFrameLength == 1) //Normal display length 
-        {
-            //Gained additional understanding of what this is doing by reading this stack overflow post: https://stackoverflow.com/questions/5195692/is-there-a-way-to-delete-a-character-that-has-just-been-written-using-console-wr
-            Console.Write("\b \b"); //Backspace to clear
-        }
-        else //Different length
-        {
-            //Backspace for each additional length
-            for(int i = 0; i < lastFrameLength; i++)
-            {
-                Console.Write("\b \b");
-            }
-            //Console.Write("");//Add the extra space
-        }
-        Console.Write(frameObj); //Write this frame
-        Thread.Sleep(msecPerFrame); //Make the thread sleep
-        //Console.Write("\b");
+        //Replacing With Threaded Version
     }
-    //Function overload for display frame for code completion to recognize
-    /*private void DisplayFrame(string frameStr, int msecPerFrame)
-    {
-        DisplayFrame(frameStr, msecPerFrame);
-    }*/
 }
