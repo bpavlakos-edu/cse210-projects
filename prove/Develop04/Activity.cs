@@ -164,7 +164,17 @@ class Activity
     //Pausing
     protected void Pause(int durationMsec, int pauseType, bool runSingleThread = false)
     {
-        //Async was removed because of the bugs it created
+        /*
+        //Async was removed because of the bugs it created, here's it's documentation though:
+        //Cancellation tokens (see https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/how-to-cancel-a-task-and-its-children)
+        //How to initalize an async function: https://youtu.be/V2sMXJnDEjM?t=139
+        //Intellisense helped me figure out the actual syntax for this:
+        Task animTask = new Task(new Action(async ()=>{await RequestAnimation(durationMsec, pauseType);}),token); //Start the async function, using the task data type, action data type, and finally a lambda function to call the animation request function
+        //Wait and start were located here: https://learn.microsoft.com/en-us/dotnet/standard/parallel-programming/task-based-asynchronous-programming#creating-and-running-tasks-explicitly
+        animTask.Start(); //Start the animation task
+        tokenSource.CancelAfter(durationMsec); //Request cancellation after the duration in msec
+        Thread.Sleep(durationMsec); //Sleep
+        */
 
         //Disable the cursor marker
         //Credit: http://dontcodetired.com/blog/post/Creating-a-Spinner-Animation-in-a-Console-Application-in-C
