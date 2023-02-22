@@ -187,6 +187,7 @@ class Program
                 new UiOption(new Action(()=>{newSpinner = 5; throw new OperationCanceledException();}),"Rever[S]e Pointer","s"),
                 new UiOption(new Action(()=>{newSpinner = 6; throw new OperationCanceledException();}),"[W]eird","w"),
                 new UiOption(new Action(()=>{newSpinner = 7; throw new OperationCanceledException();}),"[M]ath","m"),
+                new UiOption(new Action(()=>{newSpinner = 8; throw new OperationCanceledException();}),"[A]lphabet","a"),
                 new UiOption(new Action(()=>{throw new OperationCanceledException();}),"[B]ack","b") //Equivalent to exit (don't change the spinner value)
             },
             "" //No Exit Message

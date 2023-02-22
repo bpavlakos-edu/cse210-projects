@@ -357,11 +357,15 @@ class Activity
                 break;
             case 6:
                 //Weird
-                ActivateLoopAnim(durationMsec, new List<string>{"~","\\",":","/","~"}, 250);
+                ActivateLoopAnim(durationMsec, new List<string>{"~","\\",":","/"}, 250);
                 break;
             case 7:
                 //Math
                 ActivateLoopAnim(durationMsec, new List<string>{"+",">","%","/","<","*","="}, 250);
+                break;
+            case 8:
+                //Alphabet
+                ActivateLoopAnim(durationMsec, new List<string>{"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"}, 250);
                 break;
             default:
                 //No display (such as -1 which means the loop handles the request)
