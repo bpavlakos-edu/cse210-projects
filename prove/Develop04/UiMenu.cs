@@ -7,12 +7,19 @@ class UiMenu
     private string _exitMsg = "Now exiting...";
 
     //Constructors
+    //Blank constructor
+    public UiMenu()
+    {
+        
+    }
+    //Fill all attributes
     public UiMenu(List<UiOption> optionList, string exitMsg = "Now exiting...")
     {
         _optionList = optionList.ToList<UiOption>();
         _exitMsg = exitMsg;
     }
 
+    //Use 3 lists to generate the Option List (For legacy code)
     public UiMenu(List<Action> uiActionList, List<string> optionNameList, List<string> hotkeyList, string exitMsg="Now exiting...")
     {
         _optionList = new List<UiOption>();//Clear the UI Option list
@@ -181,10 +188,18 @@ class UiMenu
 //The option in the UI list, triggers the run action and can query a hotkey
 class UiOption
 {
+    //Attributes
     private Action _runAction;
     private String _name;
     private String _hotkey;
 
+    //Constructors
+    //Empty Constructor
+    public UiOption()
+    {
+
+    }
+    //Fill all attributes
     public UiOption(Action runAction, string name, string hotkey)
     {
         _runAction = runAction;
@@ -217,12 +232,13 @@ class UiOption
     {
         _hotkey = hotkey;
     }
-
+    //Methods
+    //Invoke our action
     public void Activate()
     {
         _runAction.Invoke();//Activate the function stored in action
     }
-
+    //Return if the string matches our hotkey
     public bool CheckHotkey(string hotkey)
     {
         return hotkey == _hotkey;
