@@ -4,12 +4,12 @@
 
 /*Ehnacement list:
 1. Created a UI system that processes User input, hotkeys, and runs functions based on their position in the list
-2. Gave the program the ability to force unique prompts, and keep track of when to reset the list
+2. Gave the program the ability to force unique prompts, and keep track of when to reset the list (listing activity only)
 3. Gave the Activities the ability to detect the final cycle
 4. Gave the program Threaded spinners
 5. Gave the program 6 additional spinners
 6. Gave the program the ability to set the spinner type from the menu
-7. Created a UI Menu Class that can be used in other programs
+7. Created a UI Menu Class that can be quickly implemented in other programs
 8. Tracked the number of times
 Todo: 4. Gave the actvities the ability to display "Overtime" in the end sequence
 */
@@ -19,6 +19,7 @@ using System;
 class Program
 {
     //Global Activity Class Setup
+    //List Items, Descriptions, and Names are from the directions: https://byui-cse.github.io/cse210-course-2023/unit04/develop.html
     static BreathingActivity bAct = new BreathingActivity
     (
         "Breathing Activity",
