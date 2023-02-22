@@ -355,6 +355,10 @@ class Activity
                 //Weird
                 ActivateLoopAnim(durationMsec, new List<string>{"~","\\",":","/","~"}, 250);
                 break;
+            case 7:
+                //Math
+                ActivateLoopAnim(durationMsec, new List<string>{"+",">","%","/","<","*","="}, 250);
+                break;
             default:
                 //No display (such as -1 which means the loop handles the request)
                 //Do nothing

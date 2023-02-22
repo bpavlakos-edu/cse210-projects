@@ -7,7 +7,8 @@
 2. Gave the program the ability to force unique prompts, and keep track of when to reset the list
 3. Gave the Activities the ability to detect the final cycle
 4. Gave the program Threaded spinners
-5. Gave the program additional spinners
+5. Gave the program 6 additional spinners
+6. Gave the program the ability to set the spinner type from the menu
 Todo: 4. Gave the actvities the ability to display "Overtime" in the end sequence
 */
 
@@ -25,7 +26,7 @@ class Program
             "Breathe in...",
             "Breathe out..."
         },
-        1
+        0//Default spinner
     );
     static ReflectionActivity rAct = new ReflectionActivity
     (
@@ -38,7 +39,7 @@ class Program
             "Think of a time when you helped someone in need.",
             "Think of a time when you did something truly selfless."
         }, 
-        0, 
+        0, //Default spinner
         new List<string>
         {
             "Why was this experience meaningful to you?",
@@ -63,7 +64,7 @@ class Program
             "When have you felt the Holy Ghost this month?",
             "Who are some of your personal heroes?"
         },
-        -1 //No Animation Loop
+        0 //Default spinner
     );
     
     //Global UI Class setup?
@@ -81,10 +82,10 @@ class Program
         UiActions.Add(new Action(()=>{bAct.Run(true);}));//Breathing activity
         UiActions.Add(new Action(()=>{rAct.Run();}));//Reflection activity
         UiActions.Add(new Action(()=>{lAct.Run();}));//Listing Activity Start
-        //Additional functionality
+        UiActions.Add(new Action(()=>{SetSpinnerStyle();}));//Set the spinner style //Additional functionality
         UiActions.Add(new Action(()=>{throw new OperationCanceledException();})); //Quit
-        List<String> optionName = new List<string>{"Start [B]reathing Activity","Start [R]eflection Activity","Start [L]isting Activity","[Q]uit Program"};
-        List<String> hotkeyList = new List<string>{"b","r","l","q"};
+        List<String> optionName = new List<string>{"Start [B]reathing Activity","Start [R]eflection Activity","Start [L]isting Activity","[S]et Spinner Style","[Q]uit Program"};
+        List<String> hotkeyList = new List<string>{"b","r","l","s","q"};
 
         //Ui Loop
         try
@@ -138,15 +139,79 @@ class Program
         }
         
     }
+    
+
+    static void TestActivity()
+    {
+        Activity testActivity = new Activity("My Activity","Description goes here",new List<string>{"Item A","Item B","Item C"},1);
+        testActivity.Run();
+    }
+
+    static void SetSpinnerStyle()
+    {
+        string[] spinnerNames = {"Regular","Reverse","Pointer","Reverse Pointer","Weird","Math"};
+        int[] spinnerIds = {0,3,4,5,6,7};
+
+        Console.WriteLine("Please Select from the following options: ");
+        for(int i=0;i<spinnerNames.Length;i++)
+        {
+            Console.WriteLine((i+1)+". "+spinnerNames[i]);
+        }
+
+        int newSpinner = GetIntInput("Which spinner would you like to choose? [Enter 0 to cancel]",0,6);
+
+        if(newSpinner != 0)
+        {
+            newSpinner = spinnerIds[newSpinner - 1]; //Get the actual spinner Id from the list
+            bAct.SetSpinnerStyle(newSpinner);
+            rAct.SetSpinnerStyle(newSpinner);
+            lAct.SetSpinnerStyle(newSpinner);
+            new Activity().ShowSpinner(newSpinner, 1500);
+        }
+        //Exit
+    }
+
+    //User input
     static string GetInput(string inMsg)
     {
         Console.Write(inMsg);
         return Console.ReadLine();
     }
 
-    static void TestActivity()
+    static int GetIntInput(string inMsg, int min = 0, int max = 0)
     {
-        Activity testActivity = new Activity("My Activity","Description goes here",new List<string>{"Item A","Item B","Item C"},1);
-        testActivity.Run();
+        while(true) //Repeat until a valid number is found
+        {
+            //Catch parsing errors
+            try 
+            {
+                int returnInt = int.Parse(GetInput(inMsg)); //Parse the user input
+                //Determine if the current integer is a valid number
+                if(min == max) //This means no minimum or maximum was set
+                {
+                    return returnInt;//Exit the while loop by returning the value
+                }
+                else if(returnInt <= max && returnInt >= min) //is the number between the minimum and maximum?
+                {
+                    return returnInt;//Exit the while loop by returning the value
+                }
+                else //Invalid number
+                {
+                    Console.WriteLine($"That's not a number between {min} and {max}, please try again!");
+                }
+            }
+            catch(FormatException) //Not a number
+            {
+                Console.WriteLine($"That's not a valid whole number, please try again!");
+            }
+            catch(ArgumentNullException) //Empty input
+            {
+                Console.WriteLine("Please enter a number to continue!");
+            }
+            catch(OverflowException) //Overflow
+            {
+                Console.WriteLine("That's not a number the program can process, please try again!");
+            }
+        }
     }
 }
