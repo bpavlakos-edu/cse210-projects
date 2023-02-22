@@ -540,7 +540,7 @@ class Activity
     {
         if(overtimeTicks > 0)
         {
-            return ", and {TicksToSecondStr(overtimeTicks) seconds of overtime}!";
+            return $", and {TicksToSecondStr(overtimeTicks)} seconds of overtime!";
         }
         else
         {
