@@ -64,6 +64,16 @@ class Activity
         _spinnerStyle = spinnerStyle;
     }
 
+    public bool GetAllowThreading()
+    {
+        return _allowThreading;
+    }
+
+    public void SetAllowThreading(bool allowThreading)
+    {
+        _allowThreading = allowThreading;
+    }
+
     //Methods
 
     //Main Functionality Flow (Run and loop are Placeholders/templates for subclass overrides)
@@ -573,5 +583,11 @@ class Activity
         {
             return 0; //Not long enough
         }
+    }
+
+    //Toggle threading
+    public void ToggleThreading()
+    {
+        _allowThreading = !_allowThreading;
     }
 }

@@ -19,7 +19,12 @@ class BreathingActivity : Activity
     {
         int cycleTime = GetIntInput("Enter how long you you will hold a breath (in seconds): ",1,15) * 1000; //Custom input for breathing length
         TransitionLoad("Get ready...");
-        _allowThreading = false;
+        //Disable threading if it's enabled
+        bool threadingAllowed = GetAllowThreading();
+        if(threadingAllowed)
+        {
+            SetAllowThreading(false);
+        }
 
         long[] tickTimes = GetTickStartEnd(durationMsec);
         long curTime = tickTimes[0]; //Get the start time
@@ -41,8 +46,12 @@ class BreathingActivity : Activity
             curTime = (DateTime.Now).Ticks; //Update timer
         }
         Console.Clear(); //Flush buffer before exit!
-        _allowThreading = true; //Re-enable threading
-        
+        //Re-enable threading if it was enabled before this loop
+        if(threadingAllowed)
+        {
+            SetAllowThreading(true);
+        }
+
         //Return overtime
         return CalcOvertime(curTime,tickTimes[1]);
     }
