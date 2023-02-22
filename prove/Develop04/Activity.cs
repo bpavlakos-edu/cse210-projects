@@ -317,7 +317,8 @@ class Activity
             case 0:
                 //Spinner
                 //await Task.Factory.StartNew(() => {ActivateLoopAnim(durationMsec, new List<string>{"-","\\","|","/"}, 250);});
-                ActivateLoopAnim(durationMsec, new List<string>{"1","2","3","4"}, 250);;//Debugging
+                ActivateLoopAnim(durationMsec, new List<string>{"-","\\","|","/"}, 250);
+                //ActivateLoopAnim(durationMsec, new List<string>{"1","2","3","4"}, 250);//Debugging
                 break;
             case 1:
                 //Count down timer
