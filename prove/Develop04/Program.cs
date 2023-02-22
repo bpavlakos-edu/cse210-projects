@@ -92,6 +92,7 @@ class Program
                 new UiOption(new Action(()=>{StartActivity(2);}),"Start [L]isting Activity","l"),
                 // new UiOption(new Action(()=>{StartActivity(2);}),"Start S[p]inner Activity","p"),
                 new UiOption(new Action(()=>{SetSpinnerStyleMenu();activityTracker[3]++;}),"[S]et Spinner Style","s"), //Its not really an activity! But we are tracking it for fun
+                new UiOption(new Action(()=>{ThreadingOptionMenu();}),"Change [T]hreading Settings","t"), //Its not really an activity! But we are tracking it for fun
                 new UiOption(new Action(()=>{DisplayStats();}),"[D]isplay Activity Statistics","d"),
                 new UiOption(new Action(()=>{throw new OperationCanceledException();}),"[Q]uit Program","q")
             }
@@ -203,6 +204,45 @@ class Program
             new Activity().ShowSpinner(newSpinner, 3500);
         }
         //Go back to the previous menu
+    }
+
+    //Toggle threading
+    static void ThreadingOptionMenu()
+    {
+        bool newSetting = bAct.GetAllowThreading();
+        UiMenu threadingMenu = new UiMenu
+        (
+            new List<UiOption>
+            {   //Each option should change the new spinner value, and then throw the exception to exit
+                new UiOption(new Action(()=>{newSetting = true; throw new OperationCanceledException();}),"[E]nable Threading","e"),
+                new UiOption(new Action(()=>{newSetting = false; throw new OperationCanceledException();}),"[D]isable Threading","d"),
+                new UiOption(new Action(()=>{throw new OperationCanceledException();}),$"Go [B]ack, and keep Current Setting: {disabledEnabled(newSetting)}","b") //Equivalent to exit (don't change the spinner value)
+            },
+            "" //No exit message
+        );
+        threadingMenu.UiLoop();//Start the threading menu
+        if(newSetting != bAct.GetAllowThreading())
+        {
+            //Update activities
+            bAct.SetAllowThreading(newSetting);
+            rAct.SetAllowThreading(newSetting);
+            lAct.SetAllowThreading(newSetting);
+            
+            GetInput($"Threading {disabledEnabled(newSetting)}, press enter to continue");//Let the user know the option changed
+        }
+        //Go back to the previous menu
+    }
+
+    //Simple string helper, didn't want to repeat it twice, this allows it to be used for other settings too!
+
+    static string disabledEnabled(bool status)
+    {
+        string disOrEn = "dis";
+        if(status) //When it's enabled
+        {
+            disOrEn = "en";
+        }
+        return $"{disOrEn}abled";
     }
 
     //User input
