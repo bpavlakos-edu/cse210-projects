@@ -70,7 +70,7 @@ class Program
         0 //Default spinner
     );
 
-    static int[] activityTracker = {0,0,0,0};
+    static int[] activityTracker = {0,0,0,0}; //Stat tracker
     
     //Global UI Class setup?
     //UiMenu UiMain = new UiMenu()
@@ -78,7 +78,25 @@ class Program
     //UiMain.AddOption(new UiOption(HotkeyString, Action));
     static void Main(string[] args)
     {
+
+        //UI Setup
+        UiMenu UserInterface = new UiMenu(
+            new List<UiOption>()
+            {
+                new UiOption(new Action(()=>{StartActivity(0);}),"Start [B]reathing Activity","b"),
+                new UiOption(new Action(()=>{StartActivity(1);}),"Start [R]eflection Activity","r"),
+                new UiOption(new Action(()=>{StartActivity(2);}),"Start [L]isting Activity","l"),
+                new UiOption(new Action(()=>{SetSpinnerStyle();activityTracker[3]++;}),"[S]et Spinner Style","s"), //Its not really an activity! But we are tracking it for fun
+                new UiOption(new Action(()=>{DisplayStats();}),"[D]isplay Activity Statistics","d"),
+                new UiOption(new Action(()=>{throw new OperationCanceledException();}),"[Q]uit Program","q")
+            }
+        );
+        UserInterface.UiLoop(); //Start the custom class UI loop
+        
+        //Old way to setup the UI
+
         //Ui setup
+        /*
         List<Action> uiActions = new List<Action>(); //Create a list of lambda function calls
         uiActions.Add(new Action(()=>{StartActivity(0);}));//Breathing activity
         uiActions.Add(new Action(()=>{StartActivity(1);}));//Reflection activity
@@ -90,8 +108,8 @@ class Program
         List<string> hotkeyList = new List<string>{"b","r","l","s","d","q"};
 
         UiMenu UserInterface = new UiMenu(uiActions,optionNames,hotkeyList); //New Custom class
-
         UserInterface.UiLoop(); //Start the custom class UI loop
+        */
     }
 
     static void StartActivity(int activityIndex)
