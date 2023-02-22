@@ -3,7 +3,7 @@ class UiMenu
 {
 
     //Attributes
-    private List<UiOption> _optionList;
+    private List<UiOption> _optionList; //Store the UiOption class
     private string _exitMsg = "Now exiting...";
 
     //Constructors
@@ -21,6 +21,24 @@ class UiMenu
             _optionList.Add(new UiOption(uiActionList[i],optionNameList[i],hotkeyList[i]));
         }
         _exitMsg = exitMsg;//Update the exit message
+    }
+
+    //Getters and setters (Please don't modify the menu at runtime! That's crazy!!!)
+    public List<UiOption> GetOptionList()
+    {
+        return _optionList.ToList<UiOption>();
+    }
+    public void SetOptionList(List<UiOption> optionList)
+    {
+        _optionList = optionList.ToList<UiOption>();
+    }
+    public string GetExitMsg()
+    {
+        return _exitMsg;
+    }
+    public void SetExitMsg(string exitMsg)
+    {
+        _exitMsg = exitMsg;
     }
 
     //Public and private Methods
@@ -45,7 +63,7 @@ class UiMenu
         {
             if(_exitMsg != "")
             { 
-                Console.WriteLine(_exitMsg);
+                Console.WriteLine(_exitMsg); //Display non-empty exit messages
             }
             //Do nothing, just return
         }
@@ -95,6 +113,7 @@ class UiMenu
         }
     }
 
+    //Attempt to find the hotkey and activate it
     private void FindHotkey(string hotkey)
     {
         for(int i = 0; i < _optionList.Count; i++)
@@ -173,6 +192,32 @@ class UiOption
         _hotkey = hotkey;
     }
 
+    //Getters and setters (Please don't modify the menu at runtime! That's crazy!!!)
+    public Action GetAction()
+    {
+        return _runAction;
+    }
+    public void SetAction(Action runAction)
+    {
+        _runAction = runAction;
+    }
+    public string GetName()
+    {
+        return _name;
+    }
+    public void SetName(string name)
+    {
+        _name = name;
+    }
+    public string GetHotkey()
+    {
+        return _hotkey;
+    }
+    public void SetHotkey(string hotkey)
+    {
+        _hotkey = hotkey;
+    }
+
     public void Activate()
     {
         _runAction.Invoke();//Activate the function stored in action
@@ -181,10 +226,5 @@ class UiOption
     public bool CheckHotkey(string hotkey)
     {
         return hotkey == _hotkey;
-    }
-
-    public string GetName()
-    {
-        return _name;
     }
 }
