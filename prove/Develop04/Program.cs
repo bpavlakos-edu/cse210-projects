@@ -17,6 +17,10 @@ Ehancement list:
 11. Added time control to the breathing activity and Listing Activity
 12. Gave the actvities the ability to display "Overtime" in the end sequence
 13. Gave the user the option to disable threading, since it can be unpredictable on different hardware
+Additional Improvements that could be made in the future:
+* Activity Import and exporting from a sub menu (JSON serialization)
+* Prompt Modification in the program from a sub menu that detects a class, and any members it might have
+* Programically generating menu settings, or using functions to generate a repetative menu type as a template, that multiple places use and fill with parameters
 */
 
 using System;
