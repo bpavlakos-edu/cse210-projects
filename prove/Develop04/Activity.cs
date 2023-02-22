@@ -339,14 +339,56 @@ class Activity
     //Async Documentation: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/async
     //Documentation for generic lists (list<object>): https://learn.microsoft.com/en-us/dotnet/api/system.collections.arraylist?view=net-7.0#remarks
     {
-        //Replacing With Threaded Version
-        Console.Write("Placeholder Spinner");
+        //Replaced With Threaded Version
+        int frameLen = frameChars.Count;
+        int maxFrame = (durationMsec / msecPerFrame); //Automatically calculate the maximum frame
+
+        //Console.Write(frameChars[0]);//Add an extra space to overrwrite
+        //Console.Write("A");//Add an extra space to overrwrite by a frame
+        for(int curFrame = 0; curFrame < maxFrame; curFrame++)
+        {
+            bool frameShown = DisplayFrame(frameChars[curFrame % frameLen], msecPerFrame); //Increment current frame, and ensure it doesn't exceed the animation length
+            if(!frameShown) //The last frame was not displayed properly
+            {
+                curFrame = maxFrame;//Exit the loop
+            }
+        }
+        lastFrameLengthMem = 0; //Animation has completed, reset the global variable
     }
     //Countdown timer or just a regular timer
     private void ActivateAnimTimer(int durationSec, bool countdownFlag = true)
     {
-        //Replacing With Threaded Version
-        Console.Write("Placeholder Countdown");
+        //Replaced With Threaded Version
+        for(int i = 0; i < durationSec; i++)
+        {
+            //Console.Write(" ");//Add an extra space to overrwrite by a frame
+            //Console.Beep();
+            if(countdownFlag) //Countdown
+            {
+            
+                bool frameShown = DisplayFrame(durationSec - i, 1000);
+                if(!frameShown) //The last frame was not displayed properly
+                {
+                    i = durationSec;//Exit the loop
+                }
+                
+            }
+            else //Count up timer
+            {
+                bool frameShown = DisplayFrame(i, 1000);
+                if(!frameShown) //The last frame was not displayed properly
+                {
+                    i = durationSec;//Exit the loop
+                }
+            }
+            
+            //3-line version:
+            //int boolInt = BitConverter.ToInt32(BitConverter.GetBytes(countdownFlag)); //Convert the boolean to an integer //From: https://learn.microsoft.com/en-us/dotnet/api/system.boolean?view=net-7.0#work-with-booleans-as-binary-values
+            //int iValue = (boolInt * durationSec) + (i * (1 - (2 * boolInt))); //Deactivate durationSec when false, flip i negative when true
+            //DisplayFrame(iValue, 1000); //Display the result
+        }
+
+        lastFrameLengthMem = 0; //Animation has completed, reset the global variable
     }
     //Function overload for using MSEC instead of seconds
     private void ActivateAnimTimerMsec(int durationMsec, bool countdownFlag = true)
