@@ -50,7 +50,7 @@ class Program
             "How can you keep this experience in mind in the future?"
         }
     );
-    ListingActivity lAct = new ListingActivity
+    static ListingActivity lAct = new ListingActivity
     (
         "Listing Activity",
         "This activity will help you reflect on the good things in your life by having you list as many things as you can in a certain area.",
@@ -78,7 +78,7 @@ class Program
         List<Action> UiActions = new List<Action>(); //Create a list of lambda function calls
         UiActions.Add(new Action(()=>{bAct.Run(true);}));//Breathing activity
         UiActions.Add(new Action(()=>{rAct.Run();}));//Reflection activity
-        UiActions.Add(new Action(()=>{}));//Listing Activity Start
+        UiActions.Add(new Action(()=>{lAct.Run();}));//Listing Activity Start
         //Additional functionality
         UiActions.Add(new Action(()=>{throw new OperationCanceledException();})); //Quit
         List<String> optionName = new List<string>{"Start [B]reathing Activity","Start [R]eflection Activity","Start [L]isting Activity","[Q]uit Program"};
