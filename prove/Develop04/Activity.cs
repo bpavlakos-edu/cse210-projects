@@ -150,8 +150,44 @@ class Activity
     protected void Pause(int durationMsec, int pauseType)
     {
         //Async was removed because of the bugs it created
-        //Threading was also experimented with, but ultimately they harmed the stability of the program
+
+        //Non-threaded, for debugging
         RequestAnimation(durationMsec, pauseType);
+        
+        /*
+        //Threaded version is WIP
+        Thread animThread = new Thread(()=>{RequestAnimation(durationMsec, pauseType);});
+        animThread.Start();
+        
+        //Thread.Sleep(durationMsec); //Delay for specified time
+        
+        //Use a seperate thread to wait
+        Thread delayTimer = new Thread(()=>{Thread.Sleep(durationMsec);}); 
+        delayTimer.Start();//Start the timer thread
+        //Record the actual timer desync
+        bool timerSync = delayTimer.Join(durationMsec); //Using Join with a time parameter will make it timeout after a specified time, it returns the status on completion or timeout
+        long delayOffset = (DateTime.Now).Ticks; //Record then the delay timed out
+        if(!timerSync) //The timer timed out!
+        {
+            delayTimer.Join(); //Wait for the timer to end
+            delayOffset = ((DateTime.Now).Ticks) - delayOffset; //Record how long it took to re-sync
+        }
+        else
+        {
+            delayOffset = 0;
+        }
+
+        //Animation Termination Detection
+        //Join with timespan https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread.join?view=net-7.0#system-threading-thread-join(system-timespan)
+        TimeSpan graceWindow = new TimeSpan(delayOffset);
+        bool terminated = animThread.Join(graceWindow);//Order it to join in 0 msec
+        if(!terminated)
+        {
+            animThread.Interrupt(); //Forcibly end a thread early
+        }
+
+        //Console.Beep(); //This fixes it completely!!!
+        */
     }
 
     //Combining Pause with a console write
@@ -319,8 +355,91 @@ class Activity
     }
 
     //Display a single animation frame, accepts objects so that numbers are handled too
-    private void DisplayFrame(object frameObj, int msecPerFrame, int lastFrameLength = 1)
+    private int lastFrameLengthMem = 0; //Private attribute, enables the last frame length to be stored to memory
+    private bool DisplayFrame(object frameObj, int msecPerFrame, int lastFrameLength = 1)
     {
-        //Replacing With Threaded Version
+        //Thread checkpoints for triggering alternate code on exceptions
+        bool madeSpace = false;
+        bool writing = false;
+        bool wrote = false;
+        var lastPos = Console.GetCursorPosition();
+        try
+        {
+            if(true) //Optional flag for ingnoring writing using a global variable
+            {
+                long renderTicksStart = (DateTime.Now).Ticks; //Time how long rendering takes
+                //Allocate space to print
+                if(lastFrameLengthMem == 0) //Last length was 0
+                {
+                    //Console.Write(new string('\b',$"{frame}".Length)); //Create a space to write on
+                    Console.Write(new string(' ',$"{frameObj}".Length)); //Create a space to write on
+                    madeSpace = true;
+                    Console.Write(new string('\b',$"{frameObj}".Length)); //Create a space to write on
+                }
+                else
+                {
+                    // Console.Write(new string((lastFrameLengthMem+" ").ToCharArray()[0],lastFrameLengthMem));
+                    Console.Write(new string(' ',lastFrameLengthMem));
+                    madeSpace = true;
+                    Console.Write(new string('\b',lastFrameLengthMem));
+                }
+                writing = true; //Thread checkpoint 2
+
+                //Write the next frame
+                lastFrameLengthMem = $"{frameObj}".Length; //Update the last frame length memory
+                Console.Write($"{frameObj}{new string('\b',lastFrameLengthMem)}"); //Print this frame, and go back to it's start
+                
+                //Update variables for threading exceptions
+                lastPos = Console.GetCursorPosition();//Store the updated position
+                wrote = true; //We are no longer writing, so if we are interrupted make sure to make the final backspace and clear
+                
+                //Calculated the render delay and subtract it from our sleep time
+                long timeOffset = ((DateTime.Now).Ticks) - renderTicksStart; 
+                TimeSpan delayTime = new TimeSpan(((long)msecPerFrame * 10000)-(timeOffset)); //The syntax for timespan accepts ticks when the data type is "Long" aka "int64"
+                
+                //Sleep until the next frame
+                try
+                {
+                    //Thread sleep by timespan: https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread.sleep?view=net-7.0#system-threading-thread-sleep(system-timespan)
+                    Thread.Sleep(delayTime);
+                }
+                catch (IndexOutOfRangeException) //Sleep delay is negative!!! We're already late!
+                {
+                    //No Sleep
+                    Console.Write(" \b"); //Clear the final character
+                    return false; //We ended early
+                }
+                Console.Write(" \b"); //Clear the final character after sleeping
+                return true; //We rendered this frame
+            }
+        }
+        catch (ThreadInterruptedException) //Early cancellation
+        {
+            if(wrote) //We wrote but are now sleeping
+            {
+                var newPos = Console.GetCursorPosition(); //Get the current position
+                Console.SetCursorPosition(lastPos.Left, lastPos.Top); //Return to the last recorded position before the exception
+                Console.Write(" \b"); //Clear the final character
+                Console.SetCursorPosition(newPos.Left,newPos.Top); //Go back to the position we interrupted
+                lastFrameLengthMem = 0; //Clear the last frame length memory, because we've started another animation
+            }
+            else if(writing) //We are going to write, but we stopped
+            {
+                //Do nothing
+                //Console.ForegroundColor = ConsoleColor.DarkYellow;
+                //Console.Write(" \b"); //Clear the final character
+            }
+            else if(madeSpace) //We made space, but didn't backspace yet
+            {
+                //Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Console.Write((new string('\b',lastFrameLengthMem))+(new string('S',lastFrameLengthMem))+(new string('\b',lastFrameLengthMem)));//Backspace
+            }
+            else //We haven't even made space yet!
+            {
+                //Do nothing
+                //Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            }
+            return false;
+        }
     }
 }
