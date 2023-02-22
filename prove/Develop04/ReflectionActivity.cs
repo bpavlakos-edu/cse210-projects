@@ -56,8 +56,8 @@ class ReflectionActivity : Activity
             }
             //Display the prompt
             string curPrompt = GetRandomMsg(_refQuestions, usedPrompts); //Get a random question
-            //PauseMsg($"> {GetRandomMsg(_refQuestions, usedPrompts)} ",cyclePauseMsec, 0);//Single Line version
-            PauseMsg($"> {curPrompt} ", cyclePauseMsec, 0); //Spinner pause type
+            //PauseMsg($"> {GetRandomMsg(_refQuestions, usedPrompts)} ",cyclePauseMsec, _spinnerStyle);//Single Line version
+            PauseMsg($"> {curPrompt} ", cyclePauseMsec, _spinnerStyle); //Spinner pause type
     
             //Use the spinner animation to generate the new line instead
             curTime = (DateTime.Now).Ticks; //Update the current time

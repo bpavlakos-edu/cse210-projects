@@ -140,7 +140,7 @@ class Activity
         {
             inMsg += Environment.NewLine;
         }
-        PauseMsg(inMsg,durationMsec,0);//Write the message //Get a spinner
+        PauseMsg(inMsg,durationMsec,_spinnerStyle);//Write the message //Get a spinner
         if(clearAllEnd) //Added a flag for this functionality
         {
             Console.Clear();//Clear the console at the end
@@ -196,7 +196,7 @@ class Activity
 
             //Console.Beep(); //This fixes it completely!!!
         }
-        
+
         Console.CursorVisible = true; //Re-enable the cursor display
     }
 
@@ -316,7 +316,7 @@ class Activity
 
     public void ShowSpinner(int spinnerId, int msecDelay)
     {
-        PauseMsg("You have selected the following spinner: ",2500, spinnerId, true);
+        PauseMsg("You have selected the following spinner: ",msecDelay, spinnerId, true);
     }
 
     //Animation helpers
