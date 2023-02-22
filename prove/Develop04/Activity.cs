@@ -8,7 +8,9 @@ class Activity
     private string _description;
     protected List<string> _messageList; //Protected because it needs to be passed to GetRandomMessages as a parameter inside the main loop
     private int _spinnerStyle; //Protected because it needs to be accessible in the main loop
+    //Global flags
     private int _lastFrameLengthMem = 0; //Completely private attribute, enables the last frame length of an animation to be stored to memory
+    protected bool _allowThreading = true; //A controllable flag for areas where threading is known to break!
 
     //Constructors
     public Activity()

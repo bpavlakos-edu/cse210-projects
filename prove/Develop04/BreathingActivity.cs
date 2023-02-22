@@ -19,6 +19,7 @@ class BreathingActivity : Activity
     {
         int cycleTime = GetIntInput("Enter how long you you will hold a breath (in seconds): ",1,15) * 1000; //Custom input for breathing length
         TransitionLoad("Get ready...");
+        _allowThreading = false;
 
         long[] tickTimes = GetTickStartEnd(durationMsec);
         long curTime = tickTimes[0]; //Get the start time
