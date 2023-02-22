@@ -157,9 +157,9 @@ class Activity
         Console.CursorVisible = false;
 
         //Non-threaded, for debugging
-        RequestAnimation(durationMsec, pauseType);
+        //RequestAnimation(durationMsec, pauseType);
         
-        /*
+        
         //Threaded version is WIP
         Thread animThread = new Thread(()=>{RequestAnimation(durationMsec, pauseType);});
         animThread.Start();
@@ -192,7 +192,7 @@ class Activity
         }
 
         //Console.Beep(); //This fixes it completely!!!
-        */
+        
         Console.CursorVisible = true; //Re-enable the cursor display
     }
 

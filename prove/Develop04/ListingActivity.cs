@@ -20,9 +20,7 @@ class ListingActivity : Activity
     {
         _timeExpired = false; //Reset the global variable
         Console.WriteLine("List as many responses as you can to the following prompt:");
-        Console.WriteLine("");
         Console.WriteLine($" --- {GetRandomMsg(_messageList)} ---");//Use GetRandomMessage to pick the prompt
-
         PauseMsg("You may begin in: ",5000,1); //Countdown timer
 
         long[] tickTimes = GetTickStartEnd(durationMsec); //Get the start and end times
