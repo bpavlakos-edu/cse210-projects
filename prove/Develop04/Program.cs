@@ -2,16 +2,17 @@
 //Week 08
 //Created By Bryce Pavlakos
 
-/*Ehnacement list:
+/*Ehancement list:
 1. Created a UI system that processes User input, hotkeys, and runs functions based on their position in the list
 2. Gave the program the ability to force unique prompts, and keep track of when to reset the list (listing activity only)
-3. Gave the Activities the ability to detect the final cycle
+3. Gave the Activities the ability to detect the final cycle, and notify the user
 4. Gave the program threaded spinners, and the ability for any Activity class to request a non-threaded animation display
-5. Gave the program 6 additional spinners
-6. Gave the program the ability to set the spinner type from the menu
-7. Created a UI Menu Class that can be quickly implemented in other programs
-8. Tracked the number of times a user picked an activity, and added an option to display them
-9. Utilized the UiMenu Class to pick spinner types, as a way to demonstrate that UiMenus can be nested
+5. Added threading to the listing activity, to prompt the user when the timer has expired.
+6. Gave the program 6 additional spinners
+7. Gave the program the ability to set the spinner type from the menu
+8. Created a UI Menu Class that can be quickly implemented in other programs
+9. Tracked the number of times a user picked an activity, and added an option to display them
+10. Utilized the UiMenu Class to pick spinner types, as a way to demonstrate that UiMenus can be nested
 Todo: 4. Gave the actvities the ability to display "Overtime" in the end sequence
 */
 
