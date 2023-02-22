@@ -66,6 +66,8 @@ class Program
         },
         0 //Default spinner
     );
+
+    static int[] activtyTracker = {0,0,0};
     
     //Global UI Class setup?
     //UiMenu UiMain = new UiMenu()
