@@ -24,7 +24,7 @@ class ReflectionActivity : Activity
         _refQuestions = refQuestions.ToList<string>(); //Use toList to erase the reference to the original list
     }
 
-    public override void Loop(int durationMsec)
+    public override long Loop(int durationMsec)
     {
         //Special input
         int cyclePauseSec = GetIntInput("How much time do you want to think about each question? (Enter 0 for default): ",0,120);
@@ -72,6 +72,8 @@ class ReflectionActivity : Activity
             curTime = (DateTime.Now).Ticks; //Update the current time
         }
         Console.WriteLine("");
+        
         //Return overtime
+        return CalcOvertime(curTime,tickTimes[1]);
     }
 }

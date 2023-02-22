@@ -74,12 +74,12 @@ class Activity
         {
             TransitionLoad("Get ready...");
         }
-        Loop(durationMsec); //Start the main loop
-        End(durationMsec); //Initalize the end sequence
+        long overtime = Loop(durationMsec); //Start the main loop
+        End(durationMsec, GetOvertimeString(overtime)); //Initalize the end sequence
     }
 
     //Override documentation found here: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/override#example
-    public virtual void Loop(int durationMsec)
+    public virtual long Loop(int durationMsec)
     {
         Console.WriteLine("My extra message will start here.");
         Console.WriteLine("");
@@ -103,10 +103,12 @@ class Activity
             curTime = (DateTime.Now).Ticks; //Update the current time
         }
 
+        return CalcOvertime(curTime,tickTimes[1]);
+
         //Extra end behavior code can go here
     }
 
-    protected void End(int durationMsec)
+    protected void End(int durationMsec, string overtimeStr = "")
     {
         TransitionLoad("Well done!",true,false);
         TransitionLoad($"You have completed another {durationMsec / 1000} seconds of the {_name.ToLower()}.",true,true);
@@ -531,6 +533,45 @@ class Activity
                 //Console.ForegroundColor = ConsoleColor.DarkMagenta;
             }
             return false;
+        }
+    }
+    //Convert Ticks to a string if they aren't 0
+    protected string GetOvertimeString(long overtimeTicks)
+    {
+        if(overtimeTicks > 0)
+        {
+            return TicksToSecondStr(overtimeTicks);
+        }
+        else
+        {
+            return "";
+        }
+    }
+    //Override for overtime string
+    private string GetOvertimeString(long endTime, long targetEndTime, int tickMsecThreshold = 250)
+    {
+        long overtimeTicks = CalcOvertime(endTime, targetEndTime, tickMsecThreshold);
+        return GetOvertimeString(overtimeTicks);
+    }
+    //Convert ticks to a string of seconds
+    private string TicksToSecondStr(long inputTicks)
+    {
+        TimeSpan TimeStorage = new TimeSpan(inputTicks);
+        return $"{TimeStorage.TotalSeconds}";
+    }
+
+
+    //Calculate the overtime, and ignore anything below the threshold
+    protected long CalcOvertime(long endTime, long targetEndTime, int tickMsecThreshold = 250)
+    {
+        long tickDifference = endTime - targetEndTime;
+        if(tickDifference > ((long)(tickMsecThreshold * 10000)))
+        {
+            return tickDifference;
+        }
+        else
+        {
+            return 0;
         }
     }
 }

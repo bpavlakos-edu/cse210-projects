@@ -16,7 +16,7 @@ class ListingActivity : Activity
 
     //Methods
     //New loop functionality, overrides the original, so that's it's triggered on "run"
-    public override void Loop(int durationMsec)
+    public override long Loop(int durationMsec)
     {
         _timeExpired = false; //Reset the global variable
         Console.WriteLine("List as many responses as you can to the following prompt:");
@@ -47,7 +47,9 @@ class ListingActivity : Activity
         }
         Console.WriteLine($"You listed {enterCounter} item{s_string}!");
         Console.WriteLine("");
-        //if(!_loopExited)
+
+        //Return overtime
+        return CalcOvertime(curTime,tickTimes[1]);
     }
 
     private bool ToggleLoopExited()

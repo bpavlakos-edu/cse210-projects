@@ -15,7 +15,7 @@ class BreathingActivity : Activity
     //Override documentation found here: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/override#example
     //Finally understood it by looking at this page: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#1465-override-methods
     //And also noticing that I had the wrong function name!!!
-    public override void Loop(int durationMsec)
+    public override long Loop(int durationMsec)
     {
         int cycleTime = GetIntInput("Enter how long you you will hold a breath (in seconds): ",1,15) * 1000; //Custom input for breathing length
         TransitionLoad("Get ready...");
@@ -41,7 +41,9 @@ class BreathingActivity : Activity
             curTime = (DateTime.Now).Ticks; //Update timer
         }
         Console.Clear(); //Flush buffer before exit!
-
+        _allowThreading = true; //Re-enable threading
+        
         //Return overtime
+        return CalcOvertime(curTime,tickTimes[1]);
     }
 }
