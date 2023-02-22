@@ -1,3 +1,4 @@
+//UI Menu class, displays a list of options, and automatically processes the user's input
 class UiMenu
 {
 
@@ -29,6 +30,7 @@ class UiMenu
         {
             while(true)
             {
+                Console.Clear(); //Reset the console before printing
                 displayOptions();
                 string userInput = GetInput("Select a choice or [hotkey] from the menu: ").ToLower();
                 if(!TryParseIndex(userInput)) //If parsing the index fails
@@ -117,6 +119,7 @@ class UiMenu
     }
 }
 
+//The option in the UI list, triggers the run action and can query a hotkey
 class UiOption
 {
     private Action _runAction;
