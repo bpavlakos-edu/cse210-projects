@@ -12,6 +12,15 @@ class UiMenu
         _exitMsg = exitMsg;
     }
 
+    public UiMenu(List<Action> uiActionList, List<string> optionNameList, List<string> hotkeyList, string exitMsg="Now exiting...")
+    {
+        _optionList = new List<UiOption>();//Clear the UI Option list
+        for(int i = 0; i<uiActionList.Count; i++)
+        {
+            _optionList.Add(new UiOption(uiActionList[i],optionNameList[i],hotkeyList[i]));
+        }
+        _exitMsg = exitMsg;//Update the exit message
+    }
 
     //Public and private Methods
     public void UiLoop()
@@ -30,13 +39,13 @@ class UiMenu
             }
         }
         //The title of: https://stackoverflow.com/questions/10226314/what-is-the-best-way-to-catch-operation-cancelled-by-user-exception helped me find this exception type using intellisense
-        catch (OperationCanceledException)
+        catch (OperationCanceledException) //Exiting this menu
         {
             if(_exitMsg != "")
-            {
-                //Do nothing
+            { 
                 Console.WriteLine(_exitMsg);
             }
+            //Do nothing, just return
         }
     }
 

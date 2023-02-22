@@ -86,8 +86,8 @@ class Program
         UiActions.Add(new Action(()=>{lAct.Run();}));//Listing Activity Start
         UiActions.Add(new Action(()=>{SetSpinnerStyle();}));//Set the spinner style //Additional functionality
         UiActions.Add(new Action(()=>{throw new OperationCanceledException();})); //Quit
-        List<String> optionName = new List<string>{"Start [B]reathing Activity","Start [R]eflection Activity","Start [L]isting Activity","[S]et Spinner Style","[Q]uit Program"};
-        List<String> hotkeyList = new List<string>{"b","r","l","s","q"};
+        List<string> optionName = new List<string>{"Start [B]reathing Activity","Start [R]eflection Activity","Start [L]isting Activity","[S]et Spinner Style","[Q]uit Program"};
+        List<string> hotkeyList = new List<string>{"b","r","l","s","q"};
 
         //Ui Loop
         try
