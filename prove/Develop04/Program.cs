@@ -6,11 +6,12 @@
 1. Created a UI system that processes User input, hotkeys, and runs functions based on their position in the list
 2. Gave the program the ability to force unique prompts, and keep track of when to reset the list (listing activity only)
 3. Gave the Activities the ability to detect the final cycle
-4. Gave the program Threaded spinners
+4. Gave the program threaded spinners, and the ability for any Activity class to request a non-threaded animation display
 5. Gave the program 6 additional spinners
 6. Gave the program the ability to set the spinner type from the menu
 7. Created a UI Menu Class that can be quickly implemented in other programs
-8. Tracked the number of times
+8. Tracked the number of times a user picked an activity, and added an option to display them
+9. Utilized the UiMenu Class to pick spinner types, as a way to demonstrate that UiMenus can be nested
 Todo: 4. Gave the actvities the ability to display "Overtime" in the end sequence
 */
 
@@ -117,7 +118,7 @@ class Program
     {
         if(activityIndex == 0)
         {
-            bAct.Run();
+            bAct.Run(true);
         }
         else if(activityIndex == 1)
         {
@@ -133,9 +134,9 @@ class Program
     static void DisplayStats()
     {
         Console.WriteLine("Activity Completions: ");
-        Console.WriteLine(bAct.GetName()+": ");
-        Console.WriteLine(bAct.GetName()+": ");
-        Console.WriteLine(bAct.GetName()+": ");
+        Console.WriteLine($"{bAct.GetName()}: {activityTracker[0]}");
+        Console.WriteLine($"{rAct.GetName()}: {activityTracker[1]}");
+        Console.WriteLine($"{lAct.GetName()}: {activityTracker[2]}");
         Console.WriteLine($"Opened Spinner Settings: {activityTracker[3]}");
         GetInput("Press Enter to Continue");
     }
@@ -177,13 +178,13 @@ class Program
         UiMenu spinnerMenu = new UiMenu
         (
             new List<UiOption>
-            {
-                new UiOption(new Action(()=>{newSpinner = 0;}),"[R]egular","e"), //Each option should change the new spinner value
-                new UiOption(new Action(()=>{newSpinner = 3;}),"Re[V]erse","v"),
-                new UiOption(new Action(()=>{newSpinner = 4;}),"Poin[T]er","t"),
-                new UiOption(new Action(()=>{newSpinner = 5;}),"Rever[S]e Pointer","s"),
-                new UiOption(new Action(()=>{newSpinner = 6;}),"[W]eird","w"),
-                new UiOption(new Action(()=>{newSpinner = 7;}),"[M]ath","m"),
+            {   //Each option should change the new spinner value, and then throw the exception to exit
+                new UiOption(new Action(()=>{newSpinner = 0; throw new OperationCanceledException();}),"[R]egular","e"), 
+                new UiOption(new Action(()=>{newSpinner = 3; throw new OperationCanceledException();}),"Re[V]erse","v"),
+                new UiOption(new Action(()=>{newSpinner = 4; throw new OperationCanceledException();}),"Poin[T]er","t"),
+                new UiOption(new Action(()=>{newSpinner = 5; throw new OperationCanceledException();}),"Rever[S]e Pointer","s"),
+                new UiOption(new Action(()=>{newSpinner = 6; throw new OperationCanceledException();}),"[W]eird","w"),
+                new UiOption(new Action(()=>{newSpinner = 7; throw new OperationCanceledException();}),"[M]ath","m"),
                 new UiOption(new Action(()=>{throw new OperationCanceledException();}),"[B]ack","b") //Equivalent to exit (don't change the spinner value)
             },
             "" //No Exit Message
