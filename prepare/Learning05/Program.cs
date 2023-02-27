@@ -5,6 +5,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello Learning05 World!");
+        //Step 5: Test the square class
+        Square squareTest = new Square("Red",5);
+        Console.WriteLine($"Area of a 5 by 5 square: {squareTest.GetArea()}");
     }
 }
