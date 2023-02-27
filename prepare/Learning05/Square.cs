@@ -3,7 +3,7 @@ class Square : Shape
 {
     private double _side;
 
-    public Square(double side)
+    public Square(double side, string color="None") : base(color)
     {
         _side = side;
     }
