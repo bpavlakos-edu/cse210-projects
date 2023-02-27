@@ -8,5 +8,8 @@ class Program
         //Step 5: Test the square class
         Square squareTest = new Square("Red",5);
         Console.WriteLine($"Area of a 5 by 5 square: {squareTest.GetArea()}");
+        squareTest.SetSide(3.5);
+        Console.WriteLine($"Area of a 3.5 by 3.5 square: {squareTest.GetArea()}");
+
     }
 }
