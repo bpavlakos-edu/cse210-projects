@@ -1,5 +1,6 @@
 //Shape Abstract Super-Class
-abstract class Shape
+//abstract class Shape
+class Shape
 {
     private string _color;
 
@@ -12,5 +13,9 @@ abstract class Shape
         _color = color;
     }
 
-    public abstract double GetArea();
+    //public abstract double GetArea();
+    public virtual double GetArea()
+    {
+        
+    }
 }
