@@ -79,7 +79,7 @@ class GoalManager
         //Int input (index of property to change), invalid to cancel
         //input / int input, new value [Write new value]
     }
-    //File loading and saving (Overloads)
+    //File loading and saving (Method Overloads)
     public void Save()
     {
         string fileName = GetInput("");
@@ -91,7 +91,24 @@ class GoalManager
         //Load(fileName);
     }
 
+    //Goal Marking
+    public void RecordEvent()
+    {
+        //Consider using UI Menu Here
+        //Int input (index of goal in list), invalid to cancel
+        int goalIndex = GetIntInput("");
+        //_points += _goalList[goalIndex].Mark();
+    }
+
     //File Handling
+    public void Save(string filePath)
+    {
+
+    }
+    public void Load(string filePath)
+    {
+
+    }
 
     //User Input
     private string GetInput(string inMsg)
@@ -99,18 +116,40 @@ class GoalManager
         Console.Write(inMsg);
         return Console.ReadLine();
     }
-    private int GetIntInput(string inMsg)
+    private int GetIntInput(string inMsg, int min=0, int max=0)
     {
+        //Todo: Add Min Max Support
+        //Consider putting ParseInt as it's own function in UiMenu
         while(true)
         {
-            //Consider putting ParseInt as it's own function in UiMenu
             try
             {
                 try
                 {
                     int returnVal = int.Parse(GetInput(inMsg));
                     //Insert min/max control here (throw new ArgumentNullException)
-                    return returnVal;
+                    if(min == max)
+                    {
+                        return returnVal;
+                    }
+                    else if(max < min && returnVal >= min) //When max < min it's Minimum only
+                    {
+
+                    }
+                    /*else if(maximumOnly)
+                    {
+
+                    }*/
+                    else if(returnVal >= min && returnVal <= max)//Check if the input number is in bounds
+                    {
+                        return returnVal;
+                    }
+                    else //Not in bounds
+                    {
+                        //Do nothing continue with loop
+                        //Print message
+                    }
+                    
                 }
                 catch(OverflowException){throw new ArgumentNullException();}
                 catch(FormatException){throw new ArgumentNullException();}
@@ -120,6 +159,12 @@ class GoalManager
                 //Fail message
             }
         }
+    }
+
+    //Utility
+    private Goal GetGoal(string inMsg="Select the goal you want to change:")
+    {
+        return _goalList[GetIntInput(inMsg, 1, _goalList.Count) - 1]; //Get the current goal (max is goalList.count because its -1 the user input)
     }
 
 }
