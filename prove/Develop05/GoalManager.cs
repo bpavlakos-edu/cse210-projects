@@ -79,5 +79,47 @@ class GoalManager
         //Int input (index of property to change), invalid to cancel
         //input / int input, new value [Write new value]
     }
-    //File loading and saving
+    //File loading and saving (Overloads)
+    public void Save()
+    {
+        string fileName = GetInput("");
+        //Save(fileName);
+    }
+    public void Load()
+    {
+        string fileName = GetInput("");
+        //Load(fileName);
+    }
+
+    //File Handling
+
+    //User Input
+    private string GetInput(string inMsg)
+    {
+        Console.Write(inMsg);
+        return Console.ReadLine();
+    }
+    private int GetIntInput(string inMsg)
+    {
+        while(true)
+        {
+            //Consider putting ParseInt as it's own function in UiMenu
+            try
+            {
+                try
+                {
+                    int returnVal = int.Parse(GetInput(inMsg));
+                    //Insert min/max control here (throw new ArgumentNullException)
+                    return returnVal;
+                }
+                catch(OverflowException){throw new ArgumentNullException();}
+                catch(FormatException){throw new ArgumentNullException();}
+            }
+            catch(ArgumentNullException)
+            {
+                //Fail message
+            }
+        }
+    }
+
 }
