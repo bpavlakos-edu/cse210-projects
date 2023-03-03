@@ -66,7 +66,9 @@ class GoalManager
     //Goal List Modification
     public void NewGoal()
     {
-        //_goalList.Add(new Goal(0));
+        //Determine goal Type
+        //Add goal to list
+        //_goalList.Add(new Goal());
     }
     public void DeleteGoal()
     {
@@ -158,11 +160,11 @@ class GoalManager
     {
         try
         {
-            return JsonSerializer.Serialize<GoalManager>(this, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true})??"";
+            return JsonSerializer.Serialize<GoalManager>(this, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
         }
-        catch(NotSupportedException)
+        catch(NotSupportedException e) //This exception has multiple meanings, so we better print it
         {
-            Console.WriteLine("Json is not supported on this computer!");
+            Console.WriteLine($"Error {e.ToString()}");
             return "";
         }
         
@@ -182,9 +184,9 @@ class GoalManager
             {
                 Console.WriteLine($"Error, {e.ToString()}");
             }
-            catch(NotSupportedException e)
+            catch(NotSupportedException e) //This exception has multiple meanings, so we better print it
             {
-                Console.WriteLine($"Incompatible file! {e.ToString()}");
+                Console.WriteLine($"Error, {e.ToString()}");
             }
             catch(ArgumentNullException e)
             {
@@ -225,7 +227,7 @@ class GoalManager
                     }
                     /*else if(maximumOnly)
                     {
-
+                        return returnVal;
                     }*/
                     else if(returnVal >= min && returnVal <= max)//Check if the input number is in bounds
                     {
