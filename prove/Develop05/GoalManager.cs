@@ -5,7 +5,7 @@ class GoalManager
     //Attributes
     private List<Goal> _goalList = new List<Goal>();
     private long _points = 0;
-    //private string _userName = "";
+    private string _userName = "My";
     
     //Constructors
     //Blank
@@ -49,8 +49,14 @@ class GoalManager
     {
         _points = points;
     }
-    //GetName
-    //SetName
+    public string GetUserName()
+    {
+        return _userName;
+    }
+    public void SetUserName(string userName)
+    {
+        _userName = userName;
+    }
 
     //Methods
     //Main Display
@@ -102,6 +108,24 @@ class GoalManager
         //Int input (index of goal in list), invalid to cancel
         int goalIndex = GetIntInput("");
         //_points += _goalList[goalIndex].Mark();
+    }
+
+    //Ported from Journal.cs in Develop 02
+    //Change Goal Manager Owner name (obey grammar rules with "'s")
+    public void ChangeName()
+    {
+        string uInput = GetInput("Please Enter Your Name (Leave blank to cancel): ");
+        if(uInput != "")
+        {
+            if(uInput.ToLower().Substring(uInput.Length - 1) == "s") //Check if the last letter is "s"
+            { 
+                _userName = uInput + "'"; //James -> James' Goals
+            }
+            else
+            {
+                _userName = uInput + "'s"; //John -> John's Goals
+            }
+        }
     }
 
     //File Management
@@ -156,10 +180,12 @@ class GoalManager
     }
 
     //JSON Helpers
+    //Json Serialization is based on Develop02 Journal.cs  "ToJson()" method
     private string ToJson()
     {
         try
         {
+            
             return JsonSerializer.Serialize<GoalManager>(this, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
         }
         catch(NotSupportedException e) //This exception has multiple meanings, so we better print it
@@ -169,12 +195,14 @@ class GoalManager
         }
         
     }
+    //Json Deserialization is based on Develop02 Journal.cs "FromJson()" method
     private void FromJson(string jsonText)
     {
         if(jsonText != "")
         {
             try
             {
+                
                 GoalManager newGoalManager = JsonSerializer.Deserialize<GoalManager>(jsonText, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
                 _goalList = newGoalManager.GetGoalList();
                 _points = newGoalManager.GetPoints();
