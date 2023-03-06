@@ -67,12 +67,11 @@ class GoalManager
     public void Display()
     {
         //Consider using UI Menu here (Programically generate options)
-        /* Console.WriteLine("The goals are:");
+        Console.WriteLine("The goals are:");
         for(int i = 0; i < _goalList.Count; i++)
         {
-            //Console.WriteLine(_goalList[i].ToDisplayString(i));
-        } */
-        
+            Console.WriteLine(_goalList[i].ToDisplayString(i));
+        }
     }
     //Goal List Modification
     public void NewGoal()

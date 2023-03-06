@@ -12,5 +12,27 @@
 
 class Goal
 {
+    //Attributes
+
+    //Constructors
+    public Goal()
+    {
+
+    }
+
+    //Getters and Setters
+
+    //Methods
+
+    public virtual string ToDisplayString()
+    {
+        return ""; //Placeholder
+    }
+    //Actual method that's not overridden
+    //This is so we can automatically append "{index+1}. " to each sub classes ToDisplayString automatically!
+    public string ToDisplayString(int index)
+    {
+        return $"{index+1}. "+ToDisplayString();
+    }
     
 }
