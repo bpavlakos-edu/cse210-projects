@@ -5,7 +5,7 @@ class Program
     static GoalManager _myGoals = new GoalManager(); //Create the goal manager object
     static void Main(string[] args)
     {
-        
+        UiLoop();
     }
     static void UiLoop()
     {

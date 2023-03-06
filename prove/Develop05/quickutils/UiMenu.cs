@@ -42,17 +42,36 @@ namespace QuickUtils
         //Generate a menu from a list of any data type, and return it's value when chosen
         //WIP 
         //Needs tested and needs to customize the back message
-        //Also needs to accept the other message parameters too!
+        //It needs to have the ability to adjust the option strings too, if only we could add a template
         /*
         Accepts:
         A list of any data type
-        A lambda function, preferably one with a return value stored inside of it
+        A lambda function, preferably one with a variable stored inside of it to set to the return value, and accepts a parameter being the same data type as the list of objects
+        Example:
+        List<object> stringOptions = new List<object>{"A","B","C","D"}; //Create a list of objects that have the value we want to pick from
+        string resultVar = ""; //Make a variable to return
+        UiMenu listTestMenu = new UiMenu(stringOptions,new Action<object>((inStr)=>{resultVar = (string)inStr;}));
+        listTestMenu.UiLoop();
+
+        This method uses composite formatting to generate the option string: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/strings/#composite-formatting
         */
-        public UiMenu(List<object> inputCollection, Action<object> lambdaToStoreReturn, bool haveExit = true, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="Now exiting...")
+        public UiMenu(List<object> inputCollection, Action<object> lambdaToStoreReturn, List<string> displayStrings = null, bool haveExit = true, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="Now exiting...")
         {
             for(int i=0; i < inputCollection.Count; i++)
             {
                 int captureIdx = i; //Capture the index outside the lambda, so it doesn't get overwritten by the next loop cycle
+                string displayString = i+"";
+                if(displayString != null)
+                {
+                    try
+                    {
+                        displayString = displayStrings[i]; //
+                    }
+                    catch(IndexOutOfRangeException)
+                    {
+                        //Don't change 
+                    } 
+                }
                 _optionList.Add(
                     new UiOption(
                     //Lambda function to call the function passed to this constructor, using the item from the list as it's parameter
@@ -61,10 +80,10 @@ namespace QuickUtils
                         lambdaToStoreReturn(inputCollection[captureIdx]); //Store the value using the lambda function inserted as a parameter
                         throw new OperationCanceledException(); //Exit the menu upon completion of this Menu option
                     }),
-                    inputCollection[i]+"","")
+                    displayString)
                 );
             }
-            //Decide if this should be an option or not
+            //Add an exit option, if that's applicable
             if(inputCollection.Count > 0 && haveExit)
             {
                 _optionList.Add(new UiOption(new Action(()=>{throw new OperationCanceledException();}),"[C]ancel","c"));

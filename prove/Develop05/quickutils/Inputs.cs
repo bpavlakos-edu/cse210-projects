@@ -10,7 +10,7 @@ https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-spec
 6. Found Info on how to use "using" properly, and why C# makes librarys harder: https://stackoverflow.com/a/11893468 
 7. Tried step 4 again and it worked... I must have mistyped something!*/
 
-//To add  this to a project: "using inp = QuickUtils.Inputs"
+//To add this to a project: "using inp = QuickUtils.Inputs"
 //To use it: "inp.GetInput()"
 
 namespace QuickUtils /*Library name*/
