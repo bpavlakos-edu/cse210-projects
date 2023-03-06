@@ -87,9 +87,10 @@ class GoalManager
             new Action(()=>{/* _goalList.Add(new EternalGoal()) */;}),
             new Action(()=>{/* _goalList.Add(new ChecklistGoal()) */;})
         };
+        //Create a UiMenu that will add a new Child of the Goal class to the Goal list
         UiMenu addGoalMenu = new UiMenu(
             new List<object>(){0,1,2}, //Each of these numbers corresponds to an index in the addToListActions
-            new Action<object>((pickedOptionIdx) =>{addToListActions[(int)pickedOptionIdx].Invoke();}), //Directly use the result to call the appropriate _goalList.add() action
+            new Action<object>((pickedOptionIdx) => {addToListActions[(int)pickedOptionIdx].Invoke();}), //Directly use the result to call the appropriate _goalList.add() action
             new List<string>{"&Simple Goal","&Eternal Goal","&Checklist Goal"}, //Use the new UiOption constructor to auto generate the hotkeys using the index of "&"
             true, //Yes this menu can cancel and return to the previous menu
             "The types of Goals are:", //The menu message
@@ -135,6 +136,7 @@ class GoalManager
         int newPoints = _goalList[goalIndex].Mark(); //Mark the goal as completed
         if(newPoints != 0)
         {
+            _points += newPoints;
             Console.WriteLine($"You now have {newPoints} points.");
         }
         else

@@ -81,12 +81,10 @@ class Goal
 
     //Methods
     //Main Functionality
-    
     //Return the display string 
-    //Example: "[*] My goal Name (Description)"
     public virtual string ToDisplayString()
     {
-        return $"[{GetMarkChar()}] {_name} ({_desc})";
+        return $"[{GetMarkChar()}] {_name} ({_desc})"; //Example: "[*] My goal Name (Description)"
     }
     //Automatically append the number to the start of the display string, even if it's overridden by a sub class
     public string ToDisplayString(int index)
@@ -96,9 +94,6 @@ class Goal
     //Mark a goal as finished
     public virtual int Mark()
     {
-        //$"Congratulations! You have earned {newPoints} points!"
-        
-
         _compCount++; //Increment the completion count
         Console.WriteLine($"Congratulations! You have earned {_value} points!");
         return _value; //Return the points the user gained
@@ -120,6 +115,6 @@ class Goal
     //Will be overridden by sub-classes to control completion status
     protected virtual bool IsCompleted()
     {
-        return _compCount > 1;
+        return _compCount > 0; //By default the completion status will be if _compCount > 0
     }
 }
