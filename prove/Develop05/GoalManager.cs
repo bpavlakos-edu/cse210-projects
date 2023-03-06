@@ -1,4 +1,6 @@
 using System.Text.Json; //Lets us use JSON serialization and deserialization
+using UiMenu = QuickUtils.UiMenu; //Importing the custom UI menu class
+using UiOption = QuickUtils.UiOption; //Importing the custom Ui Option class
 
 class GoalManager
 {
@@ -24,7 +26,7 @@ class GoalManager
     //Generate from file path
     public GoalManager(string filePath)
     {
-        //Not implemented
+        Load(filePath); //Use existing functionality to load the goal manager to the attributes
     }
     //Copy from an existing goal manager
     public GoalManager(GoalManager newGoalManager)
@@ -65,11 +67,12 @@ class GoalManager
     public void Display()
     {
         //Consider using UI Menu here (Programically generate options)
-        Console.WriteLine("The goals are:");
+        /* Console.WriteLine("The goals are:");
         for(int i = 0; i < _goalList.Count; i++)
         {
             //Console.WriteLine(_goalList[i].ToDisplayString(i));
-        }
+        } */
+        
     }
     //Goal List Modification
     public void NewGoal()
