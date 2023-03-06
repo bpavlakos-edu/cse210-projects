@@ -11,7 +11,9 @@ class GoalManager
     //Blank
     public GoalManager()
     {
-
+        _goalList = new List<Goal>();
+        _points = 0;
+        _userName = "My";
     }
     //Fill all attributes
     public GoalManager(List<Goal> goalList, long points)
@@ -59,11 +61,11 @@ class GoalManager
     }
 
     //Methods
-    //Main Display
+    //Main Display (for goals)
     public void Display()
     {
         //Consider using UI Menu here (Programically generate options)
-        Console.WriteLine("");
+        Console.WriteLine("The goals are:");
         for(int i = 0; i < _goalList.Count; i++)
         {
             //Console.WriteLine(_goalList[i].ToDisplayString(i));
@@ -73,6 +75,15 @@ class GoalManager
     public void NewGoal()
     {
         //Determine goal Type
+        //"The types of Goals are: "
+        /*
+        "Which type of goal would you like to create? "
+        "What is the name of your goal? "
+        "What is the short description of it?"
+        "What is the amount of points associated with this goal?"
+        "How many times does this goal need to be accomplished for a bonus? "
+        "What is the bonus for accomplishing it that many times? "
+        */
         //Add goal to list
         //_goalList.Add(new Goal());
     }
@@ -92,13 +103,13 @@ class GoalManager
     //File loading and saving (Method Overloads)
     public void Save()
     {
-        string fileName = GetInput("");
-        //Save(fileName);
+        string fileName = GetInput("What is the filename for the goal file? ");
+        Save(fileName);
     }
     public void Load()
     {
-        string fileName = GetInput("");
-        //Load(fileName);
+        string fileName = GetInput("What is the filename for the goal file? ");
+        Load(fileName);
     }
 
     //Goal Marking
@@ -106,7 +117,7 @@ class GoalManager
     {
         //Consider using UI Menu Here
         //Int input (index of goal in list), invalid to cancel
-        int goalIndex = GetIntInput("");
+        int goalIndex = GetIntInput("Which goal did you accomplish? ");
         //_points += _goalList[goalIndex].Mark();
     }
 
@@ -265,15 +276,16 @@ class GoalManager
                     {
                         //Do nothing continue with loop
                         //Print message
+                        Console.WriteLine("Sorry, that's not a valid number, please try again!");
                     }
                     
                 }
                 catch(OverflowException){throw new ArgumentNullException();}
                 catch(FormatException){throw new ArgumentNullException();}
             }
-            catch(ArgumentNullException)
+            catch(ArgumentNullException)//Throw every exception into this block of code
             {
-                //Fail message
+                Console.WriteLine("Sorry, that's not a valid number, please try again!"); //Fail message
             }
         }
     }
