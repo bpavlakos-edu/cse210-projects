@@ -99,6 +99,11 @@ namespace QuickUtils /*Library name*/
         {
             return GetIntInput(inMsg, new int[]{min,min},newLine);
         }
+        //Int input with minimum and maximum as integers and not an array
+        public static int GetIntInput(string inMsg, int min, int max, bool newLine = false)
+        {
+            return GetIntInput(inMsg, new int[]{min,max}, newLine);
+        }
 
         //Float input
 
