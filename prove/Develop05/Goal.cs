@@ -11,10 +11,10 @@ using inp = QuickUtils.Inputs;
 class Goal
 {
     //Attributes
-    protected string _name;
-    protected string _desc;
-    protected int _value;
-    protected int _compCount;
+    protected string _name; //The display name of the goal
+    protected string _desc; //The short description
+    protected int _value; //The point value of the goal
+    protected int _compCount; //The completion counter for this goal, used to determine if the goal is completed or not
     //Constructors
     //Blank Constructor
     public Goal()
@@ -86,10 +86,10 @@ class Goal
     {
         return $"[{GetMarkChar()}] {_name} ({_desc})"; //Example: "[*] My goal Name (Description)"
     }
-    //Automatically append the number to the start of the display string, even if it's overridden by a sub class
+    //Automatically append the number in a for loop, to the start of the display string, even if it's overridden by a sub class
     public string ToDisplayString(int index)
     {
-        return $"{index+1}. "+ToDisplayString();
+        return $"{index+1}. "+ToDisplayString(); //Example: "1. [*] My goal Name (Description)"
     }
     //Mark a goal as finished
     public virtual int Mark()

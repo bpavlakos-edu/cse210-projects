@@ -39,7 +39,7 @@ class Program
                 new UiOption(new Action(()=>{_myGoals.Load();}),"&Load Goals"), //Load the goals
                 new UiOption(new Action(()=>{_myGoals.RecordEvent();}),"&Record Event"), //Mark a goal as done
                 new UiOption(new Action(()=>{_myGoals.ChangeName();}),"&Change User Name"), //Change the user name
-                //new UiOption(new Action(()=>{_myGoals.ChangeName();}),"&Edit Goals"), //Change the user name
+                //new UiOption(new Action(()=>{_myGoals.EditGoals();}),"&Edit Goals"), //Change the user name
                 new UiOption(new Action(()=>{throw new OperationCanceledException();}),"E&xit") //Exit the menu
             },
             Environment.NewLine+$"You have {_myGoals.GetPoints()} points."+Environment.NewLine+"Menu options:", //The intro message, it's special because it has 3 lines, including one that needs to be dynamically updated
