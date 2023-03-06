@@ -97,7 +97,7 @@ class GoalManager
             //All the other attributes should be set to default, which hides the exit/cancel message by default when this style of constructor is used
         );
         addGoalMenu.UiLoop(); //Start the add goal menu
-        //The alternative is to use a default UiMenu, but every action needs a "throw new OperationCancelledError()
+        //The alternative is to use a default UiMenu, but every action needs a "throw new OperationCancelledError();" at the end
     }
     public void DeleteGoal()
     {
