@@ -3,6 +3,7 @@ Enhancment list:
 1. Implemented a new and improved UiMenu class, that can auto generate hotkeys
 2. Utilized namespaces to reduce reduntant code across multiple classes
 3. Added the ability to assign a name to the goal list
+4. Added better prompts for saving and loading so the user isn't confused
 */
 
 using System;
@@ -46,6 +47,6 @@ class Program
             "Now exiting...",
             "  " //2 blank spaces as shown in the example video
         );
-        mainMenu.UiLoop(); //Start the main menu loop
+        mainMenu.UiLoop(false); //Start the main menu loop, don't clear the console ever
     }
 }

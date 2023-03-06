@@ -1,9 +1,7 @@
 //For Mark()
-//$"Congratulations! You have earned {newPoints} points!"
-//$"You now have {newPoints} points."
 
 //For ToDisplayString
-//$"{i+1} [GetMark()] {_name} ({_desc})" 
+
 
 //For initalization
 
@@ -48,7 +46,7 @@ class Goal
     }
 
     //Getters and Setters
-    public string GetName(string name)
+    public string GetName()
     {
         return _name;
     }
@@ -56,7 +54,7 @@ class Goal
     {
         _name = name;
     }
-    public string GetDesc(string desc)
+    public string GetDesc()
     {
         return _desc;
     }
@@ -64,7 +62,7 @@ class Goal
     {
         _desc = desc;
     }
-    public int GetValue(int value)
+    public int GetValue()
     {
         return _value;
     }
@@ -72,7 +70,7 @@ class Goal
     {
         _value = value;
     }
-    public int GetCompCount(int compCount)
+    public int GetCompCount()
     {
         return _compCount;
     }
@@ -81,19 +79,47 @@ class Goal
         _compCount = compCount;
     }
 
-    
-
     //Methods
-
+    //Main Functionality
+    
+    //Return the display string 
+    //Example: "[*] My goal Name (Description)"
     public virtual string ToDisplayString()
     {
-        return ""; //Placeholder
+        return $"[{GetMarkChar()}] {_name} ({_desc})";
     }
-    //Actual method that's not overridden
-    //This is so we can automatically append "{index+1}. " to each sub classes ToDisplayString automatically!
+    //Automatically append the number to the start of the display string, even if it's overridden by a sub class
     public string ToDisplayString(int index)
     {
         return $"{index+1}. "+ToDisplayString();
     }
-    
+    //Mark a goal as finished
+    public virtual int Mark()
+    {
+        //$"Congratulations! You have earned {newPoints} points!"
+        
+
+        _compCount++; //Increment the completion count
+        Console.WriteLine($"Congratulations! You have earned {_value} points!");
+        return _value; //Return the points the user gained
+    }
+
+    //Utility
+    protected string GetMarkChar()
+    {
+        if(IsCompleted())
+        {
+            return "*";
+        }
+        else
+        {
+            return " ";
+        }
+    }
+    //Evaluate if this goal has been completed or not
+    //Will be overridden by sub-classes to control completion status
+    protected virtual bool IsCompleted()
+    {
+        return _compCount > 1;
+    }
 }

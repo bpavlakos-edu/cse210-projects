@@ -96,7 +96,7 @@ class GoalManager
             "Which type of goal would you like to create?" //The input prompt
             //All the other attributes should be set to default, which hides the exit/cancel message by default when this style of constructor is used
         );
-        addGoalMenu.UiLoop(); //Start the add goal menu
+        addGoalMenu.UiLoop(false); //Start the add goal menu
         //The alternative is to use a default UiMenu, but every action needs a "throw new OperationCancelledError();" at the end
     }
     public void DeleteGoal()
@@ -115,13 +115,15 @@ class GoalManager
     //File loading and saving (Method Overloads)
     public void Save()
     {
-        string fileName = GetInput("What is the filename for the goal file? ");
-        Save(fileName);
+        //string fileName = GetInput("What is the filename for the goal file? "); //Original
+        string fileName = GetInput("What is the filename you would like to save the goal file as? ");
+        Save(fileName); //Save the file by calling the actual save file method
     }
     public void Load()
     {
-        string fileName = GetInput("What is the filename for the goal file? ");
-        Load(fileName);
+        //string fileName = GetInput("What is the filename for the goal file? "); //Original
+        string fileName = GetInput("What is the filename of the goal file you want to load? ");
+        Load(fileName); //Load the file by calling the actual load file method
     }
 
     //Goal Marking
@@ -130,7 +132,15 @@ class GoalManager
         //Consider using UI Menu Here
         //Int input (index of goal in list), invalid to cancel
         int goalIndex = GetIntInput("Which goal did you accomplish? ");
-        //_points += _goalList[goalIndex].Mark();
+        int newPoints = _goalList[goalIndex].Mark(); //Mark the goal as completed
+        if(newPoints != 0)
+        {
+            Console.WriteLine($"You now have {newPoints} points.");
+        }
+        else
+        {
+            Console.WriteLine("That goal has been completed already.");
+        }
     }
 
     //Ported from Journal.cs in Develop 02
