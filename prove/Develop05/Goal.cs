@@ -100,7 +100,7 @@ class Goal
     }
 
     //Utility
-    protected string GetMarkChar()
+    protected string GetMarkChar() //The originally planned name was "GetMark"
     {
         if(IsCompleted())
         {
@@ -113,7 +113,7 @@ class Goal
     }
     //Evaluate if this goal has been completed or not
     //Will be overridden by sub-classes to control completion status
-    protected virtual bool IsCompleted()
+    protected virtual bool IsCompleted() //The originally planned name was "GetStatus"
     {
         return _compCount > 0; //By default the completion status will be if _compCount > 0
     }
