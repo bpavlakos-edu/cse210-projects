@@ -5,15 +5,17 @@ namespace QuickUtils
     class UiOption
     {
         //Attributes
-        private Action _runAction = new Action(()=>{}); //Action to run
-        private String _name = ""; //Display Name
-        private String _hotkey = ""; //Hotkey for activation
+        private Action _runAction; //Action to run
+        private String _name; //Display Name
+        private String _hotkey; //Hotkey for activation
 
         //Constructors
         //Empty Constructor
         public UiOption()
         {
-
+            _runAction = new Action(()=>{});
+            _name = "";
+            _hotkey = "";
         }
         //Fill all attributes
         public UiOption(Action runAction, string name, string hotkey)

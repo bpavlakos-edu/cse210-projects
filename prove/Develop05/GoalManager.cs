@@ -109,6 +109,23 @@ class GoalManager
                 //Do nothing
                 break;
         }
+
+        /* UiMenu newGoalMenu = new UiMenu(
+            new List<UiOption>
+            {
+                new UiOption(
+                    new Action(()=>
+                    {
+                        _goalList.Add(new GoalType());
+                        throw new OperationCanceledException(); //Exit this menu after completion
+                    }),
+                    "&Simple Goal"
+                ),
+                new UiOption(
+
+                ),
+            }
+        ); */
     }
     public void DeleteGoal()
     {
