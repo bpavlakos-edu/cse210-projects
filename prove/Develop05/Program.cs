@@ -1,3 +1,9 @@
+/*
+Enhancment list:
+1. Implemented a new and improved UiMenu class, that can auto generate hotkeys
+2. Utilized namespaces to reduce reduntant code across multiple classes
+*/
+
 using System;
 using UiMenu = QuickUtils.UiMenu; //Importing the custom UI menu class
 using UiOption = QuickUtils.UiOption; //Importing the custom Ui Option class
@@ -12,7 +18,7 @@ class Program
     static void UiLoop()
     {
 
-        Console.WriteLine($"You have {_myGoals.GetPoints()} points.");
+        //Console.WriteLine($"You have {_myGoals.GetPoints()} points.");
         //Console.WriteLine("Menu options:");
         //Console.WriteLine("Select a choice from the menu: ");
         //New UIMenu
@@ -28,7 +34,7 @@ class Program
                 new UiOption(new Action(()=>{_myGoals.NewGoal();}),"Create &New Goal"),
                 new UiOption(new Action(()=>{_myGoals.NewGoal();}),"Create &New Goal"),
             },
-            "Menu options:",
+            $"You have {_myGoals.GetPoints()} points."+Environment.NewLine+"Menu options:",
             "Select a choice or [hotkey] from the menu",
             "Now exiting..."
         );
