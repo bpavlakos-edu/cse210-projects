@@ -83,7 +83,7 @@ class GoalManager
         //Add to list actions are stored in lambda functions, to be called by the Action that the menu will use with each item
         List<Action> addToListActions = new List<Action>
         {
-            new Action(()=>{/* _goalList.Add(new SimpleGoal()) */;}),
+            new Action(()=>{_goalList.Add(new SimpleGoal());}),
             new Action(()=>{/* _goalList.Add(new EternalGoal()) */;}),
             new Action(()=>{/* _goalList.Add(new ChecklistGoal()) */;})
         };
