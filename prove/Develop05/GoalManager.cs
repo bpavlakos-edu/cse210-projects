@@ -66,7 +66,7 @@ class GoalManager
     //Main Display (for goals)
     public void Display()
     {
-        Console.WriteLine("The goals are:");
+        Console.WriteLine($"{_userName} goals are:");
         for(int i = 0; i < _goalList.Count; i++)
         {
             Console.WriteLine(_goalList[i].ToDisplayString(i));
@@ -82,6 +82,33 @@ class GoalManager
         */
         //Add goal to list
         //_goalList.Add(new GoalType(0));
+        int goalType = -1;
+        UiMenu goalTypeMenu = new UiMenu(
+            new List<object>(){0,1,2},
+            new Action<object>((listItem) =>{goalType = (int)listItem;}), //Store the result
+            new List<string>{"&Simple Goal","&Eternal Goal","&Checklist Goal"},
+            true, //Yes this menu can cancel
+            "The types of Goals are:", //The menu message
+            "Which type of goal would you like to create?" //The input prompt
+            //All the other attributes should be set to default, which hides the exit message
+        );
+        goalTypeMenu.UiLoop();
+        //Create the goals
+        switch (goalType)
+        {
+            case(0):
+                //_goalList.Add(new SimpleGoal());
+                break;
+            case(1):
+                //_goalList.Add(new EternalGoal());
+                break;
+            case(2):
+                //_goalList.Add(new ChecklistGoal());
+                break;
+            default:
+                //Do nothing
+                break;
+        }
     }
     public void DeleteGoal()
     {

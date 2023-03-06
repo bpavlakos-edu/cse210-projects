@@ -2,6 +2,7 @@
 Enhancment list:
 1. Implemented a new and improved UiMenu class, that can auto generate hotkeys
 2. Utilized namespaces to reduce reduntant code across multiple classes
+3. Added the ability to assign a name to the goal list
 */
 
 using System;
@@ -42,7 +43,8 @@ class Program
             },
             Environment.NewLine+$"You have {_myGoals.GetPoints()} points."+Environment.NewLine+"Menu options:", //The intro message, it's special because it has 3 lines, including one that needs to be dynamically updated
             "Select a choice or [hotkey] from the menu:",
-            "Now exiting..."
+            "Now exiting...",
+            "  " //2 blank spaces as shown in the example video
         );
         mainMenu.UiLoop(); //Start the main menu loop
     }
