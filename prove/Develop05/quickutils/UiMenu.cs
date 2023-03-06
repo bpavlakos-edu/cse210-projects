@@ -65,7 +65,7 @@ namespace QuickUtils
                 {
                     try
                     {
-                        displayString = displayStrings[i]; //
+                        displayString = displayStrings[i]; //Use the entry from the display strings parameter
                     }
                     catch(IndexOutOfRangeException)
                     {
