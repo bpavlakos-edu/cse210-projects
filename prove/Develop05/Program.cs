@@ -2,8 +2,13 @@ using System;
 
 class Program
 {
+    static GoalManager _myGoals = new GoalManager();
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello Develop05 World!");
+        
+    }
+    static void UiLoop()
+    {
+        
     }
 }
