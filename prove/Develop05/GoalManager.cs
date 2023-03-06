@@ -80,52 +80,24 @@ class GoalManager
         /*
         "Which type of goal would you like to create? "
         */
-        //Add goal to list
-        //_goalList.Add(new GoalType(0));
-        int goalType = -1;
-        UiMenu goalTypeMenu = new UiMenu(
-            new List<object>(){0,1,2},
-            new Action<object>((listItem) =>{goalType = (int)listItem;}), //Store the result
-            new List<string>{"&Simple Goal","&Eternal Goal","&Checklist Goal"},
-            true, //Yes this menu can cancel
+        //Add to list actions are stored in lambda functions, to be called by the Action that the menu will use with each item
+        List<Action> addToListActions = new List<Action>
+        {
+            new Action(()=>{/* _goalList.Add(new SimpleGoal()) */;}),
+            new Action(()=>{/* _goalList.Add(new EternalGoal()) */;}),
+            new Action(()=>{/* _goalList.Add(new ChecklistGoal()) */;})
+        };
+        UiMenu addGoalMenu = new UiMenu(
+            new List<object>(){0,1,2}, //Each of these numbers corresponds to an index in the addToListActions
+            new Action<object>((pickedOptionIdx) =>{addToListActions[(int)pickedOptionIdx].Invoke();}), //Directly use the result to call the appropriate _goalList.add() action
+            new List<string>{"&Simple Goal","&Eternal Goal","&Checklist Goal"}, //Use the new UiOption constructor to auto generate the hotkeys using the index of "&"
+            true, //Yes this menu can cancel and return to the previous menu
             "The types of Goals are:", //The menu message
             "Which type of goal would you like to create?" //The input prompt
-            //All the other attributes should be set to default, which hides the exit message
+            //All the other attributes should be set to default, which hides the exit/cancel message by default when this style of constructor is used
         );
-        goalTypeMenu.UiLoop();
-        //Create the goals
-        switch (goalType)
-        {
-            case(0):
-                //_goalList.Add(new SimpleGoal());
-                break;
-            case(1):
-                //_goalList.Add(new EternalGoal());
-                break;
-            case(2):
-                //_goalList.Add(new ChecklistGoal());
-                break;
-            default:
-                //Do nothing
-                break;
-        }
-
-        /* UiMenu newGoalMenu = new UiMenu(
-            new List<UiOption>
-            {
-                new UiOption(
-                    new Action(()=>
-                    {
-                        _goalList.Add(new GoalType());
-                        throw new OperationCanceledException(); //Exit this menu after completion
-                    }),
-                    "&Simple Goal"
-                ),
-                new UiOption(
-
-                ),
-            }
-        ); */
+        addGoalMenu.UiLoop(); //Start the add goal menu
+        //The alternative is to use a default UiMenu, but every action needs a "throw new OperationCancelledError()
     }
     public void DeleteGoal()
     {
