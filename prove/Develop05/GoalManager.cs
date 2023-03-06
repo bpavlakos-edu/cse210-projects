@@ -78,14 +78,9 @@ class GoalManager
         //"The types of Goals are: "
         /*
         "Which type of goal would you like to create? "
-        "What is the name of your goal? "
-        "What is the short description of it?"
-        "What is the amount of points associated with this goal?"
-        "How many times does this goal need to be accomplished for a bonus? "
-        "What is the bonus for accomplishing it that many times? "
         */
         //Add goal to list
-        //_goalList.Add(new Goal());
+        //_goalList.Add(new GoalType(0));
     }
     public void DeleteGoal()
     {
@@ -196,7 +191,7 @@ class GoalManager
     {
         try
         {
-            
+            //Uses JSON settings to include fields and indentation
             return JsonSerializer.Serialize<GoalManager>(this, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
         }
         catch(NotSupportedException e) //This exception has multiple meanings, so we better print it
@@ -213,11 +208,12 @@ class GoalManager
         {
             try
             {
-                
+                //Uses JSON settings to include fields and indentation
                 GoalManager newGoalManager = JsonSerializer.Deserialize<GoalManager>(jsonText, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
+                //Set current goal manager values to the ones from the deserialized object
                 _goalList = newGoalManager.GetGoalList();
                 _points = newGoalManager.GetPoints();
-                //_name = newGoalManager.GetName();
+                _userName = newGoalManager.GetUserName();
             }
             catch(JsonException e)
             {
@@ -241,8 +237,8 @@ class GoalManager
     //User Input
     private string GetInput(string inMsg)
     {
-        Console.Write(inMsg);
-        return Console.ReadLine();
+        Console.Write(inMsg); //Write the message
+        return Console.ReadLine(); //Read the input
     }
     private int GetIntInput(string inMsg, int min=0, int max=0)
     {
@@ -291,7 +287,7 @@ class GoalManager
     }
 
     //Utility
-    private Goal GetGoal(string inMsg="Select the goal you want to change:")
+    private Goal GetGoal(string inMsg="Select the goal you want to change: ")
     {
         return _goalList[GetIntInput(inMsg, 1, _goalList.Count) - 1]; //Get the current goal (max is goalList.count because its -1 the user input)
     }
