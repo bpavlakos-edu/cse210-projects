@@ -66,7 +66,6 @@ class GoalManager
     //Main Display (for goals)
     public void Display()
     {
-        //Consider using UI Menu here (Programically generate options)
         Console.WriteLine("The goals are:");
         for(int i = 0; i < _goalList.Count; i++)
         {

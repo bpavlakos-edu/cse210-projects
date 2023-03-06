@@ -40,7 +40,7 @@ class Program
                 //new UiOption(new Action(()=>{_myGoals.ChangeName();}),"&Edit Goals"), //Change the user name
                 new UiOption(new Action(()=>{throw new OperationCanceledException();}),"E&xit") //Exit the menu
             },
-            $"You have {_myGoals.GetPoints()} points."+Environment.NewLine+"Menu options:", //The intro message, it's special because it has two lines
+            Environment.NewLine+$"You have {_myGoals.GetPoints()} points."+Environment.NewLine+"Menu options:", //The intro message, it's special because it has 3 lines, including one that needs to be dynamically updated
             "Select a choice or [hotkey] from the menu:",
             "Now exiting..."
         );
