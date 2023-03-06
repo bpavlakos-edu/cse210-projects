@@ -1,4 +1,4 @@
-using System.Text.Json;
+using System.Text.Json; //Lets us use JSON serialization and deserialization
 
 class GoalManager
 {
