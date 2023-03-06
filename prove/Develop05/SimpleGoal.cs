@@ -20,7 +20,8 @@ class SimpleGoal : Goal
 
     //Getters and Setters: All getters and setters are inherited from the base class
 
-    //Methods
+    //Unique Methods (the rest are inherited from "Goal"):
+    //Override Mark() to make it only return points when it hasn't been completed yet
     public override int Mark()
     {
         if(!IsCompleted()) //Only mark it if it's not completed
@@ -32,5 +33,4 @@ class SimpleGoal : Goal
             return 0; //Return 0 points, because nothing happened
         }
     }
-
 }
