@@ -48,6 +48,40 @@ class Goal
     }
 
     //Getters and Setters
+    public string GetName(string name)
+    {
+        return _name;
+    }
+    public void SetName(string name)
+    {
+        _name = name;
+    }
+    public string GetDesc(string desc)
+    {
+        return _desc;
+    }
+    public void SetDesc(string desc)
+    {
+        _desc = desc;
+    }
+    public int GetValue(int value)
+    {
+        return _value;
+    }
+    public void SetValue(int value)
+    {
+        _value = value;
+    }
+    public int GetCompCount(int compCount)
+    {
+        return _compCount;
+    }
+    public void SetCompCount(int compCount)
+    {
+        _compCount = compCount;
+    }
+
+    
 
     //Methods
 
