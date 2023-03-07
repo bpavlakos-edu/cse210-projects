@@ -83,9 +83,9 @@ class GoalManager
         //Add to list actions are stored in lambda functions, to be called by the Action that the menu will use with each item
         List<Action> addToListActions = new List<Action>
         {
-            new Action(()=>{_goalList.Add(new SimpleGoal());}),
-            new Action(()=>{/* _goalList.Add(new EternalGoal()) */;}),
-            new Action(()=>{/* _goalList.Add(new ChecklistGoal()) */;})
+            new Action(()=>{_goalList.Add(new SimpleGoal(true));}), //Remember, having true in the constructor will trigger the user input version!
+            new Action(()=>{/* _goalList.Add(new EternalGoal(true)) */;}),
+            new Action(()=>{/* _goalList.Add(new ChecklistGoal(true)) */;})
         };
         //Create a UiMenu that will add a new Child of the Goal class to the Goal list
         UiMenu addGoalMenu = new UiMenu(
@@ -141,7 +141,7 @@ class GoalManager
         }
         else
         {
-            Console.WriteLine("That goal has been completed already.");
+            Console.WriteLine("That goal has been completed already!");
         }
     }
 

@@ -1,11 +1,3 @@
-//For Mark()
-
-//For ToDisplayString
-
-
-//For initalization
-
-
 using Inp = QuickUtils.Inputs;
 
 class Goal
