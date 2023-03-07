@@ -1,9 +1,10 @@
 /*
 Enhancment list:
-1. Implemented a new and improved UiMenu class, that can auto generate hotkeys
-2. Utilized namespaces to reduce reduntant code across multiple classes
-3. Added the ability to assign a name to the goal list
-4. Added better prompts for saving and loading so the user isn't confused
+1. Implemented a new and improved UiMenu class
+2. Implemented auto generated hotkeys for UiOptions
+3. Utilized namespaces to reduce reduntant code across multiple classes
+4. Added the ability to assign a name to the goal list, and display it
+5. Added better prompts for saving and loading so the user isn't confused
 */
 
 using System;
