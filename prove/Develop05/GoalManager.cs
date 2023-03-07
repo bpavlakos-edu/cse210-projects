@@ -1,11 +1,10 @@
 using System.Text.Json; //Lets us use JSON serialization and deserialization
 using System.Text.Json.Serialization;
-using System.Text.Json.Nodes;
+//using System.Text.Json.Nodes;
 using UiMenu = QuickUtils.UiMenu; //Importing the custom UI menu class
 using UiOption = QuickUtils.UiOption; //Importing the custom Ui Option class
-using System.Runtime.Serialization;
+//using System.Runtime.Serialization;
 
-[DataContract]
 class GoalManager
 {
     //How to serialize private members: https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/required-properties
@@ -52,6 +51,11 @@ class GoalManager
         _goalList = newGoalManager.GetGoalList();
         _points = newGoalManager.GetPoints();
         _userName = newGoalManager.GetUserName();
+    }
+    //Create a Goal Manager using a flat list
+    public GoalManager(List<object> dataList)
+    {
+
     }
 
     //Getters and setters
@@ -399,62 +403,74 @@ class GoalManager
 
     private void LoadBinaryFile(string filePath)
     {
-        using(FileStream binaryStream = File.OpenRead(filePath))
+        try
         {
-            BinaryReader binReader = new BinaryReader(binaryStream); //Turn the binary stream into a binary reader so we can use it
-
-            //Read the header to make sure we are reading a file with the correct format
-            char[] headerByte = binReader.ReadChars(4);
-            if(string.Concat(headerByte) != "GOAL")
+            using(FileStream binaryStream = File.OpenRead(filePath))
             {
-                Console.WriteLine("Error! The GOAL file header is missing, this is not a valid file!");
-                return; //Return early
-            }
+                BinaryReader binReader = new BinaryReader(binaryStream); //Turn the binary stream into a binary reader so we can use it
 
-            //Start reading the data
-
-            //Read the goal list goal entries
-            int goalListCount = binReader.ReadInt32(); //Get the number of goals in the goal list
-            List<Goal> newGoalList = new List<Goal>(); //Initalize a blank goal list
-            for (int i = 0; i < goalListCount; i++)
-            {
-                int goalType = (int)binReader.ReadByte(); //Identify the goal type of this entry
-                //All goals need these attributes read from the file
-                string name = binReader.ReadString(); //Name
-                string desc = binReader.ReadString(); //Description
-                int value = binReader.ReadInt32(); //Value
-                int compCount = binReader.ReadInt32(); //Completion count
-                //Add the goal based on the type read from the goalType byte
-                switch(goalType)
+                //Read the header to make sure we are reading a file with the correct format
+                char[] headerByte = binReader.ReadChars(4);
+                if(string.Concat(headerByte) != "GOAL")
                 {
-                    case(0): //Simple Goal
-                        newGoalList.Add(new SimpleGoal(name, desc, value, compCount));
-                        break;
-                    case(1): //Eternal Goal
-                        newGoalList.Add(new EternalGoal(name, desc, value, compCount));
-                        break;
-                    case(2): //Checklist goal
-                        //Read additional attributes
-                        int bonusCompGoal = binReader.ReadInt32(); //Bonus Completion Goal
-                        int bonusValue = binReader.ReadInt32(); //Bonus Value
-                        newGoalList.Add(new ChecklistGoal(name, desc, value, bonusCompGoal, bonusValue, compCount));
-                        break;
-                    default: //Invalid goal type
-                        //Do nothing
-                        Console.WriteLine($"Error! Invalid goal type: {goalType}"); //Okay, fine, alert the user!
-                        break;
+                    Console.WriteLine("Error! The GOAL file header is missing, this is not a valid file!");
+                    return; //Return early
                 }
+
+                //Start reading the data
+
+                //Read the goal list goal entries
+                int goalListCount = binReader.ReadInt32(); //Get the number of goals in the goal list
+                List<Goal> newGoalList = new List<Goal>(); //Initalize a blank goal list
+                for (int i = 0; i < goalListCount; i++)
+                {
+                    int goalType = (int)binReader.ReadByte(); //Identify the goal type of this entry
+                    //All goals need these attributes read from the file
+                    string name = binReader.ReadString(); //Name
+                    string desc = binReader.ReadString(); //Description
+                    int value = binReader.ReadInt32(); //Value
+                    int compCount = binReader.ReadInt32(); //Completion count
+                    //Add the goal based on the type read from the goalType byte
+                    switch(goalType)
+                    {
+                        case(0): //Simple Goal
+                            newGoalList.Add(new SimpleGoal(name, desc, value, compCount));
+                            break;
+                        case(1): //Eternal Goal
+                            newGoalList.Add(new EternalGoal(name, desc, value, compCount));
+                            break;
+                        case(2): //Checklist goal
+                            //Read additional attributes
+                            int bonusCompGoal = binReader.ReadInt32(); //Bonus Completion Goal
+                            int bonusValue = binReader.ReadInt32(); //Bonus Value
+                            newGoalList.Add(new ChecklistGoal(name, desc, value, bonusCompGoal, bonusValue, compCount));
+                            break;
+                        default: //Invalid goal type
+                            //Do nothing
+                            Console.WriteLine($"Error! Invalid goal type: {goalType}"); //Okay, fine, alert the user!
+                            return;//Return early
+                    }
+                }
+
+                //Read all additional GoalManager parameters
+                long points = binReader.ReadInt64(); //Points, it's a long, so it's 64 bytes long!!!
+                string userName = binReader.ReadString(); //User name
+
+                //Now finally update the properties of this GoalManager, if we don't make it here, it means something went wrong, so we don't want to save corrupted values anyways
+                _goalList = newGoalList.ToList<Goal>();
+                _points = points;
+                _userName = userName;
             }
-
-            //Read all additional GoalManager parameters
-            long points = binReader.ReadInt64(); //Points, it's a long, so it's 64 bytes long!!!
-            string userName = binReader.ReadString(); //User name
-
-            //Now finally update the properties of this GoalManager
-            _goalList = newGoalList.ToList<Goal>();
-            _points = points;
-            _userName = userName;
         }
+        catch(IOException e)
+        {
+            Console.WriteLine($"File Loading failed, IO Error! {e}");
+        }
+        catch(ArgumentException e)
+        {
+            Console.WriteLine($"File Loading failed, Argument Exception! {e}");
+        }
+        
     }
 
     //Method to quickly write a string and its string length
