@@ -1,10 +1,13 @@
 /*
 Enhancment list:
-1. Implemented a new and improved UiMenu class
-2. Implemented auto generated hotkeys for UiOptions
-3. Utilized namespaces to reduce reduntant code across multiple classes
-4. Added the ability to assign a name to the goal list, and display it
-5. Added better prompts for saving and loading so the user isn't confused
+- Implemented a new and improved UiMenu class
+- Implemented auto generated hotkeys for UiOptions
+- Utilized namespaces to reduce reduntant code across multiple classes
+- Added the ability to assign a name to the goal list, and display it
+- Added better prompts for saving and loading so the user isn't confused
+- Created support for binary reading and writing of user save data
+- Added the ability to have negative goal types, by typing in negative numbers
+- Utilized the long data type to store user points, to allow for a higher maximum number
 */
 
 using System;
