@@ -116,4 +116,11 @@ class Goal
     {
         return _compCount > 0; //By default the completion status will be if _compCount > 0
     }
+    //Utility
+    //Convert to List<Object>
+    public virtual List<object> ToObjectList()
+    {
+        return new List<object>(){_name, _desc, _value, _compCount};
+    }
+
 }

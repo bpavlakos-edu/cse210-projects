@@ -10,18 +10,20 @@ class GoalManager
     //How to serialize private members: https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/required-properties
     //Note that the import in the example I used (example 2) is incorrect! It should be "using System.Text.Json.Serialization", not "using System.Text.Json"!
     //Also you need a seperate tag for serialzation: https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/immutability?source=recommendations&pivots=dotnet-7-0#non-public-property-accessors
+    /*
+    Failed attempts at using private fields in JSON:
+    [JsonPropertyName("propertyNameGoesHere")] //Does nothing
+    [JsonRequired] //Does nothing
+    [JsonInclude] //Throws an error
+    */
+
+
     //Attributes
-    //[JsonPropertyName("goalList")]
-    //[JsonRequired]
-    //[JsonInclude]
+
     private List<Goal> _goalList = new List<Goal>() ;
-    //[JsonPropertyName("points")]
-    //[JsonRequired]
-    //[JsonInclude]
+
     private long _points = 0;
-    //[JsonPropertyName("userName")]
-    //[JsonRequired]
-    //[JsonInclude]
+
     private string _userName = "My";
     
     //Constructors
@@ -123,18 +125,31 @@ class GoalManager
             //All remaining fields of the goal manager
             long points = (long)dataList[offset];
             offset++;
-            string name = (string)dataList[offset];
+            string userName = (string)dataList[offset];
             offset++;//We don't really need it at this point...
+
+            //Write the new values to the current goal manager
+            _goalList = newGoalList.ToList<Goal>();
+            _points = points;
+            _userName = userName;
         }
         catch(ArgumentOutOfRangeException e)
         {
             Console.WriteLine($"Error! Offset was misaligned! {e.ToString()}");
         }
     }
+    //Generate the List<object> equivalent of the GoalManager, for using in JSON files
     public List<object> GetGoalManager()
     {
-        List<object> returnList = new List<object>();
-        return new List<object>();
+        List<object> newDataList = new List<object>();
+        newDataList.Add(_goalList.Count);
+        for(int i = 0; i < _goalList.Count; i++)
+        {
+            newDataList.AddRange(_goalList[i].ToObjectList());//Add this goal as an object list
+        }
+        newDataList.Add(_points);
+        newDataList.Add(_userName);
+        return newDataList.ToList<object>();
     }
 
     //Methods

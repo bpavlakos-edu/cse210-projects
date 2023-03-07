@@ -80,4 +80,14 @@ class ChecklistGoal : Goal
     {
         return _compCount >= _bonusCompGoal; //The completion criteria for this is if _compCount == _bonusCompGoal
     }
+    //Utility Overrides
+    //To List<object>
+    public override List<object> ToObjectList()
+    {
+        List<object> returnList = base.ToObjectList(); //Get the inital list from the base constructor
+        returnList.Insert(0, 2); //Insert the Goal List type identifier
+        returnList.Add(_bonusCompGoal);
+        returnList.Add(_bonusValue);
+        return returnList; //Return the return list
+    }
 }

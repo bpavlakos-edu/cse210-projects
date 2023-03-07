@@ -33,4 +33,12 @@ class EternalGoal : Goal
         _compCount--; //Always subtract 1 to prevent _compCount from increasing, ensuring this goal is never "completed"
         return base.Mark(); //Use the existing code from the base class to return the value of this goal, and print the completion message
     }
+    //Utility Overrides
+    //To List<object>
+    public override List<object> ToObjectList()
+    {
+        List<object> returnList = base.ToObjectList(); //Get the inital list from the base constructor
+        returnList.Insert(0, 1); //Insert the Goal List type identifier
+        return returnList; //Return the return list
+    }
 }

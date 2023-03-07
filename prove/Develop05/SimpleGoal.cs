@@ -40,4 +40,12 @@ class SimpleGoal : Goal
             return 0; //Return 0 points, because nothing happened
         }
     }
+    //Utility Overrides
+    //To List<object>
+    public override List<object> ToObjectList()
+    {
+        List<object> returnList = base.ToObjectList(); //Get the inital list from the base constructor
+        returnList.Insert(0, 0); //Insert the Goal List type identifier
+        return returnList; //Return the return list
+    }
 }
