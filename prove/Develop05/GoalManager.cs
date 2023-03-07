@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 //using System.Text.Json.Nodes;
 using UiMenu = QuickUtils.UiMenu; //Importing the custom UI menu class
 using UiOption = QuickUtils.UiOption; //Importing the custom Ui Option class
+using Inp = QuickUtils.Inputs; //Importing the custom Inputs class
 //using System.Runtime.Serialization;
 
 class GoalManager
@@ -225,44 +226,49 @@ class GoalManager
     //File loading and saving (Method Overloads), uses JSON
     public void Save()
     {
-        //string fileName = GetInput("What is the filename for the goal file? "); //Original
-        string fileName = GetInput("What is the filename you would like to save the goal JSON file as? ");
+        //string fileName = Inp.GetInput("What is the filename for the goal file? "); //Original
+        string fileName = Inp.GetInput("What is the filename you would like to save the goal JSON file as? ");
         Save(fileName); //Save the file by calling the actual save file method
     }
     public void Load()
     {
-        //string fileName = GetInput("What is the filename for the goal file? "); //Original
-        string fileName = GetInput("What is the filename of the goal JSON file you want to load? ");
+        //string fileName = Inp.GetInput("What is the filename for the goal file? "); //Original
+        string fileName = Inp.GetInput("What is the filename of the goal JSON file you want to load? ");
         Load(fileName); //Load the file by calling the actual load file method
     }
     //Binary Loading and Saving
     public void LoadData()
     {
-        string fileName = GetInput("What is the filename of the goal data file you want to load? ");
+        string fileName = Inp.GetInput("What is the filename of the goal data file you want to load? ");
         LoadBinaryFile(fileName); //Load a binary file
     }
     public void SaveData()
     {
-        string fileName = GetInput("What is the filename you would like to save the goal data file as? ");
+        string fileName = Inp.GetInput("What is the filename you would like to save the goal data file as? ");
         SaveBinaryFile(fileName); //Save the file in binary form
     }
 
     //Goal Marking
     public void RecordEvent()
     {
-        //Consider using UI Menu Here
-        //Int input (index of goal in list), invalid to cancel
         Display(); //Display the goals before asking which one the user completed
-        int goalIndex = GetIntInput("Which goal did you accomplish? ",1,_goalList.Count);
-        int newPoints = _goalList[goalIndex-1].Mark(); //Mark the goal as completed
-        if(newPoints != 0)
+        int goalIndex = Inp.GetIntInput("Which goal did you accomplish? (enter 0 to cancel): ",0,_goalList.Count); //Ask for the index of the goal they want to change
+        if(goalIndex == 0)
         {
-            _points += newPoints;
-            Console.WriteLine($"You now have {newPoints} points.");
+            //Do nothing, the user wants to go back
         }
         else
         {
-            Console.WriteLine("That goal has been completed already!");
+            int newPoints = _goalList[goalIndex-1].Mark(); //Mark the goal as completed
+            if(newPoints != 0)
+            {
+                _points += newPoints;
+                Console.WriteLine($"You now have {newPoints} points.");
+            }
+            else
+            {
+                Console.WriteLine("That goal has been completed already!");
+            }
         }
     }
 
@@ -270,7 +276,7 @@ class GoalManager
     //Change Goal Manager Owner name (obey grammar rules with "'s")
     public void ChangeName()
     {
-        string uInput = GetInput("Please Enter Your Name (Leave blank to cancel): ");
+        string uInput = Inp.GetInput("Please Enter Your Name (Leave blank to cancel): ");
         if(uInput != "")
         {
             if(uInput.ToLower().Substring(uInput.Length - 1) == "s") //Check if the last letter is "s"
@@ -389,11 +395,13 @@ class GoalManager
     }
 
     //User Input
+    /*
     private string GetInput(string inMsg)
     {
         Console.Write(inMsg); //Write the message
         return Console.ReadLine(); //Read the input
     }
+    //Todo: Replace with QuickUtils.Inputs
     private int GetIntInput(string inMsg, int min=0, int max=0)
     {
         //Todo: Add Min Max Support
@@ -414,10 +422,10 @@ class GoalManager
                     {
                         return returnVal;
                     }
-                    /*else if(maximumOnly)
-                    {
-                        return returnVal;
-                    }*/
+                    //else if(maximumOnly)
+                    //{
+                    //    return returnVal;
+                    //}
                     else if(returnVal >= min && returnVal <= max)//Check if the input number is in bounds
                     {
                         return returnVal;
@@ -438,12 +446,12 @@ class GoalManager
                 Console.WriteLine("Sorry, that's not a valid number, please try again!"); //Fail message
             }
         }
-    }
+    }*/
 
     //Utility
     private Goal GetGoal(string inMsg="Select the goal you want to change: ")
     {
-        return _goalList[GetIntInput(inMsg, 1, _goalList.Count) - 1]; //Get the current goal (max is goalList.count because its -1 the user input)
+        return _goalList[Inp.GetIntInput(inMsg, 1, _goalList.Count) - 1]; //Get the current goal (max is goalList.count because its -1 the user input)
     }
     //Binary Writing
     private void SaveBinaryFile(string filePath)
