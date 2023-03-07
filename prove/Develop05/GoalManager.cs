@@ -16,8 +16,6 @@ class GoalManager
     [JsonRequired] //Does nothing
     [JsonInclude] //Throws an error
     */
-
-
     //Attributes
 
     private List<Goal> _goalList = new List<Goal>() ;
@@ -314,7 +312,8 @@ class GoalManager
         try
         {
             //Uses JSON settings to include fields and indentation
-            return JsonSerializer.Serialize<GoalManager>(this, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
+            //return JsonSerializer.Serialize<GoalManager>(this, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
+            return JsonSerializer.Serialize<List<object>>(GetGoalManager(),new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
         }
         catch(NotSupportedException e) //This exception has multiple meanings, so we better print it
         {
@@ -331,7 +330,9 @@ class GoalManager
             try
             {
                 //Uses JSON settings to include fields and indentation
-                GoalManager newGoalManager = JsonSerializer.Deserialize<GoalManager>(jsonText, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
+                //GoalManager newGoalManager = JsonSerializer.Deserialize<GoalManager>(jsonText, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
+                List<object> dataList = JsonSerializer.Deserialize<List<object>>(jsonText, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true}); //Generate a list of objects using the JsonText
+                GoalManager newGoalManager = new GoalManager(dataList);
                 //Set current goal manager values to the ones from the deserialized object
                 _goalList = newGoalManager.GetGoalList();
                 _points = newGoalManager.GetPoints();
