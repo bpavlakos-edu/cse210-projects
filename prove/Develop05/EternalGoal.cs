@@ -23,6 +23,10 @@ class EternalGoal : Goal
     {
         //Empty because the base class handles filling all attributes
     }
+    public EternalGoal(BinaryReader binReader) : base(binReader)
+    {
+        //Empty because the base class handles filling all attributes
+    }
 
     //Getters and Setters: 
     //All getters and setters are inherited from the base class
@@ -40,5 +44,11 @@ class EternalGoal : Goal
         List<object> returnList = base.ToObjectList(); //Get the inital list from the base constructor
         returnList.Insert(0, 1); //Insert the Goal List type identifier
         return returnList; //Return the return list
+    }
+    //Write to a binary writer
+    public override void WriteGoal(BinaryWriter binWriter)
+    {
+        binWriter.Write((byte) 1); //Write this goal's type identifier as a byte
+        base.WriteGoal(binWriter); //Use the base class function to write the rest of the data
     }
 }

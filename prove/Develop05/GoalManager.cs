@@ -90,10 +90,12 @@ class GoalManager
         _points = newGoalManager.GetPoints();
         _userName = newGoalManager.GetUserName();
     }
+    //Set a goal manager using a list of objects
     public void SetGoalManager(List<object> dataList)
     {
         try
         {
+            //This is similar to binary reading, where the list is the data entries all stored inside one big list
             int offset = 0;
             int goalListCount = (int)dataList[0];
             offset++;
@@ -140,11 +142,12 @@ class GoalManager
     public List<object> GetGoalManager()
     {
         List<object> newDataList = new List<object>();
-        newDataList.Add(_goalList.Count);
-        for(int i = 0; i < _goalList.Count; i++)
+        newDataList.Add(_goalList.Count); //Add the list count, so we can read it when loading
+        for(int i = 0; i < _goalList.Count; i++) //Store all goals
         {
-            newDataList.AddRange(_goalList[i].ToObjectList());//Add this goal as an object list
+            newDataList.AddRange(_goalList[i].ToObjectList());//Add this goal as an object list to the object list
         }
+        //Add the remaining fields
         newDataList.Add(_points);
         newDataList.Add(_userName);
         return newDataList.ToList<object>();

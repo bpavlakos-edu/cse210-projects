@@ -18,15 +18,23 @@ class ChecklistGoal : Goal
         _bonusCompGoal = Inp.GetIntInputMin("How many times does this goal need to be accomplished for a bonus? ", 1);
         _bonusValue = Inp.GetIntInput("What is the bonus for accomplishing it that many times? ");
     }
+    //Fill All Fields
     public ChecklistGoal(string name, string desc, int value, int bonusCompGoal, int bonusValue, int compCount = 0) : base(name, desc, value, compCount)
     {
         _bonusCompGoal = bonusValue;
-        _compCount = compCount;
+        _bonusValue = bonusValue;
     }
+    //Fill using a list of objects
     public ChecklistGoal(List<object> dataList, int offset) : base(dataList, offset)
     {
         _bonusCompGoal = (int)dataList[offset+4];
-        _bonusCompGoal = (int)dataList[offset+5];
+        _bonusValue = (int)dataList[offset+5];
+    }
+    //Fill by reading from a binary reader
+    public ChecklistGoal(BinaryReader binReader) : base(binReader)
+    {
+        _bonusCompGoal = binReader.ReadInt32();
+        _bonusValue = binReader.ReadInt32();
     }
     //Getters and setters
     public int GetBonusCompGoal()
@@ -89,5 +97,13 @@ class ChecklistGoal : Goal
         returnList.Add(_bonusCompGoal);
         returnList.Add(_bonusValue);
         return returnList; //Return the return list
+    }
+    public override void WriteGoal(BinaryWriter binWriter)
+    {
+        binWriter.Write((byte) 2); //Write this goal's type identifier as a byte
+        base.WriteGoal(binWriter); //Use the base class function to write most of the parameters
+        //Write the extra data
+        binWriter.Write(_bonusCompGoal);
+        binWriter.Write(_bonusValue);
     }
 }

@@ -28,13 +28,6 @@ class Goal
         _value = Inp.GetIntInput("What is the amount of points associated with this goal? ");
         _compCount = 0; //It will always be 0 by defualt
     }
-    public Goal(List<object> dataList, int offset)
-    {
-        _name = (string)dataList[offset];
-        _desc = (string)dataList[offset + 1];
-        _value = (int)dataList[offset + 2];
-        _compCount = (int)dataList[offset + 3];
-    }
     //Fill all attributes
     public Goal(string name, string desc, int value, int compCount = 0)
     {
@@ -42,6 +35,22 @@ class Goal
         _desc = desc;
         _value = value;
         _compCount = compCount;
+    }
+    //Fill all attributes using a list of objects
+    public Goal(List<object> dataList, int offset)
+    {
+        _name = (string)dataList[offset];
+        _desc = (string)dataList[offset + 1];
+        _value = (int)dataList[offset + 2];
+        _compCount = (int)dataList[offset + 3];
+    }
+    //Fill all attributes from a binary reader (This should never be activated on it's own!!!)
+    public Goal(BinaryReader binReader)
+    {
+        _name = binReader.ReadString();
+        _desc = binReader.ReadString();
+        _value = binReader.ReadInt32();
+        _compCount = binReader.ReadInt32();
     }
 
     //Getters and Setters
@@ -121,6 +130,14 @@ class Goal
     public virtual List<object> ToObjectList()
     {
         return new List<object>(){_name, _desc, _value, _compCount};
+    }
+    //This method should never be run by itself, only overidden by a child class
+    public virtual void WriteGoal(BinaryWriter binWriter)
+    {
+        binWriter.Write(_name);
+        binWriter.Write(_desc);
+        binWriter.Write(_value);
+        binWriter.Write(_compCount);
     }
 
 }
