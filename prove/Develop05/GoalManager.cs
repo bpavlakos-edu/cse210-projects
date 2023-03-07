@@ -418,16 +418,28 @@ class GoalManager
             for (int i = 0; i < goalListCount; i++)
             {
                 int goalType = (int)binReader.ReadByte(); //Identify the goal type of this entry
+                //All goals need these attributes read from the file
+                string name = binReader.ReadString(); //Name
+                string desc = binReader.ReadString(); //Description
+                int value = binReader.ReadInt32(); //Value
+                int compCount = binReader.ReadInt32(); //Completion count
                 switch(goalType)
                 {
-                    case(0):
+                    case(0): //Simple Goal
+                        newGoalList.Add(new SimpleGoal(name, desc, value, compCount));
                         break;
-                    case(1):
+                    case(1): //Eternal Goal
+                        newGoalList.Add(new EternalGoal(name, desc, value, compCount));
                         break;
-                    case(2):
+                    case(2): //Checklist goal
+                        //Read additional attributes
+                        int bonusCompGoal = binReader.ReadInt32(); //Bonus Completion Goal
+                        int bonusValue = binReader.ReadInt32(); //Bonus Value
+                        newGoalList.Add(new ChecklistGoal(name, desc, value, bonusCompGoal, bonusValue, compCount));
                         break;
-                    default:
+                    default: //Invalid goal type
                         //Do nothing
+                        Console.WriteLine($"Error! Invalid goal type: {goalType}"); //Okay, fine, alert the user!
                         break;
                 }
             }
