@@ -343,7 +343,7 @@ class GoalManager
         using (FileStream binaryStream = File.Open(filePath, FileMode.Create))
         {
             BinaryWriter binWriter = new BinaryWriter(binaryStream);//Initalize the binary writer, which is what can actually write bytes
-            
+            binWriter.Write(new char[]{'G','O','A','L'}); //Write a 4 byte header
             binWriter.Write(_goalList.Count); //Write the goal list count
             
             List<Type> typesToIndex = new List<Type>{new SimpleGoal().GetType(),new EternalGoal().GetType(),new ChecklistGoal().GetType()}; //Make a list to convert each custom type to an index
@@ -372,7 +372,13 @@ class GoalManager
         }
     }
 
+    private void LoadBinaryFile(string filePath)
+    {
+
+    }
+
     //Method to quickly write a string and its string length
+    //Obsolete because binary Writers write the string length by default
     /*private void WriteString(string inputStr, BinaryWriter binWriter)
     {
         binWriter.Write((short)inputStr.Length); //Always write string length as a short, it takes less space
