@@ -46,7 +46,8 @@ class Program
             "Menu options:", //The intro message, it's special because it has 3 lines, including one that needs to be dynamically updated
             "Select a choice or [hotkey] from the menu: ", //User prompt
             "Now exiting...", //Exit message
-            "  " //2 blank spaces as shown in the example video
+            "  ", //2 blank spaces as shown in the example video
+            false //Do not clear the console automatically
         );
         mainMenu.UiLoop(new Action(DisplayPreLoopMessage)); //Start the main menu loop, don't clear the console ever
     }
