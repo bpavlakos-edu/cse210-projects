@@ -112,7 +112,7 @@ class GoalManager
                     break;
                 case(2): //ChecklistGoal
                     newGoalList.Add(new ChecklistGoal(dataList, offset));
-                    offset += 4;
+                    offset += 6;
                     break;
                 default:
                     break;
