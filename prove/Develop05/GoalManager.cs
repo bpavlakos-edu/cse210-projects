@@ -84,7 +84,7 @@ class GoalManager
         List<Action> addToListActions = new List<Action>
         {
             new Action(()=>{_goalList.Add(new SimpleGoal(true));}), //Remember, having true in the constructor will trigger the user input version!
-            new Action(()=>{/* _goalList.Add(new EternalGoal(true)) */;}),
+            new Action(()=>{_goalList.Add(new EternalGoal(true));}),
             new Action(()=>{/* _goalList.Add(new ChecklistGoal(true)) */;})
         };
         //Create a UiMenu that will add a new Child of the Goal class to the Goal list

@@ -96,7 +96,7 @@ class Goal
     {
         if(IsCompleted())
         {
-            return "*";
+            return "X";
         }
         else
         {

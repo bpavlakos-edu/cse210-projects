@@ -1,6 +1,8 @@
 class SimpleGoal : Goal
 {
-    //Attributes: All attributes are inherited from the base class
+    //Attributes: 
+    //All attributes are inherited from the base class
+    
     //Constructors:
     //Blank constructor
     public SimpleGoal() : base()
@@ -18,7 +20,8 @@ class SimpleGoal : Goal
         //Empty because the base class handles filling all attributes
     }
 
-    //Getters and Setters: All getters and setters are inherited from the base class
+    //Getters and Setters: 
+    //All getters and setters are inherited from the base class
 
     //Unique Methods (the rest are inherited from "Goal"):
     //Override Mark() to make it only return points when it hasn't been completed yet
