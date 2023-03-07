@@ -8,6 +8,7 @@ Enhancment list:
 - Created support for binary reading and writing of user save data
 - Added the ability to have negative goal types, by typing in negative numbers
 - Utilized the long data type to store user points, to allow for a higher maximum number
+- Added JSON Loading/Saving support while having private and protected fields
 */
 
 using System;

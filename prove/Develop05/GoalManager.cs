@@ -95,7 +95,7 @@ class GoalManager
     {
         try
         {
-            //This is similar to binary reading, where the list is the data entries all stored inside one big list
+            //This is similar to binary reading, where the list is the data entries, and the offset is advanced as we read from the list
             int offset = 0;
             int goalListCount = (int)dataList[0];
             offset++;
@@ -104,7 +104,21 @@ class GoalManager
             {
                 int goalType = (int)dataList[offset];
                 offset++;
-                switch(goalType)
+                List<Type> typeList = new List<Type>{new SimpleGoal().GetType(),new EternalGoal().GetType(),new ChecklistGoal().GetType()};
+                //See: https://learn.microsoft.com/en-us/dotnet/api/system.type.invokemember?view=net-7.0#code-try-6 for an example of InvokeMember
+                //https://learn.microsoft.com/en-us/dotnet/api/system.type.invokemember?view=net-7.0
+                //Parameter 1 when null means we aren't calling a field or method
+                //Parameter 2 is the Invoking type, it can have lots of flags, but the only one I'm interested in right now is Create Instance
+                //Parameter 3 is the binder, its only important when you want to select method overloads
+                //Parameter 4 is the target, the documentation says that it's an object to invoke the function on, but isn't that what I'm doing already???
+                //Parameter 5 is the arguments for the function
+                object newGoal = typeList[goalType].InvokeMember(null, System.Reflection.BindingFlags.CreateInstance, null, null, new Object[]{dataList, offset});
+                offset += 4;
+                if(offset == 2)
+                {
+                    offset += 2;
+                }
+                /* switch(goalType) //If we had a way of using the type integer as a constructor for creating each goal type, this would be much smaller!
                 {
                     case(0): //SimpleGoal
                         newGoalList.Add(new SimpleGoal(dataList, offset));
@@ -120,7 +134,7 @@ class GoalManager
                         break;
                     default:
                         break;
-                }
+                } */
             }
             //All remaining fields of the goal manager
             long points = (long)dataList[offset];
