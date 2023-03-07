@@ -34,10 +34,11 @@ class GoalManager
         _userName = "My";
     }
     //Fill all attributes
-    public GoalManager(List<Goal> goalList, long points)
+    public GoalManager(List<Goal> goalList, long points, string userName = "My")
     {
         _goalList = goalList.ToList<Goal>();//Copy the list to break the reference to the original
         _points = points;
+        _userName = userName;
     }
     //Generate from file path
     public GoalManager(string filePath)
@@ -50,6 +51,7 @@ class GoalManager
         //Update this goal list using the values of the GoalManager argument
         _goalList = newGoalManager.GetGoalList();
         _points = newGoalManager.GetPoints();
+        _userName = newGoalManager.GetUserName();
     }
 
     //Getters and setters
@@ -76,6 +78,13 @@ class GoalManager
     public void SetUserName(string userName)
     {
         _userName = userName;
+    }
+    //Copy the values of another goal manager to this goal manager
+    public void SetGoalManager(GoalManager newGoalManager)
+    {
+        _goalList = newGoalManager.GetGoalList();
+        _points = newGoalManager.GetPoints();
+        _userName = newGoalManager.GetUserName();
     }
 
     //Methods
@@ -341,43 +350,88 @@ class GoalManager
     //Binary Writing
     private void SaveBinaryFile(string filePath)
     {
-        using (FileStream binaryStream = File.Open(filePath, FileMode.Create))
+        try
         {
-            BinaryWriter binWriter = new BinaryWriter(binaryStream);//Initalize the binary writer, which is what can actually write bytes
-            binWriter.Write(new char[]{'G','O','A','L'}); //Write a 4 byte header
-            
-            binWriter.Write(_goalList.Count); //Write the goal list count
-            
-            //Make a list to convert each custom type to a corresponding index
-            List<Type> typesToIndex = new List<Type>{new SimpleGoal().GetType(),new EternalGoal().GetType(),new ChecklistGoal().GetType()}; 
-            for(int i=0;i<_goalList.Count;i++) //Write every goal in binary form
+            using (FileStream binaryStream = File.Open(filePath, FileMode.Create))
             {
-                int goalType = typesToIndex.IndexOf(_goalList[i].GetType()); //Figure out what type the goal is and get it's index in teh typesToIndex list
-                binWriter.Write((byte)goalType); //Write a single byte representing the type of goal
-                // WriteString(_goalList[i].GetName(), binWriter);
-                // WriteString(_goalList[i].GetDesc(), binWriter);
-                //Write the fields of the goal
-                binWriter.Write(_goalList[i].GetName());
-                binWriter.Write(_goalList[i].GetDesc());
-                binWriter.Write(_goalList[i].GetValue());
-                binWriter.Write(_goalList[i].GetCompCount());
-                if(goalType == 2) //Goal type 2 (Checklist Goal) is the only type that has additional parameters
+                BinaryWriter binWriter = new BinaryWriter(binaryStream);//Initalize the binary writer, which is what can actually write bytes
+                binWriter.Write(new char[]{'G','O','A','L'}); //Write a 4 byte header
+
+                binWriter.Write(_goalList.Count); //Write the goal list count
+
+                //Make a list to convert each custom type to a corresponding index
+                List<Type> typesToIndex = new List<Type>{new SimpleGoal().GetType(),new EternalGoal().GetType(),new ChecklistGoal().GetType()}; 
+                for(int i=0;i<_goalList.Count;i++) //Write every goal in binary form
                 {
-                    ChecklistGoal goalItem = (ChecklistGoal) _goalList[i]; //Store the current item as a checklist goal (because it is one!!!)
-                    //Write it's fields to the file
-                    binWriter.Write(goalItem.GetBonusCompGoal());
-                    binWriter.Write(goalItem.GetBonusValue());
+                    int goalType = typesToIndex.IndexOf(_goalList[i].GetType()); //Figure out what type the goal is and get it's index in teh typesToIndex list
+                    binWriter.Write((byte)goalType); //Write a single byte representing the type of goal
+                    // WriteString(_goalList[i].GetName(), binWriter);
+                    // WriteString(_goalList[i].GetDesc(), binWriter);
+                    //Write the fields of the goal
+                    binWriter.Write(_goalList[i].GetName());
+                    binWriter.Write(_goalList[i].GetDesc());
+                    binWriter.Write(_goalList[i].GetValue());
+                    binWriter.Write(_goalList[i].GetCompCount());
+                    if(goalType == 2) //Goal type 2 (Checklist Goal) is the only type that has additional parameters
+                    {
+                        ChecklistGoal goalItem = (ChecklistGoal) _goalList[i]; //Store the current item as a checklist goal (because it is one!!!)
+                        //Write it's fields to the file
+                        binWriter.Write(goalItem.GetBonusCompGoal());
+                        binWriter.Write(goalItem.GetBonusValue());
+                    }
                 }
+                //Write the remaining attributes of GoalManager
+                binWriter.Write(_points);
+                binWriter.Write(_userName);
             }
-            //Write the remaining attributes of GoalManager
-            binWriter.Write(_points);
-            binWriter.Write(_userName);
         }
+        catch(IOException e)
+        {
+            Console.WriteLine($"File writing failed, IO Error: {e.ToString()}");
+        }
+        catch(ArgumentException e)
+        {
+            Console.WriteLine($"File writing failed Argument Error: {e.ToString()}");
+        }
+
     }
 
     private void LoadBinaryFile(string filePath)
     {
+        using(FileStream binaryStream = File.OpenRead(filePath))
+        {
+            BinaryReader binReader = new BinaryReader(binaryStream); //Turn the binary stream into a binary reader so we can use it
 
+            //Read the header to make sure we are reading a file with the correct format
+            char[] headerByte = binReader.ReadChars(4);
+            if(string.Concat(headerByte) != "GOAL")
+            {
+                Console.WriteLine("Error! The GOAL file header is missing, this is not a valid file!");
+                return; //Return early
+            }
+
+            //Start reading the data
+
+            //Read the goal list goal List
+            int goalListCount = binReader.ReadInt32(); //Get the number of goals in the goal list
+            List<Goal> newGoalList = new List<Goal>(); //Initalize a blank goal list
+            for (int i = 0; i < goalListCount; i++)
+            {
+                int goalType = (int)binReader.ReadByte(); //Identify the goal type of this entry
+                switch(goalType)
+                {
+                    case(0):
+                        break;
+                    case(1):
+                        break;
+                    case(2):
+                        break;
+                    default:
+                        //Do nothing
+                        break;
+                }
+            }
+        }
     }
 
     //Method to quickly write a string and its string length
