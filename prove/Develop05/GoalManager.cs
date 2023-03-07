@@ -53,7 +53,7 @@ class GoalManager
         _userName = newGoalManager.GetUserName();
     }
     //Create a Goal Manager using a flat list
-    public GoalManager(List<object> dataList)
+    public GoalManager(List<JsonElement> dataList)
     {
         SetGoalManager(dataList); //Use the existing logic
     }
@@ -91,18 +91,20 @@ class GoalManager
         _userName = newGoalManager.GetUserName();
     }
     //Set a goal manager using a list of objects
-    public void SetGoalManager(List<object> dataList)
+    //I had to convert this function into a JsonElement list because we have to parse the values individually to their respective types:
+    //JSON parsing functions are found here: https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonelement?view=net-7.0
+    public void SetGoalManager(List<JsonElement> dataList)
     {
         try
         {
             //This is similar to binary reading, where the list is the data entries, and the offset is advanced as we read from the list
             int offset = 0;
-            int goalListCount = (int)dataList[0];
+            int goalListCount = dataList[0].GetInt32();
             offset++;
             List<Goal> newGoalList = new List<Goal>();
             for(int i = 0; i < goalListCount; i++)
             {
-                int goalType = (int)dataList[offset];
+                int goalType = dataList[offset].GetInt32();
                 offset++;
                 List<Type> typeList = new List<Type>{new SimpleGoal().GetType(),new EternalGoal().GetType(),new ChecklistGoal().GetType()};
                 //See: https://learn.microsoft.com/en-us/dotnet/api/system.type.invokemember?view=net-7.0#code-try-6 for an example of InvokeMember
@@ -137,9 +139,9 @@ class GoalManager
                 } */
             }
             //All remaining fields of the goal manager
-            long points = (long)dataList[offset];
+            long points = dataList[offset].GetInt64();
             offset++;
-            string userName = (string)dataList[offset];
+            string userName = (string)dataList[offset].GetString();
             offset++;//We don't really need it at this point...
 
             //Write the new values to the current goal manager
@@ -292,7 +294,7 @@ class GoalManager
                 if(jsonString != "")
                 {
                     sWriter.Write(jsonString); //Write the JSON string
-                    Console.WriteLine("File successfuly saved");
+                    Console.WriteLine("File saved successfuly");
                 }
                 else
                 {
@@ -357,12 +359,13 @@ class GoalManager
             {
                 //Uses JSON settings to include fields and indentation
                 //GoalManager newGoalManager = JsonSerializer.Deserialize<GoalManager>(jsonText, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true});
-                List<object> dataList = JsonSerializer.Deserialize<List<object>>(jsonText, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true}); //Generate a list of objects using the JsonText
-                GoalManager newGoalManager = new GoalManager(dataList);
+                List<JsonElement> dataList = JsonSerializer.Deserialize<List<JsonElement>>(jsonText, new JsonSerializerOptions{IncludeFields = true, WriteIndented = true}); //Generate a list of objects using the JsonText
+                GoalManager newGoalManager = new GoalManager(dataList);//Make a goal manager using the JsonElement List
                 //Set current goal manager values to the ones from the deserialized object
                 _goalList = newGoalManager.GetGoalList();
                 _points = newGoalManager.GetPoints();
                 _userName = newGoalManager.GetUserName();
+                Console.WriteLine("File sucessfully loaded!");
             }
             catch(JsonException e)
             {
@@ -461,6 +464,8 @@ class GoalManager
                 binWriter.Write(_points);
                 binWriter.Write(_userName);
             }
+
+            Console.WriteLine("File sucessfully saved!");
         }
         catch(IOException e)
         {
@@ -524,6 +529,8 @@ class GoalManager
                 _goalList = newGoalList.ToList<Goal>();
                 _points = points;
                 _userName = userName;
+
+                Console.WriteLine("File sucessfully loaded!");
             }
         }
         catch(IOException e)

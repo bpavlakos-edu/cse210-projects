@@ -1,3 +1,4 @@
+using System.Text.Json; //Thanks Json
 using Inp = QuickUtils.Inputs; //Import the custom library's input class
 
 class ChecklistGoal : Goal
@@ -25,10 +26,10 @@ class ChecklistGoal : Goal
         _bonusValue = bonusValue;
     }
     //Fill using a list of objects
-    public ChecklistGoal(List<object> dataList, int offset) : base(dataList, offset)
+    public ChecklistGoal(List<JsonElement> dataList, int offset) : base(dataList, offset)
     {
-        _bonusCompGoal = (int)dataList[offset+4];
-        _bonusValue = (int)dataList[offset+5];
+        _bonusCompGoal = dataList[offset+4].GetInt32();
+        _bonusValue = dataList[offset+5].GetInt32();
     }
     //Fill by reading from a binary reader
     public ChecklistGoal(BinaryReader binReader) : base(binReader)

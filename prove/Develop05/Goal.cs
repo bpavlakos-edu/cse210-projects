@@ -1,3 +1,4 @@
+using System.Text.Json; //Thanks Json
 using Inp = QuickUtils.Inputs; //Custom library import for user inputs
 
 class Goal
@@ -36,13 +37,13 @@ class Goal
         _value = value;
         _compCount = compCount;
     }
-    //Fill all attributes using a list of objects
-    public Goal(List<object> dataList, int offset)
+    //Fill all attributes using a list of JSON Elements
+    public Goal(List<JsonElement> dataList, int offset)
     {
-        _name = (string)dataList[offset];
-        _desc = (string)dataList[offset + 1];
-        _value = (int)dataList[offset + 2];
-        _compCount = (int)dataList[offset + 3];
+        _name = dataList[offset].GetString();
+        _desc = dataList[offset + 1].GetString();
+        _value = dataList[offset + 2].GetInt32();
+        _compCount = dataList[offset + 3].GetInt32();
     }
     //Fill all attributes from a binary reader (This should never be activated on it's own!!!)
     public Goal(BinaryReader binReader)

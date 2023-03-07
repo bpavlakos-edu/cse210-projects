@@ -1,3 +1,4 @@
+using System.Text.Json; //Thanks Json
 class EternalGoal : Goal
 {
     //Attributes: 
@@ -19,7 +20,7 @@ class EternalGoal : Goal
     {
         //The contents of this constructor are handled by the parent class "Goal"
     }
-    public EternalGoal(List<object> dataList, int offset) : base(dataList, offset)
+    public EternalGoal(List<JsonElement> dataList, int offset) : base(dataList, offset)
     {
         //Empty because the base class handles filling all attributes
     }

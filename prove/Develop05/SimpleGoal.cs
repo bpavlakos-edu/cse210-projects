@@ -1,3 +1,4 @@
+using System.Text.Json; //Thanks Json
 class SimpleGoal : Goal
 {
     //Attributes: 
@@ -19,7 +20,7 @@ class SimpleGoal : Goal
     {
         //Empty because the base class handles filling all attributes
     }
-    public SimpleGoal(List<object> dataList, int offset) : base(dataList, offset)
+    public SimpleGoal(List<JsonElement> dataList, int offset) : base(dataList, offset)
     {
         //Empty because the base class handles filling all attributes
     }
