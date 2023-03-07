@@ -55,7 +55,7 @@ class GoalManager
     //Create a Goal Manager using a flat list
     public GoalManager(List<object> dataList)
     {
-
+        SetGoalManager(dataList); //Use the existing logic
     }
 
     //Getters and setters
@@ -89,6 +89,14 @@ class GoalManager
         _goalList = newGoalManager.GetGoalList();
         _points = newGoalManager.GetPoints();
         _userName = newGoalManager.GetUserName();
+    }
+    public void SetGoalManager(List<object> dataList)
+    {
+        int goalListCount = (int)dataList[0];
+        for(int i = 0; i < goalListCount; i++)
+        {
+
+        }
     }
 
     //Methods
