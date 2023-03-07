@@ -43,11 +43,20 @@ class Program
                 //new UiOption(new Action(()=>{_myGoals.EditGoals();}),"&Edit Goals"), //Change the user name
                 new UiOption(new Action(()=>{throw new OperationCanceledException();}),"E&xit") //Exit the menu
             },
-            Environment.NewLine+$"You have {_myGoals.GetPoints()} points."+Environment.NewLine+"Menu options:", //The intro message, it's special because it has 3 lines, including one that needs to be dynamically updated
+            "Menu options:", //The intro message, it's special because it has 3 lines, including one that needs to be dynamically updated
             "Select a choice or [hotkey] from the menu: ", //User prompt
             "Now exiting...", //Exit message
             "  " //2 blank spaces as shown in the example video
         );
-        mainMenu.UiLoop(); //Start the main menu loop, don't clear the console ever
+        mainMenu.UiLoop(new Action(DisplayPreLoopMessage)); //Start the main menu loop, don't clear the console ever
+    }
+
+    //Because points cannot be dynamically displayed and updated using a template string in the UiMenu class, 
+    //I will instead make it so you can optionally pass an action to the UiLoop function, so that if this needs to be used again for a different reason it can
+    static void DisplayPreLoopMessage()
+    {
+        Console.WriteLine("");
+        Console.WriteLine($"You have {_myGoals.GetPoints()} points.");
+        Console.WriteLine("");
     }
 }
