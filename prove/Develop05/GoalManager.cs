@@ -412,7 +412,7 @@ class GoalManager
 
             //Start reading the data
 
-            //Read the goal list goal List
+            //Read the goal list goal entries
             int goalListCount = binReader.ReadInt32(); //Get the number of goals in the goal list
             List<Goal> newGoalList = new List<Goal>(); //Initalize a blank goal list
             for (int i = 0; i < goalListCount; i++)
@@ -423,6 +423,7 @@ class GoalManager
                 string desc = binReader.ReadString(); //Description
                 int value = binReader.ReadInt32(); //Value
                 int compCount = binReader.ReadInt32(); //Completion count
+                //Add the goal based on the type read from the goalType byte
                 switch(goalType)
                 {
                     case(0): //Simple Goal
@@ -443,6 +444,10 @@ class GoalManager
                         break;
                 }
             }
+
+            //Read all additional GoalManager parameters
+            long points = binReader.ReadInt64(); //Points, it's a long, so it's 64 bytes long!!!
+            string userName = binReader.ReadString(); //User name
         }
     }
 
