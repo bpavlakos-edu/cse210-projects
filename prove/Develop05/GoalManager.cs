@@ -133,7 +133,7 @@ class GoalManager
     }
     public List<object> GetGoalManager()
     {
-        //returnList = Ge
+        List<object> returnList = new List<object>();
         return new List<object>();
     }
 
