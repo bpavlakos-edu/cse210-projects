@@ -39,8 +39,10 @@ class Program
             {
                 new UiOption(new Action(()=>{_myGoals.NewGoal();}),"Create &New Goal"), //Create a new goal
                 new UiOption(new Action(()=>{_myGoals.Display();}),"List &Goals"), //Display the goals
-                new UiOption(new Action(()=>{_myGoals.Save();}),"&Save Goals"), //Save the goals
-                new UiOption(new Action(()=>{_myGoals.Load();}),"&Load Goals"), //Load the goals
+                new UiOption(new Action(()=>{_myGoals.Save();}),"&Save Goals as JSON"), //Save the goals
+                new UiOption(new Action(()=>{_myGoals.Load();}),"&Load Goals from JSON"), //Load the goals
+                new UiOption(new Action(()=>{_myGoals.SaveData();}),"S&ave Goals as data"), //Save the goals
+                new UiOption(new Action(()=>{_myGoals.LoadData();}),"L&oad Goals from data"), //Load the goals
                 new UiOption(new Action(()=>{_myGoals.RecordEvent();}),"&Record Event"), //Mark a goal as done
                 new UiOption(new Action(()=>{_myGoals.ChangeName();}),"&Change User Name"), //Change the user name
                 //new UiOption(new Action(()=>{_myGoals.EditGoals();}),"&Edit Goals"), //Change the user name
