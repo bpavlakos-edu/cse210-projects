@@ -12,6 +12,8 @@ namespace QuickUtils
         private string _inputMsg = "Select a choice or [hotkey] from the menu: ";
         private string _exitMsg = "Now exiting...";
 
+        private bool _clearConsole = false;
+
         //Constructors
         //Blank constructor
         public UiMenu()
@@ -19,7 +21,7 @@ namespace QuickUtils
 
         }
         //Fill all attributes
-        public UiMenu(List<UiOption> optionList, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg = "Now exiting...", string indentString = "")
+        public UiMenu(List<UiOption> optionList, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg = "Now exiting...", string indentString = "", bool clearConsole = false)
         {
             //Update all attributes
             _optionList = optionList.ToList<UiOption>();
@@ -27,10 +29,11 @@ namespace QuickUtils
             _inputMsg = inputMsg;
             _exitMsg = exitMsg;
             _indentString = indentString;
+            _clearConsole = clearConsole;
         }
 
         //Use 3 lists to generate the Option List (For legacy code)
-        public UiMenu(List<Action> uiActionList, List<string> optionNameList, List<string> hotkeyList, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="Now exiting...", string indentString = "")
+        public UiMenu(List<Action> uiActionList, List<string> optionNameList, List<string> hotkeyList, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="Now exiting...", string indentString = "", bool clearConsole = false)
         {
             _optionList = new List<UiOption>();//Clear the UI Option list
             for(int i = 0; i<uiActionList.Count; i++)
@@ -42,6 +45,7 @@ namespace QuickUtils
             _inputMsg = inputMsg;
             _exitMsg = exitMsg;//Update the exit message
             _indentString = indentString;
+            _clearConsole = clearConsole;
         }
 
         //Generate a menu from a list of any data type, and return it's value when chosen
@@ -60,7 +64,7 @@ namespace QuickUtils
 
         This method uses composite formatting to generate the option string: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/strings/#composite-formatting
         */
-        public UiMenu(List<object> inputCollection, Action<object> lambdaToStoreReturn, List<string> displayStrings = null, bool haveExit = true, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="", string indentString = "")
+        public UiMenu(List<object> inputCollection, Action<object> lambdaToStoreReturn, List<string> displayStrings = null, bool haveExit = true, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="", string indentString = "", bool clearConsole = false)
         {
             for(int i=0; i < inputCollection.Count; i++)
             {
@@ -100,6 +104,7 @@ namespace QuickUtils
             _inputMsg = inputMsg;
             _exitMsg = exitMsg;//Hide the exit message by default
             _indentString = indentString;
+            _clearConsole = clearConsole;
         }
 
         //Getters and setters (Please don't modify the menu at runtime! That's crazy!!!)
@@ -143,26 +148,34 @@ namespace QuickUtils
         {
             _indentString = indentString;
         }
+        public bool GetClearConsole()
+        {
+            return _clearConsole;
+        }
+        public void SetClearConsole(bool clearConsole)
+        {
+            _clearConsole = clearConsole;
+        }
         
 
         //Public and private Methods
-        public void UiLoop(bool clearConsole = true)
+        public void UiLoop()
         {
             try
             {
                 while(true)
                 {
-                    if(clearConsole) //Added a flag to control if the console is cleared or not
+                    if(_clearConsole) //Added a flag to control if the console is cleared or not
                     {
                         Console.Clear(); //Reset the console before printing
                     }
-                    displayOptions(clearConsole); //Display the options
+                    displayOptions(); //Display the options
                     string userInput = GetInput(_inputMsg).ToLower(); //Get the user input
                     if(!TryParseIndex(userInput)) //If parsing the index fails
                     {
                         FindHotkey(userInput); //Try using a hotkey instead
                     }
-                    if(clearConsole) //Added a flag to control if the console is cleared or not
+                    if(_clearConsole) //Added a flag to control if the console is cleared or not
                     {
                         Console.Clear(); //Reset the console before printing
                     }
@@ -180,10 +193,10 @@ namespace QuickUtils
         }
 
         //Display Menu Options
-        private void displayOptions(bool clearConsole = true)
+        private void displayOptions()
         {
             //Display the UI options
-            if(clearConsole) //Added a flag to control if the console is cleared or not
+            if(_clearConsole) //Added a flag to control if the console is cleared or not
             {
                 Console.Clear();
             }
@@ -235,7 +248,10 @@ namespace QuickUtils
         private void ActivateOption(int index)
         {
             UiOption optionObj = _optionList[index]; //Trigger any index errors here
-            Console.Clear();//So we can clear the console before we...
+            if(_clearConsole) //Added an attribute
+            {
+                Console.Clear();//So we can clear the console before we...
+            }
             optionObj.Activate();//Activate!
         }
         private string GetInput(string inMsg)
