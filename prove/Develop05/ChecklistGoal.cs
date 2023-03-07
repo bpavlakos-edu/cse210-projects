@@ -27,4 +27,21 @@ class ChecklistGoal : Goal
         _bonusCompGoal = bonusValue;
         _compCount = compCount;
     }
+    //Getters and setters
+    public int GetBonusCompGoal()
+    {
+        return _bonusCompGoal;
+    }
+    public void SetBonusCompGoal(int bonusCompGoal)
+    {
+        _bonusCompGoal = bonusCompGoal;
+    }
+    public int GetBonusValue()
+    {
+        return _bonusValue;
+    }
+    public void SetBonusValue(int bonusValue)
+    {
+        _bonusValue = bonusValue;
+    }
 }
