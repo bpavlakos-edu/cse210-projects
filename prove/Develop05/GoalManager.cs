@@ -134,7 +134,8 @@ class GoalManager
     {
         //string fileName = GetInput("What is the filename for the goal file? "); //Original
         string fileName = GetInput("What is the filename you would like to save the goal file as? ");
-        Save(fileName); //Save the file by calling the actual save file method
+        //Save(fileName); //Save the file by calling the actual save file method
+        SaveBinaryFile(fileName); //Save the file in binary form
     }
     public void Load()
     {
@@ -344,10 +345,12 @@ class GoalManager
         {
             BinaryWriter binWriter = new BinaryWriter(binaryStream);//Initalize the binary writer, which is what can actually write bytes
             binWriter.Write(new char[]{'G','O','A','L'}); //Write a 4 byte header
+            
             binWriter.Write(_goalList.Count); //Write the goal list count
             
-            List<Type> typesToIndex = new List<Type>{new SimpleGoal().GetType(),new EternalGoal().GetType(),new ChecklistGoal().GetType()}; //Make a list to convert each custom type to an index
-            for(int i=0;i<_goalList.Count;i++)
+            //Make a list to convert each custom type to a corresponding index
+            List<Type> typesToIndex = new List<Type>{new SimpleGoal().GetType(),new EternalGoal().GetType(),new ChecklistGoal().GetType()}; 
+            for(int i=0;i<_goalList.Count;i++) //Write every goal in binary form
             {
                 int goalType = typesToIndex.IndexOf(_goalList[i].GetType()); //Figure out what type the goal is and get it's index in teh typesToIndex list
                 binWriter.Write((byte)goalType); //Write a single byte representing the type of goal
