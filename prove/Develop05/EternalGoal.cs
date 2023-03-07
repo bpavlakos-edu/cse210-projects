@@ -19,6 +19,10 @@ class EternalGoal : Goal
     {
         //The contents of this constructor are handled by the parent class "Goal"
     }
+    public EternalGoal(List<object> dataList, int offset) : base(dataList, offset)
+    {
+        //Empty because the base class handles filling all attributes
+    }
 
     //Getters and Setters: 
     //All getters and setters are inherited from the base class

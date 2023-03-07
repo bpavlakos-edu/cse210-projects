@@ -92,10 +92,31 @@ class GoalManager
     }
     public void SetGoalManager(List<object> dataList)
     {
+        int offset = 0;
         int goalListCount = (int)dataList[0];
+        offset++;
+        List<Goal> newGoalList = new List<Goal>();
         for(int i = 0; i < goalListCount; i++)
         {
-
+            int goalType = (int)dataList[offset];
+            offset++;
+            switch(goalType)
+            {
+                case(0): //SimpleGoal
+                    newGoalList.Add(new SimpleGoal(dataList, offset));
+                    offset += 4;
+                    break;
+                case(1): //EternalGoal
+                    newGoalList.Add(new EternalGoal(dataList, offset));
+                    offset += 4;
+                    break;
+                case(2): //ChecklistGoal
+                    newGoalList.Add(new ChecklistGoal(dataList, offset));
+                    offset += 4;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

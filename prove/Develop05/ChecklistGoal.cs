@@ -23,6 +23,11 @@ class ChecklistGoal : Goal
         _bonusCompGoal = bonusValue;
         _compCount = compCount;
     }
+    public ChecklistGoal(List<object> dataList, int offset) : base(dataList, offset)
+    {
+        _bonusCompGoal = (int)dataList[offset+4];
+        _bonusCompGoal = (int)dataList[offset+5];
+    }
     //Getters and setters
     public int GetBonusCompGoal()
     {

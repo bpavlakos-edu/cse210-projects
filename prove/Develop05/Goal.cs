@@ -28,6 +28,13 @@ class Goal
         _value = Inp.GetIntInput("What is the amount of points associated with this goal? ");
         _compCount = 0; //It will always be 0 by defualt
     }
+    public Goal(List<object> dataList, int offset)
+    {
+        _name = (string)dataList[offset];
+        _desc = (string)dataList[offset + 1];
+        _value = (int)dataList[offset + 2];
+        _compCount = (int)dataList[offset + 3];
+    }
     //Fill all attributes
     public Goal(string name, string desc, int value, int compCount = 0)
     {

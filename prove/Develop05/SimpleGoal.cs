@@ -2,7 +2,7 @@ class SimpleGoal : Goal
 {
     //Attributes: 
     //All attributes are inherited from the base class
-    
+
     //Constructors:
     //Blank constructor
     public SimpleGoal() : base()
@@ -16,6 +16,10 @@ class SimpleGoal : Goal
     }
     //Fill all attributes
     public SimpleGoal(string name, string desc, int value, int compCount = 0) : base(name, desc, value, compCount)
+    {
+        //Empty because the base class handles filling all attributes
+    }
+    public SimpleGoal(List<object> dataList, int offset) : base(dataList, offset)
     {
         //Empty because the base class handles filling all attributes
     }
