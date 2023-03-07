@@ -114,13 +114,15 @@ class GoalManager
                 //Parameter 3 is the binder, its only important when you want to select method overloads
                 //Parameter 4 is the target, the documentation says that it's an object to invoke the function on, but isn't that what I'm doing already???
                 //Parameter 5 is the arguments for the function
+                /*
                 object newGoal = typeList[goalType].InvokeMember(null, System.Reflection.BindingFlags.CreateInstance, null, null, new Object[]{dataList, offset});
+                _goalList.Add((Goal) newGoal);
                 offset += 4;
                 if(offset == 2)
                 {
                     offset += 2;
-                }
-                /* switch(goalType) //If we had a way of using the type integer as a constructor for creating each goal type, this would be much smaller!
+                }*/
+                switch(goalType) //If we had a way of using the type integer as a constructor for creating each goal type, this would be much smaller!
                 {
                     case(0): //SimpleGoal
                         newGoalList.Add(new SimpleGoal(dataList, offset));
@@ -136,7 +138,7 @@ class GoalManager
                         break;
                     default:
                         break;
-                } */
+                }
             }
             //All remaining fields of the goal manager
             long points = dataList[offset].GetInt64();
@@ -236,12 +238,12 @@ class GoalManager
     //Binary Loading and Saving
     public void LoadData()
     {
-        string fileName = GetInput("What is the filename of the goal file you want to load? ");
+        string fileName = GetInput("What is the filename of the goal data file you want to load? ");
         LoadBinaryFile(fileName);
     }
     public void SaveData()
     {
-        string fileName = GetInput("What is the filename you would like to save the goal file as? ");
+        string fileName = GetInput("What is the filename you would like to save the goal data file as? ");
         SaveBinaryFile(fileName); //Save the file in binary form
     }
 
