@@ -6,7 +6,7 @@
 //For initalization
 
 
-using inp = QuickUtils.Inputs;
+using Inp = QuickUtils.Inputs;
 
 class Goal
 {
@@ -31,9 +31,9 @@ class Goal
     */
     public Goal(bool triggerBool)
     {
-        _name = inp.GetInput("What is the name of your goal? ");
-        _desc = inp.GetInput("What is the short description of it? ");
-        _value = inp.GetIntInput("What is the amount of points associated with this goal? ");
+        _name = Inp.GetInput("What is the name of your goal? ");
+        _desc = Inp.GetInput("What is the short description of it? ");
+        _value = Inp.GetIntInput("What is the amount of points associated with this goal? ");
         _compCount = 0; //It will always be 0 by defualt
     }
     //Fill all attributes
