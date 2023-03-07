@@ -350,21 +350,37 @@ class GoalManager
             for(int i=0;i<_goalList.Count;i++)
             {
                 int goalType = typesToIndex.IndexOf(_goalList[i].GetType()); //Figure out what type the goal is and get it's index in teh typesToIndex list
-                binWriter.Write((byte)goalType); //Write a single byte representing the type
+                binWriter.Write((byte)goalType); //Write a single byte representing the type of goal
+                // WriteString(_goalList[i].GetName(), binWriter);
+                // WriteString(_goalList[i].GetDesc(), binWriter);
                 //Write the fields of the goal
-                WriteString(_goalList[i].GetName(), binWriter);
-                WriteString(_goalList[i].GetDesc(), binWriter);
+                binWriter.Write(_goalList[i].GetName());
+                binWriter.Write(_goalList[i].GetDesc());
                 binWriter.Write(_goalList[i].GetValue());
                 binWriter.Write(_goalList[i].GetCompCount());
-
+                if(goalType == 2) //Goal type 2 (Checklist Goal) is the only type that has additional parameters
+                {
+                    ChecklistGoal goalItem = (ChecklistGoal) _goalList[i]; //Store the current item as a checklist goal (because it is one!!!)
+                    //Write it's fields to the file
+                    binWriter.Write(goalItem.GetBonusCompGoal());
+                    binWriter.Write(goalItem.GetBonusValue());
+                }
             }
+            //Write the remaining attributes of GoalManager
+            binWriter.Write(_points);
+            binWriter.Write(_userName);
         }
     }
 
-    private void WriteString(string inputStr, BinaryWriter binWriter)
+    //Method to quickly write a string and its string length
+    /*private void WriteString(string inputStr, BinaryWriter binWriter)
     {
-        binWriter.Write((short)inputStr.Length);
+        binWriter.Write((short)inputStr.Length); //Always write string length as a short, it takes less space
         binWriter.Write(inputStr);
-    }
-    
+    } */
+    /*private string ReadString()
+    {
+        string returnStr = "";
+        return returnStr;
+    }*/
 }
