@@ -132,8 +132,8 @@ class GoalManager
     {
         //Consider using UI Menu Here
         //Int input (index of goal in list), invalid to cancel
-        int goalIndex = GetIntInput("Which goal did you accomplish? ");
-        int newPoints = _goalList[goalIndex].Mark(); //Mark the goal as completed
+        int goalIndex = GetIntInput("Which goal did you accomplish? ",1,_goalList.Count);
+        int newPoints = _goalList[goalIndex-1].Mark(); //Mark the goal as completed
         if(newPoints != 0)
         {
             _points += newPoints;

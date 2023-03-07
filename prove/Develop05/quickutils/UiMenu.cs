@@ -97,7 +97,7 @@ namespace QuickUtils
             //Add a cancel option
             if(inputCollection.Count > 0 && haveExit)
             {
-                _optionList.Add(new UiOption(new Action(()=>{throw new OperationCanceledException();}),"&Back"));
+                _optionList.Add(new UiOption(new Action(()=>{throw new OperationCanceledException();}),"Go &Back"));
             }
             //Update remaining attributes
             _menuMsg = menuMsg;
