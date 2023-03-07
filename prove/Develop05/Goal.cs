@@ -1,4 +1,4 @@
-using Inp = QuickUtils.Inputs;
+using Inp = QuickUtils.Inputs; //Custom library import for user inputs
 
 class Goal
 {
