@@ -3,8 +3,9 @@ using System.Text.Json.Serialization;
 using System.Text.Json.Nodes;
 using UiMenu = QuickUtils.UiMenu; //Importing the custom UI menu class
 using UiOption = QuickUtils.UiOption; //Importing the custom Ui Option class
+using System.Runtime.Serialization;
 
-
+[DataContract]
 class GoalManager
 {
     //How to serialize private members: https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/required-properties
@@ -336,5 +337,34 @@ class GoalManager
     {
         return _goalList[GetIntInput(inMsg, 1, _goalList.Count) - 1]; //Get the current goal (max is goalList.count because its -1 the user input)
     }
+    //Binary Writing
+    private void SaveBinaryFile(string filePath)
+    {
+        using (FileStream binaryStream = File.Open(filePath, FileMode.Create))
+        {
+            BinaryWriter binWriter = new BinaryWriter(binaryStream);//Initalize the binary writer, which is what can actually write bytes
+            
+            binWriter.Write(_goalList.Count); //Write the goal list count
+            
+            List<Type> typesToIndex = new List<Type>{new SimpleGoal().GetType(),new EternalGoal().GetType(),new ChecklistGoal().GetType()}; //Make a list to convert each custom type to an index
+            for(int i=0;i<_goalList.Count;i++)
+            {
+                int goalType = typesToIndex.IndexOf(_goalList[i].GetType()); //Figure out what type the goal is and get it's index in teh typesToIndex list
+                binWriter.Write((byte)goalType); //Write a single byte representing the type
+                //Write the fields of the goal
+                WriteString(_goalList[i].GetName(), binWriter);
+                WriteString(_goalList[i].GetDesc(), binWriter);
+                binWriter.Write(_goalList[i].GetValue());
+                binWriter.Write(_goalList[i].GetCompCount());
 
+            }
+        }
+    }
+
+    private void WriteString(string inputStr, BinaryWriter binWriter)
+    {
+        binWriter.Write((short)inputStr.Length);
+        binWriter.Write(inputStr);
+    }
+    
 }
