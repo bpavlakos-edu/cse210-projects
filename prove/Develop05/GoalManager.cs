@@ -94,7 +94,7 @@ class GoalManager
             new List<string>{"&Simple Goal","&Eternal Goal","&Checklist Goal"}, //Use the new UiOption constructor to auto generate the hotkeys using the index of "&"
             true, //Yes this menu can cancel and return to the previous menu
             "The types of Goals are:", //The menu message
-            "Which type of goal would you like to create?" //The input prompt
+            "Which type of goal would you like to create? " //The input prompt
             //All the other attributes should be set to default, which hides the exit/cancel message by default when this style of constructor is used
         );
         addGoalMenu.UiLoop(false); //Start the add goal menu

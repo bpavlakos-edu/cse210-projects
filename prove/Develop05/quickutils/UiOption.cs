@@ -83,12 +83,12 @@ namespace QuickUtils
         public string MakeDisplayName(string hotkeyName)
         {
             //TODO***: Actually implement caps handling, caps on first letter, and hotkey, and substring
-            string returnString = hotkeyName.ToLower(); //Store the original string
-            int hotkeyIndex = FindHotkeyIndex(hotkeyName);
+            string returnString = hotkeyName; //Store the original string //Removed ToLower
+            int hotkeyIndex = FindHotkeyIndex(hotkeyName.ToLower()); //Added toLower here so it functions correctly
             if(hotkeyIndex > 0)
             {
                 string beforeHotkey = returnString.Substring(0,hotkeyIndex) ?? ""; //Get everything before the hotkey if possible
-                string hotkeyString = ("["+returnString[hotkeyIndex]+"]").ToUpper(); //Change the hotkey character to upper case
+                string hotkeyString = ("["+returnString[hotkeyIndex]+"]"); //Change the hotkey character to upper case //Removed .ToUpper() so that words aren't auto capitalized
                 string afterHotkey = returnString.Substring(hotkeyIndex + 1, (returnString.Length - (hotkeyIndex + 1))) ?? ""; //Add the remainder of the string if possible
                 return (beforeHotkey+hotkeyString+afterHotkey).Replace("&","");//Remove & and return
                 //return (returnString.Substring(0,hotkeyIndex)+"["+returnString[hotkeyIndex].ToString().ToUpper()+"]"+returnString.Substring(hotkeyIndex+1,returnString.Length-hotkeyIndex)).Replace("&","");
