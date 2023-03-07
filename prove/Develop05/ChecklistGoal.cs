@@ -44,4 +44,11 @@ class ChecklistGoal : Goal
     {
         _bonusValue = bonusValue;
     }
+    //Methods
+    //Override
+    //Override
+    protected override bool IsCompleted()
+    {
+        return _compCount == _bonusCompGoal; //The completion criteria for this is if _compCount == _bonusCompGoal
+    }
 }
