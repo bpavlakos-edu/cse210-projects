@@ -47,6 +47,6 @@ class Program
             "Now exiting...", //Exit message
             "  " //2 blank spaces as shown in the example video
         );
-        mainMenu.UiLoop(false); //Start the main menu loop, don't clear the console ever
+        mainMenu.UiLoop(); //Start the main menu loop, don't clear the console ever
     }
 }
