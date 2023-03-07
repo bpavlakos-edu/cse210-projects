@@ -98,10 +98,10 @@ class ChecklistGoal : Goal
         returnList.Add(_bonusValue);
         return returnList; //Return the return list
     }
-    public override void WriteGoal(BinaryWriter binWriter)
+    public override void WriteGoalHex(BinaryWriter binWriter)
     {
         binWriter.Write((byte) 2); //Write this goal's type identifier as a byte
-        base.WriteGoal(binWriter); //Use the base class function to write most of the parameters
+        base.WriteGoalHex(binWriter); //Use the base class function to write most of the parameters
         //Write the extra data
         binWriter.Write(_bonusCompGoal);
         binWriter.Write(_bonusValue);

@@ -53,9 +53,9 @@ class SimpleGoal : Goal
         return returnList; //Return the return list
     }
     //Write to a binary writer
-    public override void WriteGoal(BinaryWriter binWriter)
+    public override void WriteGoalHex(BinaryWriter binWriter)
     {
         binWriter.Write((byte) 0); //Write this goal's type identifier as a byte
-        base.WriteGoal(binWriter); //Use the base class function to write the rest of the data
+        base.WriteGoalHex(binWriter); //Use the base class function to write the rest of the data
     }
 }

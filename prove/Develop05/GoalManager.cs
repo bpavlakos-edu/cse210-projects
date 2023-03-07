@@ -429,26 +429,10 @@ class GoalManager
 
                 binWriter.Write(_goalList.Count); //Write the goal list count
 
-                //Make a list to convert each custom type to a corresponding index
-                List<Type> typesToIndex = new List<Type>{new SimpleGoal().GetType(),new EternalGoal().GetType(),new ChecklistGoal().GetType()}; 
+                //Make a list to convert each custom type to a corresponding index 
                 for(int i=0;i<_goalList.Count;i++) //Write every goal in binary form
                 {
-                    int goalType = typesToIndex.IndexOf(_goalList[i].GetType()); //Figure out what type the goal is and get it's index in teh typesToIndex list
-                    binWriter.Write((byte)goalType); //Write a single byte representing the type of goal
-                    // WriteString(_goalList[i].GetName(), binWriter);
-                    // WriteString(_goalList[i].GetDesc(), binWriter);
-                    //Write the fields of the goal
-                    binWriter.Write(_goalList[i].GetName());
-                    binWriter.Write(_goalList[i].GetDesc());
-                    binWriter.Write(_goalList[i].GetValue());
-                    binWriter.Write(_goalList[i].GetCompCount());
-                    if(goalType == 2) //Goal type 2 (Checklist Goal) is the only type that has additional parameters
-                    {
-                        ChecklistGoal goalItem = (ChecklistGoal) _goalList[i]; //Store the current item as a checklist goal (because it is one!!!)
-                        //Write it's fields to the file
-                        binWriter.Write(goalItem.GetBonusCompGoal());
-                        binWriter.Write(goalItem.GetBonusValue());
-                    }
+                    _goalList[i].WriteGoalHex(binWriter); //Write the goal using the WriteGoalHex function
                 }
                 //Write the remaining attributes of GoalManager
                 binWriter.Write(_points);
@@ -490,25 +474,17 @@ class GoalManager
                 for (int i = 0; i < goalListCount; i++)
                 {
                     int goalType = (int)binReader.ReadByte(); //Identify the goal type of this entry
-                    //All goals need these attributes read from the file
-                    string name = binReader.ReadString(); //Name
-                    string desc = binReader.ReadString(); //Description
-                    int value = binReader.ReadInt32(); //Value
-                    int compCount = binReader.ReadInt32(); //Completion count
                     //Add the goal based on the type read from the goalType byte
                     switch(goalType)
                     {
                         case(0): //Simple Goal
-                            newGoalList.Add(new SimpleGoal(name, desc, value, compCount));
+                            newGoalList.Add(new SimpleGoal(binReader)); //Use the binary reader constructor
                             break;
                         case(1): //Eternal Goal
-                            newGoalList.Add(new EternalGoal(name, desc, value, compCount));
+                            newGoalList.Add(new EternalGoal(binReader)); //Use the binary reader constructor
                             break;
                         case(2): //Checklist goal
-                            //Read additional attributes
-                            int bonusCompGoal = binReader.ReadInt32(); //Bonus Completion Goal
-                            int bonusValue = binReader.ReadInt32(); //Bonus Value
-                            newGoalList.Add(new ChecklistGoal(name, desc, value, bonusCompGoal, bonusValue, compCount));
+                            newGoalList.Add(new ChecklistGoal(binReader)); //Use the binary reader constructor
                             break;
                         default: //Invalid goal type
                             //Do nothing

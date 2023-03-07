@@ -132,7 +132,7 @@ class Goal
         return new List<object>(){_name, _desc, _value, _compCount};
     }
     //This method should never be run by itself, only overidden by a child class
-    public virtual void WriteGoal(BinaryWriter binWriter)
+    public virtual void WriteGoalHex(BinaryWriter binWriter)
     {
         binWriter.Write(_name);
         binWriter.Write(_desc);
