@@ -1,12 +1,28 @@
 using System.Text.Json; //Lets us use JSON serialization and deserialization
+using System.Text.Json.Serialization;
+using System.Text.Json.Nodes;
 using UiMenu = QuickUtils.UiMenu; //Importing the custom UI menu class
 using UiOption = QuickUtils.UiOption; //Importing the custom Ui Option class
 
+
 class GoalManager
 {
+    //How to serialize private members: https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/required-properties
+    //Note that the import in the example I used (example 2) is incorrect! It should be "using System.Text.Json.Serialization", not "using System.Text.Json"!
+    //Also you need a seperate tag for serialzation: https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/immutability?source=recommendations&pivots=dotnet-7-0#non-public-property-accessors
     //Attributes
-    private List<Goal> _goalList = new List<Goal>();
+    //[JsonPropertyName("goalList")]
+    //[JsonRequired]
+    //[JsonInclude]
+    //[JsonProperty]
+    private List<Goal> _goalList = new List<Goal>() ;
+    //[JsonPropertyName("points")]
+    //[JsonRequired]
+    //[JsonInclude]
     private long _points = 0;
+    //[JsonPropertyName("userName")]
+    //[JsonRequired]
+    //[JsonInclude]
     private string _userName = "My";
     
     //Constructors
