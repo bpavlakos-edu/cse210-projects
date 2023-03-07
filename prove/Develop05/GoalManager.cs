@@ -92,32 +92,49 @@ class GoalManager
     }
     public void SetGoalManager(List<object> dataList)
     {
-        int offset = 0;
-        int goalListCount = (int)dataList[0];
-        offset++;
-        List<Goal> newGoalList = new List<Goal>();
-        for(int i = 0; i < goalListCount; i++)
+        try
         {
-            int goalType = (int)dataList[offset];
+            int offset = 0;
+            int goalListCount = (int)dataList[0];
             offset++;
-            switch(goalType)
+            List<Goal> newGoalList = new List<Goal>();
+            for(int i = 0; i < goalListCount; i++)
             {
-                case(0): //SimpleGoal
-                    newGoalList.Add(new SimpleGoal(dataList, offset));
-                    offset += 4;
-                    break;
-                case(1): //EternalGoal
-                    newGoalList.Add(new EternalGoal(dataList, offset));
-                    offset += 4;
-                    break;
-                case(2): //ChecklistGoal
-                    newGoalList.Add(new ChecklistGoal(dataList, offset));
-                    offset += 6;
-                    break;
-                default:
-                    break;
+                int goalType = (int)dataList[offset];
+                offset++;
+                switch(goalType)
+                {
+                    case(0): //SimpleGoal
+                        newGoalList.Add(new SimpleGoal(dataList, offset));
+                        offset += 4;
+                        break;
+                    case(1): //EternalGoal
+                        newGoalList.Add(new EternalGoal(dataList, offset));
+                        offset += 4;
+                        break;
+                    case(2): //ChecklistGoal
+                        newGoalList.Add(new ChecklistGoal(dataList, offset));
+                        offset += 6; //It has 2 extra fields
+                        break;
+                    default:
+                        break;
+                }
             }
+            //All remaining fields of the goal manager
+            long points = (long)dataList[offset];
+            offset++;
+            string name = (string)dataList[offset];
+            offset++;//We don't really need it at this point...
         }
+        catch(ArgumentOutOfRangeException e)
+        {
+            Console.WriteLine($"Error! Offset was misaligned! {e.ToString()}");
+        }
+    }
+    public List<object> GetGoalManager()
+    {
+        //returnList = Ge
+        return new List<object>();
     }
 
     //Methods
@@ -493,11 +510,11 @@ class GoalManager
         }
         catch(IOException e)
         {
-            Console.WriteLine($"File Loading failed, IO Error! {e}");
+            Console.WriteLine($"File Loading failed, IO Error! {e.ToString()}");
         }
         catch(ArgumentException e)
         {
-            Console.WriteLine($"File Loading failed, Argument Exception! {e}");
+            Console.WriteLine($"File Loading failed, Argument Exception! {e.ToString()}");
         }
         
     }
