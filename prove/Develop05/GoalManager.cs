@@ -14,7 +14,6 @@ class GoalManager
     //[JsonPropertyName("goalList")]
     //[JsonRequired]
     //[JsonInclude]
-    //[JsonProperty]
     private List<Goal> _goalList = new List<Goal>() ;
     //[JsonPropertyName("points")]
     //[JsonRequired]
