@@ -150,7 +150,8 @@ class GoalManager
     {
         //string fileName = GetInput("What is the filename for the goal file? "); //Original
         string fileName = GetInput("What is the filename of the goal file you want to load? ");
-        Load(fileName); //Load the file by calling the actual load file method
+        //Load(fileName); //Load the file by calling the actual load file method
+        LoadBinaryFile(fileName);
     }
 
     //Goal Marking
@@ -448,6 +449,11 @@ class GoalManager
             //Read all additional GoalManager parameters
             long points = binReader.ReadInt64(); //Points, it's a long, so it's 64 bytes long!!!
             string userName = binReader.ReadString(); //User name
+
+            //Now finally update the properties of this GoalManager
+            _goalList = newGoalList.ToList<Goal>();
+            _points = points;
+            _userName = userName;
         }
     }
 
