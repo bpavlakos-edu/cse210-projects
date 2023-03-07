@@ -45,7 +45,7 @@ namespace QuickUtils /*Library name*/
                     {
                         int returnVal = int.Parse(GetInput(inMsg,newLine)); //Parse the input
                         //Determine if the value is in our boundaries
-                        if(bounds == null)
+                        if(bounds.Length == 0)
                         {
                             return returnVal;
                         }
