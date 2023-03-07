@@ -23,8 +23,8 @@ class Goal
     */
     public Goal(bool triggerBool)
     {
-        _name = Inp.GetInput("What is the name of your goal? ");
-        _desc = Inp.GetInput("What is the short description of it? ");
+        _name = Inp.GetInput("What is the name of your goal? ", false);
+        _desc = Inp.GetInput("What is the short description of it? ", false);
         _value = Inp.GetIntInput("What is the amount of points associated with this goal? ");
         _compCount = 0; //It will always be 0 by defualt
     }
