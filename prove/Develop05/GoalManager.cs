@@ -226,20 +226,20 @@ class GoalManager
     public void Save()
     {
         //string fileName = GetInput("What is the filename for the goal file? "); //Original
-        string fileName = GetInput("What is the filename you would like to save the goal file as? ");
+        string fileName = GetInput("What is the filename you would like to save the goal JSON file as? ");
         Save(fileName); //Save the file by calling the actual save file method
     }
     public void Load()
     {
         //string fileName = GetInput("What is the filename for the goal file? "); //Original
-        string fileName = GetInput("What is the filename of the goal file you want to load? ");
+        string fileName = GetInput("What is the filename of the goal JSON file you want to load? ");
         Load(fileName); //Load the file by calling the actual load file method
     }
     //Binary Loading and Saving
     public void LoadData()
     {
         string fileName = GetInput("What is the filename of the goal data file you want to load? ");
-        LoadBinaryFile(fileName);
+        LoadBinaryFile(fileName); //Load a binary file
     }
     public void SaveData()
     {
