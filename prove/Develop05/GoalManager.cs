@@ -193,7 +193,7 @@ class GoalManager
         //Add to list actions are stored in lambda functions, to be called by the Action that the menu will use with each item
         List<Action> addToListActions = new List<Action>
         {
-            new Action(()=>{_goalList.Add(new SimpleGoal(true));}), //Remember, having true in the constructor will trigger the user input version!
+            new Action(()=>{_goalList.Add(new SimpleGoal(true));}), //Remember, having true (a boolean) in the constructor will trigger the user input version!
             new Action(()=>{_goalList.Add(new EternalGoal(true));}),
             new Action(()=>{_goalList.Add(new ChecklistGoal(true));})
         };
@@ -207,7 +207,7 @@ class GoalManager
             "Which type of goal would you like to create? " //The input prompt
             //All the other attributes should be set to default, which hides the exit/cancel message by default when this style of constructor is used
         );
-        addGoalMenu.UiLoop(); //Start the add goal menu
+        addGoalMenu.UiLoop(debugMode:true); //Start the add goal menu
         //The alternative is to use a default UiMenu, but every action needs a "throw new OperationCancelledError();" at the end
     }
     //Remove a goal from the list

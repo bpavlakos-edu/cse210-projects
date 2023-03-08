@@ -145,7 +145,7 @@ class Goal
     //Edit the fields in this goal
     public void Edit()
     {
-        MakeEditMenu().UiLoop();
+        MakeEditMenu().UiLoop(debugMode:true);
     }
     //Programically generate the UiMenu for editing the attributes of this goal, it can be overidden because the checklist goal has extra settings to change
     public virtual UiMenu MakeEditMenu()
