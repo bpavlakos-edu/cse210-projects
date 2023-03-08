@@ -162,12 +162,16 @@ namespace QuickUtils
         //Issue with compile time constants, which prevents you from setting a default value of a class: https://stackoverflow.com/questions/18740421/default-parameter-for-value-must-be-a-compile-time-constant
         //It seems the only viable solution is to use "null" as suggested by this first comment to this: https://stackoverflow.com/a/18740471
         //I've already been using null, but I really wanted to know if there's a better way to use a default value, other than a manual function overload
-        public void UiLoop(Action preLoopAction = null)
+        public void UiLoop(Action preLoopAction = null, bool debugMode = false)
         {
             try
             {
                 while(true)
                 {
+                    if(debugMode) //Added a flag to check if there are duplicate hotkeys in the list
+                    {
+                        validateHotkeys();
+                    }
                     if(_clearConsole) //Added a flag to control if the console is cleared or not
                     {
                         Console.Clear(); //Reset the console before printing
@@ -277,6 +281,23 @@ namespace QuickUtils
         public void AddOptionFromEnd(UiOption newOption, int index = 0)
         {
             AddOption(newOption, (_optionList.Count - 1) - index);
+        }
+        public void validateHotkeys()
+        {
+            List<string> hotkeyList = new List<string>();
+            for(int i = 0; i<_optionList.Count;i++)
+            {
+                string curHotkey = _optionList[i].GetHotkey();
+                if(hotkeyList.Contains(curHotkey))
+                {
+                    Console.WriteLine($"Duplicate hotkey detected! {curHotkey}");
+                    //break; //Continue to report duplicate hotkeys
+                }
+                else
+                {
+                    hotkeyList.Add(curHotkey);
+                }
+            }
         }
     }
 }
