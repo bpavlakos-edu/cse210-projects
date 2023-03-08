@@ -1,8 +1,8 @@
 using System.Text.Json; //Lets us use JSON serialization and deserialization
-using System.Text.Json.Serialization;
+//using System.Text.Json.Serialization;
 //using System.Text.Json.Nodes;
 using UiMenu = QuickUtils.UiMenu; //Importing the custom UI menu class
-using UiOption = QuickUtils.UiOption; //Importing the custom Ui Option class
+//using UiOption = QuickUtils.UiOption; //Importing the custom Ui Option class
 using Inp = QuickUtils.Inputs; //Importing the custom Inputs class
 //using System.Runtime.Serialization;
 
@@ -219,7 +219,7 @@ class GoalManager
         if(HasGoals())
         {
             Display(); //Display the goals before asking which one the user completed
-            int goalIndex = Inp.GetIntInput("Which goal do you want to delete? (enter 0 to cancel): ",0,_goalList.Count - 1); //Ask for the index of the goal they want to change
+            int goalIndex = Inp.GetIntInput("Which goal do you want to delete? (enter 0 to cancel): ",0,_goalList.Count); //Ask for the index of the goal they want to change
             if(goalIndex != 0)
             {
                 _goalList.RemoveAt(goalIndex - 1);
@@ -233,7 +233,7 @@ class GoalManager
         if(HasGoals())
         {
             Display(); //Display the goals before asking which one the user completed
-            int goalIndex = Inp.GetIntInput("Which goal do you want to restart? (enter 0 to cancel): ",0,_goalList.Count - 1); //Ask for the index of the goal they want to change
+            int goalIndex = Inp.GetIntInput("Which goal do you want to restart? (enter 0 to cancel): ",0,_goalList.Count); //Ask for the index of the goal they want to change
             if(goalIndex != 0)
             {
                 _goalList[goalIndex - 1].SetCompCount(0); //Set the CompCount to 0
@@ -250,7 +250,7 @@ class GoalManager
         if(HasGoals())
         {
             Display(); //Display the goals before asking which one the user completed
-            int goalIndex = Inp.GetIntInput("Which goal do you want to edit? (enter 0 to cancel): ",0,_goalList.Count - 1); //Ask for the index of the goal they want to change
+            int goalIndex = Inp.GetIntInput("Which goal do you want to edit? (enter 0 to cancel): ",0,_goalList.Count); //Ask for the index of the goal they want to change
             if(goalIndex != 0)
             {
                 _goalList[goalIndex - 1].Edit(); //Edit the desired goal
@@ -286,7 +286,7 @@ class GoalManager
     public void RecordEvent()
     {
         Display(); //Display the goals before asking which one the user completed
-        int goalIndex = Inp.GetIntInput("Which goal did you accomplish? (enter 0 to cancel): ", 0, _goalList.Count - 1); //Ask for the index of the goal they want to change
+        int goalIndex = Inp.GetIntInput("Which goal did you accomplish? (enter 0 to cancel): ", 0, _goalList.Count); //Ask for the index of the goal they want to change
         if(goalIndex != 0)
         {
             int newPoints = _goalList[goalIndex - 1].Mark(); //Mark the goal as completed
