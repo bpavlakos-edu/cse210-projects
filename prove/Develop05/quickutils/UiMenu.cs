@@ -177,7 +177,7 @@ namespace QuickUtils
                         preLoopAction.Invoke(); //Invoke any pre loop action, unless it's not set
                     }
                     displayOptions(); //Display the options
-                    string userInput = GetInput(_inputMsg).ToLower(); //Get the user input
+                    string userInput = QuickUtils.Inputs.GetInput(_inputMsg,true); //Get the user input
                     if(!TryParseIndex(userInput)) //If parsing the index fails
                     {
                         FindHotkey(userInput); //Try using a hotkey instead
@@ -261,13 +261,22 @@ namespace QuickUtils
             }
             optionObj.Activate();//Activate!
         }
-        private string GetInput(string inMsg)
+
+        //Add a new option to the option list
+        public void AddOption(UiOption newOption, int index = -1)
         {
-            return QuickUtils.Inputs.GetInput(inMsg);
+            if(index < 0 || index > _optionList.Count)
+            {
+                _optionList.Add(newOption);
+            }
+            else
+            {
+                _optionList.Insert(index, newOption);
+            }
         }
-        private int GetIntInput(string inMsg)
+        public void AddOptionFromEnd(UiOption newOption, int index = 0)
         {
-            return QuickUtils.Inputs.GetIntInput(inMsg);
+            AddOption(newOption, (_optionList.Count - 1) - index);
         }
     }
 }

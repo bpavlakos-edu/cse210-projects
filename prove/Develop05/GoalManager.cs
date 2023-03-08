@@ -219,7 +219,7 @@ class GoalManager
         if(HasGoals())
         {
             Display(); //Display the goals before asking which one the user completed
-            int goalIndex = Inp.GetIntInput("Which goal do you want to delete? (enter 0 to cancel): ",0,_goalList.Count); //Ask for the index of the goal they want to change
+            int goalIndex = Inp.GetIntInput("Which goal do you want to delete? (enter 0 to cancel): ",0,_goalList.Count - 1); //Ask for the index of the goal they want to change
             if(goalIndex != 0)
             {
                 _goalList.RemoveAt(goalIndex - 1);
@@ -233,7 +233,7 @@ class GoalManager
         if(HasGoals())
         {
             Display(); //Display the goals before asking which one the user completed
-            int goalIndex = Inp.GetIntInput("Which goal do you want to restart? (enter 0 to cancel): ",0,_goalList.Count); //Ask for the index of the goal they want to change
+            int goalIndex = Inp.GetIntInput("Which goal do you want to restart? (enter 0 to cancel): ",0,_goalList.Count - 1); //Ask for the index of the goal they want to change
             if(goalIndex != 0)
             {
                 _goalList[goalIndex - 1].SetCompCount(0); //Set the CompCount to 0
@@ -247,6 +247,15 @@ class GoalManager
         //Int input (index of goal in list), invalid to cancel
         //Int input (index of property to change), invalid to cancel
         //input / int input, new value [Write new value]
+        if(HasGoals())
+        {
+            Display(); //Display the goals before asking which one the user completed
+            int goalIndex = Inp.GetIntInput("Which goal do you want to edit? (enter 0 to cancel): ",0,_goalList.Count - 1); //Ask for the index of the goal they want to change
+            if(goalIndex != 0)
+            {
+                _goalList[goalIndex - 1].Edit(); //Edit the desired goal
+            } //Do nothing if the goalIndex is 0
+        }
     }
     //File loading and saving (Method Overloads), uses JSON
     public void Save()
@@ -277,7 +286,7 @@ class GoalManager
     public void RecordEvent()
     {
         Display(); //Display the goals before asking which one the user completed
-        int goalIndex = Inp.GetIntInput("Which goal did you accomplish? (enter 0 to cancel): ",0,_goalList.Count); //Ask for the index of the goal they want to change
+        int goalIndex = Inp.GetIntInput("Which goal did you accomplish? (enter 0 to cancel): ", 0, _goalList.Count - 1); //Ask for the index of the goal they want to change
         if(goalIndex != 0)
         {
             int newPoints = _goalList[goalIndex - 1].Mark(); //Mark the goal as completed

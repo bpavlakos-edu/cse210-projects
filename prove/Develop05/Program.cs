@@ -48,9 +48,9 @@ class Program
                 new UiOption(new Action(()=>{_myGoals.LoadData();}),"Loa&d Goals from data"), //Load the goals
                 new UiOption(new Action(()=>{_myGoals.RecordEvent();}),"Record &Event"), //Mark a goal as done
                 new UiOption(new Action(()=>{_myGoals.ChangeName();}),"&Change User Name"), //Change the user name
-                new UiOption(new Action(()=>{_myGoals.ChangeName();}),"&Reset a Goal"), //Reset a goal
-                new UiOption(new Action(()=>{_myGoals.ChangeName();}),"Dele&te a Goal"), //Delete a Goal
-                //new UiOption(new Action(()=>{_myGoals.EditGoals();}),"Ed&it Goals"), //Change the user name
+                new UiOption(new Action(()=>{_myGoals.ResetGoal();}),"&Reset a Goal"), //Reset a goal
+                new UiOption(new Action(()=>{_myGoals.DeleteGoal();}),"Dele&te a Goal"), //Delete a Goal
+                new UiOption(new Action(()=>{_myGoals.EditGoal();}),"Ed&it a Goal"), //Edit the goal's fields
                 new UiOption(new Action(()=>{throw new OperationCanceledException();}),"E&xit") //Exit the menu
             },
             "Menu options:", //The intro message, it's special because it has 3 lines, including one that needs to be dynamically updated

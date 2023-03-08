@@ -1,5 +1,7 @@
 using System.Text.Json; //Thanks Json
 using Inp = QuickUtils.Inputs; //Import the custom library's input class
+using UiMenu = QuickUtils.UiMenu; //Custom library import for UI menu
+using UiOption = QuickUtils.UiOption; //Custom library import for UI menu option
 
 class ChecklistGoal : Goal
 {
@@ -90,7 +92,7 @@ class ChecklistGoal : Goal
         return _compCount >= _bonusCompGoal; //The completion criteria for this is if _compCount == _bonusCompGoal
     }
     //Utility Overrides
-    //To List<object>
+    //To List<object>, adds 2 additional items
     public override List<object> ToObjectList()
     {
         List<object> returnList = base.ToObjectList(); //Get the inital list from the base constructor
@@ -99,6 +101,7 @@ class ChecklistGoal : Goal
         returnList.Add(_bonusValue);
         return returnList; //Return the return list
     }
+    //Write via binary writer, adds 2 additional items
     public override void WriteGoalHex(BinaryWriter binWriter)
     {
         binWriter.Write((byte) 2); //Write this goal's type identifier as a byte
@@ -106,5 +109,14 @@ class ChecklistGoal : Goal
         //Write the extra data
         binWriter.Write(_bonusCompGoal);
         binWriter.Write(_bonusValue);
+    }
+    //Edit goal menu override, adds 2 additional items
+    public override UiMenu MakeEditMenu()
+    {
+        UiMenu editMenu = base.MakeEditMenu();
+        //Add the additional fields
+        editMenu.AddOptionFromEnd(new UiOption(new Action(()=>{_bonusValue = Inp.GetIntInputMin($"What would you like to change the completion bonus value to? (Currently: {_bonusValue})",0); throw new OperationCanceledException();}),"B&onus Completion Value"),1);
+        editMenu.AddOptionFromEnd(new UiOption(new Action(()=>{_bonusCompGoal = Inp.GetIntInputMin($"What would you like to change the bonus completion count goal to? (Currently: {_bonusCompGoal})",1); throw new OperationCanceledException();}),"Bonus Completion Count &Goal"),1);
+        return editMenu; //Return the new UiMenu so it can be used by the base class
     }
 }
