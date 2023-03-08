@@ -107,7 +107,7 @@ class GoalManager
             {
                 int goalType = dataList[offset].GetInt32();
                 offset++;
-                List<Type> typeList = new List<Type>{new SimpleGoal().GetType(),new EternalGoal().GetType(),new ChecklistGoal().GetType()};
+                //List<Type> typeList = new List<Type>{new SimpleGoal().GetType(),new EternalGoal().GetType(),new ChecklistGoal().GetType()};
                 //See: https://learn.microsoft.com/en-us/dotnet/api/system.type.invokemember?view=net-7.0#code-try-6 for an example of InvokeMember
                 //https://learn.microsoft.com/en-us/dotnet/api/system.type.invokemember?view=net-7.0
                 //Parameter 1 when null means we aren't calling a field or method
