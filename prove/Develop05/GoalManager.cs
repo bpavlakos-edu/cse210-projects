@@ -307,7 +307,7 @@ class GoalManager
         string displayString = $"You have {_points} points and {_goalList.Count} goals."; //Default return
         if(_userName != "My")
         {
-            return _userName+", "+displayString.ToLower(); //Only include the name when it's not set to the default
+            return _userName.Replace("'s","").Replace("'","")+", "+displayString.ToLower(); //Only include the name when it's not set to the default, remove "'s" and "s'"
         }
         return displayString; //Return the points display string
     }
