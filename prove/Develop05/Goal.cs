@@ -93,7 +93,7 @@ class Goal
     //Return the display string 
     public virtual string ToDisplayString()
     {
-        return $"[{GetMarkChar()}] {_name} ({_desc})"; //Example: "[*] My goal Name (Description)"
+        return $"[{GetMarkChar()}] {_name} ({_desc}) [{_value} point reward]"; //Example: "[*] My goal Name (Description)"
     }
     //Automatically append the number in a for loop, to the start of the display string, even if it's overridden by a sub class
     public string ToDisplayString(int index)

@@ -9,6 +9,8 @@ Enhancment list:
 - Added the ability to have negative goal types, by typing in negative numbers
 - Utilized the long data type to store user points, to allow for a higher maximum number
 - Added JSON Loading/Saving support while having private and protected fields
+- Added the ability to delete or reset goals
+- Added the ability to display point values of goals
 */
 
 using System;
