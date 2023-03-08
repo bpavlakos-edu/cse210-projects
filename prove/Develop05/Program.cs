@@ -11,6 +11,9 @@ Enhancment list:
 - Added JSON Loading/Saving support while having private and protected fields
 - Added the ability to delete or reset goals
 - Added the ability to display point values of goals
+- Added the ability to display the goal count with the point count
+- Added the ability to dynamically display the user name if it's changed from the default value
+- Added the ability to edit goals inside the program
 */
 
 using System;
