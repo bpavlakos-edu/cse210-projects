@@ -181,7 +181,7 @@ namespace QuickUtils
                         preLoopAction.Invoke(); //Invoke any pre loop action, unless it's not set
                     }
                     displayOptions(); //Display the options
-                    string userInput = QuickUtils.Inputs.GetInput(_inputMsg,true); //Get the user input
+                    string userInput = QuickUtils.Inputs.GetInput(_inputMsg); //Get the user input
                     if(!TryParseIndex(userInput)) //If parsing the index fails
                     {
                         FindHotkey(userInput); //Try using a hotkey instead

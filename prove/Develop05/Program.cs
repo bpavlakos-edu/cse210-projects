@@ -62,7 +62,7 @@ class Program
             "  ", //2 blank spaces as shown in the example video
             false //Do not clear the console automatically
         );
-        mainMenu.UiLoop(new Action(DisplayPreLoopMessage), true); //Start the main menu loop, don't clear the console ever
+        mainMenu.UiLoop(new Action(DisplayPreLoopMessage)); //Start the main menu loop, don't clear the console ever
     }
 
     //Because points cannot be dynamically displayed and updated using a template string in the UiMenu class, 
