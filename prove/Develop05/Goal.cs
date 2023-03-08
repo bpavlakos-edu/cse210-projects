@@ -154,10 +154,10 @@ class Goal
         return new UiMenu(new List<UiOption>()
             {
                 //All UiOptions here throw OperationCancelledExceptions to exit the mnu
-                new UiOption(new Action(()=>{_name = Inp.GetInput($"What would you like to change the goal name to? (Currently: {_name})", false); throw new OperationCanceledException();}),"Goal &Name"),
-                new UiOption(new Action(()=>{_desc = Inp.GetInput($"What would you like to change the short description to? (Currently: {_desc})", false); throw new OperationCanceledException();}),"Goal &Description"),
-                new UiOption(new Action(()=>{_value = Inp.GetIntInput($"What would you like to change the point value to? (Currently: {_value})"); throw new OperationCanceledException();}),"Point &Value"),
-                new UiOption(new Action(()=>{_compCount = Inp.GetIntInputMin($"What would you like to change the completion count to? (Currently: {_compCount})",0); throw new OperationCanceledException();}),"Comple&tion Count"),
+                new UiOption(new Action(()=>{_name = Inp.GetInput($"What would you like to change the goal name to? (Currently: {_name}): ", false); throw new OperationCanceledException();}),"Goal &Name"),
+                new UiOption(new Action(()=>{_desc = Inp.GetInput($"What would you like to change the short description to? (Currently: {_desc}): ", false); throw new OperationCanceledException();}),"Goal &Description"),
+                new UiOption(new Action(()=>{_value = Inp.GetIntInputForbid($"What would you like to change the point value to? (Currently: {_value}): ",0); throw new OperationCanceledException();}),"Point &Value"),
+                new UiOption(new Action(()=>{_compCount = Inp.GetIntInputMin($"What would you like to change the completion count to? (Currently: {_compCount}): ",0); throw new OperationCanceledException();}),"Comple&tion Count"),
                 new UiOption(new Action(()=>{throw new OperationCanceledException();}),"Go &Back") //Exit
             },
             "Goal Settings:",

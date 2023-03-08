@@ -115,8 +115,8 @@ class ChecklistGoal : Goal
     {
         UiMenu editMenu = base.MakeEditMenu();
         //Add the additional fields
-        editMenu.AddOptionFromEnd(new UiOption(new Action(()=>{_bonusValue = Inp.GetIntInputMin($"What would you like to change the completion bonus value to? (Currently: {_bonusValue})",0); throw new OperationCanceledException();}),"B&onus Completion Value"),1);
-        editMenu.AddOptionFromEnd(new UiOption(new Action(()=>{_bonusCompGoal = Inp.GetIntInputMin($"What would you like to change the bonus completion count goal to? (Currently: {_bonusCompGoal})",1); throw new OperationCanceledException();}),"Bonus Completion Count &Goal"),1);
+        editMenu.AddOptionFromEnd(new UiOption(new Action(()=>{_bonusValue = Inp.GetIntInputForbid($"What would you like to change the completion bonus value to? (Currently: {_bonusValue}): ", 0); throw new OperationCanceledException();}),"B&onus Completion Value"),1);
+        editMenu.AddOptionFromEnd(new UiOption(new Action(()=>{_bonusCompGoal = Inp.GetIntInputMin($"What would you like to change the bonus completion count goal to? (Currently: {_bonusCompGoal}): ",1); throw new OperationCanceledException();}),"Bonus Completion Count &Goal"),1);
         return editMenu; //Return the new UiMenu so it can be used by the base class
     }
 }

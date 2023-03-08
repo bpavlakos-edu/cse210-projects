@@ -104,6 +104,22 @@ namespace QuickUtils /*Library name*/
         {
             return GetIntInput(inMsg, new int[]{min,max}, newLine);
         }
+        //Int input, but forbid a specific number
+        public static int GetIntInputForbid(string inMsg, int forbidNum, bool newLine = false)
+        {
+            while(true)
+            {
+                int returnNum = GetIntInput(inMsg);
+                if(returnNum != forbidNum)
+                {
+                    return returnNum;
+                }
+                else
+                {
+                    Console.WriteLine("Sorry! That's not a valid number, please try again!");
+                }
+            }
+        }
 
         //Float input
 
