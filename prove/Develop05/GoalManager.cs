@@ -105,7 +105,7 @@ class GoalManager
             List<Goal> newGoalList = new List<Goal>();
             for(int i = 0; i < goalListCount; i++)
             {
-                int goalType = dataList[offset].GetInt32();
+                string goalType = dataList[offset].GetString();
                 offset++;
                 //List<Type> typeList = new List<Type>{new SimpleGoal().GetType(),new EternalGoal().GetType(),new ChecklistGoal().GetType()};
                 //See: https://learn.microsoft.com/en-us/dotnet/api/system.type.invokemember?view=net-7.0#code-try-6 for an example of InvokeMember
@@ -125,15 +125,15 @@ class GoalManager
                 }*/
                 switch(goalType) //If we had a way of using the type integer as a constructor for creating each goal type, this would be much smaller!
                 {
-                    case(0): //SimpleGoal
+                    case("SimpleGoal"): //SimpleGoal
                         newGoalList.Add(new SimpleGoal(dataList, offset));
                         offset += 4;
                         break;
-                    case(1): //EternalGoal
+                    case("EternalGoal"): //EternalGoal
                         newGoalList.Add(new EternalGoal(dataList, offset));
                         offset += 4;
                         break;
-                    case(2): //ChecklistGoal
+                    case("ChecklistGoal"): //ChecklistGoal
                         newGoalList.Add(new ChecklistGoal(dataList, offset));
                         offset += 6; //It has 2 extra fields
                         break;
@@ -342,7 +342,7 @@ class GoalManager
                 if(jsonString != "")
                 {
                     sWriter.Write(jsonString); //Write the JSON string
-                    Console.WriteLine("File saved successfuly");
+                    Console.WriteLine("File successfuly saved!");
                 }
                 else
                 {

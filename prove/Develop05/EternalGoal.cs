@@ -43,7 +43,7 @@ class EternalGoal : Goal
     public override List<object> ToObjectList()
     {
         List<object> returnList = base.ToObjectList(); //Get the inital list from the base constructor
-        returnList.Insert(0, 1); //Insert the Goal List type identifier
+        returnList.Insert(0, "EternalGoal"); //Insert the Goal List type identifier
         return returnList; //Return the return list
     }
     //Write to a binary writer

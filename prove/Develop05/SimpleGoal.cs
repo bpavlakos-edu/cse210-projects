@@ -50,7 +50,7 @@ class SimpleGoal : Goal
     public override List<object> ToObjectList()
     {
         List<object> returnList = base.ToObjectList(); //Get the inital list from the base constructor
-        returnList.Insert(0, 0); //Insert the Goal List type identifier
+        returnList.Insert(0, "SimpleGoal"); //Insert the Goal List type identifier
         return returnList; //Return the return list
     }
     //Write to a binary writer

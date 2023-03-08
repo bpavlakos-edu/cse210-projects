@@ -96,7 +96,7 @@ class ChecklistGoal : Goal
     public override List<object> ToObjectList()
     {
         List<object> returnList = base.ToObjectList(); //Get the inital list from the base constructor
-        returnList.Insert(0, 2); //Insert the Goal List type identifier
+        returnList.Insert(0, "ChecklistGoal"); //Insert the Goal List type identifier
         returnList.Add(_bonusCompGoal);
         returnList.Add(_bonusValue);
         return returnList; //Return the return list
