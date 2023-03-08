@@ -168,13 +168,13 @@ namespace QuickUtils
             {
                 while(true)
                 {
-                    if(debugMode) //Added a flag to check if there are duplicate hotkeys in the list
-                    {
-                        validateHotkeys();
-                    }
                     if(_clearConsole) //Added a flag to control if the console is cleared or not
                     {
                         Console.Clear(); //Reset the console before printing
+                    }
+                    if(debugMode) //Added a flag to check if there are duplicate hotkeys in the list
+                    {
+                        validateHotkeys();
                     }
                     if(preLoopAction != null)
                     {
