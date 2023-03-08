@@ -210,11 +210,36 @@ class GoalManager
         addGoalMenu.UiLoop(); //Start the add goal menu
         //The alternative is to use a default UiMenu, but every action needs a "throw new OperationCancelledError();" at the end
     }
+    //Remove a goal from the list
     public void DeleteGoal()
     {
         //Consider using UI Menu Here
         //Int input (index of goal in list), invalid to cancel
         //_goalList.RemoveAt(index);
+        if(HasGoals())
+        {
+            Display(); //Display the goals before asking which one the user completed
+            int goalIndex = Inp.GetIntInput("Which goal do you want to delete? (enter 0 to cancel): ",0,_goalList.Count); //Ask for the index of the goal they want to change
+            if(goalIndex != 0)
+            {
+                _goalList.RemoveAt(goalIndex - 1);
+                Console.WriteLine("Goal successfully deleted!");
+            } //Do nothing if the goalIndex is 0
+        }
+    }
+    //Reset a goal to the default compCount
+    public void ResetGoal()
+    {
+        if(HasGoals())
+        {
+            Display(); //Display the goals before asking which one the user completed
+            int goalIndex = Inp.GetIntInput("Which goal do you want to restart? (enter 0 to cancel): ",0,_goalList.Count); //Ask for the index of the goal they want to change
+            if(goalIndex != 0)
+            {
+                _goalList[goalIndex - 1].SetCompCount(0); //Set the CompCount to 0
+                Console.WriteLine("Goal successfully reset!");
+            } //Do nothing if the goalIndex is 0
+        }
     }
     public void EditGoal()
     {
@@ -253,13 +278,9 @@ class GoalManager
     {
         Display(); //Display the goals before asking which one the user completed
         int goalIndex = Inp.GetIntInput("Which goal did you accomplish? (enter 0 to cancel): ",0,_goalList.Count); //Ask for the index of the goal they want to change
-        if(goalIndex == 0)
+        if(goalIndex != 0)
         {
-            //Do nothing, the user wants to go back
-        }
-        else
-        {
-            int newPoints = _goalList[goalIndex-1].Mark(); //Mark the goal as completed
+            int newPoints = _goalList[goalIndex - 1].Mark(); //Mark the goal as completed
             if(newPoints != 0)
             {
                 _points += newPoints;
@@ -269,7 +290,17 @@ class GoalManager
             {
                 Console.WriteLine("That goal has been completed already!");
             }
+        } //Do nothing if the goalIndex is 0
+    }
+    //Print user name and points
+    public string GetPointsDisplayString()
+    {
+        string displayString = $"You have {_points} points and {_goalList.Count} goals."; //Default return
+        if(_userName != "My")
+        {
+            return _userName+", "+displayString.ToLower(); //Only include the name when it's not set to the default
         }
+        return displayString; //Return the points display string
     }
 
     //Ported from Journal.cs in Develop 02
@@ -485,9 +516,8 @@ class GoalManager
         {
             Console.WriteLine($"File writing failed Argument Error: {e.ToString()}");
         }
-
     }
-
+    //Load a binary save file
     private void LoadBinaryFile(string filePath)
     {
         try
@@ -551,7 +581,17 @@ class GoalManager
         {
             Console.WriteLine($"File Loading failed, Argument Exception! {e.ToString()}");
         }
-        
+    }
+
+    //Method to quickly determine if there are goals to modify, and print a message if there's not
+    public bool HasGoals()
+    {
+        bool hasGoals = _goalList.Count > 0;
+        if(!hasGoals)
+        {
+            Console.WriteLine("You must have a goal first before using this option.");
+        }
+        return hasGoals;
     }
 
     //Method to quickly write a string and its string length

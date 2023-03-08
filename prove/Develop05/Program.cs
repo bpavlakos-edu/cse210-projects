@@ -44,9 +44,11 @@ class Program
                 new UiOption(new Action(()=>{_myGoals.Load();}),"&Load Goals from JSON"), //Load the goals
                 new UiOption(new Action(()=>{_myGoals.SaveData();}),"S&ave Goals as data"), //Save the goals
                 new UiOption(new Action(()=>{_myGoals.LoadData();}),"Loa&d Goals from data"), //Load the goals
-                new UiOption(new Action(()=>{_myGoals.RecordEvent();}),"&Record Event"), //Mark a goal as done
+                new UiOption(new Action(()=>{_myGoals.RecordEvent();}),"Record &Event"), //Mark a goal as done
                 new UiOption(new Action(()=>{_myGoals.ChangeName();}),"&Change User Name"), //Change the user name
-                //new UiOption(new Action(()=>{_myGoals.EditGoals();}),"&Edit Goals"), //Change the user name
+                new UiOption(new Action(()=>{_myGoals.ChangeName();}),"&Reset a Goal"), //Reset a goal
+                new UiOption(new Action(()=>{_myGoals.ChangeName();}),"Dele&te a Goal"), //Delete a Goal
+                //new UiOption(new Action(()=>{_myGoals.EditGoals();}),"Ed&it Goals"), //Change the user name
                 new UiOption(new Action(()=>{throw new OperationCanceledException();}),"E&xit") //Exit the menu
             },
             "Menu options:", //The intro message, it's special because it has 3 lines, including one that needs to be dynamically updated
@@ -63,7 +65,7 @@ class Program
     static void DisplayPreLoopMessage()
     {
         Console.WriteLine("");
-        Console.WriteLine($"You have {_myGoals.GetPoints()} points.");
+        Console.WriteLine(_myGoals.GetPointsDisplayString());
         Console.WriteLine("");
     }
 }
