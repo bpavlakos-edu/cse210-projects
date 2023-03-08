@@ -60,7 +60,7 @@ class ChecklistGoal : Goal
     //Override for ToDisplayString, use the original ToDisplayString to generate the first half, then tells the user how many times they've completed the goal, and how many times they need to reach the bonus
     public override string ToDisplayString()
     {
-        return $"{base.ToDisplayString()} [{_bonusValue} point bonus reward] -- Currently completed: {_compCount}/{_bonusCompGoal}"; //Example: [X] Name (Description text) -- Currently Completed: 1/3
+        return $"{base.ToDisplayString()} -- [{_bonusValue} point bonus reward] Currently completed: {_compCount}/{_bonusCompGoal}"; //Example: [X] Name (Description text) -- Currently Completed: 1/3
     }
     //Override for Mark, gives a reward when the completion count will equal the bonus completion count goal
     public override int Mark()
