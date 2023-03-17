@@ -38,7 +38,7 @@ class EternalGoal : Goal
         //_compCount--; //Always subtract 1 to prevent _compCount from increasing, ensuring this goal is never "completed"
         return base.Mark(); //Use the existing code from the base class to return the value of this goal, and print the completion message
     }
-    //Added because of bug the teacher noticed
+    //Added because of bug the teacher noticed, this was what was originally planned anyways!
     protected override bool IsCompleted()
     {
         return false; //Hardcoded to always return false
