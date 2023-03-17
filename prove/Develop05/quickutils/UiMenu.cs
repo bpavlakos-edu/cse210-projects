@@ -71,7 +71,7 @@ namespace QuickUtils
                 int captureIdx = i; //Capture the index outside the lambda, so it doesn't get overwritten by the next loop cycle
                 //Make the option display string if the displayString list isn't empty
                 string displayString = i+"";
-                if(displayString != null)
+                if(displayStrings != null)
                 {
                     try
                     {

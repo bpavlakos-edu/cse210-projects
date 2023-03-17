@@ -35,8 +35,13 @@ class EternalGoal : Goal
     //Methods:
     public override int Mark()
     {
-        _compCount--; //Always subtract 1 to prevent _compCount from increasing, ensuring this goal is never "completed"
+        //_compCount--; //Always subtract 1 to prevent _compCount from increasing, ensuring this goal is never "completed"
         return base.Mark(); //Use the existing code from the base class to return the value of this goal, and print the completion message
+    }
+    //Added because of bug the teacher noticed
+    protected override bool IsCompleted()
+    {
+        return false; //Hardcoded to always return false
     }
     //Utility Overrides
     //To List<object>
