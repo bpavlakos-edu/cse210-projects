@@ -10,6 +10,31 @@ class Program
         new List<Dice>
         {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         },
         5,
         5);
