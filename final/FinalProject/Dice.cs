@@ -87,7 +87,7 @@ class Dice
     //Get the currently displayed side of this dice (Todo: Decide if the brackets should be handled by the DiceSet and not here)
     public string ToDisplayString()
     {
-        return (_hidden) ? "[ ]" : (_curLetter != 'Q') ? "["+_curLetter + " ]" : "["+_curLetter + "u]"; //Return the current letter or blank for hidden, if it's Q add "u" to make "Qu" using the ternary conditional operator (https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator)
+        return (_hidden) ? "[  ]" : (_curLetter != 'Q') ? "["+_curLetter + " ]" : "["+_curLetter + "u]"; //Return the current letter or blank for hidden, if it's Q add "u" to make "Qu" using the ternary conditional operator (https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator)
     }
     //Randomly pick a side of this dice
     public void Roll()
@@ -154,5 +154,15 @@ class Dice
         {
             _sideList.Add(char.ToLower(inputChar));
         }*/
+
+        else if(strict) //For debugging
+        {
+            Console.WriteLine($"Invalid character {inputChar}");
+            throw new NotImplementedException();
+        }
+    }
+    private void RemoveSide(int index)
+    {
+
     }
 }
