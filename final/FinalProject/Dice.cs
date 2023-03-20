@@ -101,21 +101,18 @@ class Dice
     
     //Methods
     //Get the currently displayed side of this dice (Todo: Decide if the brackets should be handled by the DiceSet and not here)
-    public string ToDisplayString(bool hasQu = false, char dWallStart = '\u0000', char dWallEnd = '\u0000') //Implement allow u
+    public string ToDisplayString(bool hasQu = false, char dWallStart = (char) 0, char dWallEnd = (char) 0) //Implement allow u
     {
         if(_hidden)
         {
             return dWallStart + ((hasQu) ? "  " : " ") + dWallEnd;
         }
-        /* else if(!hasQu)
-        {
-            return _curLetter+"";
-        } */
         else //Has a Qu in the display
         {
             return dWallStart + (_curLetter + ((_curLetter != 'Q') ? " " : "u")) + dWallEnd; //Return an extra U when Q and an extra space when not Q
+            //return _side+" "; //Debugging
         }
-        //return (_hidden) ? " " : (_curLetter != 'Q') ? _curLetter+" " : _curLetter + "u"; //Return the current letter or blank for hidden, if it's Q add "u" to make "Qu" using the ternary conditional operator (https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator)
+        //ternary conditional operator (https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator)
     }
     //Randomly pick a side of this dice
     public void Roll()

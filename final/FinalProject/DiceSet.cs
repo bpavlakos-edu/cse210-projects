@@ -63,15 +63,15 @@ class DiceSet
     //Display the Letters in a grid
     public void Display(bool clearAll = false)
     {
-        char dWallStart = '\u0000';
-        char dWallEnd = '\u0000';
+        char dWallStart = (char) 0;
+        char dWallEnd = (char) 0;
         //"Exists" uses predicates (inline functions) to search a list
-        bool hasQu = _diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';}) /*&& _allowQu*/;
+        bool hasQu = /*_allowQu && */_diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';});
         Console.Clear(); //Clear the console before starting
         for(int y = 0; y < _height; y++)
-        {
+        {//Console.Write($"Y{y}");//Debugging
             for(int x = 0; x < _width; x++)
-            {
+            {//Console.Write($"X{y} ");//Debugging
                 if(x != 0)
                 {
                     Console.Write(""); //Write a space before entries
