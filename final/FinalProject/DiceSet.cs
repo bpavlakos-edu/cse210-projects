@@ -114,21 +114,20 @@ class DiceSet
     //Mass Dice Modification
     public void SetAll(Dice newDice)
     {
-        //_diceList.ForEach((curDice))
+        _diceList.ForEach((curDice) => {curDice.SetDice(newDice);}); //Use the SetDice(Dice newDice) setter method
         //Old version
-        
+        /*
         int diceCount = _diceList.Count; //Get the dice count before we clear it
         _diceList = new List<Dice>(); //Clear the dice list
         for(int i = 0; i < diceCount; i++)
         {
             _diceList.Add(new Dice(newDice)); //Add a copy of the newDice
-        }
-        
+        }*/
     }
 
     public void SetAll(char fillChar)
     {
-        
+        _diceList.ForEach((curDice) => {curDice.SetDice(fillChar);}); //Use the SetDice(char fillChar) setter method
     }
 
     //Utility
