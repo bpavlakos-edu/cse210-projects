@@ -22,7 +22,7 @@ class DiceSet
         //Use the Fill all fields constructor to re-use code, and make it easier to change
     }
 
-    //Getters and Setters (Normal Getters and Setters were auto generated using my AutoGetterSetter Python Script in C# mode)
+    //Getters and Setters (Normal external access Getters and Setters were auto generated using my AutoGetterSetter Python Script in C# mode)
     public List<Dice> GetDiceList()
     {
         return _diceList.ToList<Dice>();
@@ -79,6 +79,7 @@ class DiceSet
             }
         }
     }
+
     //Smart Dice Display, uses modulus to display dice
 
     //Roll All Dice
@@ -88,6 +89,7 @@ class DiceSet
         _diceList.ForEach((curDice) => {curDice.Roll();}); //Roll each dice using ForEach, with a lambda (Action with input type dice) call to the current dice's Roll method
         Display(); //Display after rolling
     }
+
     //Randomly Change a dice's hidden state
     public int RandomHide(int rChance = 1, int rChanceMax = 2)
     {
@@ -102,6 +104,26 @@ class DiceSet
         Display();
         return hiddenCount; //Return the number of hidden dice
     }
+
+    //Open the settings menu
+    public void OpenSettings()
+    {
+
+    }
+
+    //Mass Dice Modification
+    public void SetAll(Dice newDice)
+    {
+        int diceCount = _diceList.Count; //Get the dice count before we clear it
+        _diceList = new List<Dice>(); //Clear the dice list
+        for(int i = 0; i < diceCount; i++)
+        {
+            _diceList.Add(new Dice(newDice)); //Add a copy of the newDice
+        }
+    }
+
+    //Utility
+
     //Shuffle Dice
     private void Shuffle(int shuffleCycleCount = 1)
     {

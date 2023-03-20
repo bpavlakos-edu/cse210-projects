@@ -34,7 +34,13 @@ class Dice
         _hidden = false;
     }
 
-    //Getters and Setters (Normal Getters and Setters were auto generated using my AutoGetterSetter Python Script in C# mode)
+    //Copy an existing Dice
+    public Dice(Dice newDice) : this(newDice.GetSideList(), newDice.GetSide(), newDice.GetCurLetter(), newDice.GetHidden())
+    {
+
+    }
+
+    //Getters and Setters (Normal external access Getters and Setters were auto generated using my AutoGetterSetter Python Script in C# mode)
     public List<char> GetSideList()
     {
         return _sideList.ToList<char>();
