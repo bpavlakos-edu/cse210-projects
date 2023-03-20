@@ -9,6 +9,9 @@ class DiceSet
     private List<Dice> _diceList = new List<Dice>();
     private int _width = 5;
     private int _height = 5;
+    //Bool AllowQu
+    //private bool _allowQu = true;
+    //Char[] EndChar,StartChar
     //Constructors
     
     //No blank constructor, it should never be blank!!!
@@ -60,11 +63,14 @@ class DiceSet
     //Display the Letters in a grid
     public void Display(bool clearAll = false)
     {
+        //"Exists" uses predicates (inline functions) to search a list
+        bool hasQu = _diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';}) /*&& _allowQu*/;
         Console.Clear(); //Clear the console before starting
         for(int y = 0; y < _height; y++)
         {
             for(int x = 0; x < _width; x++)
             {
+                Console.Write("|"); //Write the 
                 if(x != 0)
                 {
                     Console.Write(" ");
@@ -72,12 +78,13 @@ class DiceSet
                 //consider writing X Y coordinates, make sure it doesn't shift the display
                 try
                 {
-                    Console.Write(_diceList[(y * _width) + x].ToDisplayString()); //Each Y value is equivalent to a full row of X
+                    Console.Write(_diceList[(y * _width) + x].ToDisplayString(hasQu)); //Each Y value is equivalent to a full row of X
                 }
                 catch(Exception) //No dice, literally
                 {
-                    Console.Write("    "); //Write 4 blank spaces "[__]"
+                    Console.Write((hasQu /*&& _allowQu*/) ? "    " : " "); //Write 4 blank spaces "[__]"
                 }
+                Console.Write("|"); //Write the
                 if(x == _width - 1)
                 {
                     Console.WriteLine(""); //Write a new line
