@@ -70,11 +70,11 @@ class DiceSet
         {
             for(int x = 0; x < _width; x++)
             {
-                Console.Write("|"); //Write the 
                 if(x != 0)
                 {
                     Console.Write(" ");
                 }
+                Console.Write("|"); //Write the 
                 //consider writing X Y coordinates, make sure it doesn't shift the display
                 try
                 {
