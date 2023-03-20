@@ -115,6 +115,13 @@ class Dice
         {
             UiMenu _diceSideMenu = new UiMenu();
         }*/
+        //Sides: A,B,C,D,E,F
+        //&Add Side
+        //&Remove Side
+        //&Edit Side
+        //&Set All Sides 
+        //Randomi&ze Side List
+        //Go &Back
     }
     //Setting support function, used both internally and externally
     public string LettersToString(char sepChar = '\u0000') //Default char value found here https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/char#literals
