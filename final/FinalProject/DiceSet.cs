@@ -25,9 +25,12 @@ class DiceSet
     }
 
     //Copy an existing DiceSet so GameModes can modify it without changing the original
-    public DiceSet(DiceSet sourceDiceSet) : this(sourceDiceSet.GetDiceList(), sourceDiceSet.GetWidth(), sourceDiceSet.GetHeight())
+    public DiceSet(DiceSet sourceDiceSet) //: this(sourceDiceSet.GetDiceList(), sourceDiceSet.GetWidth(), sourceDiceSet.GetHeight())
     {
         //Use the Fill all fields constructor to re-use code, and make it easier to change
+        _diceList = sourceDiceSet.GetDiceList();
+        _width = sourceDiceSet.GetWidth();
+        _height = sourceDiceSet.GetHeight();
     }
 
     //Getters and Setters (Normal external access Getters and Setters were auto generated using my AutoGetterSetter Python Script in C# mode)
@@ -54,6 +57,13 @@ class DiceSet
     public void SetHeight(int height)
     {
         _height = height;
+    }
+    //Custom Getters and Setters
+    public void SetDiceSet(DiceSet newDiceSet)
+    {
+        _diceList = newDiceSet.GetDiceList();
+        _width = newDiceSet.GetWidth();
+        _height = newDiceSet.GetHeight();
     }
 
     //Methods
