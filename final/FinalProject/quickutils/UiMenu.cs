@@ -284,7 +284,7 @@ namespace QuickUtils
         private void ActivateHotkey(string hotkey)
         {
             int hotkeyIdx = FindHotkeyIdx(hotkey);
-            if(hotkeyIdx != 0)
+            if(hotkeyIdx >= 0)
             {
                 ActivateOption(hotkeyIdx);
             }
