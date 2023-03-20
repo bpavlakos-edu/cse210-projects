@@ -14,12 +14,18 @@ class Dice
 
     }
     //Fill all attributes, most attributes use default values
-    public Dice(List<char> sideList, int side = 0,char curLetter=' ', bool hidden = false)
+    public Dice(List<char> sideList, int side = 0, char curLetter=' ', bool hidden = false)
     {
         _sideList = sideList.ToList<char>();//Copy the input list to break the reference to the original
         _side = side;
         _curLetter = curLetter;
         _hidden = hidden;
+    }
+
+    //Fill attributes with user input
+    public Dice(bool triggerFlag) //This boolean is here to activate this constructor
+    {
+
     }
 
     //Getters and Setters (Auto generated using my AutoGetterSetter Python Script in C# configuration)
@@ -30,6 +36,14 @@ class Dice
     public void SetSideList(List<char> sideList)
     {
         _sideList = sideList.ToList<char>();
+    }
+    public void SetSideList(string inputString)
+    {
+        List<char> charList = inputString.ToUpper().ToList<char>();//Captialize the input string before turning it into a list of char
+        charList.ForEach((curChar) => {
+            AddSide(curChar); //Use AddSide to filter out invalid characters
+        });
+
     }
     public int GetSide()
     {
@@ -112,5 +126,18 @@ class Dice
     private char IntToChar(int alphabetValue, int asciiStartIndex = 97)
     {
         return (char)(asciiStartIndex + alphabetValue); //Convert the letter to it's ascii counterpart, then convert that to char
+    }
+    //Add or remove sides
+    private void AddSide(char inputChar, bool strict = false)
+    {
+        if(inputChar == '?' || char.IsAsciiLetter(inputChar)) 
+        {
+            _sideList.Add(char.ToLower(inputChar));
+            //_sideList.Add(inputChar); //For if statement
+        }
+        /*else if(char.IsAsciiLetterLower(inputChar)) //IsAsciiLetterUpper must be added above to use this
+        {
+            _sideList.Add(char.ToLower(inputChar));
+        }*/
     }
 }
