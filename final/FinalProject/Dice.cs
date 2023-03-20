@@ -44,9 +44,9 @@ class Dice
         _sideList = sideList.ToList<char>();
     }
     //SetSide list from a string
-    public void SetSideList(string inputString)
+    public void SetSideList(string inString)
     {
-        List<char> charList = inputString.ToUpper().ToList<char>();//Captialize the input string before turning it into a list of char
+        List<char> charList = inString.ToUpper().ToList<char>();//Captialize the input string before turning it into a list of char
         //Add each side to the list
         charList.ForEach((curChar) => {AddSide(curChar);});//Use AddSide() to filter out invalid characters
         if(_sideList.Count == 0) //No valid characters
