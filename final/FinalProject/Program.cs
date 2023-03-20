@@ -11,6 +11,7 @@ class Program
     });*/
     //UiMenu setup
     private static UiMenu _mainMenu = new UiMenu(new List<UiOption>{
+            new UiOption(TestMode,"&Test Mode"), //For debugging
             new UiOption(()=>{},"&Classic"),
             new UiOption(()=>{},"&Random"),
             new UiOption(()=>{},"&Blink"),
@@ -63,5 +64,10 @@ class Program
         //also make sure that individual game modes don't change when different from default settings, or give the user a warning
         //GameMode _mainGm = new GameMode(); //Create a new instance of GameMode with the current global settings
         //_mainGm.OpenSettings(); //Open the settings
+    }
+
+    static void TestMode()
+    {
+
     }
 }
