@@ -55,7 +55,7 @@ class Dice
     }
     
     //Methods
-    //Get the currently displayed side of this dice
+    //Get the currently displayed side of this dice (Todo: Decide if the brackets should be handled by the DiceSet and not here)
     public string ToDisplayString()
     {
         return (_hidden) ? "[ ]" : (_curLetter != 'Q') ? "["+_curLetter + " ]" : "["+_curLetter + "u]"; //Return the current letter or blank for hidden, if it's Q add "u" to make "Qu" using the ternary conditional operator (https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator)
@@ -63,7 +63,16 @@ class Dice
     //Randomly pick a side of this dice
     public void Roll()
     {
-
+        try
+        {
+            _side = new Random().Next(0, _sideList.Count); //Pick a side of the dice, using the char list
+            _curLetter = (_sideList[_side] != '?') ? _sideList[_side] : GetRandomLetter(); //Update _curLetter, set using the current side, or by getting a random letter when its set to '?'
+        }
+        catch(OutOfMemoryException) //Disabled to check for errors//catch(ArgumentOutOfRangeException) //Detect when the user tries to roll 0 length lists
+        {
+            Console.WriteLine($"Dice is empty! Please add sides before rolling!");
+        }
+        
     }
     public void ToggleHidden(int rChance = 1, int rChanceMax = 2)
     {
