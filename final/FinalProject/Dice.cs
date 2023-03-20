@@ -94,10 +94,10 @@ class Dice
     {
         try
         {
-            _side = new Random().Next(0, _sideList.Count); //Pick a side of the dice, using the char list
-            _curLetter = (_sideList[_side] != '?') ? _sideList[_side] : GetRandomLetter(); //Update _curLetter, set using the current side, or by getting a random letter when its set to '?' (Uses ternary operator)
+            _side = new Random().Next(0, _sideList.Count); //Pick a random side of the dice, using the char list
+            _curLetter = (_sideList[_side] != '?') ? _sideList[_side] : GetRandomLetter(); //Update _curLetter, set using the current side from the list, or by getting a random letter when it's side is set to '?' (Uses ternary operator)
         }
-        catch(OutOfMemoryException) //Disabled to check for errors //catch(ArgumentOutOfRangeException) //Detect when the user tries to roll 0 length lists
+        catch(OperationCanceledException) //Disabled this catch to check for errors //catch(ArgumentOutOfRangeException) //Detect when the user tries to roll 0 length lists
         {
             Console.WriteLine($"Dice is empty! Please add sides before rolling!");
         }
@@ -123,9 +123,10 @@ class Dice
     //Setting support function, used both internally and externally
     public string LettersToString(char sepChar = '\u0000') //Default char value found here https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/char#literals
     {
-        return string.Join(sepChar,_sideList);
+        return string.Join(sepChar,_sideList); //String.Join puts all chars in a list together to form a string
     }
     //Utility
+    //Determine if the random chance has been met
     private bool RandomChance(int rChance, int rChanceMax, bool reverse = false)
     {
         double rThreshold = (double) rChance / (double) rChanceMax; //Calculate the random threshold, "Random" uses a double, so we have to make them doubles too
@@ -146,8 +147,9 @@ class Dice
         if(inputChar == '?' || char.IsAsciiLetter(inputChar)) 
         {
             _sideList.Add(char.ToLower(inputChar));
-            //_sideList.Add(inputChar); //For if statement
+            //_sideList.Add(inputChar); //For the if statement version if it's faster
         }
+
         /*else if(char.IsAsciiLetterLower(inputChar)) //IsAsciiLetterUpper must be added above to use this
         {
             _sideList.Add(char.ToLower(inputChar));
