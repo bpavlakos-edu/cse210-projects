@@ -107,10 +107,10 @@ class Dice
         {
             return (hasQu) ? "  " : " ";
         }
-        else if(!hasQu)
+        /* else if(!hasQu)
         {
             return _curLetter+"";
-        }
+        } */
         else //Has a Qu in the display
         {
             return _curLetter + ((_curLetter != 'Q') ? " " : "u"); //Return an extra U when Q and an extra space when not Q

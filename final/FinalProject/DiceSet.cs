@@ -72,9 +72,9 @@ class DiceSet
             {
                 if(x != 0)
                 {
-                    Console.Write(" ");
+                    Console.Write(""); //Write a space before entries
                 }
-                Console.Write("|"); //Write the 
+                Console.Write(""); //Write the dice start border
                 //consider writing X Y coordinates, make sure it doesn't shift the display
                 try
                 {
@@ -84,7 +84,7 @@ class DiceSet
                 {
                     Console.Write((hasQu /*&& _allowQu*/) ? "    " : " "); //Write 4 blank spaces "[__]"
                 }
-                Console.Write("|"); //Write the
+                Console.Write(""); //Write the dice end border
                 if(x == _width - 1)
                 {
                     Console.WriteLine(""); //Write a new line
