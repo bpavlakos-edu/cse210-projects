@@ -25,7 +25,7 @@ class DiceSet
     }
 
     //Copy an existing DiceSet so GameModes can modify it without changing the original
-    public DiceSet(DiceSet sourceDiceSet) : this(sourceDiceSet._diceList, sourceDiceSet._width, sourceDiceSet._height)
+    public DiceSet(DiceSet sourceDiceSet) : this(sourceDiceSet.GetDiceList(), sourceDiceSet.GetWidth(), sourceDiceSet.GetHeight())
     {
         //Use the Fill all fields constructor to re-use code, and make it easier to change
     }
