@@ -6,9 +6,13 @@ class Program
 {
     //Global Variables
     //private List<GameMode> _gameModeList = new List<GameMode>();
-    /*private DiceSet _mainDice = new DiceSet(List<Dice>{
+    private DiceSet _mainDice = new DiceSet(
+        new List<Dice>
+        {
 
-    });*/
+        },
+        5,
+        5);
     //UiMenu setup
     private static UiMenu _mainMenu = new UiMenu(new List<UiOption>{
             new UiOption(TestMode,"&Test Mode"), //For debugging

@@ -14,7 +14,7 @@ class DiceSet
     //No blank constructor, it should never be blank!!!
     
     //Fill all attributes
-    public DiceSet(List<Dice> diceList, int width, int height)
+    public DiceSet(List<Dice> diceList, int width = 5, int height = 5)
     {
         _diceList = diceList.ToList<Dice>(); //Copy the list to break the reference to the original
         _width = width;
