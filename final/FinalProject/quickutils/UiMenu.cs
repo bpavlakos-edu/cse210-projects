@@ -329,18 +329,17 @@ namespace QuickUtils
     }
 
     //Custom menu exceptions
-    //VSCode had a template for this, which made creating it much easier
-
+    //VSCode had a template for this, which made creating them much easier, but I knew beforehand that it worked by inheriting an already existing exception
     //Exit Exception
     [System.Serializable]
     public class UiMenuExitException : System.Exception
     {
-        public UiMenuExitException() { }
-        public UiMenuExitException(string message) : base(message) { }
-        public UiMenuExitException(string message, System.Exception inner) : base(message, inner) { }
+        public UiMenuExitException() { } //Default constructor
+        public UiMenuExitException(string message) : base(message) { } //Constructor with a message
+        public UiMenuExitException(string message, System.Exception inner) : base(message, inner) { } //Constructor with a message and another exception inside???
         protected UiMenuExitException(
             System.Runtime.Serialization.SerializationInfo info,
-            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }//Unknown constructor, perhaps it has to do with runtime location? Or is this the one that Catch statements use?
     }
 
     //Remove Exception, removes the current UiOption from the list
