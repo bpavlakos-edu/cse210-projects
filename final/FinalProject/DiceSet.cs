@@ -79,6 +79,8 @@ class DiceSet
             }
         }
     }
+    //Smart Dice Display, uses modulus to display dice
+    
     //Roll All Dice
     public void RollAll()
     {
