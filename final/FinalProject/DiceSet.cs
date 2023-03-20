@@ -65,7 +65,6 @@ class DiceSet
     {
         char dWallStart = '\u0000';
         char dWallEnd = '\u0000';
-
         //"Exists" uses predicates (inline functions) to search a list
         bool hasQu = _diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';}) /*&& _allowQu*/;
         Console.Clear(); //Clear the console before starting
@@ -77,7 +76,7 @@ class DiceSet
                 {
                     Console.Write(""); //Write a space before entries
                 }
-                Console.Write(""); //Write the dice start border
+                //Console.Write(""); //Write the dice start border
                 //consider writing X Y coordinates, make sure it doesn't shift the display
                 try
                 {
@@ -87,7 +86,7 @@ class DiceSet
                 {
                     Console.Write((hasQu /*&& _allowQu*/) ? "    " : " "); //Write 4 blank spaces "[__]"
                 }
-                Console.Write(""); //Write the dice end border
+                //Console.Write(""); //Write the dice end border
                 if(x == _width - 1)
                 {
                     Console.WriteLine(""); //Write a new line
