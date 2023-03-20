@@ -105,6 +105,6 @@ class Dice
     }
     private char IntToChar(int alphabetValue, int asciiStartIndex = 97)
     {
-        return (char)(asciiStartIndex + alphabetValue); //Convert the letter to it's ascii counterpart, then convert that to hex, then finally to char
+        return (char)(asciiStartIndex + alphabetValue); //Convert the letter to it's ascii counterpart, then convert that to char
     }
 }

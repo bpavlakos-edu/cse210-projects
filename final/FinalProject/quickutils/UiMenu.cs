@@ -98,7 +98,7 @@ namespace QuickUtils
                     new Action(() =>
                     {
                         lambdaToStoreReturn(inputCollection[captureIdx]); //Store the value using the lambda function inserted as a parameter
-                        throw new OperationCanceledException(); //Exit the menu upon completion of this Menu option
+                        throw new UiMenuExitException(); //Exit the menu upon completion of this Menu option
                     }),
                     displayString)
                 );
@@ -106,7 +106,7 @@ namespace QuickUtils
             //Add a cancel option
             if(inputCollection.Count > 0 && haveExit)
             {
-                _optionList.Add(new UiOption(new Action(()=>{throw new OperationCanceledException();}),"Go &Back"));
+                _optionList.Add(new UiOption(new Action(()=>{throw new UiMenuExitException();}),"Go &Back"));
             }
             //Update remaining attributes
             _menuMsg = menuMsg;
@@ -216,13 +216,17 @@ namespace QuickUtils
                 }
             }
             //The title of: https://stackoverflow.com/questions/10226314/what-is-the-best-way-to-catch-operation-cancelled-by-user-exception helped me find this exception type using intellisense
-            catch (OperationCanceledException) //Exiting this menu
+            catch (UiMenuExitException) //Exiting this menu
             {
                 if(_exitMsg != "")
                 { 
                     Console.WriteLine(_exitMsg); //Display non-empty exit messages
                 }
                 //Do nothing, just return
+            }
+            catch (UiMenuRemoveException)
+            {
+                //I don't know what to do here yet
             }
         }
 
@@ -322,5 +326,32 @@ namespace QuickUtils
                 }
             }
         }
+    }
+
+    //Custom menu exceptions
+    //VSCode had a template for this, which made creating it much easier
+
+    //Exit Exception
+    [System.Serializable]
+    public class UiMenuExitException : System.Exception
+    {
+        public UiMenuExitException() { }
+        public UiMenuExitException(string message) : base(message) { }
+        public UiMenuExitException(string message, System.Exception inner) : base(message, inner) { }
+        protected UiMenuExitException(
+            System.Runtime.Serialization.SerializationInfo info,
+            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+
+    //Remove Exception, removes the current UiOption from the list
+    [System.Serializable]
+    public class UiMenuRemoveException : System.Exception
+    {
+        public UiMenuRemoveException() { }
+        public UiMenuRemoveException(string message) : base(message) { }
+        public UiMenuRemoveException(string message, System.Exception inner) : base(message, inner) { }
+        protected UiMenuRemoveException(
+            System.Runtime.Serialization.SerializationInfo info,
+            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 }
