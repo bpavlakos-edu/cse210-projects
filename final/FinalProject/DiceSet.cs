@@ -112,6 +112,7 @@ class DiceSet
     }
 
     //Mass Dice Modification
+    //Set all dice by a copy of a dice object
     public void SetAll(Dice newDice)
     {
         _diceList.ForEach((curDice) => {curDice.SetDice(newDice);}); //Use the SetDice(Dice newDice) setter method
@@ -124,10 +125,16 @@ class DiceSet
             _diceList.Add(new Dice(newDice)); //Add a copy of the newDice
         }*/
     }
-
+    //Set all to a specific letter, used by GmRandom
     public void SetAll(char fillChar)
     {
         _diceList.ForEach((curDice) => {curDice.SetDice(fillChar);}); //Use the SetDice(char fillChar) setter method
+    }
+
+    //Set the visibility of all dice
+    public void SetAllVisibility(bool hidden = false)
+    {
+        _diceList.ForEach((curDice) => {curDice.SetHidden(hidden);}); //Use SetHidden() to set the hidden status of all dice
     }
 
     //Utility
