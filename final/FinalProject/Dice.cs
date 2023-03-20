@@ -166,6 +166,10 @@ class Dice
     }
     private void RemoveSide(int index)
     {
-
+        try
+        {
+            _sideList.RemoveAt(index);
+        } 
+        catch (ArgumentOutOfRangeException){} //Ignore index errors
     }
 }
