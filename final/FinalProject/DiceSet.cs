@@ -1,3 +1,8 @@
+using UiMenu = QuickUtils.UiMenu;
+using UiOption = QuickUtils.UiOption;
+//using Inp = QuickUtils.Inputs;
+using UiMenuExitException = QuickUtils.UiMenuExitException; //Exit exception for the menu to use
+
 class DiceSet
 {
     //Attributes
@@ -109,7 +114,12 @@ class DiceSet
     //Open the settings menu
     public void OpenSettings()
     {
-        //To be implemented
+        UiMenu diceSetSettings = new UiMenu(new List<UiOption>{
+            new UiOption(), //Open Dice Edit Menu
+            new UiOption(GetWidth, SetWidth, "Grid &Width"), //Set Width
+            new UiOption(GetHeight, SetHeight, "Grid &Height"), //Set Height
+            new UiOption(()=>{throw new UiMenuExitException();},"&Back"),
+        });
     }
 
     //Mass Dice Modification

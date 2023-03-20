@@ -1,7 +1,7 @@
 using System;
 using UiMenu = QuickUtils.UiMenu;
 using UiOption = QuickUtils.UiOption;
-using UiMenuExitException = QuickUtils.UiMenuExitException;
+using UiMenuExitException = QuickUtils.UiMenuExitException; //Exit exception for the menu to use
 class Program
 {
     //Global Variables
