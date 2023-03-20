@@ -85,12 +85,13 @@ class Dice
     }
     public void OpenSettings()
     {
-        //UiMenu _diceSettingsMenu = new UiMenu(new List<UiOption>);
+        /*
+        //Special Updating Menu
         bool exitFlag = false; //Boolean for exiting
         while(!exitFlag)
         {
             UiMenu _diceSideMenu = new UiMenu();
-        }
+        }*/
     }
     //Setting support function, used both internally and externally
     public string LettersToString(char sepChar = '\u0000') //Default char value found here https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/char#literals

@@ -49,7 +49,7 @@ class Program
             new UiOption(()=>{},"&Classic Mode"),
             new UiOption(()=>{},"&Random Mode"),
             new UiOption(()=>{},"&Blink Mode"),
-            new UiOption(()=>{throw new OperationCanceledException();},"Go &Back"),
+            new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
         },
         "Game Mode Options:",
         "Select a game mode or [hotkey] from the menu: ",

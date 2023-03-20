@@ -314,19 +314,19 @@ namespace QuickUtils
         }
 
         //Add a new option to the option list
-        public void AddOption(UiOption newOption, int index = -1)
+        public void AddOption(UiOption newOption, int? index = null)
         {
-            if(index >= _optionList.Count) //Above list boundaries
+            if((index ?? _optionList.Count) >= _optionList.Count ) //Above list boundaries (When null it will always be above list boundaries)
             {
-                _optionList.Add(newOption);
+                _optionList.Add(newOption); //Add to the end
             }
             else if(index < 0) //Negative index error
             {
-                _optionList.Insert(0,newOption);
+                _optionList.Insert(0,newOption); //Insert the option at the beginning
             }
             else //Within index
             {
-                _optionList.Insert(index, newOption);
+                _optionList.Insert(index ?? 0, newOption); //Insert the option at the location specified as a parameter (?? was needed to convince the compiler that it can't be null here, even though it pyhsically can't be null here)
             }
         }
         public void AddOptionFromEnd(UiOption newOption, int index = 0)
@@ -346,13 +346,13 @@ namespace QuickUtils
         {
             RemoveOption((_optionList.Count - 1) - index); //Remove from the last possible index minus the offset sent by the function call
         }
-        //Check all hotkeys to make sure there's no duplicates
+        //Check all hotkeys to make sure there's no duplicates (For debugging, because running this every loop is very laggy!)
         public void validateHotkeys()
         {
             List<string> hotkeyList = new List<string>();
             for(int i = 0; i<_optionList.Count;i++)
             {
-                string curHotkey = _optionList[i].GetHotkey();
+                string curHotkey = _optionList[i].GetHotkey(); //Get the hotkey from this option
                 if(hotkeyList.Contains(curHotkey))
                 {
                     Console.WriteLine($"Duplicate hotkey detected! {curHotkey}");
