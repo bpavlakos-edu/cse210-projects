@@ -1,3 +1,5 @@
+using UiMenu = QuickUtils.UiMenu;
+using UiOption = QuickUtils.UiOption;
 class Dice
 {
     //Attributes
@@ -66,7 +68,7 @@ class Dice
         try
         {
             _side = new Random().Next(0, _sideList.Count); //Pick a side of the dice, using the char list
-            _curLetter = (_sideList[_side] != '?') ? _sideList[_side] : GetRandomLetter(); //Update _curLetter, set using the current side, or by getting a random letter when its set to '?'
+            _curLetter = (_sideList[_side] != '?') ? _sideList[_side] : GetRandomLetter(); //Update _curLetter, set using the current side, or by getting a random letter when its set to '?' (Uses ternary operator)
         }
         catch(OutOfMemoryException) //Disabled to check for errors//catch(ArgumentOutOfRangeException) //Detect when the user tries to roll 0 length lists
         {
@@ -83,7 +85,7 @@ class Dice
     }
     public void OpenSettings()
     {
-
+        //UiMenu _diceSettingsMenu = new UiMenu(new List<UiOption>);
     }
     //Setting support function, used both internally and externally
     public string LettersToString()
@@ -94,8 +96,9 @@ class Dice
     private bool RandomChance(int rChance, int rChanceMax, bool reverse = false)
     {
         double rThreshold = (double) rChance / (double) rChanceMax; //Calculate the random threshold, "Random" uses a double, so we have to make them doubles too
-        return (reverse) ? new Random().NextDouble() <= rThreshold : new Random().NextDouble() >= rThreshold; //Return Random >= rThreshold, or Random <= rThreshold if the reverse flag is activated (using the Ternary Conditional Operator)
+        return (!reverse) ? new Random().NextDouble() >= rThreshold : new Random().NextDouble() <= rThreshold; //Return Random >= rThreshold, or Random <= rThreshold if the reverse flag is activated (using the Ternary Conditional Operator)
     }
+    //Get a random letter by calling the IntToChar function after picking a number from 0 to 25 as the offset (Consider merging this function with IntTochar)
     private char GetRandomLetter()
     {
         return IntToChar(new Random().Next(0,26));

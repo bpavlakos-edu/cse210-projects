@@ -79,10 +79,10 @@ namespace QuickUtils
 
         This method uses composite formatting to generate the option string: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/strings/#composite-formatting
         */
-        //Settings Menu Constructor
+        //Choice Menu Constructor
         public UiMenu(List<object> inputCollection, Action<object> lambdaToStoreReturn, List<string> displayStringList = null, bool haveExit = true, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="", string indentString = "", bool clearConsole = true)
         {
-            for(int i=0; i < inputCollection.Count; i++)
+            for(int i = 0; i < inputCollection.Count; i++)
             {
                 int captureIdx = i; //Capture the index outside the lambda, so it doesn't get overwritten by the next loop cycle
                 //Make the option display string if the displayString list isn't empty
@@ -95,7 +95,7 @@ namespace QuickUtils
                 _optionList.Add(
                     new UiOption(
                     //Lambda function to call the function passed to this constructor, using the item from the list as it's parameter
-                    new Action(()=>
+                    new Action(() =>
                     {
                         lambdaToStoreReturn(inputCollection[captureIdx]); //Store the value using the lambda function inserted as a parameter
                         throw new OperationCanceledException(); //Exit the menu upon completion of this Menu option
@@ -117,7 +117,7 @@ namespace QuickUtils
         }
 
         //Input Menu Constructor
-        public UiMenu(object inputObject, List<string> fieldNameStrings = null) //Add optional parameters
+        /*public UiMenu(object inputObject, List<string> fieldNameStrings = null) //Add optional parameters
         {
             List<Action> actionList = new List<Action>(); //Create a list to store the actions in
             //Find all setters, getters, and fields
@@ -128,7 +128,7 @@ namespace QuickUtils
             
             //Auto generate strings for each option
             //Add the back button
-        }
+        }*/
 
         //Getters and setters (Please don't modify the menu at runtime! That's crazy!!!)
         public List<UiOption> GetOptionList()
