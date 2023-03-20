@@ -66,7 +66,7 @@ class DiceSet
                 }
                 try
                 {
-                    Console.Write(_diceList[(y * _width) + x]); //Each Y value is equivalent to a full row of X
+                    Console.Write(_diceList[(y * _width) + x].ToDisplayString()); //Each Y value is equivalent to a full row of X
                 }
                 catch(Exception) //No dice, literally
                 {
@@ -80,7 +80,7 @@ class DiceSet
         }
     }
     //Smart Dice Display, uses modulus to display dice
-    
+
     //Roll All Dice
     public void RollAll()
     {
