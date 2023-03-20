@@ -64,7 +64,7 @@ class Dice
     {
 
     }
-    public void ToggleHidden(int randomChance = 1, int randomChanceMax = 2)
+    public void ToggleHidden(int rChance = 1, int rChanceMax = 2)
     {
 
     }
@@ -76,5 +76,19 @@ class Dice
     public string LettersToString()
     {
         return "";
+    }
+    //Utility
+    private bool RandomChance(int rChance, int rChanceMax, bool reverse = false)
+    {
+        double rThreshold = (double) rChance / (double) rChanceMax; //Calculate the random threshold, "Random" uses a double, so we have to make them doubles too
+        return (reverse) ? new Random().NextDouble() <= rThreshold : new Random().NextDouble() >= rThreshold; //Return Random >= rThreshold, or Random <= rThreshold if the reverse flag is activated (using the Ternary Conditional Operator)
+    }
+    private char GetRandomLetter()
+    {
+        return IntToChar(new Random().Next(0,26));
+    }
+    private char IntToChar(int alphabetValue, int asciiStartIndex = 97)
+    {
+        return (char)((byte)(asciiStartIndex + alphabetValue)); //Convert the letter to it's ascii counterpart, then convert that to hex, then finally to char
     }
 }
