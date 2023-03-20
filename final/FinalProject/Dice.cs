@@ -84,6 +84,19 @@ class Dice
     {
         _hidden = hidden;
     }
+    //Custom Getters and Setters
+    public void SetDice(Dice newDice)
+    {
+        SetSideList(newDice.GetSideList());
+        SetSide(newDice.GetSide());
+        SetCurLetter(newDice.GetCurLetter());
+        SetHidden(newDice.GetHidden());
+    }
+    public void SetDice(char fillChar)
+    {
+        SetSideList(new List<char>{fillChar}); //Set the entire side list to just the fill char
+    }
+    
     
     //Methods
     //Get the currently displayed side of this dice (Todo: Decide if the brackets should be handled by the DiceSet and not here)
