@@ -169,7 +169,7 @@ class Dice
     {
         return IntToChar(new Random().Next(0,26));
     }
-    private char IntToChar(int alphabetValue, int asciiStartIndex = 97)
+    private char IntToChar(int alphabetValue, int asciiStartIndex = 65) //97 is 'a', 65 is 'A'
     {
         return (char)(asciiStartIndex + alphabetValue); //Convert the letter to it's ascii counterpart, then convert that to char
     }

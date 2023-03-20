@@ -103,8 +103,20 @@ class Program
         string userInput = "";
         while(userInput != "exit")
         {
-            userInput = Inp.GetInput("Press Enter to roll and \"exit\" to exit").ToLower();
-            if(userInput != "exit")
+            userInput = Inp.GetInput("Press Enter to roll (commands: \"exit\",\"r\"-reset,\"h\"-hide random, \"?\"-Fill With Random): ").ToLower();
+            if(userInput == "r")
+            {
+                diceSetCopy = new DiceSet(_mainDice);
+            }
+            else if(userInput == "h")
+            {
+                diceSetCopy.RandomHide();
+            }
+            else if(userInput == "?")
+            {
+                diceSetCopy.SetAll('?');
+            }
+            else if(userInput != "exit")
             {
                 diceSetCopy.RollAll();
             }
