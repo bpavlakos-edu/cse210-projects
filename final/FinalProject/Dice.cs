@@ -1,5 +1,6 @@
 using UiMenu = QuickUtils.UiMenu;
 using UiOption = QuickUtils.UiOption;
+using Inp = QuickUtils.Inputs;
 class Dice
 {
     //Attributes
@@ -25,7 +26,12 @@ class Dice
     //Fill attributes with user input
     public Dice(bool triggerFlag) //This boolean is here to activate this constructor
     {
-
+        string newSidesString = Inp.GetInput("Please enter the dice side letters (enter \"?\" for random): ");
+        SetSideList(newSidesString);
+        //Set everything else to default
+        _side = 0;
+        _curLetter = ' ';
+        _hidden = false;
     }
 
     //Getters and Setters (Auto generated using my AutoGetterSetter Python Script in C# configuration)
@@ -37,6 +43,7 @@ class Dice
     {
         _sideList = sideList.ToList<char>();
     }
+    //SetSide list from a string
     public void SetSideList(string inputString)
     {
         List<char> charList = inputString.ToUpper().ToList<char>();//Captialize the input string before turning it into a list of char
@@ -46,6 +53,10 @@ class Dice
                 AddSide(curChar); //Use AddSide to filter out invalid characters
             }
         );
+        if(_sideList.Count == 0) //No valid characters
+        {
+            _sideList.Add('?'); //Add '?'
+        }
     }
     public int GetSide()
     {
