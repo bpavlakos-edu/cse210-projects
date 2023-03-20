@@ -91,9 +91,9 @@ class DiceSet
     }
 
     //Randomly Change a dice's hidden state
-    public int RandomHide(int rChance = 1, int rChanceMax = 2)
+    public int RandomHide(int rChance = 1, int rChanceMax = 2, int? rCountMax = null)
     {
-        int hiddenCount = 0; //Reset the hidden count tracker
+        int hiddenCount = 0; //Reset the hidden count tracker (this will be used in the future to control the hidden maximum)
         _diceList.ForEach((curDice) => {
             curDice.ToggleHidden(rChance, rChanceMax);
             if(curDice.GetHidden()) //Increment the hidden counter for each dice that is hidden
@@ -101,14 +101,14 @@ class DiceSet
                 hiddenCount++;
             }
         });
-        Display();
+        Display(); //Display the dice after randomly hiding
         return hiddenCount; //Return the number of hidden dice
     }
 
     //Open the settings menu
     public void OpenSettings()
     {
-
+        //To be implemented
     }
 
     //Mass Dice Modification
@@ -116,14 +116,6 @@ class DiceSet
     public void SetAll(Dice newDice)
     {
         _diceList.ForEach((curDice) => {curDice.SetDice(newDice);}); //Use the SetDice(Dice newDice) setter method
-        //Old version
-        /*
-        int diceCount = _diceList.Count; //Get the dice count before we clear it
-        _diceList = new List<Dice>(); //Clear the dice list
-        for(int i = 0; i < diceCount; i++)
-        {
-            _diceList.Add(new Dice(newDice)); //Add a copy of the newDice
-        }*/
     }
     //Set all to a specific letter, used by GmRandom
     public void SetAll(char fillChar)
