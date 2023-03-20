@@ -70,7 +70,7 @@ class Dice
             _side = new Random().Next(0, _sideList.Count); //Pick a side of the dice, using the char list
             _curLetter = (_sideList[_side] != '?') ? _sideList[_side] : GetRandomLetter(); //Update _curLetter, set using the current side, or by getting a random letter when its set to '?' (Uses ternary operator)
         }
-        catch(OutOfMemoryException) //Disabled to check for errors//catch(ArgumentOutOfRangeException) //Detect when the user tries to roll 0 length lists
+        catch(OutOfMemoryException) //Disabled to check for errors //catch(ArgumentOutOfRangeException) //Detect when the user tries to roll 0 length lists
         {
             Console.WriteLine($"Dice is empty! Please add sides before rolling!");
         }
@@ -88,9 +88,9 @@ class Dice
         //UiMenu _diceSettingsMenu = new UiMenu(new List<UiOption>);
     }
     //Setting support function, used both internally and externally
-    public string LettersToString()
+    public string LettersToString(char sepChar = '\u0000') //Default char value found here https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/char#literals
     {
-        return "";
+        return string.Join(sepChar,_sideList);
     }
     //Utility
     private bool RandomChance(int rChance, int rChanceMax, bool reverse = false)
@@ -105,6 +105,6 @@ class Dice
     }
     private char IntToChar(int alphabetValue, int asciiStartIndex = 97)
     {
-        return (char)((byte)(asciiStartIndex + alphabetValue)); //Convert the letter to it's ascii counterpart, then convert that to hex, then finally to char
+        return (char)(asciiStartIndex + alphabetValue); //Convert the letter to it's ascii counterpart, then convert that to hex, then finally to char
     }
 }
