@@ -55,7 +55,29 @@ class DiceSet
     //Display the Letter grid
     public void Display(bool clearAll = false)
     {
-
+        Console.Clear();
+        for(int y = 0; y < _height; y++)
+        {
+            for(int x = 0; x < _width; x++)
+            {
+                if(x != 0)
+                {
+                    Console.Write(" ");
+                }
+                try
+                {
+                    Console.Write(_diceList[(y * _width) + x]); //Each Y value is equivalent to a full row of X
+                }
+                catch(Exception) //No dice, literally
+                {
+                    Console.Write("    "); //Write 4 blank spaces "[__]"
+                }
+                if(x == _width - 1)
+                {
+                    Console.WriteLine(""); //Write a new line
+                }
+            }
+        }
     }
     //Roll All Dice
     public void RollAll()
