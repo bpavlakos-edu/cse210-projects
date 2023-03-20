@@ -58,7 +58,7 @@ class Dice
     //Get the currently displayed side
     public string ToDisplayString()
     {
-        return (_hidden) ? " " : _curLetter + ""; //Return the current letter or blank for hidden, using the ternary conditional operator ( https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator)
+        return (_hidden) ? "[ ]" : (_curLetter != 'Q') ? "["+_curLetter + " ]" : "["+_curLetter + "u]"; //Return the current letter or blank for hidden, if it's Q add "u" to make "Qu" using the ternary conditional operator ( https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator)
     }
     public void Roll()
     {
