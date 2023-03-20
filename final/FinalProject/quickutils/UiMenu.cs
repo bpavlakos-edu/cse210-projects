@@ -205,10 +205,18 @@ namespace QuickUtils
                     }
                     DisplayOptions(); //Display the options
                     string userInput = Inputs.GetInput(_inputMsg); //Get the user input
-                    if(!TryParseIndex(userInput)) //If parsing the index fails
+                    try //Lets us catch the UiMenuRemoveException
                     {
-                        FindHotkey(userInput); //Try using a hotkey instead
+                        if(!TryParseIndex(userInput)) //If parsing the index fails
+                        {
+                            ActivateHotkey(userInput); //Try using a hotkey instead
+                        }
                     }
+                    catch (UiMenuRemoveException) //Remove this option from the list
+                    {
+
+                    }
+                    
                     if(_clearConsole) //Added a flag to control if the console is cleared or not
                     {
                         Console.Clear(); //Reset the console before printing
@@ -224,9 +232,12 @@ namespace QuickUtils
                 }
                 //Do nothing, just return
             }
-            catch (UiMenuRemoveException)
+            catch (OperationCanceledException) //Exiting this menu with legacy code (Will be removed eventually)
             {
-                //I don't know what to do here yet
+                if(_exitMsg != "")
+                { 
+                    Console.WriteLine(_exitMsg); //Display non-empty exit messages
+                }
             }
         }
 
@@ -270,23 +281,32 @@ namespace QuickUtils
         }
 
         //Attempt to find the hotkey in our UiOptions and activate it
-        private void FindHotkey(string hotkey)
+        private void ActivateHotkey(string hotkey)
+        {
+            int hotkeyIdx = FindHotkeyIdx(hotkey);
+            if(hotkeyIdx != 0)
+            {
+                ActivateOption(hotkeyIdx);
+            }
+        }
+        //Find the hotkey
+        private int FindHotkeyIdx(string hotkey)
         {
             for(int i = 0; i < _optionList.Count; i++)
             {
                 if(_optionList[i].CheckHotkey(hotkey))
                 {
-                    ActivateOption(i);//Activate this option
-                    break;
+                    return i;
                 }
             }
+            return -1; //Return the faliure status
         }
 
         //Activate an option from the option list
         private void ActivateOption(int index)
         {
             UiOption optionObj = _optionList[index]; //Trigger any index errors here
-            if(_clearConsole) //Added an attribute
+            if(_clearConsole) //Added a global flag for clear console
             {
                 Console.Clear();//So we can clear the console before we...
             }

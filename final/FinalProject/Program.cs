@@ -1,6 +1,7 @@
 using System;
 using UiMenu = QuickUtils.UiMenu;
 using UiOption = QuickUtils.UiOption;
+using UiMenuExitException = QuickUtils.UiMenuExitException;
 class Program
 {
     //Global Variables
@@ -31,7 +32,7 @@ class Program
         UiMenu _rootOptionsMenu = new UiMenu(new List<UiOption>{
             new UiOption(GameModeOptionsMenu,"&Game Mode Options"),
             new UiOption(()=>{},"&Dice Set Options"),
-            new UiOption(()=>{throw new OperationCanceledException();},"Go &Back"),
+            new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
         },
         "Options:",
         "Select an option or [hotkey] from the menu: ",
