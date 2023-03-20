@@ -296,7 +296,7 @@ namespace QuickUtils
             {
                 if(_optionList[i].CheckHotkey(hotkey))
                 {
-                    return i;
+                    return i; //Return the found index
                 }
             }
             return -1; //Return the faliure status
@@ -316,11 +316,15 @@ namespace QuickUtils
         //Add a new option to the option list
         public void AddOption(UiOption newOption, int index = -1)
         {
-            if(index < 0 || index > _optionList.Count)
+            if(index >= _optionList.Count) //Above list boundaries
             {
                 _optionList.Add(newOption);
             }
-            else
+            else if(index < 0) //Negative index error
+            {
+                _optionList.Insert(0,newOption);
+            }
+            else //Within index
             {
                 _optionList.Insert(index, newOption);
             }
@@ -329,6 +333,20 @@ namespace QuickUtils
         {
             AddOption(newOption, (_optionList.Count - 1) - index);
         }
+        //Remove an option from the list
+        public void RemoveOption(int index)
+        {
+            if(index >= 0 || index < _optionList.Count) //Within list boundaries
+            {
+                _optionList.RemoveAt(index);
+            }
+            //Index Errors are ignored
+        }
+        public void RemoveOptionFromEnd(int index)
+        {
+            RemoveOption((_optionList.Count - 1) - index); //Remove from the last possible index minus the offset sent by the function call
+        }
+        //Check all hotkeys to make sure there's no duplicates
         public void validateHotkeys()
         {
             List<string> hotkeyList = new List<string>();
