@@ -55,18 +55,22 @@ class Dice
     }
     
     //Methods
-    //Get the currently displayed side
+    //Get the currently displayed side of this dice
     public string ToDisplayString()
     {
-        return (_hidden) ? "[ ]" : (_curLetter != 'Q') ? "["+_curLetter + " ]" : "["+_curLetter + "u]"; //Return the current letter or blank for hidden, if it's Q add "u" to make "Qu" using the ternary conditional operator ( https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator)
+        return (_hidden) ? "[ ]" : (_curLetter != 'Q') ? "["+_curLetter + " ]" : "["+_curLetter + "u]"; //Return the current letter or blank for hidden, if it's Q add "u" to make "Qu" using the ternary conditional operator (https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator)
     }
+    //Randomly pick a side of this dice
     public void Roll()
     {
 
     }
     public void ToggleHidden(int rChance = 1, int rChanceMax = 2)
     {
-
+        if(RandomChance(rChance, rChanceMax)) //Run the random chance to see if we are swapping this dice's hidden state
+        {
+            _hidden = !_hidden; //Reverse the state of hidden
+        }
     }
     public void OpenSettings()
     {
