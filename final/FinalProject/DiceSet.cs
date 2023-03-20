@@ -52,10 +52,10 @@ class DiceSet
 
     //Main Functionality
 
-    //Display the Letter grid
+    //Display the Letters in a grid
     public void Display(bool clearAll = false)
     {
-        Console.Clear();
+        Console.Clear(); //Clear the console before starting
         for(int y = 0; y < _height; y++)
         {
             for(int x = 0; x < _width; x++)
@@ -64,6 +64,7 @@ class DiceSet
                 {
                     Console.Write(" ");
                 }
+                //consider writing X Y coordinates, make sure it doesn't shift the display
                 try
                 {
                     Console.Write(_diceList[(y * _width) + x].ToDisplayString()); //Each Y value is equivalent to a full row of X
