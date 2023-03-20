@@ -60,7 +60,7 @@ class DiceSet
     //Roll All Dice
     public void RollAll()
     {
-        //Shuffle Dice
+        Shuffle(); //Shuffle Dice
         _diceList.ForEach((curDice) => {curDice.Roll();}); //Roll each dice using ForEach, with a lambda (Action with input type dice) call to the current dice's Roll method
         Display(); //Display after rolling
     }
@@ -78,6 +78,7 @@ class DiceSet
         Display();
         return hiddenCount; //Return the number of hidden dice
     }
+    //Shuffle Dice
     private void Shuffle(int shuffleCycleCount = 1)
     {
         List<Dice> shuffleDiceList = _diceList.ToList<Dice>(); //Clone the current dice list so we can carry over the changes we made in each shuffle cycle, without changing the real dice list until the end
@@ -87,7 +88,7 @@ class DiceSet
             List<Dice> storeRandomDiceList = new List<Dice>(); //A place to store the entries we pull from shuffleDiceList
             while(shuffleDiceList.Count > 0) //Repeat until shuffleDiceList is empty
             {
-                int randomIdx = new Random().Next(0,shuffleDiceList.Count); //Pick a random index in shuffleDiceList
+                int randomIdx = new Random().Next(0,shuffleDiceList.Count); //Pick a random index in shuffleDiceList (Todo: consider bit shifting the seed by the capacity of the list)
                 storeRandomDiceList.Add(shuffleDiceList[randomIdx]); //Add the item from the source list to the new list
                 shuffleDiceList.RemoveAt(randomIdx); //Remove it from the shuffle dice list
             }
