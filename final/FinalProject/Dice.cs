@@ -101,11 +101,11 @@ class Dice
     
     //Methods
     //Get the currently displayed side of this dice (Todo: Decide if the brackets should be handled by the DiceSet and not here)
-    public string ToDisplayString(bool hasQu = false) //Implement allow u
+    public string ToDisplayString(bool hasQu = false, char dWallStart = '\u0000', char dWallEnd = '\u0000') //Implement allow u
     {
         if(_hidden)
         {
-            return (hasQu) ? "  " : " ";
+            return dWallStart + ((hasQu) ? "  " : " ") + dWallEnd;
         }
         /* else if(!hasQu)
         {
@@ -113,7 +113,7 @@ class Dice
         } */
         else //Has a Qu in the display
         {
-            return _curLetter + ((_curLetter != 'Q') ? " " : "u"); //Return an extra U when Q and an extra space when not Q
+            return dWallStart + (_curLetter + ((_curLetter != 'Q') ? " " : "u")) + dWallEnd; //Return an extra U when Q and an extra space when not Q
         }
         //return (_hidden) ? " " : (_curLetter != 'Q') ? _curLetter+" " : _curLetter + "u"; //Return the current letter or blank for hidden, if it's Q add "u" to make "Qu" using the ternary conditional operator (https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator)
     }
