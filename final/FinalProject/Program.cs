@@ -9,32 +9,31 @@ class Program
     private DiceSet _mainDice = new DiceSet(
         new List<Dice>
         {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            new Dice(new List<char>{'N','G','M','A','N','E'}),
+            new Dice(new List<char>{'E','T','I','L','C','I'}),
+            new Dice(new List<char>{'N','R','L','D','D','O'}),
+            new Dice(new List<char>{'A','I','A','F','R','S'}),
+            new Dice(new List<char>{'D','L','O','N','H','R'}),
+            new Dice(new List<char>{'E','A','E','A','E','E'}),
+            new Dice(new List<char>{'W','Z','C','C','T','S'}),
+            new Dice(new List<char>{'D','L','O','H','H','R'}),
+            new Dice(new List<char>{'P','L','E','T','C','I'}),
+            new Dice(new List<char>{'H','Y','R','R','P','I'}),
+            new Dice(new List<char>{'S','C','T','I','P','E'}),
+            new Dice(new List<char>{'Z','X','Q','K','B','J'}),
+            new Dice(new List<char>{'F','S','A','R','A','A'}),
+            new Dice(new List<char>{'S','F','R','Y','I','P'}),
+            new Dice(new List<char>{'N','O','W','O','T','U'}),
+            new Dice(new List<char>{'N','A','N','D','E','N'}),
+            new Dice(new List<char>{'I','I','E','I','T','T'}),
+            new Dice(new List<char>{'S','S','S','N','U','E'}),
+            new Dice(new List<char>{'T','T','O','T','E','M'}),
+            new Dice(new List<char>{'M','E','A','G','E','U'}),
+            new Dice(new List<char>{'W','R','O','V','R','G'}),
+            new Dice(new List<char>{'O','T','T','U','O','O'}),
+            new Dice(new List<char>{'H','H','T','O','D','N'}),
+            new Dice(new List<char>{'E','E','E','E','M','A'}),
+            new Dice(new List<char>{'S','F','A','Y','I','A'})
         },
         5,
         5);
