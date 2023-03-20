@@ -12,7 +12,7 @@ namespace QuickUtils
         private Action _runAction; //Action to run
         private string _dispStr; //Display Name
         private string _hotkey; //Hotkey for activation
-        private Func<string>? _updateStrFun; //Optional string updating function
+        private Func<string> _updateStrFun; //Optional string updating function
 
         //Constructors
         //Empty Constructor
@@ -24,7 +24,7 @@ namespace QuickUtils
             _updateStrFun = null;
         }
         //Fill all attributes
-        public UiOption(Action runAction, string name, string hotkey, Func<string>? updateStrFun = null)
+        public UiOption(Action runAction, string name, string hotkey, Func<string> updateStrFun = null)
         {
             _runAction = runAction;
             _dispStr = name;
@@ -32,7 +32,7 @@ namespace QuickUtils
             _updateStrFun = updateStrFun;
         }
         //Fill using a the "Command and Conquer Generals" style hotkey system
-        public UiOption(Action runAction, string hotkeyName, Func<string>? updateStrFun = null) : this(runAction, MakeDisplayName(hotkeyName), MakeHotkey(hotkeyName), updateStrFun)
+        public UiOption(Action runAction, string hotkeyName, Func<string> updateStrFun = null) : this(runAction, MakeDisplayName(hotkeyName), MakeHotkey(hotkeyName), updateStrFun)
         {
 
         }

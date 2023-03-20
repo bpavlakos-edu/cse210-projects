@@ -18,7 +18,7 @@ namespace QuickUtils /*Library name*/
     public static class Inputs /*Library static class*/
     {
         //Basic string input
-        public static string GetInput(string inMsg, bool toLower = true, bool newLine = false, string? curValue = null)
+        public static string GetInput(string inMsg, bool toLower = true, bool newLine = false, string curValue = null)
         {
             //Code size has decreased through the use of the ternary operator [ex: dataType myVar = (boolean condition) ? valueIfTrue : valueIfFalse;]
             inMsg = (curValue != null) ? inMsg.Replace(":",$" (currently: "+Misc.QuoteStr(curValue)+" leave blank to cancel):") : inMsg; //When we have a current value, display it
@@ -192,7 +192,7 @@ namespace QuickUtils /*Library name*/
 
         //Automatic type detection (Should automatically pick based on return type or curValue)
         //String
-        public static string GetSmartInput(string inMsg, bool toLower = true, bool newLine = false, string? curValue = null)
+        public static string GetSmartInput(string inMsg, bool toLower = true, bool newLine = false, string curValue = null)
         {
             return GetInput(inMsg, toLower, newLine, curValue);
         }

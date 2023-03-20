@@ -80,7 +80,7 @@ namespace QuickUtils
         This method uses composite formatting to generate the option string: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/strings/#composite-formatting
         */
         //Settings Menu Constructor
-        public UiMenu(List<object> inputCollection, Action<object> lambdaToStoreReturn, List<string>? displayStringList = null, bool haveExit = true, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="", string indentString = "", bool clearConsole = true)
+        public UiMenu(List<object> inputCollection, Action<object> lambdaToStoreReturn, List<string> displayStringList = null, bool haveExit = true, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="", string indentString = "", bool clearConsole = true)
         {
             for(int i=0; i < inputCollection.Count; i++)
             {
@@ -117,7 +117,7 @@ namespace QuickUtils
         }
 
         //Input Menu Constructor
-        public UiMenu(object inputObject, List<string>? fieldNameStrings = null) //Add optional parameters
+        public UiMenu(object inputObject, List<string> fieldNameStrings = null) //Add optional parameters
         {
             List<Action> actionList = new List<Action>(); //Create a list to store the actions in
             //Find all setters, getters, and fields
@@ -185,7 +185,7 @@ namespace QuickUtils
         //Issue with compile time constants, which prevents you from setting a default value of a class: https://stackoverflow.com/questions/18740421/default-parameter-for-value-must-be-a-compile-time-constant
         //It seems the only viable solution is to use "null" as suggested by this first comment to this: https://stackoverflow.com/a/18740471
         //I've already been using null, but I really wanted to know if there's a better way to use a default value, other than a manual function overload
-        public void UiLoop(Action? preLoopAction = null, bool debugMode = false)
+        public void UiLoop(Action preLoopAction = null, bool debugMode = false)
         {
             try
             {
