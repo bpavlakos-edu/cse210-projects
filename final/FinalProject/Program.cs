@@ -2,11 +2,12 @@ using System;
 using UiMenu = QuickUtils.UiMenu;
 using UiOption = QuickUtils.UiOption;
 using UiMenuExitException = QuickUtils.UiMenuExitException; //Exit exception for the menu to use
+using Inp = QuickUtils.Inputs; //Added for testing
 class Program
 {
     //Global Variables
     //private List<GameMode> _gameModeList = new List<GameMode>();
-    private DiceSet _mainDice = new DiceSet(new List<Dice>
+    static DiceSet _mainDice = new DiceSet(new List<Dice>
     {
         new Dice(new List<char>{'N','G','M','A','N','E'}),
         new Dice(new List<char>{'E','T','I','L','C','I'}),
@@ -97,6 +98,16 @@ class Program
 
     static void TestMode()
     {
-
+        DiceSet diceSetCopy = new DiceSet(_mainDice);
+        diceSetCopy.Display();
+        string userInput = "";
+        while(userInput != "exit")
+        {
+            userInput = Inp.GetInput("Press Enter to roll and \"exit\" to exit").ToLower();
+            if(userInput != "exit")
+            {
+                diceSetCopy.RollAll();
+            }
+        }
     }
 }
