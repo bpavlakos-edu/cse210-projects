@@ -9,9 +9,9 @@ class DiceSet
     private List<Dice> _diceList = new List<Dice>();
     private int _width = 5;
     private int _height = 5;
-    //Bool AllowQu
-    //private bool _allowQu = true;
-    //Char[] EndChar,StartChar
+    //private bool _allowQu = true; //Enable or disable displaying Q as Qu
+    //Char[] _diceBorder = new char[]{'\u0000','u0000'}; //Warning for settings menu! You must be able to reset this from the console!
+    
     //Constructors
     
     //No blank constructor, it should never be blank!!!
