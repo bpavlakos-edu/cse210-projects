@@ -34,7 +34,7 @@ class Dice
         _hidden = false;
     }
 
-    //Getters and Setters (Auto generated using my AutoGetterSetter Python Script in C# configuration)
+    //Getters and Setters (Normal Getters and Setters were auto generated using my AutoGetterSetter Python Script in C# mode)
     public List<char> GetSideList()
     {
         return _sideList.ToList<char>();
@@ -43,7 +43,7 @@ class Dice
     {
         _sideList = sideList.ToList<char>();
     }
-    //SetSide list from a string
+    //SetSide list from a string (custom)
     public void SetSideList(string inString)
     {
         List<char> charList = inString.ToUpper().ToList<char>();//Captialize the input string before turning it into a list of char

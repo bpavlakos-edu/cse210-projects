@@ -1,0 +1,98 @@
+class DiceSet
+{
+    //Attributes
+    private List<Dice> _diceList = new List<Dice>();
+    private int _width = 5;
+    private int _height = 5;
+    //Constructors
+    
+    //No blank constructor, it should never be blank!!!
+    
+    //Fill all attributes
+    public DiceSet(List<Dice> diceList, int width, int height)
+    {
+        _diceList = diceList.ToList<Dice>(); //Copy the list to break the reference to the original
+        _width = width;
+        _height = height;
+    }
+
+    //Copy an existing DiceSet so GameModes can modify it without changing the original
+    public DiceSet(DiceSet sourceDiceSet) : this(sourceDiceSet._diceList, sourceDiceSet._width, sourceDiceSet._height)
+    {
+        //Use the Fill all fields constructor to re-use code, and make it easier to change
+    }
+
+    //Getters and Setters (Normal Getters and Setters were auto generated using my AutoGetterSetter Python Script in C# mode)
+    public List<Dice> GetDiceList()
+    {
+        return _diceList.ToList<Dice>();
+    }
+    public void SetDiceList(List<Dice> diceList)
+    {
+        _diceList = diceList.ToList<Dice>();
+    }
+    public int GetWidth()
+    {
+        return _width;
+    }
+    public void SetWidth(int width)
+    {
+        _width = width;
+    }
+    public int GetHeight()
+    {
+        return _height;
+    }
+    public void SetHeight(int height)
+    {
+        _height = height;
+    }
+
+    //Methods
+
+    //Main Functionality
+
+    //Display the Letter grid
+    public void Display(bool clearAll = false)
+    {
+
+    }
+    //Roll All Dice
+    public void RollAll()
+    {
+        //Shuffle Dice
+        _diceList.ForEach((curDice) => {curDice.Roll();}); //Roll each dice using ForEach, with a lambda (Action with input type dice) call to the current dice's Roll method
+        Display(); //Display after rolling
+    }
+    //Randomly Change a dice's hidden state
+    public int RandomHide(int rChance = 1, int rChanceMax = 2)
+    {
+        int hiddenCount = 0; //Reset the hidden count tracker
+        _diceList.ForEach((curDice) => {
+            curDice.ToggleHidden(rChance, rChanceMax);
+            if(curDice.GetHidden()) //Increment the hidden counter for each dice that is hidden
+            {
+                hiddenCount++;
+            }
+        });
+        Display();
+        return hiddenCount; //Return the number of hidden dice
+    }
+    private void Shuffle(int shuffleCycleCount = 1)
+    {
+        List<Dice> shuffleDiceList = _diceList.ToList<Dice>(); //Clone the current dice list so we can carry over the changes we made in each shuffle cycle, without changing the real dice list until the end
+        for(int i = 0; i < shuffleCycleCount; i++) //Shuffle repeat loop
+        {
+            //Shuffle the dice by temporarily storing random items from the new list in the dice push list
+            List<Dice> storeRandomDiceList = new List<Dice>(); //A place to store the entries we pull from shuffleDiceList
+            while(shuffleDiceList.Count > 0) //Repeat until shuffleDiceList is empty
+            {
+                int randomIdx = new Random().Next(0,shuffleDiceList.Count); //Pick a random index in shuffleDiceList
+                storeRandomDiceList.Add(shuffleDiceList[randomIdx]); //Add the item from the source list to the new list
+                shuffleDiceList.RemoveAt(randomIdx); //Remove it from the shuffle dice list
+            }
+            shuffleDiceList = storeRandomDiceList.ToList<Dice>(); //Copy the contents of storeRandomDiceList
+        }
+        _diceList = shuffleDiceList.ToList<Dice>(); //Store the shuffled Dice
+    }
+}
