@@ -6,7 +6,7 @@ using Inp = QuickUtils.Inputs; //Added for testing
 class Program
 {
     //Global Variables
-    static List<GameMode> _gameModeList = new List<GameMode>();
+    static List<GameMode> _gameModeList = new List<GameMode>{new GmClassic()};
     static DiceSet _mainDiceSet = new DiceSet(new List<Dice>
     {
         new Dice(new List<char>{'N','G','M','A','N','E'}),
@@ -39,8 +39,8 @@ class Program
     private static UiMenu _mainMenu = new UiMenu(
         new List<UiOption>
         {
-            new UiOption(()=>{TestMode();},"&Test Mode"), //For debugging
-            new UiOption(()=>{},"&Classic"),
+            //new UiOption(()=>{TestMode();},"&Test Mode"), //For debugging //Disabled
+            new UiOption(()=>{_gameModeList[0].Start(_mainDiceSet);},"&Classic"),
             new UiOption(()=>{},"&Random"),
             new UiOption(()=>{},"&Blink"),
             new UiOption(OptionsMenu,"&Options"),
