@@ -21,14 +21,18 @@ namespace QuickUtils
         //Stack Overflow post: https://stackoverflow.com/a/29345294
         //MSDN: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/where-generic-type-constraint?redirectedfrom=MSDN
         //Detailed Syntax: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/generics/constraints-on-type-parameters
-        /*
-        public static List<objType> ListCopy<objType>(List<objType> inputList) where objType : new()
+        //Here's the solution I made: Use a lambda to caputre the classes deep cloning constructor, while this means you'll have to specify the constructor in the function call, and the original class, 
+        //It's a small sacrifice to have a reusable list copy function
+        //Example of function call: 
+        //ListCopy<Dice>(new List<Dice>{items}, (Dice inputDice) => {return new Dice(inputDice);});
+        public static List<objType> ListCopy<objType>(List<objType> inputList, Func<objType,objType> objConstructorFun)// where objType : new()
         {
             List<objType> returnList = new List<objType>();
-            inputList.ForEach((objType inObj) => {objType newObj = new objType();});
+            inputList.ForEach((objType inObj) => {returnList.Add(objConstructorFun(inObj));});//Use the captured constructor to add items to list
             return returnList;
-            //Idea to fix it: Use a Func<objType,objType> to call the constructor
+            //inputList.ForEach((objType inObj) => {objType newObj = new objType();}); //Attempted usage of a constructor
+            //Idea to fix it: Use a Func<objType,objType> to call the constructor*/
         }
-        */
+        
     }
 }
