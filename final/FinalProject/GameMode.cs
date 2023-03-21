@@ -79,14 +79,13 @@ class GameMode
         int strBufferSize = 0;
         for(int tOffset = 0; tOffset < timerCycles; tOffset += refreshMsecDelay) //And this is why for loops are cool! //Calculate timer offset, because I don't want to do a costly multiplaction operation on a time sensitive function
         {
-            long startTime = DateTime.Now.Ticks;
-            string tStr = TicksToTimerStr(msecDuration - tOffset); //Subtract the off
+            long startTime = DateTime.Now.Ticks; //Capture the start time
+            string tStr = TicksToTimerStr((msecDuration - tOffset) * 10000); //Subtract the offset from the total time duration to get the countdown, multiply by 10,000 to get ticks
             int newBufferSize = tStr.Length; //Store the new string's length
             tStr += new string(' ',strBufferSize - tStr.Length);//Add gaps to fill the last length
-            Console.Write(tStr + new String('\b',strBufferSize)); //Write the timer string
-            strBufferSize = newBufferSize;
-            Thread.Sleep((new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - startTime))));
-
+            Console.Write(tStr + new String('\b',strBufferSize)); //Write the timer string, make sure to backspace so the next timer string overwrites the last one
+            strBufferSize = newBufferSize; //Update the buffer size
+            Thread.Sleep((new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - startTime)))); //Calculate the remaining time we have until the next cylce and sleep by that amount of time
         }
     }
     public virtual UiMenu MakeSettingsMenu()
@@ -95,7 +94,8 @@ class GameMode
     }
     public string TicksToTimerStr(long ticks)
     {
-        return "";
+        TimeSpan remainingTimeSpan = new TimeSpan(ticks);
+        return remainingTimeSpan.ToString(@"mm\:ss"); //@ means absolute string. Found the formatting specifications for timespan here: https://learn.microsoft.com/en-us/dotnet/api/system.timespan.tostring?view=net-7.0#system-timespan-tostring(system-string)
     }
     private void ShowEndMsg()
     {
