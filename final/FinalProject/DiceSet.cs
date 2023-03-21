@@ -1,3 +1,14 @@
+/* 
+A note about deep copying / cloning lists:
+All lists share reference to the original list's items in memory
+The only way to avoid this is to deep copy your object manually, or implement a different type of list
+Here are some posts about this topic:
+https://stackoverflow.com/questions/4226747/deep-copy-of-listt
+https://stackoverflow.com/questions/2774099/tolist-does-it-create-a-new-list
+https://stackoverflow.com/questions/14007405/how-create-a-new-deep-copy-clone-of-a-listt
+So because I don't want to deal with any of this nonsense I will brute force it into working
+*/
+
 using UiMenu = QuickUtils.UiMenu;
 using UiOption = QuickUtils.UiOption;
 //using Inp = QuickUtils.Inputs;
@@ -6,9 +17,9 @@ using UiMenuExitException = QuickUtils.UiMenuExitException; //Exit exception for
 class DiceSet
 {
     //Attributes
-    private List<Dice> _diceList = new List<Dice>();
-    private int _width = 5;
-    private int _height = 5;
+    protected List<Dice> _diceList = new List<Dice>();
+    protected int _width = 5;
+    protected int _height = 5;
     //private bool _allowQu = true; //Enable or disable displaying Q as Qu
     //Char[] _diceBorder = new char[]{'\u0000','u0000'}; //Warning for settings menu! You must be able to reset this from the console!
     
@@ -25,18 +36,30 @@ class DiceSet
     }
 
     //Copy an existing DiceSet so GameModes can modify it without changing the original
-    public DiceSet(DiceSet sourceDiceSet) //: this(sourceDiceSet.GetDiceList(), sourceDiceSet.GetWidth(), sourceDiceSet.GetHeight())
+    public DiceSet(DiceSet sourceDiceSet) : this(sourceDiceSet.GetDiceList(), sourceDiceSet.GetWidth(), sourceDiceSet.GetHeight())
     {
         //Use the Fill all fields constructor to re-use code, and make it easier to change
-        _diceList = sourceDiceSet.GetDiceList();
-        _width = sourceDiceSet.GetWidth();
-        _height = sourceDiceSet.GetHeight();
+        /*_diceList = sourceDiceSet._diceList;
+        _width = sourceDiceSet._height;
+        _height = sourceDiceSet._width;*/
     }
 
     //Getters and Setters (Normal external access Getters and Setters were auto generated using my AutoGetterSetter Python Script in C# mode)
-    public List<Dice> GetDiceList()
+    public List<Dice> GetDiceList(bool deepCopy = true)
     {
-        return _diceList.ToList<Dice>();
+        if(!deepCopy)
+        {
+            return _diceList.ToList<Dice>();
+        }
+        else
+        {
+            List<Dice> diceListCopy = new List<Dice>();
+            foreach(Dice diceItem in _diceList)
+            {
+                diceListCopy.Add(new Dice(diceItem)); //Clone it with a constructor designed to copy the fields of a dice object
+            }
+            return diceListCopy;
+        }
     }
     public void SetDiceList(List<Dice> diceList)
     {

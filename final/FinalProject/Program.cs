@@ -39,7 +39,7 @@ class Program
     private static UiMenu _mainMenu = new UiMenu(
         new List<UiOption>
         {
-            new UiOption(TestMode,"&Test Mode"), //For debugging
+            new UiOption(()=>{TestMode();},"&Test Mode"), //For debugging
             new UiOption(()=>{},"&Classic"),
             new UiOption(()=>{},"&Random"),
             new UiOption(()=>{},"&Blink"),
