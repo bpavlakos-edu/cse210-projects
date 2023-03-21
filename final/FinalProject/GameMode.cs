@@ -88,6 +88,7 @@ class GameMode
     {
         MakeSettingsMenu().UiLoop(); //Activate the UiLoop of the generated menu
     }
+
     //Utility
     protected void CountDown(int msecDuration, int refreshMsecDelay = 1000)
     {
@@ -124,6 +125,7 @@ class GameMode
     {
         return (new TimeSpan(ticks)).ToString(@"mm\:ss"); //@ means absolute string. Found the formatting specifications for timespan here: https://learn.microsoft.com/en-us/dotnet/api/system.timespan.tostring?view=net-7.0#system-timespan-tostring(system-string)
     }
+
     //Make a UiMenu for this class, to modify the game mode's settings
     protected virtual UiMenu MakeSettingsMenu()
     {
@@ -138,7 +140,8 @@ class GameMode
             exitMsg:"" //Hide the exit message
         );
     }
-    //Update Settings using a GameMode class, this will be used for the All game mode settings option in the main menu
+
+    //Update Settings using a GameMode class, this will be used for the "All Game Modes" setting option in the main menu
     public void UpdateSettings(GameMode newGameMode, bool updateDesc = false)
     {
         _durationSec = newGameMode.GetDurationSec();
