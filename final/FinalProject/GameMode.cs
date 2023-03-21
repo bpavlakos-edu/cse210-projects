@@ -102,7 +102,7 @@ class GameMode
                 int newBufferSize = tStr.Length; //Store the new strings length, because we're going to change it next
                 tStr = (strBufferSize > tStr.Length) ? (tStr + new string(' ', strBufferSize - tStr.Length)) : tStr; //Add gaps to overwrite the previous timer if the length isn't the same. Using the ternary operator, do this only if the last string length is greater than the current string length
                 Console.Write(tStr + new String('\b', strBufferSize)); //Write the timer string, make sure to backspace (using '\b') everything (including the extra spaces) so the next timer string overwrites this one
-                strBufferSize = newBufferSize; //Update the buffer size, so the next timer string has an accurate measurement
+                strBufferSize = newBufferSize; //Update the buffer size, so the next timer string has an accurate length to overwrite
 
                 Thread.Sleep((new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - cycleStartTime)))); //Calculate the remaining time we have until the next cycle and sleep by that amount of time
             }
@@ -125,6 +125,15 @@ class GameMode
     //Make a UiMenu for this class, to modify the game mode's settings
     public virtual UiMenu MakeSettingsMenu()
     {
-        return new UiMenu();
+        return new UiMenu(
+            new List<UiOption>
+            {
+                new UiOption(GetDurationSec,SetDurationSec,"&Timer Length in Seconds", 1, null),
+                new UiOption(GetShowCDown,SetShowCDown,"&Enable Timer Display"),
+                new UiOption(()=>{throw new UiMenuExitException();},"Go &Back")
+            },
+            "Game Mode Options:",
+            exitMsg:"" //Hide the exit message
+        );
     }
 }
