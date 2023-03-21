@@ -7,7 +7,7 @@ class Program
 {
     //Global Variables
     static List<GameMode> _gameModeList = new List<GameMode>();
-    static DiceSet _mainDice = new DiceSet(new List<Dice>
+    static DiceSet _mainDiceSet = new DiceSet(new List<Dice>
     {
         new Dice(new List<char>{'N','G','M','A','N','E'}),
         new Dice(new List<char>{'E','T','I','L','C','I'}),
@@ -103,18 +103,23 @@ class Program
             }
         }
     }
-
+    //For testing basic functionality
     static void TestMode()
     {
-        DiceSet diceSetCopy = new DiceSet(_mainDice);
-        diceSetCopy.Display();
+        DiceSet diceSetCopy = new DiceSet(_mainDiceSet);
+        //diceSetCopy.Display();
         string userInput = "";
         while(userInput != "exit")
         {
-            userInput = Inp.GetInput("Press Enter to roll (commands: \"exit\",\"r\"-reset,\"h\"-hide random, \"?\"-Fill With Random): ").ToLower();
+            userInput = Inp.GetInput("Press Enter to roll (commands: \"g\"-test base game mode class,\"x\"-exit,\"r\"-reset dice,\"h\"-hide random dice, \"?\"-Fill dice With Random char): ").ToLower();
             if(userInput == "r")
             {
-                diceSetCopy = new DiceSet(_mainDice);
+                diceSetCopy = new DiceSet(_mainDiceSet);
+            }
+            else if(userInput == "g")
+            {
+                GameMode _gmTest = new GameMode(15);
+                _gmTest.Start(_mainDiceSet);
             }
             else if(userInput == "h")
             {
