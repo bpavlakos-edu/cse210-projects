@@ -89,7 +89,7 @@ class GameMode
         MakeSettingsMenu().UiLoop(); //Activate the UiLoop of the generated menu
     }
     //Utility
-    public void CountDown(int msecDuration, int refreshMsecDelay = 1000)
+    protected void CountDown(int msecDuration, int refreshMsecDelay = 1000)
     {
         if(_showCDown) //Check the show countdown setting
         {
@@ -113,17 +113,17 @@ class GameMode
         }
     }
     //Function overload for counting down by seconds, needs a different name to make it not conflict due to having the same parameter types
-    public void CountDownSec(int secDuration, int refreshMsecDelay = 1000)
+    protected void CountDownSec(int secDuration, int refreshMsecDelay = 1000)
     {
         CountDown(secDuration * 1000, refreshMsecDelay);
     }
-    public string TicksToTimerStr(long ticks)
+    protected string TicksToTimerStr(long ticks)
     {
         TimeSpan remainingTimeSpan = new TimeSpan(ticks);
         return remainingTimeSpan.ToString(@"mm\:ss"); //@ means absolute string. Found the formatting specifications for timespan here: https://learn.microsoft.com/en-us/dotnet/api/system.timespan.tostring?view=net-7.0#system-timespan-tostring(system-string)
     }
     //Make a UiMenu for this class, to modify the game mode's settings
-    public virtual UiMenu MakeSettingsMenu()
+    protected virtual UiMenu MakeSettingsMenu()
     {
         return new UiMenu(
             new List<UiOption>

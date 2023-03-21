@@ -6,7 +6,7 @@ using Inp = QuickUtils.Inputs; //Added for testing
 class Program
 {
     //Global Variables
-    //private List<GameMode> _gameModeList = new List<GameMode>();
+    static List<GameMode> _gameModeList = new List<GameMode>();
     static DiceSet _mainDice = new DiceSet(new List<Dice>
     {
         new Dice(new List<char>{'N','G','M','A','N','E'}),
@@ -92,8 +92,16 @@ class Program
         //Use the base game modes settings class to generate the prompts and properties to apply to the other game modes, 
         //make sure to use default settings and only change when it's changed, 
         //also make sure that individual game modes don't change when different from default settings, or give the user a warning
-        //GameMode _mainGm = new GameMode(); //Create a new instance of GameMode with the current global settings
-        //_mainGm.OpenSettings(); //Open the settings
+        if(_gameModeList.Count > 0)
+        {
+            GameMode _mainGm = new GameMode(); //Create a new instance of GameMode with the current global settings
+            _mainGm.OpenSettings(); //Open the settings
+            for(int i = 0; i < _gameModeList.Count; i++)
+            {//Todo: Find a way to only apply settings if they are changed, so default values don't overwrite custom ones
+                _gameModeList[i].SetDurationSec(_mainGm.GetDurationSec());
+                _gameModeList[i].SetShowCDown(_mainGm.GetShowCDown());
+            }
+        }
     }
 
     static void TestMode()
