@@ -6,7 +6,7 @@ using Inp = QuickUtils.Inputs; //Added for testing
 class Program
 {
     //Global Variables
-    static List<GameMode> _gameModeList = new List<GameMode>{new GmClassic()};
+    static List<GameMode> _gameModeList = new List<GameMode>{new GmClassic(), new GmRandom()};
     static DiceSet _mainDiceSet = new DiceSet(new List<Dice>
     {//Default dice list was digitized from a real boggle set
         new Dice(new List<char>{'N','G','M','A','N','E'}),
@@ -41,9 +41,9 @@ class Program
         {
             //new UiOption(()=>{TestMode();},"&Test Mode"), //For debugging //Disabled
             new UiOption(()=>{_gameModeList[0].Start(_mainDiceSet);},"Play the &Classic Game Mode"),
-            new UiOption(()=>{},"Play the &Random Game Mode"),
+            new UiOption(()=>{_gameModeList[1].Start(_mainDiceSet);},"Play the &Random Game Mode"),
             new UiOption(()=>{},"Play the &Blink Game Mode"),
-            new UiOption(()=>{},"Open the &Help Menu"),
+            new UiOption(ShowGmHelp,"Open the &Help Menu"),
             new UiOption(OptionsMenu,"Open the &Options Menu"),
             new UiOption(()=>{throw new OperationCanceledException();},"&Exit")
         },
@@ -62,13 +62,13 @@ class Program
             new List<UiOption>
             {
                 new UiOption(_gameModeList[0].DisplayHelp,"About the &Classic Game Mode"),
-                new UiOption(()=>{},"About the &Random Game Mode"),
-                new UiOption(()=>{},"About the B&link Game Mode"),
+                new UiOption(_gameModeList[1].DisplayHelp,"About the &Random Game Mode"),
+                new UiOption(()=>{},"About the Bli&nk Game Mode"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             }
         );
     }
-    //To help the user pick which game mode
+    //Pick the settings menu to open (GameMode or DiceSet)
     static void OptionsMenu()
     {
         UiMenu _rootOptionsMenu = new UiMenu(
@@ -83,16 +83,16 @@ class Program
             ""
         );
     }
-    //For picking which game mode the user wants to modify, including all game modes
+    //Pick which Game Mode to open the settings menu for (All, Classic, Random, or Blink)
     static void GameModeOptionsMenu()
     {
         UiMenu _gmOptionMenu = new UiMenu(
         new List<UiOption>
             {
-                new UiOption(AllGameModeOptionsMenu,"&All Game Modes"),
-                new UiOption(()=>{_gameModeList[0].OpenSettings();},"&Classic Mode"),
-                new UiOption(()=>{},"&Random Mode"),
-                new UiOption(()=>{},"&Blink Mode"),
+                new UiOption(AllGameModeOptionsMenu,"Change &All Game Mode Options"),
+                new UiOption(_gameModeList[0].OpenSettings,"&Classic Mode Options"),
+                new UiOption(_gameModeList[1].OpenSettings,"&Random Mode Options"),
+                new UiOption(()=>{},"Bli&nk Mode Options"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             },
             "Game Mode Options:",
@@ -109,8 +109,9 @@ class Program
         {
             GameMode _mainGm = new GameMode(); //Create a new instance of GameMode with the current global settings
             _mainGm.OpenSettings(); //Open the settings
+            //Todo: Find a way to only apply settings if they are changed, so default values don't overwrite custom ones
             for(int i = 0; i < _gameModeList.Count; i++)
-            {//Todo: Find a way to only apply settings if they are changed, so default values don't overwrite custom ones
+            {
                 _gameModeList[i].SetDurationSec(_mainGm.GetDurationSec());
                 _gameModeList[i].SetShowCDown(_mainGm.GetShowCDown());
             }
