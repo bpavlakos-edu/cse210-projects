@@ -136,22 +136,16 @@ class DiceSet
     //Smart Dice Display, uses modulus to display dice
     public void Display()
     {
-        Console.Clear();
+        Console.Clear(); //Clear the console
         char dWallStart = (char) 0;
         char dWallEnd = (char) 0;
         //"Exists" uses predicates (inline functions) to search a list
         bool hasQu = /*_allowQu && */_diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';});
-        char[] newLineChars = Environment.NewLine.ToCharArray();
-        int newLineLength = newLineChars.Length;
-        /*Create a display buffer, with it's length specified using the following calculations:
-        ~ 1 for each character in the list
-        ~ Ternary operator: (AnyChar !=0) ? 1 : 0, to detect if dwall start and dWall end are non 0 and add 1 for each
-        ~ Ternary operator to detect if Q is present
-        ~ Multiply by height to get the row height
-        bufferSize = ((2 + ((dWallStart != 0) ? 1 : 0) + ((dWallEnd != 0) ? 1 : 0)) * _width) * _height;
-        */
-        int cellSize = 2 + ((dWallStart > 0) ? 1 : 0) + ((dWallEnd > 0) ? 1 : 0); //2 to 4, 2 for no border, 4 for having a border
-        int rowWidth = (cellSize * _width) + newLineLength;
+        char[] newLineChars = Environment.NewLine.ToCharArray(); //Convert the newline 
+        int newLineLength = newLineChars.Length; //Store the new line length so we don't need to repeatedly calculate it
+        //Create a display buffer, with it's length specified using the following calculations:
+        int cellSize = 2 + ((dWallStart > 0) ? 1 : 0) + ((dWallEnd > 0) ? 1 : 0); //cell size by default is 2, use a ternary operator to add 1 if dWallStart is not 0, do the same if dWallEnd is not 0
+        int rowWidth = (cellSize * _width) + newLineLength; //Store the row width so we don't need to repeatedly calculate it
         char[] stringBuffer = new char[rowWidth * _height]; //Initalize the string buffer
         int offset = 0;
         try
