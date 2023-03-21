@@ -75,7 +75,8 @@ class GameMode
         diceCopy.SetAllVisibility(false); //Reset all dice visibility
         diceCopy.Display();//Print the dice
         Console.WriteLine("Time's up!");
-        Inp.GetInput("Please check your words using the display above. Press enter to continue when finished.");
+        Console.WriteLine("Please check your words using the display above.");
+        Inp.GetInput("Press enter to continue when finished.");
     }
     //Display this game mode's description
     public void DisplayHelp()
