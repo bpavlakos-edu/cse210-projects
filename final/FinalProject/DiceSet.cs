@@ -140,14 +140,36 @@ class DiceSet
         char dWallEnd = (char) 0;
         //"Exists" uses predicates (inline functions) to search a list
         bool hasQu = /*_allowQu && */_diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';});
+        char[] newLineChars = Environment.NewLine.ToCharArray();
+        int newLineLength = newLineChars.Length;
         /*Create a display buffer, with it's length specified using the following calculations:
         ~ 1 for each character in the list
         ~ Ternary operator: (AnyChar !=0) ? 1 : 0, to detect if dwall start and dWall end are non 0 and add 1 for each
         ~ Ternary operator to detect if Q is present
         ~ Multiply by height to get the row height
+        bufferSize = ((2 + ((dWallStart != 0) ? 1 : 0) + ((dWallEnd != 0) ? 1 : 0)) * _width) * _height;
         */
-        char[] displayBuffer = new char[(((1 + ((dWallStart != 0) ? 1 : 0) + ((dWallEnd != 0) ? 1 : 0) + ((hasQu) ? 1 : 0)) * _width) + 1) * _height];
-        
+        int cellSize = 2 + ((dWallStart > 0) ? 1 : 0) + ((dWallEnd > 0) ? 1 : 0); //2 to 4, 2 for no border, 4 for having a border
+        int rowWidth = (cellSize * _width) + newLineLength;
+        char[] stringBuffer = new char[rowWidth * _height]; //Initalize the string buffer
+        int offset = 0;
+        try
+        {
+            for(int i = 0; i < _width * _height; i++) //For each item in the array
+            {
+                (_diceList[i].ToDisplayChars(hasQu, dWallStart, dWallEnd)).CopyTo(stringBuffer, offset);
+                offset += cellSize;
+                if((i + 1) % _width == 0) //Write the new line after the last entry
+                {
+                    newLineChars.CopyTo(stringBuffer, offset); //Copy the newline characters
+                    offset += newLineLength; //Update the offset
+                }
+            }
+        }
+        catch(ArgumentOutOfRangeException) //no more dice
+        {
+            offset += (offset % rowWidth); //-_-_-_-_-_n 00010203456
+        }
     }
 
     //Roll All Dice

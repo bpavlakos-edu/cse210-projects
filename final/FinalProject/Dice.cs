@@ -115,6 +115,13 @@ class Dice
         }
         //ternary conditional operator (https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator)
     }
+    //Get the current display side of this dice as chars
+    public char[] ToDisplayChars(bool hasQuChar, char dWallStart = (char) 0, char dWallEnd = (char) 0)
+    {
+        //items: dice wall start char, dice wall char or blank for hidden, space for letters and hidden or u for Qu when option is enabled, dice wall end
+        return new char[] {dWallStart, ((_hidden) ? ' ' : _curLetter), ((hasQuChar && _curLetter == 'Q' && !_hidden) ? 'u':' '), dWallEnd}; //Return an extra U when Q and an extra space when not Q
+        //return _side+" "; //Debugging
+    }
     //Randomly pick a side of this dice
     public void Roll()
     {
