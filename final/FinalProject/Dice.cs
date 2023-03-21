@@ -1,6 +1,7 @@
 using UiMenu = QuickUtils.UiMenu;
 using UiOption = QuickUtils.UiOption;
 using Inp = QuickUtils.Inputs;
+using Msc = QuickUtils.Misc;
 using UiMenuExitException = QuickUtils.UiMenuExitException; //Exit exception for the menu to use
 class Dice
 {
@@ -18,7 +19,7 @@ class Dice
     //Fill all attributes, most attributes use default values
     public Dice(List<char> sideList, int side = 0, char curLetter=' ', bool hidden = false)
     {
-        _sideList = sideList.ToList<char>();//Copy the input list to break the reference to the original
+        _sideList = Msc.ListCopy<char>(sideList,(char inObj) => {return inObj;});//Copy the input list to break the reference to the original
         _side = side;
         _curLetter = curLetter;
         _hidden = hidden;
@@ -44,11 +45,11 @@ class Dice
     //Getters and Setters (Normal external access Getters and Setters were auto generated using my AutoGetterSetter Python Script in C# mode)
     public List<char> GetSideList()
     {
-        return _sideList.ToList<char>();
+        return Msc.ListCopy<char>(_sideList,(char inObj) => {return inObj;});
     }
     public void SetSideList(List<char> sideList)
     {
-        _sideList = sideList.ToList<char>();
+        _sideList = Msc.ListCopy<char>(sideList,(char inObj) => {return inObj;});
     }
     //SetSide list from a string (custom)
     public void SetSideList(string inString)

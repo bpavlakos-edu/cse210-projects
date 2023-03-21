@@ -16,7 +16,7 @@ using UiMenu = QuickUtils.UiMenu;
 using UiOption = QuickUtils.UiOption;
 //using Inp = QuickUtils.Inputs;
 using UiMenuExitException = QuickUtils.UiMenuExitException; //Exit exception for the menu to use
-
+using Msc = QuickUtils.Misc;
 class DiceSet
 {
     //Attributes
@@ -56,17 +56,19 @@ class DiceSet
         }
         else
         {
-            List<Dice> diceListCopy = new List<Dice>();
+            return Msc.ListCopy<Dice>(_diceList, (Dice inDice) => {return new Dice(inDice);}); //Use the new ListCopy function
+            /* List<Dice> diceListCopy = new List<Dice>();
             foreach(Dice diceItem in _diceList)
             {
                 diceListCopy.Add(new Dice(diceItem)); //Clone it with a constructor designed to copy the fields of a dice object
             }
-            return diceListCopy;
+            return diceListCopy; */
         }
     }
     public void SetDiceList(List<Dice> diceList)
     {
-        _diceList = diceList.ToList<Dice>();
+        _diceList = Msc.ListCopy<Dice>(diceList, (Dice inDice) => {return new Dice(inDice);});
+        //_diceList = diceList.ToList<Dice>();
     }
     public int GetWidth()
     {
