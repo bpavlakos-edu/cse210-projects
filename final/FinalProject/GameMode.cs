@@ -15,12 +15,14 @@ class GameMode
     {
         
     }
-
-    //Fill all attributes
-    public GameMode(int durationSec, string desc, bool showCDown)
+    //Fill all attributes (Supports using null to get default values)
+    public GameMode(int durationSec, string desc = null, bool? showCDown = null)
     {
-
+        _durationSec = durationSec;
+        _desc = desc ?? _desc;
+        _showCDown = showCDown ?? _showCDown;
     }
+
     //Getters and Setters (Normal external access Getters and Setters were auto generated using my AutoGetterSetter Python Script in C# mode)
     public int GetDurationSec()
     {
@@ -83,6 +85,6 @@ class GameMode
     }
     private void ShowEndMsg()
     {
-        
+
     }
 }
