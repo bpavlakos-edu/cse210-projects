@@ -5,11 +5,10 @@ using Inp = QuickUtils.Inputs; //User inputs
 using Msc = QuickUtils.Misc; //List copying and other redundant code
 class GameMode
 {
-    
     //Attributes
     protected int _durationSec = 120;
-    protected string _desc = "";
     protected bool _showCDown = true; //Flag to control whether to display a timer or not
+    protected string _desc = ""; //Game mode description for the help menu, shouldn't really be changed
 
     //Constructors
     //Blank Constructor
@@ -18,11 +17,11 @@ class GameMode
         
     }
     //Fill all attributes (Supports using null to get default values)
-    public GameMode(int durationSec, string desc = null, bool? showCDown = null)
+    public GameMode(int durationSec, bool? showCDown = null, string desc = null)
     {
         _durationSec = durationSec;
-        _desc = desc ?? _desc;
         _showCDown = showCDown ?? _showCDown;
+        _desc = desc ?? _desc;
     }
 
     //Getters and Setters (Normal external access Getters and Setters were auto generated using my AutoGetterSetter Python Script in C# mode)
@@ -34,14 +33,6 @@ class GameMode
     {
         _durationSec = durationSec;
     }
-    public string GetDesc()
-    {
-        return _desc;
-    }
-    public void SetDesc(string desc)
-    {
-        _desc = desc;
-    }
     public bool GetShowCDown()
     {
         return _showCDown;
@@ -49,6 +40,14 @@ class GameMode
     public void SetShowCDown(bool showCDown)
     {
         _showCDown = showCDown;
+    }
+    public string GetDesc()
+    {
+        return _desc;
+    }
+    public void SetDesc(string desc)
+    {
+        _desc = desc;
     }
 
     //Methods
@@ -81,7 +80,7 @@ class GameMode
     //Display this game mode's description
     public void DisplayHelp()
     {
-        Console.WriteLine(_desc);
+        Console.WriteLine(_desc.Replace("_",Environment.NewLine)); //Write the game mode description, replace 
         Inp.GetInput("Press Enter to Continue");
     }
     //Open the settings menu
@@ -138,5 +137,15 @@ class GameMode
             "Game Mode Options:",
             exitMsg:"" //Hide the exit message
         );
+    }
+    //Update Settings using a GameMode class, this will be used for the All game mode settings option in the main menu
+    public void UpdateSettings(GameMode newGameMode, bool updateDesc = false)
+    {
+        _durationSec = newGameMode.GetDurationSec();
+        _showCDown = newGameMode.GetShowCDown();
+        if(updateDesc) //Optional control for updating Desc, which really shouldn't be changed for sub classes at run time
+        {
+            _desc = newGameMode.GetDesc();
+        }
     }
 }
