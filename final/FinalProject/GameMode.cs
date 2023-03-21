@@ -6,7 +6,7 @@ using Msc = QuickUtils.Misc; //List copying and other redundant code
 class GameMode
 {
     //Attributes
-    protected int _durationSec = 120;
+    protected int _durationSec = 180; //Game mode duration
     protected bool _showCDown = true; //Flag to control whether to display a timer or not
     protected string _desc = ""; //Game mode description for the help menu, shouldn't really be changed
 
@@ -110,7 +110,7 @@ class GameMode
 
                 Thread.Sleep((new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - cycleStartTime)))); //Calculate the remaining time we have until the next cycle and sleep by that amount of time
             }
-            Console.CursorVisible = false; //Timer has ended, restore console cursor visibility
+            Console.CursorVisible = true; //Timer has ended, restore console cursor visibility
         }
         else //Simple thread sleep for the requested duration
         {
