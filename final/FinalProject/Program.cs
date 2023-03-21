@@ -40,9 +40,9 @@ class Program
         new List<UiOption>
         {
             //new UiOption(()=>{TestMode();},"&Test Mode"), //For debugging //Disabled
-            new UiOption(()=>{_gameModeList[0].Start(_mainDiceSet);},"Start the &Classic Game Mode"),
-            new UiOption(()=>{},"Start the &Random Game Mode"),
-            new UiOption(()=>{},"Start the &Blink Game Mode"),
+            new UiOption(()=>{_gameModeList[0].Start(_mainDiceSet);},"Play the &Classic Game Mode"),
+            new UiOption(()=>{},"Play the &Random Game Mode"),
+            new UiOption(()=>{},"Play the &Blink Game Mode"),
             new UiOption(()=>{},"Open the &Help Menu"),
             new UiOption(OptionsMenu,"Open the &Options Menu"),
             new UiOption(()=>{throw new OperationCanceledException();},"&Exit")
@@ -61,7 +61,7 @@ class Program
         UiMenu _HelpMenu = new UiMenu(
             new List<UiOption>
             {
-                new UiOption(()=>{},"About the &Classic Game Mode"),
+                new UiOption(_gameModeList[0].DisplayHelp,"About the &Classic Game Mode"),
                 new UiOption(()=>{},"About the &Random Game Mode"),
                 new UiOption(()=>{},"About the B&link Game Mode"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
@@ -74,8 +74,8 @@ class Program
         UiMenu _rootOptionsMenu = new UiMenu(
             new List<UiOption>
             {
-                new UiOption(GameModeOptionsMenu,"&Game Mode Options"),
-                new UiOption(()=>{},"&Dice Set Options"),
+                new UiOption(GameModeOptionsMenu,"Open the &Game Mode Options Menu"),
+                new UiOption(_mainDiceSet.OpenSettings,"Open the &Dice-Set Options Menu"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             },
             "Options:",
@@ -88,16 +88,16 @@ class Program
     {
         UiMenu _gmOptionMenu = new UiMenu(
         new List<UiOption>
-        {
-            new UiOption(AllGameModeOptionsMenu,"&All Game Modes"),
-            new UiOption(()=>{},"&Classic Mode"),
-            new UiOption(()=>{},"&Random Mode"),
-            new UiOption(()=>{},"&Blink Mode"),
-            new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
-        },
-        "Game Mode Options:",
-        "Select a game mode or [hotkey] from the menu: ",
-        ""
+            {
+                new UiOption(AllGameModeOptionsMenu,"&All Game Modes"),
+                new UiOption(()=>{_gameModeList[0].OpenSettings();},"&Classic Mode"),
+                new UiOption(()=>{},"&Random Mode"),
+                new UiOption(()=>{},"&Blink Mode"),
+                new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
+            },
+            "Game Mode Options:",
+            "Select a game mode or [hotkey] from the menu: ",
+            ""
         );
     }
     static void AllGameModeOptionsMenu()

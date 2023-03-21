@@ -52,11 +52,12 @@ class GameMode
 
     //Methods
     //Main Functionality
+    //Start this game mode
     public void Start(DiceSet curDiceSet)
     {
         DiceSet diceSetCopy = new DiceSet(curDiceSet); //Copy the current dice set so the main dice set isn't modified during the game mode
-        GameLoop(diceSetCopy);
-        ShowEndMsg(diceSetCopy);
+        GameLoop(diceSetCopy); //Start the Game Mode Loop
+        ShowEndMsg(diceSetCopy); //Print the end message when it finishes
     }
     //Main gameplay loop (overidden by child classes)
     protected virtual void GameLoop(DiceSet diceSetCopy)
