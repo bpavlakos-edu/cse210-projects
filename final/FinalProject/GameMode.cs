@@ -80,7 +80,8 @@ class GameMode
     //Display this game mode's description
     public void DisplayHelp()
     {
-        Console.WriteLine(_desc.Replace("_",Environment.NewLine)); //Write the game mode description, replace 
+        Console.WriteLine(_desc.Replace("_",Environment.NewLine)); //Write the game mode description, replace underscore with newline since we cant use Enviroment.Newline as a parameter default
+        Console.WriteLine("");
         Inp.GetInput("Press Enter to Continue");
     }
     //Open the settings menu

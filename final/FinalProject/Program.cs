@@ -40,10 +40,11 @@ class Program
         new List<UiOption>
         {
             //new UiOption(()=>{TestMode();},"&Test Mode"), //For debugging //Disabled
-            new UiOption(()=>{_gameModeList[0].Start(_mainDiceSet);},"&Classic"),
-            new UiOption(()=>{},"&Random"),
-            new UiOption(()=>{},"&Blink"),
-            new UiOption(OptionsMenu,"&Options"),
+            new UiOption(()=>{_gameModeList[0].Start(_mainDiceSet);},"Start the &Classic Game Mode"),
+            new UiOption(()=>{},"Start the &Random Game Mode"),
+            new UiOption(()=>{},"Start the &Blink Game Mode"),
+            new UiOption(()=>{},"Open the &Help Menu"),
+            new UiOption(OptionsMenu,"Open the &Options Menu"),
             new UiOption(()=>{throw new OperationCanceledException();},"&Exit")
         },
         $"Welcome to Doggle!{Environment.NewLine}Menu Options:",
@@ -55,19 +56,31 @@ class Program
     {
         _mainMenu.UiLoop(); //Open the main menu
     }
+    static void ShowGmHelp()
+    {
+        UiMenu _HelpMenu = new UiMenu(
+            new List<UiOption>
+            {
+                new UiOption(()=>{},"About the &Classic Game Mode"),
+                new UiOption(()=>{},"About the &Random Game Mode"),
+                new UiOption(()=>{},"About the B&link Game Mode"),
+                new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
+            }
+        );
+    }
     //To help the user pick which game mode
     static void OptionsMenu()
     {
         UiMenu _rootOptionsMenu = new UiMenu(
-        new List<UiOption>
+            new List<UiOption>
             {
-            new UiOption(GameModeOptionsMenu,"&Game Mode Options"),
-            new UiOption(()=>{},"&Dice Set Options"),
-            new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
-        },
-        "Options:",
-        "Select an option or [hotkey] from the menu: ",
-        ""
+                new UiOption(GameModeOptionsMenu,"&Game Mode Options"),
+                new UiOption(()=>{},"&Dice Set Options"),
+                new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
+            },
+            "Options:",
+            "Select an option or [hotkey] from the menu: ",
+            ""
         );
     }
     //For picking which game mode the user wants to modify, including all game modes
