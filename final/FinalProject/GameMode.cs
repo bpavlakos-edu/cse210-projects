@@ -105,11 +105,10 @@ class GameMode
                 tStr = (strBufferSize > tStr.Length) ? (tStr + new string(' ', strBufferSize - tStr.Length)) : tStr; //Add gaps to overwrite the previous timer if the length isn't the same. Using the ternary operator, do this only if the last string length is greater than the current string length
                 Console.Write(tStr + new String('\b', (strBufferSize >= tStr.Length) ? strBufferSize : tStr.Length)); //Write the timer string, make sure to backspace (using '\b') everything (including the extra spaces) so the next timer string overwrites this one. Use the ternary operator to detect when the new string's length is longer than the original so it can backspace with that instead
                 strBufferSize = newBufferSize; //Update the buffer size, so the next timer string has an accurate length to overwrite
-                
+
                 Thread.Sleep((new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - cycleStartTime)))); //Calculate the remaining time we have until the next cycle and sleep by that amount of time
             }
-            //Timer has ended
-            Console.CursorVisible = false;
+            Console.CursorVisible = false; //Timer has ended, restore console cursor visibility
         }
         else //Simple thread sleep for the requested duration
         {
