@@ -162,10 +162,10 @@ class DiceSet
     public void OpenSettings()
     {
         UiMenu diceSetSettings = new UiMenu(new List<UiOption>{
-            new UiOption(), //Open Dice Edit Menu
-            new UiOption(GetWidth, SetWidth, "Grid &Width",2), //Set Width
-            new UiOption(GetHeight, SetHeight, "Grid &Height",2), //Set Height
-            new UiOption(()=>{throw new UiMenuExitException();},"&Back"),
+            new UiOption(()=>{},"Edit &Dice"), //Open Dice Edit Menu
+            new UiOption(GetWidth, SetWidth, "Grid &Width", 2), //Set Width
+            new UiOption(GetHeight, SetHeight, "Grid &Height", 2), //Set Height
+            new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
         });
         diceSetSettings.UiLoop();
     }
