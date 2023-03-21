@@ -158,17 +158,23 @@ class DiceSet
             for(int i = 0; i < _width * _height; i++) //For each item in the array
             {
                 (_diceList[i].ToDisplayChars(hasQu, dWallStart, dWallEnd)).CopyTo(stringBuffer, offset);
-                offset += cellSize;
+                offset += cellSize; //Offset by the cell size
                 if((i + 1) % _width == 0) //Write the new line after the last entry
                 {
                     newLineChars.CopyTo(stringBuffer, offset); //Copy the newline characters
-                    offset += newLineLength; //Update the offset
+                    offset += newLineLength; //Update the offset by the length of the new line
                 }
             }
         }
-        catch(ArgumentOutOfRangeException) //no more dice
+        catch(ArgumentOutOfRangeException) //No more dice, write the remaining new lines
         {
-            offset += (offset % rowWidth); //-_-_-_-_-_n 00010203456
+            //Get to the nearest new line position
+            offset += (rowWidth - (offset % rowWidth)) - newLineLength; //offset % rowWidth gets our current row position, subtract it from the row width to get to the end of the line, subtract the newLine length to get to the new line poistion
+            while(offset < rowWidth * _height)
+            {
+                newLineChars.CopyTo(stringBuffer, offset); //Copy the newline characters
+                    offset += newLineLength; //Update the offset by the length of the new line
+            }
         }
     }
 
