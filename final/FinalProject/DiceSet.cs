@@ -136,6 +136,7 @@ class DiceSet
     //Smart Dice Display, uses modulus to display dice
     public void Display()
     {
+        Console.Clear();
         char dWallStart = (char) 0;
         char dWallEnd = (char) 0;
         //"Exists" uses predicates (inline functions) to search a list
