@@ -167,6 +167,7 @@ class DiceSet
             new UiOption(GetHeight, SetHeight, "Grid &Height"), //Set Height
             new UiOption(()=>{throw new UiMenuExitException();},"&Back"),
         });
+        diceSetSettings.UiLoop();
     }
 
     //Mass Dice Modification
