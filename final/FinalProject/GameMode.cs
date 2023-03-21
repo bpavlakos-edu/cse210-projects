@@ -127,7 +127,7 @@ class GameMode
     }
 
     //Make a UiMenu for this class, to modify the game mode's settings
-    protected virtual UiMenu MakeSettingsMenu()
+    protected virtual UiMenu MakeSettingsMenu(string menuMsg="All Game Mode Settings:")
     {
         return new UiMenu(
             new List<UiOption>
@@ -136,13 +136,13 @@ class GameMode
                 new UiOption(GetShowCDown,SetShowCDown,"Show Timer &Display"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back")
             },
-            "All Game Mode Settings:",
+            menuMsg,
             exitMsg:"" //Hide the exit message
         );
     }
 
     //Update Settings using a GameMode class, this will be used for the "All Game Modes" setting option in the main menu
-    public void UpdateSettings(GameMode newGameMode, bool updateDesc = false)
+    public void UpdateFields(GameMode newGameMode, bool updateDesc = false)
     {
         _durationSec = newGameMode.GetDurationSec();
         _showCDown = newGameMode.GetShowCDown();

@@ -32,10 +32,9 @@ class GmClassic : GameMode
     }
 
     //Utility
-    protected override UiMenu MakeSettingsMenu()
+    //An override to change the MakeSettingsMenu message, all the other variables are the same
+    protected override UiMenu MakeSettingsMenu(string menuMsg="Classic Mode Settings:")
     {
-        UiMenu settingsMenu = base.MakeSettingsMenu();
-        settingsMenu.SetMenuMsg("Classic Mode Settings:");
-        return settingsMenu;
+        return base.MakeSettingsMenu(menuMsg); //Get the original menu, using the new default parameter
     }
 }
