@@ -1,6 +1,7 @@
 using UiMenu = QuickUtils.UiMenu;
 using UiOption = QuickUtils.UiOption;
 using UiMenuExitException = QuickUtils.UiMenuExitException;
+using Inp = QuickUtils.Inputs;
 class GameMode
 {
     
@@ -63,7 +64,8 @@ class GameMode
     //Display this game mode's description
     public void DisplayHelp()
     {
-
+        Console.WriteLine(_desc);
+        Inp.GetInput("Press Enter to Continue");
     }
     //Open the settings menu
     public void OpenSettings()
@@ -71,9 +73,21 @@ class GameMode
         MakeSettingsMenu().UiLoop();
     }
     //Utility
-    public void CountDown(int msec)
+    public void CountDown(int msecDuration, int refreshMsecDelay = 1000)
     {
+        int timerCycles = (msecDuration - (msecDuration % refreshMsecDelay)) / refreshMsecDelay; //Calculate the number of cycles Trim excess cycles using modulus
+        int strBufferSize = 0;
+        for(int tOffset = 0; tOffset < timerCycles; tOffset += refreshMsecDelay) //And this is why for loops are cool! //Calculate timer offset, because I don't want to do a costly multiplaction operation on a time sensitive function
+        {
+            long startTime = DateTime.Now.Ticks;
+            string tStr = TicksToTimerStr(msecDuration - tOffset); //Subtract the off
+            int newBufferSize = tStr.Length; //Store the new string's length
+            tStr += new string(' ',strBufferSize - tStr.Length);//Add gaps to fill the last length
+            Console.Write(tStr + new String('\b',strBufferSize)); //Write the timer string
+            strBufferSize = newBufferSize;
+            Thread.Sleep((new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - startTime))));
 
+        }
     }
     public virtual UiMenu MakeSettingsMenu()
     {
