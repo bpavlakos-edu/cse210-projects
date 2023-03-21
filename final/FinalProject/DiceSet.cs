@@ -1,12 +1,15 @@
 /* 
 A note about deep copying / cloning lists:
 All lists share reference to the original list's items in memory
+A very long time ago I found this solution on stack overflow:
+https://stackoverflow.com/questions/15330696/how-to-copy-list-in-c-sharp
+Unfortunately it was incorrect, because any modifcations to a mutable object inside the copied list would change objects inside of the original
 The only way to avoid this is to deep copy your object manually, or implement a different type of list
 Here are some posts about this topic:
 https://stackoverflow.com/questions/4226747/deep-copy-of-listt
 https://stackoverflow.com/questions/2774099/tolist-does-it-create-a-new-list
 https://stackoverflow.com/questions/14007405/how-create-a-new-deep-copy-clone-of-a-listt
-So because I don't want to deal with any of this nonsense I will brute force it into working
+So because I don't want to deal with any of this nonsense, I will brute force it into working
 */
 
 using UiMenu = QuickUtils.UiMenu;

@@ -17,5 +17,15 @@ namespace QuickUtils
             //Which allows me to manually format it using the parameter digits
             return inFloat.ToString((digits != null) ? $"F{digits}" : null);
         }
+        //Found out about object constraints:
+        //Stack Overflow post: https://stackoverflow.com/a/29345294
+        //MSDN: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/where-generic-type-constraint?redirectedfrom=MSDN
+        //Detailed Syntax: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/generics/constraints-on-type-parameters
+        /*public static List<objType> CloneList<objType>(List<objType> inputList) where objType : new()
+        {
+            List<objType> returnList = new List<objType>();
+            inputList.ForEach((objType inObj) => {objType newObj = new objType();});
+            return returnList;
+        }*/
     }
 }
