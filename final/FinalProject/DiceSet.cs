@@ -99,7 +99,7 @@ class DiceSet
     //Main Functionality
 
     //Display the Letters in a grid
-    public void Display(bool clearAll = false)
+    public void DisplayOld(bool clearAll = false)
     {
         char dWallStart = (char) 0;
         char dWallEnd = (char) 0;
@@ -134,6 +134,31 @@ class DiceSet
     }
 
     //Smart Dice Display, uses modulus to display dice
+    public void Display()
+    {
+        char dWallStart = (char) 0;
+        char dWallEnd = (char) 0;
+        //"Exists" uses predicates (inline functions) to search a list
+        bool hasQu = /*_allowQu && */_diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';});
+        /*Create a display buffer, with it's length specified using the following calculations:
+        ~ 1 for each character in the list
+        ~ Use bitwise to detect ascii values that are non zero:
+            Any ascii char:
+            0x00 = 0000 0000 = 0  = null = U+0000
+            0x01 = 0000 0001 = 1  = U+0001
+            0x41 = 0100 0001 = 41 = 'A'
+            (Any byte >> 4) | Any byte = compact to 4 bits (compact4)
+            (Compact4 >> 2) | Compact4 = compacted to 8 bits (compact 2)
+            (Compact2 >> 1) | Compact2 = Compacted to 1 bit
+            Compact1 & 1 = 1 for non 0
+            So the full formula is way to complicated to do on one line
+            Alternate solution ((AnyByte >> 7) | (AnyByte >> 6) | (AnyByte >> 5) | (AnyByte >> 4) | (AnyByte >> 3) | (AnyByte >> 2) | (AnyByte >> 1) | (AnyByte)) & 1
+            Alternate Solution: ternary operator: (AnyChar !=0) ? 1 : 0
+        ~ Multiply by height to get the row height
+        */
+        char[] displayBuffer = new char[(((1 + ((dWallStart != 0) ? 1 : 0) + ((dWallEnd != 0) ? 1 : 0) + ((hasQu) ? 1 : 0)) * _width) + 1) * _height];
+        
+    }
 
     //Roll All Dice
     public void RollAll()
@@ -231,4 +256,6 @@ class DiceSet
     {
         FillToCount(newDiceCount, new Dice(inputChars.ToList<char>(), 0, ' ', false)); //Convert input chars to a list to use to create a new dice to send to the original function
     }
+    //Bit shifting
+    //Compact a byte to 1 bit
 }
