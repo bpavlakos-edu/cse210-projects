@@ -1,7 +1,8 @@
 using UiMenu = QuickUtils.UiMenu;
 using UiOption = QuickUtils.UiOption;
 using UiMenuExitException = QuickUtils.UiMenuExitException;
-using Inp = QuickUtils.Inputs;
+using Inp = QuickUtils.Inputs; //User inputs
+using Msc = QuickUtils.Misc; //List copying and other redundant code
 class GameMode
 {
     
@@ -54,12 +55,14 @@ class GameMode
     //Main Functionality
     public void Start(DiceSet curDiceSet)
     {
-
+        DiceSet diceSetCopy = new DiceSet(curDiceSet); //Copy the current dice set
+        GameLoop(diceSetCopy);
     }
     //Main gameplay loop (overidden by child classes)
-    protected virtual void GameLoop()
+    protected virtual void GameLoop(DiceSet curDiceSet)
     {
 
+        //Example code of how a GameLoop would go
     }
     //Display this game mode's description
     public void DisplayHelp()
@@ -97,7 +100,7 @@ class GameMode
         TimeSpan remainingTimeSpan = new TimeSpan(ticks);
         return remainingTimeSpan.ToString(@"mm\:ss"); //@ means absolute string. Found the formatting specifications for timespan here: https://learn.microsoft.com/en-us/dotnet/api/system.timespan.tostring?view=net-7.0#system-timespan-tostring(system-string)
     }
-    private void ShowEndMsg()
+    private void ShowEndMsg(DiceSet diceCopy)
     {
 
     }

@@ -207,4 +207,27 @@ class DiceSet
         }
         _diceList = shuffleDiceList.ToList<Dice>(); //Store the shuffled Dice
     }
+    //Ask if the user wants to fill the remaining slots in the Dice List automatically
+    public void CheckSize(bool allowCheck = true)
+    {
+        if(allowCheck && (_width * _height) != _diceList.Count)
+        {
+
+        }
+    }
+
+    //Fill the dice list to an integer
+    //Fill using a list of dice
+    public void FillToCount(int newDiceCount, params Dice[] inputDice) //Utilizes the params keyword, which lets us use each item as an individual parameter: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/params
+    {
+        for(int i = 0; _diceList.Count < newDiceCount; i++)
+        {
+            _diceList.Add(inputDice[i % inputDice.Length]); //Use modulus to infinitely loop the input array
+        }
+    }
+    //Fill using chars
+    public void FillToCount(int newDiceCount, params char[] inputChars)
+    {
+        FillToCount(newDiceCount, new Dice(inputChars.ToList<char>(), 0, ' ', false)); //Convert input chars to a list to use to create a new dice to send to the original function
+    }
 }
