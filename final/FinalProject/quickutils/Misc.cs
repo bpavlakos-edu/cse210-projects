@@ -21,11 +21,14 @@ namespace QuickUtils
         //Stack Overflow post: https://stackoverflow.com/a/29345294
         //MSDN: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/where-generic-type-constraint?redirectedfrom=MSDN
         //Detailed Syntax: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/generics/constraints-on-type-parameters
-        /*public static List<objType> CloneList<objType>(List<objType> inputList) where objType : new()
+        /*
+        public static List<objType> ListCopy<objType>(List<objType> inputList) where objType : new()
         {
             List<objType> returnList = new List<objType>();
             inputList.ForEach((objType inObj) => {objType newObj = new objType();});
             return returnList;
-        }*/
+            //Idea to fix it: Use a Func<objType,objType> to call the constructor
+        }
+        */
     }
 }
