@@ -58,7 +58,7 @@ class Program
     }
     static void ShowGmHelp()
     {
-        UiMenu _HelpMenu = new UiMenu(
+        UiMenu _helpMenu = new UiMenu(
             new List<UiOption>
             {
                 new UiOption(_gameModeList[0].DisplayHelp,"About the &Classic Game Mode"),
@@ -67,6 +67,7 @@ class Program
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             }
         );
+        _helpMenu.UiLoop();
     }
     //Pick the settings menu to open (GameMode or DiceSet)
     static void OptionsMenu()
@@ -82,6 +83,7 @@ class Program
             "Select an option or [hotkey] from the menu: ",
             ""
         );
+        _rootOptionsMenu.UiLoop();
     }
     //Pick which Game Mode to open the settings menu for (All, Classic, Random, or Blink)
     static void GameModeOptionsMenu()
@@ -99,7 +101,9 @@ class Program
             "Select a game mode or [hotkey] from the menu: ",
             ""
         );
+        _gmOptionMenu.UiLoop();
     }
+    //Set all game mode settings
     static void AllGameModeOptionsMenu()
     {
         //Use the base game modes settings class to generate the prompts and properties to apply to the other game modes, 
@@ -116,6 +120,9 @@ class Program
                 _gameModeList[i].SetShowCDown(_mainGm.GetShowCDown());
             }
         }
+        //Consider using the input capture menu (options menu from the previous project)
+        /*int? newDurationSec = null;
+        bool? newShowCDown = null;*/
     }
     //For testing basic functionality
     /*static void TestMode()
