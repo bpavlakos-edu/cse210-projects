@@ -30,4 +30,12 @@ class GmClassic : GameMode
         timerThread.Start(); //Start the timer thread
         bool threadEndedOnTime = timerThread.Join(_durationSec * 1000); //Join by the duration specified for this game mode, store whether it Joined in time into a boolean
     }
+
+    //Utility
+    protected override UiMenu MakeSettingsMenu()
+    {
+        UiMenu settingsMenu = base.MakeSettingsMenu();
+        settingsMenu.SetMenuMsg("Classic Mode Settings:");
+        return settingsMenu;
+    }
 }

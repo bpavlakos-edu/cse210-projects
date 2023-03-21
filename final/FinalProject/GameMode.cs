@@ -133,10 +133,10 @@ class GameMode
             new List<UiOption>
             {
                 new UiOption(GetDurationSec,SetDurationSec,"&Timer Length in Seconds", 1, null),
-                new UiOption(GetShowCDown,SetShowCDown,"&Enable Timer Display"),
+                new UiOption(GetShowCDown,SetShowCDown,"Show Timer &Display"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back")
             },
-            "Game Mode Options:",
+            "All Game Mode Settings:",
             exitMsg:"" //Hide the exit message
         );
     }
