@@ -8,7 +8,7 @@ class Program
     //Global Variables
     static List<GameMode> _gameModeList = new List<GameMode>{new GmClassic()};
     static DiceSet _mainDiceSet = new DiceSet(new List<Dice>
-    {
+    {//Default dice list was digitized from a real boggle set
         new Dice(new List<char>{'N','G','M','A','N','E'}),
         new Dice(new List<char>{'E','T','I','L','C','I'}),
         new Dice(new List<char>{'N','R','L','D','D','O'}),
@@ -34,7 +34,7 @@ class Program
         new Dice(new List<char>{'H','H','T','O','D','N'}),
         new Dice(new List<char>{'E','E','E','E','M','A'}),
         new Dice(new List<char>{'S','F','A','Y','I','A'})
-    },5,5);
+    },5,5); //It's a 5x5 grid, a total of 25 letters at once
     //UiMenu setup
     private static UiMenu _mainMenu = new UiMenu(
         new List<UiOption>
@@ -117,7 +117,7 @@ class Program
         }
     }
     //For testing basic functionality
-    static void TestMode()
+    /*static void TestMode()
     {
         DiceSet diceSetCopy = new DiceSet(_mainDiceSet);
         //diceSetCopy.Display();
@@ -147,5 +147,5 @@ class Program
                 diceSetCopy.RollAll();
             }
         }
-    }
+    }*/
 }
