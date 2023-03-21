@@ -83,7 +83,7 @@ class GameMode
     {
         Console.WriteLine(_desc.Replace("_",Environment.NewLine)); //Write the game mode description, replace underscore with newline since we cant use Enviroment.Newline as a parameter default
         Console.WriteLine("");
-        Inp.GetInput("Press Enter to Continue");
+        Inp.GetInput("Press enter to continue");
     }
     //Open the settings menu
     public void OpenSettings()

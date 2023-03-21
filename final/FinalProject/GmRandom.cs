@@ -7,11 +7,11 @@ class GmRandom : GameMode
     //Blank Constructor
     public GmRandom() : base()
     {
-        _desc = "True Random Mode:_Rules are identical to classic mode_Every Dice will have access to the entire alphabet_Depending on your luck, true randomization could be extremely difficult or much easier than the Classic Game Mode_Suggested Grid Size: 7 by 7 or larger";
+        _desc = "True Random Mode:_Rules are identical to classic mode_Every Dice will have access to the entire alphabet_Depending on your luck, true randomization could be much more difficult or easy than the Classic Game Mode_Suggested Grid Size: 7 by 7 or larger";
         //All other attributes are filled by the GameMode class constructor
     }
     //Fill Attributes Constructor
-    public GmRandom(int durationSec, bool? showCDown = null, string desc = "True Random Mode:_Rules are identical to classic mode_Every Dice will have access to the entire alphabet_Depending on your luck, true randomization could be extremely difficult or much easier than the Classic Game Mode_Suggested Grid Size: 7 by 7 or larger") : base(durationSec, showCDown, desc)
+    public GmRandom(int durationSec, bool? showCDown = null, string desc = "True Random Mode:_Rules are identical to classic mode_Every Dice will have access to the entire alphabet_Depending on your luck, true randomization could be much more difficult or easy than the Classic Game Mode_Suggested Grid Size: 7 by 7 or larger") : base(durationSec, showCDown, desc)
     {
         //All attributes are filled by the GameMode class constructor
     }
