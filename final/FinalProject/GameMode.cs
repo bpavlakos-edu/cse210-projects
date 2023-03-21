@@ -63,8 +63,10 @@ class GameMode
     protected virtual void GameLoop(DiceSet diceSetCopy)
     {
         //Example code of how a GameLoop would go:
-        Thread timerThread = new Thread(()=>{CountDownSec(_durationSec);});
-        diceSetCopy.RollAll();
+        Thread timerThread = new Thread(()=>{CountDownSec(_durationSec);}); //Create a thread that calls the timer function
+        diceSetCopy.RollAll(); //Roll all the dice, which will display them
+        timerThread.Start(); //Start the timer thread
+        timerThread.Join(_durationSec * 1000); //Join
     }
     //Show the end message, and let the user check the current dice set
     private void ShowEndMsg(DiceSet diceCopy)
@@ -91,17 +93,18 @@ class GameMode
     {
         if(_showCDown) //Check the show countdown setting
         {
-            int timerCycles = (msecDuration - (msecDuration % refreshMsecDelay)) / refreshMsecDelay; //Calculate the number of cycles Trim excess cycles using modulus
             int strBufferSize = 0; //Use this to keep track of the previous string's length
-            for(int tOffset = 0; tOffset < timerCycles; tOffset += refreshMsecDelay) //And this is why for loops are cool! //Calculate timer offset, because I don't want to do a costly multiplaction operation on a time sensitive function
+            for(int remainingTimeMsec = (msecDuration - (msecDuration % refreshMsecDelay)); remainingTimeMsec > 0; remainingTimeMsec -= refreshMsecDelay) //Use a for loop to calculate the remaining time, it starts at the msecDuration with any leftover miliseconds that don't fit into the refresh rate removed, every loop cycle it updates the remaining time by subtracting the refreshDelay
             {
-                long startTime = DateTime.Now.Ticks; //Capture the start time
-                string tStr = TicksToTimerStr((msecDuration - tOffset) * 10000); //Subtract the offset from the total time duration to get the countdown, multiply by 10,000 to get ticks
-                int newBufferSize = tStr.Length; //Store the new string's original length
-                tStr = (strBufferSize > tStr.Length) ? tStr + new string(' ', strBufferSize - tStr.Length) : tStr; //Add gaps to overwrite the previous timer if the length isn't the same. Using the ternary operator, do this only if the size is greater than the current string length
+                long cycleStartTime = DateTime.Now.Ticks; //Capture the start time
+
+                string tStr = TicksToTimerStr(remainingTimeMsec * 10000); //multiply remaining time by 10,000 to get ticks, then use it to get the countdown string
+                int newBufferSize = tStr.Length; //Store the new strings length, because we're going to change it next
+                tStr = (strBufferSize > tStr.Length) ? (tStr + new string(' ', strBufferSize - tStr.Length)) : tStr; //Add gaps to overwrite the previous timer if the length isn't the same. Using the ternary operator, do this only if the last string length is greater than the current string length
                 Console.Write(tStr + new String('\b', strBufferSize)); //Write the timer string, make sure to backspace (using '\b') everything (including the extra spaces) so the next timer string overwrites this one
                 strBufferSize = newBufferSize; //Update the buffer size, so the next timer string has an accurate measurement
-                Thread.Sleep((new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - startTime)))); //Calculate the remaining time we have until the next cylce and sleep by that amount of time
+
+                Thread.Sleep((new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - cycleStartTime)))); //Calculate the remaining time we have until the next cycle and sleep by that amount of time
             }
         }
         else //Simple thread sleep for the requested duration
