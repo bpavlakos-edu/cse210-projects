@@ -176,6 +176,7 @@ class DiceSet
                     offset += newLineLength; //Update the offset by the length of the new line
             }
         }
+        Console.Write(stringBuffer); //Write the whole buffer to the console
     }
 
     //Roll All Dice
