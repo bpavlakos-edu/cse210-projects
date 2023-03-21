@@ -66,7 +66,7 @@ class GameMode
         Thread timerThread = new Thread(()=>{CountDownSec(_durationSec);}); //Create a thread that calls the timer function
         diceSetCopy.RollAll(); //Roll all the dice, which will display them
         timerThread.Start(); //Start the timer thread
-        timerThread.Join(_durationSec * 1000); //Join
+        bool threadEndedOnTime = timerThread.Join(_durationSec * 1000); //Join by the duration specified for this game mode, store whether it Joined in time into a boolean
     }
     //Show the end message, and let the user check the current dice set
     private void ShowEndMsg(DiceSet diceCopy)
@@ -92,8 +92,9 @@ class GameMode
     //Utility
     protected void CountDown(int msecDuration, int refreshMsecDelay = 1000)
     {
-        if(_showCDown) //Check the show countdown setting
+        if(_showCDown) //Check the show countdown setting, to make sure we need to display anything
         {
+            Console.CursorVisible = false; //Disable the cursor marker [Credit: http://dontcodetired.com/blog/post/Creating-a-Spinner-Animation-in-a-Console-Application-in-C ] [Microsoft Docs: http://msdn.microsoft.com/en-us/library/system.console.cursorvisible%28v=vs.110%29.aspx ]
             int strBufferSize = 0; //Use this to keep track of the previous string's length
             for(int remainingTimeMsec = (msecDuration - (msecDuration % refreshMsecDelay)); remainingTimeMsec > 0; remainingTimeMsec -= refreshMsecDelay) //Use a for loop to calculate the remaining time, it starts at the msecDuration with any leftover miliseconds that don't fit into the refresh rate removed, every loop cycle it updates the remaining time by subtracting the refreshDelay
             {
@@ -104,9 +105,11 @@ class GameMode
                 tStr = (strBufferSize > tStr.Length) ? (tStr + new string(' ', strBufferSize - tStr.Length)) : tStr; //Add gaps to overwrite the previous timer if the length isn't the same. Using the ternary operator, do this only if the last string length is greater than the current string length
                 Console.Write(tStr + new String('\b', (strBufferSize >= tStr.Length) ? strBufferSize : tStr.Length)); //Write the timer string, make sure to backspace (using '\b') everything (including the extra spaces) so the next timer string overwrites this one. Use the ternary operator to detect when the new string's length is longer than the original so it can backspace with that instead
                 strBufferSize = newBufferSize; //Update the buffer size, so the next timer string has an accurate length to overwrite
-
+                
                 Thread.Sleep((new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - cycleStartTime)))); //Calculate the remaining time we have until the next cycle and sleep by that amount of time
             }
+            //Timer has ended
+            Console.CursorVisible = false;
         }
         else //Simple thread sleep for the requested duration
         {
@@ -118,10 +121,10 @@ class GameMode
     {
         CountDown(secDuration * 1000, refreshMsecDelay);
     }
+    //Return the string representation of ticks, using a TimeSpan class to print it in MM:SS
     protected string TicksToTimerStr(long ticks)
     {
-        TimeSpan remainingTimeSpan = new TimeSpan(ticks);
-        return remainingTimeSpan.ToString(@"mm\:ss"); //@ means absolute string. Found the formatting specifications for timespan here: https://learn.microsoft.com/en-us/dotnet/api/system.timespan.tostring?view=net-7.0#system-timespan-tostring(system-string)
+        return (new TimeSpan(ticks)).ToString(@"mm\:ss"); //@ means absolute string. Found the formatting specifications for timespan here: https://learn.microsoft.com/en-us/dotnet/api/system.timespan.tostring?view=net-7.0#system-timespan-tostring(system-string)
     }
     //Make a UiMenu for this class, to modify the game mode's settings
     protected virtual UiMenu MakeSettingsMenu()
