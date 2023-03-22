@@ -1,4 +1,4 @@
-//Classic Game mode, contains the "original" game mode functionality
+//Classic Game mode, contains the "Random" game mode functionality
 using UiMenu = QuickUtils.UiMenu;
 class GmRandom : GameMode
 {
