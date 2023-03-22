@@ -99,12 +99,14 @@ class DiceSet
     //Main Functionality
 
     //Display the Letters in a grid
+    /*
     public void DisplayOld(bool clearAll = false)
     {
         char dWallStart = (char) 0;
         char dWallEnd = (char) 0;
         //"Exists" uses predicates (inline functions) to search a list
-        bool hasQu = /*_allowQu && */_diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';});
+        //bool hasQu = _allowQu && _diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';});
+        bool hasQu = _diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';});
         Console.Clear(); //Clear the console before starting
         for(int y = 0; y < _height; y++)
         {//Console.Write($"Y{y}");//Debugging
@@ -122,7 +124,8 @@ class DiceSet
                 }
                 catch(Exception) //No dice, literally
                 {
-                    Console.Write((hasQu /*&& _allowQu*/) ? "    " : " "); //Write 4 blank spaces "[__]"
+                    Console.Write((hasQu) ? "    " : " "); //Write 4 blank spaces "[__]"
+                    //Console.Write((hasQu && _allowQu) ? "    " : " "); //Write 4 blank spaces "[__]"
                 }
                 //Console.Write(""); //Write the dice end border
                 if(x == _width - 1)
@@ -131,28 +134,27 @@ class DiceSet
                 }
             }
         }
-    }
+    }*/
 
-    //Smart Dice Display, uses modulus to display dice
+    //Quick Dice Display, uses modulus, char[] buffers to display dice, if you think this is unecessary, try doing 70 x 70 grid with the original display function and compare it to this one, this is much faster!!!
     public void Display()
     {
         Console.Clear(); //Clear the console
         char dWallStart = (char) 0;
         char dWallEnd = (char) 0;
-        //"Exists" uses predicates (inline functions) to search a list
-        bool hasQu = /*_allowQu && */_diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';});
+        bool hasQu = /*_allowQu && */_diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';}); //"Exists" uses predicates (inline functions that return when a boolean is met) to search a list
         char[] newLineChars = Environment.NewLine.ToCharArray(); //Convert the newline 
         int newLineLength = newLineChars.Length; //Store the new line length so we don't need to repeatedly calculate it
         //Create a display buffer, with it's length specified using the following calculations:
         int cellSize = 2 + ((dWallStart > 0) ? 1 : 0) + ((dWallEnd > 0) ? 1 : 0); //cell size by default is 2, use a ternary operator to add 1 if dWallStart is not 0, do the same if dWallEnd is not 0
         int rowWidth = (cellSize * _width) + newLineLength; //Store the row width so we don't need to repeatedly calculate it
         char[] stringBuffer = new char[rowWidth * _height]; //Initalize the string buffer
-        int offset = 0;
-        try
-        {
+        int offset = 0; //Have an offset that is used to access the buffer position
+        try 
+        {//Write all characters to the buffer
             for(int i = 0; i < _width * _height; i++) //For each item in the array
             {
-                (_diceList[i].ToDisplayChars(hasQu, dWallStart, dWallEnd)).CopyTo(stringBuffer, offset);
+                (_diceList[i].ToDisplayChars(hasQu, dWallStart, dWallEnd)).CopyTo(stringBuffer, offset); //Copy the display characters to the buffer
                 offset += cellSize; //Offset by the cell size
                 if((i + 1) % _width == 0) //Write the new line after the last entry
                 {

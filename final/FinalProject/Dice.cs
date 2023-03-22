@@ -117,10 +117,8 @@ class Dice
     }
     //Get the current display side of this dice as chars
     public char[] ToDisplayChars(bool hasQuChar, char dWallStart = (char) 0, char dWallEnd = (char) 0)
-    {
-        //items: dice wall start char, dice wall char or blank for hidden, space for letters and hidden or u for Qu when option is enabled, dice wall end
-        return (new char[] {dWallStart, ((_hidden) ? ' ' : _curLetter), ((hasQuChar && _curLetter == 'Q' && !_hidden) ? 'u':' '), dWallEnd}).Where((char inChar)=>{return inChar != (char) 0;}).ToArray<char>(); //Return an extra U when Q and an extra space when not Q
-        //return _side+" "; //Debugging
+    {//Each buffer has a maximum of 4 items: //items: dice wall start char, dice wall char or blank for hidden, space for letters and hidden or u for Qu when option is enabled, dice wall end
+        return (new char[] {dWallStart, ((_hidden) ? ' ' : _curLetter), ((hasQuChar && _curLetter == 'Q' && !_hidden) ? 'u':' '), dWallEnd}).Where((char inChar)=>{return inChar != (char) 0;}).ToArray<char>(); //Use ternary operators to change each character slot, use "Where" to get a list of chars that aren't (char) 0, use ToArray to get them as a character array because Where can't be used as an array directly
     }
     //Randomly pick a side of this dice
     public void Roll()
