@@ -61,7 +61,7 @@ class GameMode
             GameLoop(diceSetCopy); //Start the Game Mode Loop
             ShowEndMsg(diceSetCopy); //Print the end message when it finishes
         }
-        while(Inp.GetBoolInput("Would you like to play again?", curValue:false, hideCurValue:true) == true); //Repeat until the user says they are finished. This input configuartion will default to false if it's left blank
+        while(Inp.GetBoolInput("Would you like to play again?: ", curValue:false, hideCurValue:true) == true); //Repeat until the user says they are finished. This input configuartion will default to false if it's left blank
     }
     //Main gameplay loop (overidden by child classes)
     protected virtual void GameLoop(DiceSet diceSetCopy)
