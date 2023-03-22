@@ -11,11 +11,11 @@ class GmBlink : GameMode
     //Blank Constructor
     public GmBlink() : base()
     {
-        _desc = "Blink Mode:_Same rules as classic mode_WIP_Suggested Grid Size: 5 by 5 or larger";
+        _desc = "Blink Mode:_Same rules as classic mode_Randomly hides/shows dice periodically_It chooses dice to hide using the settings the game mode currently has_Suggested Grid Size: 5 by 5 or larger";
         //All other attributes are filled by the GameMode class constructor
     }
     //Fill Attributes Constructor
-    public GmBlink(int durationSec, bool? showCDown = null, string desc = "Blink Mode:_Same rules as classic mode_WIP_Suggested Grid Size: 5 by 5 or larger", int? blinkMsecGap = null, int? blinkRanChance = null, int? blinkRanChanceMax = null) : base(durationSec, showCDown, desc)
+    public GmBlink(int durationSec, bool? showCDown = null, string desc = "Blink Mode:_Same rules as classic mode_Randomly hides/shows dice periodically_It chooses dice to hide using the settings the game mode currently has_Suggested Grid Size: 5 by 5 or larger", int? blinkMsecGap = null, int? blinkRanChance = null, int? blinkRanChanceMax = null) : base(durationSec, showCDown, desc)
     {
         //All base attributes are filled by the GameMode class constructor
         //Fill the new attributes or use their default values
@@ -56,17 +56,24 @@ class GmBlink : GameMode
     //Main gameplay loop override
     protected override void GameLoop(DiceSet diceSetCopy)
     {
-        //This is basically a carbon copy of the GameMode basic behavior. This is because the GameMode class itself will not be invoked directly except for testing, and in the future I want it to have inheritable functionality
+        //This is a little complicated because both threads need to be able to draw at the same time, luckily the grid size is fixed we theoretically can force them to write to the correct positions
+        bool hasEnded = false;
         Thread timerThread = new Thread(()=>{CountDownSec(_durationSec);}); //Create a thread that calls the timer function
-        Thread blinkThread = new Thread(()=>{}); //Create a thread for blinking
+        Thread blinkThread = new Thread(()=>{Blink(diceSetCopy,()=>{return hasEnded;});}); //Create a thread for blinking, yes that's two lambdas, one to put the function in the thread, the other is the Func<bool> parameter in the function we are calling, we use lambdas to pass parameters, since including them would store the result of the function not the function call (which is what we want)
         diceSetCopy.RollAll(); //Roll all the dice, which will display them
         timerThread.Start(); //Start the timer thread
+        blinkThread.Start(); //Start the blink thread
         bool threadEndedOnTime = timerThread.Join(_durationSec * 1000); //Join by the duration specified for this game mode, store whether it Joined in time into a boolean
     }
     //Blink threaded function
-    private void Blink(DiceSet curDiceSet)
+    //Accepts the current dice set so we have access to randomHide, accepts a function to check if the game has ended or not
+    private void Blink(DiceSet curDiceSet, Func<bool> gmStatusCheck)
     {
-
+        while(gmStatusCheck()) //Repeat until the game mode has ended
+        {
+            curDiceSet.RandomHide(_blinkRanChance, _blinkRanChanceMax); //Trigger random hiding using the settings this game mode currently has
+            Thread.Sleep(_blinkMsecGap); //Sleep for the blink gap
+        }
     }
 
     //Utility

@@ -23,6 +23,7 @@ class DiceSet
     protected List<Dice> _diceList = new List<Dice>();
     protected int _width = 5;
     protected int _height = 5;
+    protected bool _updating = false; //A flag for threaded functions to check to see if they can print to the console
     //private bool _allowQu = true; //Enable or disable displaying Q as Qu
     //Char[] _diceBorder = new char[]{'\u0000','u0000'}; //Warning for settings menu! You must be able to reset this from the console!
     
@@ -86,6 +87,11 @@ class DiceSet
     {
         _height = height;
     }
+    //Check the async updating flag status
+    public bool GetUpdating()
+    {
+        return _updating;
+    }
     //Custom Getters and Setters
     public void SetDiceSet(DiceSet newDiceSet)
     {
@@ -139,6 +145,7 @@ class DiceSet
     //Quick Dice Display, uses modulus, char[] buffers to display dice, if you think this is unecessary, try doing 70 x 70 grid with the original display function and compare it to this one, this is much faster!!!
     public void Display()
     {
+        _updating = true; //Let asyncronous functions know we are updating
         Console.Clear(); //Clear the console
         char dWallStart = (char) 0;
         char dWallEnd = (char) 0;
@@ -174,6 +181,7 @@ class DiceSet
             }
         }
         Console.Write(stringBuffer); //Write the whole buffer to the console
+        _updating = false; //Let asyncronous functions know we are no longer updating
     }
 
     //Roll All Dice
