@@ -82,8 +82,8 @@ class GameMode
         {
             Console.Beep(500, 1000); //Make the console beep
         }
-        Console.WriteLine("Please check your words using the display above.");
-        Inp.GetInput("Press enter to continue when finished.");
+        Console.WriteLine("Please check your words using the display above");
+        Inp.GetInput("Press enter to continue");
     }
     //Display this game mode's description
     public void DisplayHelp()
