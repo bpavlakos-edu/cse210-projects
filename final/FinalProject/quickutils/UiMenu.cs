@@ -331,7 +331,7 @@ namespace QuickUtils
         }
         public void AddOptionFromEnd(UiOption newOption, int index = 0)
         {
-            AddOption(newOption, (_optionList.Count - 1) - index);
+            AddOption(newOption, (_optionList.Count) - index);
         }
         //Remove an option from the list
         public void RemoveOption(int index)
