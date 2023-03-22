@@ -193,7 +193,7 @@ class DiceSet
     }
 
     //Randomly Change a dice's hidden state
-    public int RandomHide(int rChance = 1, int rChanceMax = 2, int? rCountMax = null)
+    public int RandomHide(int rChance = 1, int rChanceMax = 4, int? rCountMax = null)
     {
         int hiddenCount = 0; //Reset the hidden count tracker (this will be used in the future to control the hidden maximum)
         _diceList.ForEach((curDice) => {

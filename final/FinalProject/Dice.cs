@@ -134,7 +134,7 @@ class Dice
         }
         
     }
-    public void ToggleHidden(int rChance = 1, int rChanceMax = 2)
+    public void ToggleHidden(int rChance = 1, int rChanceMax = 4)
     {
         if(RandomChance(rChance, rChanceMax)) //Run the random chance to see if we are swapping this dice's hidden state
         {
