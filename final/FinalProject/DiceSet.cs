@@ -187,7 +187,7 @@ class DiceSet
             {
                 (_diceList[i].ToDisplayChars(hasQu, dWallStart, dWallEnd)).CopyTo(stringBuffer, offset); //Copy the display characters to the buffer
                 offset += cellSize; //Offset by the cell size
-                if((i + 1) % _width == 0) //Write the new line after the last entry [Problem is here]
+                if((i + 1) % _width == 0) //Write the new line after the last entry
                 {
                     newLineChars.CopyTo(stringBuffer, offset); //Copy the newline characters
                     offset += newLineLength; //Update the offset by the length of the new line
