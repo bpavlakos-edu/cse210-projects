@@ -167,7 +167,7 @@ class DiceSet
         {
             //Get to the nearest new line position
             offset += (rowWidth - (offset % rowWidth)) - newLineLength; //offset % rowWidth gets our current row position, subtract it from the row width to get to the end of the line, subtract the newLine length to get to the new line poistion
-            while(offset < rowWidth * _height)
+            while(offset < rowWidth * _height) //Repeat until all new line chars have been added
             {
                 newLineChars.CopyTo(stringBuffer, offset); //Copy the newline characters
                     offset += newLineLength; //Update the offset by the length of the new line

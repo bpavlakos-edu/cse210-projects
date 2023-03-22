@@ -150,7 +150,7 @@ class Program
             {
                 diceSetCopy.SetAll('?');
             }
-            else if(userInput != "exit")
+            else if(userInput != "x")
             {
                 diceSetCopy.RollAll();
             }
