@@ -71,7 +71,7 @@ class GmBlink : GameMode
     //Accepts the current dice set so we have access to randomHide, accepts a function to check if the game has ended or not
     private void Blink(DiceSet curDiceSet, Func<bool> gmStatusCheck)
     {
-        while(gmStatusCheck()) //Repeat until the game mode has ended
+        while(!gmStatusCheck()) //Repeat until the game mode has ended
         {
             curDiceSet.RandomHide(_blinkRanChance, _blinkRanChanceMax); //Trigger random hiding using the settings this game mode currently has
             Thread.Sleep(_blinkMsecGap); //Sleep for the blink gap
