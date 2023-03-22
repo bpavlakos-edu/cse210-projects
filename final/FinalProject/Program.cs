@@ -130,7 +130,7 @@ class Program
         DiceSet diceSetCopy = new DiceSet(_mainDiceSet);
         //diceSetCopy.Display();
         string userInput = "";
-        while(userInput != "exit")
+        while(userInput != "x")
         {
             userInput = Inp.GetInput("Press Enter to roll (commands: \"g\"-test base game mode class,\"x\"-exit,\"r\"-reset dice,\"h\"-hide random dice, \"?\"-Fill dice With Random char): ").ToLower();
             if(userInput == "r")
@@ -144,7 +144,7 @@ class Program
             }
             else if(userInput == "h")
             {
-                diceSetCopy.RandomHide();
+                diceSetCopy.RandomHide(1,4);
             }
             else if(userInput == "?")
             {

@@ -171,10 +171,10 @@ class Dice
     }
     //Utility
     //Determine if the random chance has been met
-    private bool RandomChance(int rChance, int rChanceMax, bool reverse = false)
+    private bool RandomChance(int rChance, int rChanceMax, bool reverseCheck = false)
     {
         double rThreshold = (double) rChance / (double) rChanceMax; //Calculate the random threshold, "Random" uses a double, so we have to make them doubles too
-        return (!reverse) ? new Random().NextDouble() >= rThreshold : new Random().NextDouble() <= rThreshold; //Return Random >= rThreshold, or Random <= rThreshold if the reverse flag is activated (using the Ternary Conditional Operator)
+        return (!reverseCheck) ? new Random().NextDouble() >= 1.0 - rThreshold : new Random().NextDouble() <= rThreshold; //Return Random >= rThreshold, or Random <= rThreshold if the reverse flag is activated (using the Ternary Conditional Operator)
     }
     //Get a random letter by calling the IntToChar function after picking a number from 0 to 25 as the offset (Consider merging this function with IntTochar)
     private char GetRandomLetter()
