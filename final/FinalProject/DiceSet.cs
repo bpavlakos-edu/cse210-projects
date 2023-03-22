@@ -53,7 +53,7 @@ class DiceSet
     {
         if((/*_autoFillEnabled ||*/ forceAutoFill) && CheckSize()) //Only run this check when allow auto fill is true
         {
-            FillToCount((_width * _height) - _diceList.Count, sourceDiceSet.GetDiceList(false).ToArray()); //Use the dice list to fill the new dice list
+            FillToCount(_width * _height, sourceDiceSet.GetDiceList(false).ToArray()); //Use the dice list to fill the new dice list
         }
     }
 
@@ -187,7 +187,7 @@ class DiceSet
             {
                 (_diceList[i].ToDisplayChars(hasQu, dWallStart, dWallEnd)).CopyTo(stringBuffer, offset); //Copy the display characters to the buffer
                 offset += cellSize; //Offset by the cell size
-                if((i + 1) % _width == 0) //Write the new line after the last entry
+                if((i + 1) % _width == 0) //Write the new line after the last entry [Problem is here]
                 {
                     newLineChars.CopyTo(stringBuffer, offset); //Copy the newline characters
                     offset += newLineLength; //Update the offset by the length of the new line
@@ -288,7 +288,7 @@ class DiceSet
     {
         if(autoFillEnabled && CheckSize())
         {
-            FillToCount(_diceList.Count- (_width * _height), Msc.ListCopy<Dice>(_diceList,(Dice inDice)=>{return new Dice(inDice);}).ToArray<Dice>()); //Use a copy of our own list to fill the array
+            FillToCount(_width * _height, Msc.ListCopy<Dice>(_diceList,(Dice inDice)=>{return new Dice(inDice);}).ToArray<Dice>()); //Use a copy of our own list to fill the array
         }
     }
 
