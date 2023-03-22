@@ -6,7 +6,7 @@ using Inp = QuickUtils.Inputs; //Added for testing
 class Program
 {
     //Global Variables
-    static List<GameMode> _gameModeList = new List<GameMode>{new GmClassic(), new GmRandom()};
+    static List<GameMode> _gameModeList = new List<GameMode>{new GmClassic(), new GmRandom(), new GmBlink()};
     static DiceSet _mainDiceSet = new DiceSet(new List<Dice>
     {//Default dice list was digitized from a real boggle set
         new Dice(new List<char>{'N','G','M','A','N','E'}),
