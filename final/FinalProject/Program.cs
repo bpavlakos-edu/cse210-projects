@@ -39,7 +39,7 @@ class Program
     private static UiMenu _mainMenu = new UiMenu(
         new List<UiOption>
         {
-            new UiOption(()=>{TestMode();},"&Test Mode"), //For debugging //Disabled
+            //new UiOption(()=>{TestMode();},"&Test Mode"), //For debugging //Disabled
             new UiOption(()=>{_gameModeList[0].Start(_mainDiceSet);},"Play the &Classic Game Mode"),
             new UiOption(()=>{_gameModeList[1].Start(_mainDiceSet);},"Play the &Random Game Mode"),
             new UiOption(()=>{_gameModeList[2].Start(_mainDiceSet);},"Play the &Blink Game Mode"),
