@@ -268,11 +268,11 @@ class DiceSet
     }
     //Ask if the user wants to fill the remaining slots in the Dice List automatically, this can be called from inside game modes
     //Kind of redundant since we now have the constructor, also, it doesn't 
-    public void RequestSizeCheck(bool allowCheckSetting = true)
+    public void RequestSizeCheck(bool autoFillEnabled = true)
     {
-        if(allowCheckSetting && CheckSize())
+        if(autoFillEnabled && CheckSize())
         {
-
+            FillToCount(_diceList.Count- (_width * _height), Msc.ListCopy<Dice>(_diceList,(Dice inDice)=>{return new Dice(inDice);}).ToArray<Dice>()); //Use a copy of our own list to fill the array
         }
     }
 
