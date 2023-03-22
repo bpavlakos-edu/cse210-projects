@@ -134,11 +134,15 @@ class Dice
         }
         
     }
-    public void ToggleHidden(int rChance = 1, int rChanceMax = 4)
+    public void ToggleHidden(int rChance = 1, int rChanceMax = 4, bool showOnFail = true)
     {
         if(RandomChance(rChance, rChanceMax)) //Run the random chance to see if we are swapping this dice's hidden state
         {
             _hidden = !_hidden; //Reverse the state of hidden
+        }
+        else if(showOnFail) //Flag to let the dice show itself when it fails the random chance
+        {
+            _hidden = false;
         }
     }
     public void OpenSettings()
