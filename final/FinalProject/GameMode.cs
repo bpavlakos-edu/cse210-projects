@@ -55,9 +55,13 @@ class GameMode
     //Start this game mode
     public void Start(DiceSet curDiceSet)
     {
-        DiceSet diceSetCopy = new DiceSet(curDiceSet); //Copy the current dice set so the main dice set isn't modified during the game mode
-        GameLoop(diceSetCopy); //Start the Game Mode Loop
-        ShowEndMsg(diceSetCopy); //Print the end message when it finishes
+        do
+        {
+            DiceSet diceSetCopy = new DiceSet(curDiceSet); //Copy the current dice set so the main dice set isn't modified during the game mode
+            GameLoop(diceSetCopy); //Start the Game Mode Loop
+            ShowEndMsg(diceSetCopy); //Print the end message when it finishes
+        }
+        while(Inp.GetBoolInput("Would you like to play again?", curValue:false, hideCurValue:true) == true); //Repeat until the user says they are finished. This input configuartion will default to false if it's left blank
     }
     //Main gameplay loop (overidden by child classes)
     protected virtual void GameLoop(DiceSet diceSetCopy)

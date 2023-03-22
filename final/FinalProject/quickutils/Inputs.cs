@@ -163,12 +163,12 @@ namespace QuickUtils /*Library name*/
         }
 
         //Boolean input
-        public static bool GetBoolInput(string inMsg, char yesChar = 'y', char noChar = 'n', bool newLine = false, bool? curValue = null)
+        public static bool GetBoolInput(string inMsg, char yesChar = 'y', char noChar = 'n', bool newLine = false, bool? curValue = null, bool hideCurValue = false)
         {
 
             while(true) //Infinite loop
             {
-                string userInput = GetInput(inMsg.Replace(":",$" [enter {yesChar}/{noChar}]:"), true, newLine, (curValue != null) ? ((curValue == true) ? "Enabled" : "Disabled") : null); //Automatically append the  Y/N string (Again, (curVal != null) lets us make sure that the next test (curVal == True), which changes the curVal string to enabled or disabled in GetInput
+                string userInput = GetInput(inMsg.Replace(":",$" [enter {yesChar}/{noChar}]:"), true, newLine, (curValue != null && !hideCurValue) ? ((curValue == true) ? "Enabled" : "Disabled") : null); //Automatically append the  Y/N string (Again, (curVal != null) lets us make sure that the next test (curVal == True), which changes the curVal string to enabled or disabled in GetInput
                 if(userInput == "" && curValue != null) //Current value isn't empty, and the user input was blank
                 {
                     return (bool)curValue;
