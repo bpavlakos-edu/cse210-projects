@@ -47,6 +47,14 @@ class DiceSet
         _width = sourceDiceSet._height;
         _height = sourceDiceSet._width;*/
     }
+    //Special copy constructor, auto fills remaining dice slots when the autoFillFlag constructor is enabled
+    public DiceSet(DiceSet sourceDiceSet, bool allowAutoFill) : this(sourceDiceSet) //Use the original copy constructor to create the inital object
+    {
+        if(allowAutoFill && CheckSize())
+        {
+            FillToCount((_width * _height) - _diceList.Count, sourceDiceSet.GetDiceList(false).ToArray()); //Use the dice list to fill the new dice list
+        }
+    }
 
     //Getters and Setters (Normal external access Getters and Setters were auto generated using my AutoGetterSetter Python Script in C# mode)
     public List<Dice> GetDiceList(bool deepCopy = true)
@@ -257,13 +265,19 @@ class DiceSet
         }
         _diceList = shuffleDiceList.ToList<Dice>(); //Store the shuffled Dice
     }
-    //Ask if the user wants to fill the remaining slots in the Dice List automatically
-    public void CheckSize(bool allowCheck = true)
+    //Ask if the user wants to fill the remaining slots in the Dice List automatically, this can be called from inside game modes
+    //Kind of redundant since we now have the constructor, also, it doesn't 
+    public void RequestSizeCheck(bool allowCheckSetting = true)
     {
-        if(allowCheck && (_width * _height) != _diceList.Count)
+        if(allowCheckSetting && CheckSize())
         {
 
         }
+    }
+
+    private bool CheckSize()
+    {
+        return _diceList.Count < (_width * _height);
     }
 
     //Fill the dice list to an integer
@@ -272,7 +286,7 @@ class DiceSet
     {
         for(int i = 0; _diceList.Count < newDiceCount; i++)
         {
-            _diceList.Add(inputDice[i % inputDice.Length]); //Use modulus to infinitely loop the input array
+            _diceList.Add(new Dice(inputDice[i % inputDice.Length])); //Use modulus to infinitely loop the input array
         }
     }
     //Fill using chars
