@@ -75,10 +75,13 @@ class GameMode
     //Show the end message, and let the user check the current dice set
     private void ShowEndMsg(DiceSet diceCopy)
     {
-        //Console.Beep(); //Make the console beep
         diceCopy.SetAllVisibility(false); //Reset all dice visibility
         diceCopy.Display();//Print the dice
         Console.WriteLine("Time's up!");
+        if(OperatingSystem.IsWindows()) //Required check for console.beep (see here: https://learn.microsoft.com/en-us/dotnet/core/compatibility/code-analysis/5.0/ca1416-platform-compatibility-analyzer )
+        {
+            Console.Beep(500, 1000); //Make the console beep
+        }
         Console.WriteLine("Please check your words using the display above.");
         Inp.GetInput("Press enter to continue when finished.");
     }
