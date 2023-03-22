@@ -57,7 +57,7 @@ class GameMode
     {
         do
         {
-            DiceSet diceSetCopy = new DiceSet(curDiceSet); //Copy the current dice set so the main dice set isn't modified during the game mode
+            DiceSet diceSetCopy = new DiceSet(curDiceSet, true); //Copy the current dice set so the main dice set isn't modified during the game mode
             GameLoop(diceSetCopy); //Start the Game Mode Loop
             ShowEndMsg(diceSetCopy); //Print the end message when it finishes
         }
