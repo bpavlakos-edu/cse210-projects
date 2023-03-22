@@ -96,17 +96,32 @@ class DiceSet
     {
         _height = height;
     }
+    //Custom Getters and Setters
     //Check the async updating flag status
     public bool GetUpdating()
     {
         return _updating;
     }
-    //Custom Getters and Setters
+    public void SetUpdating(bool updating) //Please don't set this
+    {
+        _updating = updating;
+    }
+    //Use a dice set to set the values of this dice set (useful for file loading)
     public void SetDiceSet(DiceSet newDiceSet)
     {
         _diceList = newDiceSet.GetDiceList();
         _width = newDiceSet.GetWidth();
         _height = newDiceSet.GetHeight();
+    }
+    //Get and set using the largest axis of the grid
+    public int GetGridSize()
+    {
+        return (GetWidth() >= GetHeight()) ? GetWidth() : GetHeight(); //Return the largest of the two dimensions
+    }
+    public void SetGridSize(int newSize)
+    {
+        SetWidth(newSize);
+        SetHeight(newSize);
     }
 
     //Methods
@@ -223,6 +238,7 @@ class DiceSet
             new UiOption(()=>{},"Edit &Dice"), //Open Dice Edit Menu
             new UiOption(GetWidth, SetWidth, "Grid &Width", 2), //Set Width
             new UiOption(GetHeight, SetHeight, "Grid &Height", 2), //Set Height
+            new UiOption(GetGridSize, SetGridSize, "Grid &Size", 2), //Set Height
             new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
         });
         diceSetSettings.UiLoop();
