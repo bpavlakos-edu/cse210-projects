@@ -23,9 +23,10 @@ class DiceSet
     protected List<Dice> _diceList = new List<Dice>();
     protected int _width = 5;
     protected int _height = 5;
+    //protected bool _autoFillEnabled = true; //Enable or disable auto filling of this dice set
+    //protected bool _allowQu = true; //Enable or disable displaying Q as Qu
+    //protected Char[] _diceBorder = new char[]{'\u0000','u0000'}; //Warning for settings menu! You must be able to reset this from the console!
     protected bool _updating = false; //A flag for threaded functions to check to see if they can print to the console
-    //private bool _allowQu = true; //Enable or disable displaying Q as Qu
-    //Char[] _diceBorder = new char[]{'\u0000','u0000'}; //Warning for settings menu! You must be able to reset this from the console!
     
     //Constructors
     
@@ -48,9 +49,9 @@ class DiceSet
         _height = sourceDiceSet._width;*/
     }
     //Special copy constructor, auto fills remaining dice slots when the autoFillFlag constructor is enabled
-    public DiceSet(DiceSet sourceDiceSet, bool allowAutoFill) : this(sourceDiceSet) //Use the original copy constructor to create the inital object
+    public DiceSet(DiceSet sourceDiceSet, bool forceAutoFill) : this(sourceDiceSet) //Use the original copy constructor to create the inital object
     {
-        if(allowAutoFill && CheckSize())
+        if((/*_autoFillEnabled ||*/ forceAutoFill) && CheckSize()) //Only run this check when allow auto fill is true
         {
             FillToCount((_width * _height) - _diceList.Count, sourceDiceSet.GetDiceList(false).ToArray()); //Use the dice list to fill the new dice list
         }
