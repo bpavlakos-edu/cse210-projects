@@ -42,7 +42,7 @@ class Program
             new UiOption(()=>{TestMode();},"&Test Mode"), //For debugging //Disabled
             new UiOption(()=>{_gameModeList[0].Start(_mainDiceSet);},"Play the &Classic Game Mode"),
             new UiOption(()=>{_gameModeList[1].Start(_mainDiceSet);},"Play the &Random Game Mode"),
-            new UiOption(()=>{},"Play the &Blink Game Mode"),
+            new UiOption(()=>{_gameModeList[2].Start(_mainDiceSet);},"Play the &Blink Game Mode"),
             new UiOption(ShowGmHelp,"Open the &Help Menu"),
             new UiOption(OptionsMenu,"Open the &Options Menu"),
             new UiOption(()=>{throw new OperationCanceledException();},"&Exit")
@@ -63,7 +63,7 @@ class Program
             {
                 new UiOption(_gameModeList[0].DisplayHelp,"About the &Classic Game Mode"),
                 new UiOption(_gameModeList[1].DisplayHelp,"About the &Random Game Mode"),
-                new UiOption(()=>{},"About the Bli&nk Game Mode"),
+                new UiOption(_gameModeList[2].DisplayHelp,"About the Bli&nk Game Mode"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             }
         );
@@ -94,7 +94,7 @@ class Program
                 new UiOption(AllGameModeOptionsMenu,"Change &All Game Mode Options"),
                 new UiOption(_gameModeList[0].OpenSettings,"&Classic Mode Options"),
                 new UiOption(_gameModeList[1].OpenSettings,"&Random Mode Options"),
-                new UiOption(()=>{},"Bli&nk Mode Options"),
+                new UiOption(_gameModeList[2].OpenSettings,"Bli&nk Mode Options"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             },
             "Game Mode Options:",
