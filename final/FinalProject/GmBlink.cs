@@ -68,7 +68,7 @@ class GmBlink : GameMode
         
         bool threadEndedOnTime = timerThread.Join(_durationSec * 1000); //Join by the duration specified for this game mode, store whether it Joined in time into a boolean
         hasEnded = true; //Tell the blink function we've ended so it doesn't print again
-        timerThread.Join(); //Wait for the timer thread to join before continuing (this function ends around 1 second faster than the timer thread can handle)
+        timerThread.Join(); //Wait for the timer thread to join before continuing (this function ends around 1 second faster than the timer thread can handle) //Temporary patch until I can find out how to prevent the timer end message bug from happening when the dice set is very large
     }
     //Blink threaded function
     //Accepts the current dice set so we have access to randomHide, accepts a function to check if the game has ended or not

@@ -71,6 +71,7 @@ class GameMode
         diceSetCopy.RollAll(); //Roll all the dice, which will display them
         timerThread.Start(); //Start the timer thread
         bool threadEndedOnTime = timerThread.Join(_durationSec * 1000); //Join by the duration specified for this game mode, store whether it Joined in time into a boolean
+        timerThread.Join();//Temporary patch until I can find out how to prevent the timer end message bug from happening when the dice set is very large
     }
     //Show the end message, and let the user check the current dice set
     private void ShowEndMsg(DiceSet diceCopy)
