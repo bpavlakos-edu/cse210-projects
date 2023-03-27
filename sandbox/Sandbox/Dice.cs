@@ -181,30 +181,15 @@ class Dice
             UiMenu diceSettingsMenu = new UiMenu(
                 new List<UiOption>
                 {
-                    new UiOption(DiceCodeConsole,"Edit With &Dice-Code")
+                    new UiOption(SimpleDiceCode,"Edit With &Dice-Code")
                 }
             );
             refreshUi = diceSettingsMenu.UiLoop(); //Refresh the UiMenu
         }
     }
-    public void DiceCodeConsole()
+    public void SimpleDiceCode()
     {
-        //Syntax:
-        /*
-        Commands:
-        A = Set it to 1 side, being A
-        ABCD = Set the sides to ABCD
-        5A = set side 5 to A
-        25A = set side 25 to A
-        +ABCD = Add ABCD as sides to the end
-        -ABCD = Remove all instances of ABCD
-        ABCD,EFGH = Set the sides to ABCDEFGH
-        ># = Skip number of sides
-        $ = Reset the side list
-        Special Characters:
-        ? = Randomly Pick a letter from A to Z
-        * = Randomly Pick a letter to save as the side
-        */
+        
         Console.WriteLine("Current Sides: "+LettersToString(','));
         Console.WriteLine("Dice-Code Rules:");
         Console.WriteLine("Each letter represents 1 side of the dice");
@@ -217,11 +202,55 @@ class Dice
         SetSideList(Inp.GetInput("Enter Your Dice-Code (Leave blank to cancel):", null, true)); //forces upper case (toLower = null), newLine = true
         throw new UiMenuRefreshException();
     }
+    //Advanced Dice Code
+    /*
+    public void DiceCodeConsole()
+    {
+        //Syntax:
+        //Commands:
+        //A = Set it to 1 side, being A
+        //ABCD = Set the sides to ABCD
+        //5A = set side 5 to A
+        //25A = set side 25 to A
+        //+ABCD = Add ABCD as sides to the end
+        //-ABCD = Remove all instances of ABCD
+        //ABCD,EFGH = Set the sides to ABCDEFGH
+        //># = Skip number of sides
+        //$ = Reset the side list
+        //Special Characters:
+        //? = Randomly Pick a letter from A to Z
+        //* = Randomly Pick a letter to save as the side
+        
+    }
+    //Process the Dice Code
     public void ProcessDiceCode(string diceCodeString)
     {
         List<char> newSideList = Msc.ListCopy<char>(_sideList,(char inChar) => {char returnChar = inChar; return returnChar;}); //Copy the list of chars, just use a simple lambda to copy the value of char to a new char variable to break the reference
         char[] diceCodeBuffer = diceCodeString.ToCharArray(); //Initalize the diceCode buffer
+        int offset = 0;
+        while(offset < diceCodeBuffer.Count)
+        {
+
+        }
     }
+    //Get an integer from a dice code buffer
+    public int? GetNumber(char[] diceCodeBuffer, int offset)
+    {
+        List<char> numberCharList = new List<char>();
+        while(diceCodeBuffer[offset].IsNumber == true)
+        {
+            offset++;
+        }
+        try
+        {
+            return int.Parse(new string(numberCharList.ToArray()));
+        }
+        catch(argumentNullException)
+        {
+            return null
+        }
+    }
+    */
 
     //Setting support function, used both internally and externally
     public string LettersToString(char sepChar = '\u0000') //Default char value found here https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/char#literals
