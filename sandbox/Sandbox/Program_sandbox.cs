@@ -2,7 +2,7 @@ using System;
 
 class ProgramOld
 {
-    static void Main(string[] args)
+    static void MainOld(string[] args)
     {
         Console.WriteLine("Hello Sandbox World!");
     }
