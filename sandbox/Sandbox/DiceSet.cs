@@ -244,7 +244,7 @@ class DiceSet
     public void OpenSettings()
     {
         UiMenu diceSetSettings = new UiMenu(new List<UiOption>{
-            new UiOption(()=>{},"Edit &Dice"), //Open Dice Edit Menu
+            new UiOption(OpenDiceListSettingsMenu,"Edit &Dice"), //Open Dice Edit Menu
             new UiOption(GetWidth, SetWidth, "Grid &Width", 2), //Set Width
             new UiOption(GetHeight, SetHeight, "Grid &Height", 2), //Set Height
             new UiOption(GetGridSize, SetGridSize, "Grid &Size", 2), //Set Height
@@ -253,7 +253,7 @@ class DiceSet
         });
         diceSetSettings.UiLoop();
     }
-    public void DiceListSettingsMenu()
+    public void OpenDiceListSettingsMenu()
     {
         UiMenu diceListSettings = new UiMenu(
             _diceList.ToList<object>(),
@@ -261,6 +261,7 @@ class DiceSet
             "Dice $ Sides",
             (inputDice) => {return ((Dice)inputDice).LettersToString();}
         );
+        diceListSettings.UiLoop();
     }
 
     //Mass Dice Modification

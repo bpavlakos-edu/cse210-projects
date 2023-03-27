@@ -133,10 +133,11 @@ namespace QuickUtils
         {
             for(int i = 0 ; i < classCollection.Count; i++)
             {
+                int index = i; //Make sure the current index is stored in the lambda, not the memory address of i
                 _optionList.Add(new UiOption(
-                    ()=>{classActionMethod(classCollection[i]);}, //This captures the current list item as the input of the action that will run the desired method in the class
-                    sharedDisplayString.Replace("$",(i+1)+"")+": ", //This string will be the same for each item in the item list, the rest will be generated using the updateStrFun //Replace $ with the index if present
-                    ()=>{return classStringMethod(classCollection[i]);} //Capture the current item as the input of the classStringMethod, put that inside a lambda which will be the "updateStrFun" the UiOption uses to update this item
+                    ()=>{classActionMethod(classCollection[index]);}, //This captures the current list item as the input of the action that will run the desired method in the class
+                    sharedDisplayString.Replace("$",(index+1)+"")+": ", //This string will be the same for each item in the item list, the rest will be generated using the updateStrFun //Replace $ with the index if present
+                    ()=>{return classStringMethod(classCollection[index]);} //Capture the current item as the input of the classStringMethod, put that inside a lambda which will be the "updateStrFun" the UiOption uses to update this item
                 ));
             }
             //Add a cancel option
