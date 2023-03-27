@@ -24,7 +24,7 @@ class DiceSet
     protected int _width = 5;
     protected int _height = 5;
     //protected bool _autoFillEnabled = true; //Enable or disable auto filling of this dice set
-    //protected bool _allowQu = true; //Enable or disable displaying Q as Qu
+    protected bool _allowQu = true; //Enable or disable displaying Q as Qu
     //protected Char[] _diceBorder = new char[]{'\u0000','u0000'}; //Warning for settings menu! You must be able to reset this from the console!
     protected bool _updating = false; //A flag for threaded functions to check to see if they can print to the console
     
@@ -106,6 +106,15 @@ class DiceSet
     {
         _updating = updating;
     }
+    //allowQu option
+    public bool GetAllowQu()
+    {
+        return _allowQu;
+    }
+    public void SetAllowQu(bool allowQu)
+    {
+        _allowQu = allowQu;
+    }
     //Use a dice set to set the values of this dice set (useful for file loading)
     public void SetDiceSet(DiceSet newDiceSet)
     {
@@ -173,7 +182,7 @@ class DiceSet
         Console.Clear(); //Clear the console
         char dWallStart = (char) 0;
         char dWallEnd = (char) 0;
-        bool hasQu = /*_allowQu && */_diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';}); //"Exists" uses predicates (inline functions that return when a boolean is met) to search a list
+        bool hasQu = _allowQu && _diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';}); //"Exists" uses predicates (inline functions that return when a boolean is met) to search a list
         char[] newLineChars = Environment.NewLine.ToCharArray(); //Convert the newline 
         int newLineLength = newLineChars.Length; //Store the new line length so we don't need to repeatedly calculate it
         //Create a display buffer, with it's length specified using the following calculations:
@@ -201,7 +210,7 @@ class DiceSet
             while(offset < rowWidth * _height) //Repeat until all new line chars have been added
             {
                 newLineChars.CopyTo(stringBuffer, offset); //Copy the newline characters
-                    offset += newLineLength; //Update the offset by the length of the new line
+                offset += newLineLength; //Update the offset by the length of the new line
             }
         }
         Console.Write(stringBuffer); //Write the whole buffer to the console
