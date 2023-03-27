@@ -253,6 +253,10 @@ class DiceSet
         });
         diceSetSettings.UiLoop();
     }
+    public void DiceListSettingsMenu()
+    {
+        
+    }
 
     //Mass Dice Modification
     //Set all dice by a copy of a dice object
