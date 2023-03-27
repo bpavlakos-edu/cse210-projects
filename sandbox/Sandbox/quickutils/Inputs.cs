@@ -18,7 +18,7 @@ namespace QuickUtils /*Library name*/
     public static class Inputs /*Library static class*/
     {
         //Basic string input
-        public static string GetInput(string inMsg, bool toLower = true, bool newLine = false, string curValue = null)
+        public static string GetInput(string inMsg, bool? toLower = true, bool newLine = false, string curValue = null)
         {
             //Code size has decreased through the use of the ternary operator [ex: dataType myVar = (boolean condition) ? valueIfTrue : valueIfFalse;]
             inMsg = (curValue != null) ? inMsg.Replace(":",$" (currently: "+Misc.QuoteStr(curValue)+" leave blank to cancel):") : inMsg; //When we have a current value, display it
@@ -26,7 +26,7 @@ namespace QuickUtils /*Library name*/
             Console.Write(inMsg);
             string returnStr = Console.ReadLine() ?? curValue ?? "";//Return the read line, if it's null, return a blank string (or curValue if not empty)
             //Flag for lowercase support (on by default)
-            return (toLower) ? returnStr.ToLower() : returnStr; //Return the return string 
+            return (toLower == null) ? returnStr.ToUpper() : ((bool)toLower) ? returnStr.ToLower() : returnStr; //Return the return string, false = ignore case, true = ToLower(), null = ToUpper() 
         }
         
         //Integer Input
