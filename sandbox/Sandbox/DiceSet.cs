@@ -262,7 +262,7 @@ class DiceSet
             (inputDice) => {return ((Dice)inputDice).LettersToString()+")";}, //Add the parenthesis here to finish the display string
             "Go &Back",
             "Dice List and Options:",
-            "Select a Dice Number, choice or [hotkey] from the menu: "
+            "Select a dice number, choice, or [hotkey] from the menu: "
         );
         diceListSettings.UiLoop();
     }
