@@ -39,6 +39,13 @@ class DiceSet
         _width = width;
         _height = height;
     }
+    //Fill all attributes but use the default dice list (also doubles as the blank constructor)
+    public DiceSet(int width = 5, int height = 5)
+    {
+        _width = width;
+        _height = height;
+        DiceListToDefault(); //Update the diceList to be the default values
+    }
 
     //Copy an existing DiceSet so GameModes can modify it without changing the original
     public DiceSet(DiceSet sourceDiceSet) : this(sourceDiceSet.GetDiceList(), sourceDiceSet.GetWidth(), sourceDiceSet.GetHeight())
@@ -268,17 +275,23 @@ class DiceSet
         //Add additional Edit All Options before the exit button:
         //diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Export Dice List to File"));
         //diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Import Dice List from File")); //Should be included in export settings
-        diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"Set Dice List To &Default"));
-        diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Fill Dice List"));
-        diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Add New Dice"));
-        diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Remove Dice")); //Should Be In Dice Menu
+        diceListSettings.AddOptionFromEnd(
+            new List<UiOption>
+            {
+                new UiOption(()=>{},"&Get Dice-Code for sharing"),
+                new UiOption(()=>{},"&Shuffle Dice Set"),
+                new UiOption(()=>{},"&Add New Dice"),
+                new UiOption(()=>{},"&Delete Dice"),
+                new UiOption(()=>{},"&Set Dice List"),
+                new UiOption(DiceListToDefault,"&Reset Dice List to Default"),
+            }
+        );
         diceListSettings.UiLoop();
     }
-    //Set to default
-    public void SetToDefaultDiceList()
+    //Set to default dice list
+    public void DiceListToDefault()
     {
-        _diceList = new List<Dice>
-        {//Default dice list was digitized from a real boggle set
+        _diceList = new List<Dice>{//Default dice list was digitized from a real boggle set
             new Dice(new List<char>{'N','G','M','A','N','E'}),
             new Dice(new List<char>{'E','T','I','L','C','I'}),
             new Dice(new List<char>{'N','R','L','D','D','O'}),
