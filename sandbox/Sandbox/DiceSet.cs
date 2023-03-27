@@ -322,7 +322,7 @@ class DiceSet
             new Dice(new List<char>{'S','F','A','Y','I','A'})
         };
     }
-
+    //Print a diceListCode to the console
     public void ShowDiceCode()
     {
         Console.WriteLine("Dice List Code:");
@@ -330,6 +330,11 @@ class DiceSet
         Console.WriteLine(GenerateDiceListCode());
         Console.WriteLine("");
         Inp.GetInput("Press enter to continue");
+    }
+    //Enter a diceList Code into the console
+    public void EnterDiceCode()
+    {
+        LoadDiceListCode(Inp.GetInput("Enter Your Dice List Code:", null, true));
     }
 
     //Generate the DiceListCode
@@ -343,14 +348,26 @@ class DiceSet
         }
         return new string(newDiceCodeBuffer.ToArray<char>()); //Return it as a string
     }
-
+    //Load a DiceListCode from a string, ignore blank codes
     public void LoadDiceListCode(string diceSetCode)
     {
-        List<Dice> newDiceList = new List<Dice>();
-        string[] diceStrArr = diceSetCode.Split(",");
-        for(int i = 0; i < diceStrArr.Length; i++)
+        if(diceSetCode != "") //Ignore empty strings
         {
-            newDiceList.Add(new Dice(diceStrArr[i]));
+            //Make the new Dice list
+            List<Dice> newDiceList = new List<Dice>();
+            string[] diceStrArr = diceSetCode.Split(","); //Split the string by using ","
+            for(int i = 0; i < diceStrArr.Length; i++)
+            {
+                if(diceStrArr[i] != "") //Ignore empty strings, so we don't accidently fill the actual dice list with an empty list
+                {
+                    newDiceList.Add(new Dice(diceStrArr[i])); //Automatically create a dice from the string using the constructor made for this
+                }
+            }
+            if(newDiceList.Count > 0) //Update the actual Dice List if the New Dice List isn't empty
+            {
+                _diceList.Clear(); //Clear the list
+                _diceList = Msc.ListCopy<Dice>(newDiceList, (Dice inputDice)=>{return new Dice(inputDice);}); //Copy the dice list using the ListCopy Function
+            }
         }
     }
 
