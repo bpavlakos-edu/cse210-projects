@@ -16,6 +16,7 @@ using UiMenu = QuickUtils.UiMenu;
 using UiOption = QuickUtils.UiOption;
 using Inp = QuickUtils.Inputs;
 using UiMenuExitException = QuickUtils.UiMenuExitException; //Exit exception for the menu to use
+using UiMenuRefreshException = QuickUtils.UiMenuRefreshException; //Exit exception for the menu to use
 using Msc = QuickUtils.Misc;
 class DiceSet
 {
@@ -263,31 +264,36 @@ class DiceSet
     //Dice List Settings Menu
     public void OpenDiceListSettingsMenu()
     {
-        UiMenu diceListSettings = new UiMenu(
-            _diceList.ToList<object>(),
-            (inputDice) => {((Dice)inputDice).OpenSettings();},
-            "Open Dice $ Settings (Sides", //$ is replaced by index in loop + 1
-            (inputDice) => {return ((Dice)inputDice).LettersToString()+")";}, //Add the parenthesis here to finish the display string
-            "Go &Back",
-            "Dice List and Options:",
-            "Select a dice number, choice, or [hotkey] from the menu: "
-        );
-        //Add additional Edit All Options before the exit button:
-        //diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Export Dice List to File"));
-        //diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Import Dice List from File")); //Should be included in export settings
-        diceListSettings.AddOptionFromEnd(
-            new List<UiOption>
-            {
-                new UiOption(ShowDiceCode,"&Generate a Dice-List Code for Sharing"),
-                new UiOption(EnterDiceCode,"&Enter Dice-List Code"),
-                new UiOption(()=>{Shuffle();},"&Shuffle Dice Set"),
-                new UiOption(()=>{},"&Add New Dice"),
-                new UiOption(()=>{},"&Delete Dice"),
-                new UiOption(()=>{},"&Set Dice List"),
-                new UiOption(DiceListToDefault,"&Reset Dice List to Default"),
-            }
-        );
-        diceListSettings.UiLoop();
+        bool refreshUi = true;
+        do
+        {
+            UiMenu diceListSettings = new UiMenu(
+                _diceList.ToList<object>(),
+                (inputDice) => {((Dice)inputDice).OpenSettings();},
+                "Open Dice $ Settings (Sides", //$ is replaced by index in loop + 1
+                (inputDice) => {return ((Dice)inputDice).LettersToString()+")";}, //Add the parenthesis here to finish the display string
+                "Go &Back",
+                "Dice List and Options:",
+                "Select a dice number, choice, or [hotkey] from the menu: "
+            );
+            //Add additional Edit All Options before the exit button:
+            //diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Export Dice List to File"));
+            //diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Import Dice List from File")); //Should be included in export settings
+            diceListSettings.AddOptionFromEnd(
+                new List<UiOption>
+                {
+                    new UiOption(ShowDiceCode,"&Generate a Dice-List Code for Sharing"),
+                    new UiOption(EnterDiceCode,"&Enter Dice-List Code"),
+                    new UiOption(()=>{Shuffle();throw new UiMenuRefreshException();},"&Shuffle Dice Set"),
+                    new UiOption(()=>{},"&Add New Dice"),
+                    new UiOption(()=>{},"&Delete Dice"),
+                    new UiOption(()=>{},"&Set Dice List"),
+                    new UiOption(DiceListToDefault,"&Reset Dice List to Default"),
+                }
+            );
+            refreshUi = diceListSettings.UiLoop();
+        }while(refreshUi);
+            
     }
     //Ui Support Functions
     //Set to default dice list
@@ -335,6 +341,7 @@ class DiceSet
     public void EnterDiceCode()
     {
         LoadDiceListCode(Inp.GetInput("Enter Your Dice List Code (leave blank to cancel):", null, true)); //forces upper case (toLower = null), newLine = true
+        throw new UiMenuRefreshException();
     }
 
     //Generate the DiceListCode as a string

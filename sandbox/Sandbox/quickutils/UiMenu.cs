@@ -271,6 +271,10 @@ namespace QuickUtils
             }
             catch (UiMenuRefreshException) // Exiting this menu while requesting a refresh
             {
+                if(_clearConsole)
+                {
+                    Console.Clear();
+                }
                 return true; //Tell the source function to re-generate the UiMenu
             }
             //Legacy code
