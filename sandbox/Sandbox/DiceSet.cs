@@ -16,7 +16,7 @@ using UiMenu = QuickUtils.UiMenu;
 using UiOption = QuickUtils.UiOption;
 using Inp = QuickUtils.Inputs;
 using UiMenuExitException = QuickUtils.UiMenuExitException; //Exit exception for the menu to use
-using UiMenuRefreshException = QuickUtils.UiMenuRefreshException; //Exit exception for the menu to use
+using UiMenuRefreshException = QuickUtils.UiMenuRefreshException; //Refresh exception for the menu to use
 using Msc = QuickUtils.Misc;
 class DiceSet
 {
