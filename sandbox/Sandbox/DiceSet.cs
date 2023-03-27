@@ -14,7 +14,7 @@ So because I don't want to deal with any of this nonsense, I will brute force it
 
 using UiMenu = QuickUtils.UiMenu;
 using UiOption = QuickUtils.UiOption;
-//using Inp = QuickUtils.Inputs;
+using Inp = QuickUtils.Inputs;
 using UiMenuExitException = QuickUtils.UiMenuExitException; //Exit exception for the menu to use
 using Msc = QuickUtils.Misc;
 class DiceSet
@@ -278,7 +278,7 @@ class DiceSet
         diceListSettings.AddOptionFromEnd(
             new List<UiOption>
             {
-                new UiOption(()=>{},"&Get Dice-List Code for Sharing"),
+                new UiOption(ShowDiceCode,"&Generate a Dice-List Code for Sharing"),
                 new UiOption(()=>{},"&Enter Dice-List Code"),
                 new UiOption(()=>{},"&Shuffle Dice Set"),
                 new UiOption(()=>{},"&Add New Dice"),
@@ -323,14 +323,25 @@ class DiceSet
         };
     }
 
-    //Generate the DiceListCode
-    public void GenerateDiceListCode()
+    public void ShowDiceCode()
     {
+        Console.WriteLine("Dice List Code:");
+        Console.WriteLine("");
+        Console.WriteLine(GenerateDiceListCode());
+        Console.WriteLine("");
+        Inp.GetInput("Press enter to continue");
+    }
+
+    //Generate the DiceListCode
+    public string GenerateDiceListCode()
+    {
+        //Generate the string
         List<char> newDiceCodeBuffer = new List<char>(); //Use a char buffer, it's List<char> because each dice can have a different size (we are also avoiding arithmatic operations using string)
         for(int i = 0; i < _diceList.Count; i++) //Convert each dice to chars
         {
-            _diceList[i].AppendToCharList(newDiceCodeBuffer, i);
+            _diceList[i].AppendToCharList(newDiceCodeBuffer, i); //Use the dice's method to add them to the buffer, pass the index so it knows when to add a comma
         }
+        return new string(newDiceCodeBuffer.ToArray<char>()); //Return it as a string
     }
 
     public void LoadDiceListCode(string diceSetCode)
