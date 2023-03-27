@@ -258,8 +258,11 @@ class DiceSet
         UiMenu diceListSettings = new UiMenu(
             _diceList.ToList<object>(),
             (inputDice) => {((Dice)inputDice).OpenSettings();},
-            "Dice $ Sides",
-            (inputDice) => {return ((Dice)inputDice).LettersToString();}
+            "Edit Dice $ (Sides", //$ is replaced by index in loop + 1
+            (inputDice) => {return ((Dice)inputDice).LettersToString()+")";}, //Add the parenthesis here to finish the display string
+            "Go &Back",
+            "Dice List and Options:",
+            "Select a Dice Number, choice or [hotkey] from the menu: "
         );
         diceListSettings.UiLoop();
     }
