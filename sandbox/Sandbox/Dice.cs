@@ -191,14 +191,7 @@ class Dice
         if(inputChar == '?' || char.IsAsciiLetter(inputChar)) 
         {
             _sideList.Add(char.ToLower(inputChar));
-            //_sideList.Add(inputChar); //For the if statement version if it's faster
         }
-
-        /*else if(char.IsAsciiLetterLower(inputChar)) //IsAsciiLetterUpper must be added above to use this
-        {
-            _sideList.Add(char.ToLower(inputChar));
-        }*/
-
         else if(strict) //For debugging
         {
             Console.WriteLine($"Invalid character {inputChar}");
