@@ -279,8 +279,8 @@ class DiceSet
             new List<UiOption>
             {
                 new UiOption(ShowDiceCode,"&Generate a Dice-List Code for Sharing"),
-                new UiOption(()=>{},"&Enter Dice-List Code"),
-                new UiOption(()=>{},"&Shuffle Dice Set"),
+                new UiOption(EnterDiceCode,"&Enter Dice-List Code"),
+                new UiOption(()=>{Shuffle();},"&Shuffle Dice Set"),
                 new UiOption(()=>{},"&Add New Dice"),
                 new UiOption(()=>{},"&Delete Dice"),
                 new UiOption(()=>{},"&Set Dice List"),
@@ -337,7 +337,7 @@ class DiceSet
         LoadDiceListCode(Inp.GetInput("Enter Your Dice List Code:", null, true));
     }
 
-    //Generate the DiceListCode
+    //Generate the DiceListCode as a string
     public string GenerateDiceListCode()
     {
         //Generate the string
@@ -348,6 +348,7 @@ class DiceSet
         }
         return new string(newDiceCodeBuffer.ToArray<char>()); //Return it as a string
     }
+    
     //Load a DiceListCode from a string, ignore blank codes
     public void LoadDiceListCode(string diceSetCode)
     {
