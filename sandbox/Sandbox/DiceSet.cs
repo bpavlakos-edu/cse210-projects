@@ -283,15 +283,15 @@ class DiceSet
                 new List<UiOption>
                 {
                     new UiOption(ShowDiceCode,"&Generate a Dice-List Code for Sharing"),
-                    new UiOption(EnterDiceCode,"&Enter Dice-List Code"),
-                    new UiOption(()=>{Shuffle();throw new UiMenuRefreshException();},"&Shuffle Dice Set"),
-                    new UiOption(()=>{},"&Add New Dice"),
+                    new UiOption(()=>{EnterDiceCode();},"&Enter Dice-List Code"),
+                    new UiOption(()=>{Shuffle(); throw new UiMenuRefreshException();},"&Shuffle Dice Set"),
+                    new UiOption(()=>{EnterDiceCode(true);},"&Add New Dice Using Dice-List Code"),
                     new UiOption(()=>{},"&Delete Dice"),
-                    new UiOption(()=>{},"&Set Dice List"),
+                    //new UiOption(()=>{},"&Set Dice List"), //Dice code makes this obsolete
                     new UiOption(DiceListToDefault,"&Reset Dice List to Default"),
                 }
             );
-            refreshUi = diceListSettings.UiLoop();
+            refreshUi = diceListSettings.UiLoop(); //When a UiMenuRefreshException occurs, the list will be refreshed
         }while(refreshUi);
             
     }
@@ -338,9 +338,17 @@ class DiceSet
         Inp.GetInput("Press enter to continue");
     }
     //Enter a diceList Code into the console
-    public void EnterDiceCode()
+    public void EnterDiceCode(bool clearList = true)
     {
-        LoadDiceListCode(Inp.GetInput("Enter Your Dice List Code (leave blank to cancel):", null, true)); //forces upper case (toLower = null), newLine = true
+        Console.WriteLine("Dice-List Code Rules:");
+        Console.WriteLine("Each letter represents 1 side of the dice");
+        Console.WriteLine("Each dice can have a unique number of sides");
+        Console.WriteLine("Add \",\" to seperate each dice entry");
+        Console.WriteLine("\"?\" picks a random letter each time it's rolled in-game");
+        Console.WriteLine("\"*\" picks a random letter to save as the side");
+        Console.WriteLine("Invalid characters are ignored, letters aren't case-sensitive");
+        Console.WriteLine("When the dice list is empty, it will automatically be filled by a single dice");
+        LoadDiceListCode(Inp.GetInput("Enter Your Dice-List Code (Leave blank to cancel):", null, true)); //forces upper case (toLower = null), newLine = true
         throw new UiMenuRefreshException();
     }
 
@@ -357,7 +365,7 @@ class DiceSet
     }
     
     //Load a DiceListCode from a string, ignore blank codes
-    public void LoadDiceListCode(string diceSetCode)
+    public void LoadDiceListCode(string diceSetCode, bool clearList = true)
     {
         if(diceSetCode != "") //Ignore empty strings
         {
@@ -373,7 +381,10 @@ class DiceSet
             }
             if(newDiceList.Count > 0) //Update the actual Dice List if the New Dice List isn't empty
             {
-                _diceList.Clear(); //Clear the list
+                if(clearList)
+                {
+                    _diceList.Clear(); //Clear the list when the flag is active
+                }
                 _diceList = Msc.ListCopy<Dice>(newDiceList, (Dice inputDice)=>{return new Dice(inputDice);}); //Copy the dice list using the ListCopy Function
             }
         }
