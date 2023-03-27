@@ -122,7 +122,7 @@ namespace QuickUtils
         //There's also a itemDisplayFunction, which lets us iterate over each object and generate a string using them, or using a function they have by calling it in the lambda function
         //Example:
         /*
-        UiMenu myMinorClassListMenu = new UiMenu(minorClassList, (inputMinorClass) => {((inputMinorClass)inputMinorClass).MyMethod();},"MyClass as String",(inputMinorClass)=>{((inputMinorClass)inputMinorClass).ToDisplayString();})
+        UiMenu myMinorClassListMenu = new UiMenu(minorClassList, (inputMinorClass) => {((inputMinorClass)inputMinorClass).MyMethod();},"MyClass as String $",(inputMinorClass)=>{((inputMinorClass)inputMinorClass).ToDisplayString();})
         */
         public UiMenu(List<object> classCollection, Action<object> classActionMethod, string sharedDisplayString, Func<object, string> classStringMethod)
         {
