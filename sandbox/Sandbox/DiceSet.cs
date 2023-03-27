@@ -278,7 +278,8 @@ class DiceSet
         diceListSettings.AddOptionFromEnd(
             new List<UiOption>
             {
-                new UiOption(()=>{},"&Get Dice-Code for sharing"),
+                new UiOption(()=>{},"&Get Dice-List Code for Sharing"),
+                new UiOption(()=>{},"&Enter Dice-List Code"),
                 new UiOption(()=>{},"&Shuffle Dice Set"),
                 new UiOption(()=>{},"&Add New Dice"),
                 new UiOption(()=>{},"&Delete Dice"),
@@ -288,10 +289,12 @@ class DiceSet
         );
         diceListSettings.UiLoop();
     }
+    //Ui Support Functions
     //Set to default dice list
     public void DiceListToDefault()
     {
-        _diceList = new List<Dice>{//Default dice list was digitized from a real boggle set
+        //Default dice list was digitized from a real boggle set
+        _diceList = new List<Dice>{
             new Dice(new List<char>{'N','G','M','A','N','E'}),
             new Dice(new List<char>{'E','T','I','L','C','I'}),
             new Dice(new List<char>{'N','R','L','D','D','O'}),
@@ -320,6 +323,25 @@ class DiceSet
         };
     }
 
+    //
+    public void ToDiceListCode()
+    {
+        List<char> diceChars = new List<char>();
+        for(int i = 0; i<_diceList.Count; i++)
+        {
+            
+        }
+    }
+
+    public void LoadDiceListCode(string diceSetCode)
+    {
+        List<Dice> newDiceList = new List<Dice>();
+        string[] diceStrArr = diceSetCode.Split(",");
+        for(int i = 0; i < diceStrArr.Length; i++)
+        {
+            newDiceList.Add(new Dice(diceStrArr[i]));
+        }
+    }
 
     //Mass Dice Modification
     //Set all dice by a copy of a dice object

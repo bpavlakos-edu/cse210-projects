@@ -36,6 +36,15 @@ class Dice
         _hidden = false;
     }
 
+    //Fill attributes using a string as the char list
+    public Dice(string diceCodeString, int side = 0, char curLetter = ' ', bool hidden = false)
+    {
+        SetSideList(diceCodeString);
+        _side = side;
+        _curLetter = curLetter;
+        _hidden = hidden;
+    }
+
     //Copy an existing Dice
     public Dice(Dice newDice) : this(newDice.GetSideList(), newDice.GetSide(), newDice.GetCurLetter(), newDice.GetHidden())
     {
