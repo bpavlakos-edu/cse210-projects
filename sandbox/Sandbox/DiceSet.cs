@@ -248,6 +248,7 @@ class DiceSet
             new UiOption(GetWidth, SetWidth, "Grid &Width", 2), //Set Width
             new UiOption(GetHeight, SetHeight, "Grid &Height", 2), //Set Height
             new UiOption(GetGridSize, SetGridSize, "Grid &Size", 2), //Set Height
+            new UiOption(GetAllowQu, SetAllowQu,"&Qu Allowed"), //Allow Qu Setting
             new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
         });
         diceSetSettings.UiLoop();
