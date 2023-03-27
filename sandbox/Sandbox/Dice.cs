@@ -39,6 +39,7 @@ class Dice
     //Fill attributes using a string as the char list
     public Dice(string diceCodeString, int side = 0, char curLetter = ' ', bool hidden = false)
     {
+        _sideList = new List<char>();
         SetSideList(diceCodeString);
         _side = side;
         _curLetter = curLetter;
@@ -207,7 +208,7 @@ class Dice
     {
         if(inputChar == '?' || char.IsAsciiLetter(inputChar)) 
         {
-            _sideList.Add(char.ToLower(inputChar));
+            _sideList.Add(char.ToUpper(inputChar));
         }
         else if(strict) //For debugging
         {

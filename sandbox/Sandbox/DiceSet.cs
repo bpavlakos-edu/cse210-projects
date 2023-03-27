@@ -334,7 +334,7 @@ class DiceSet
     //Enter a diceList Code into the console
     public void EnterDiceCode()
     {
-        LoadDiceListCode(Inp.GetInput("Enter Your Dice List Code:", null, true));
+        LoadDiceListCode(Inp.GetInput("Enter Your Dice List Code (leave blank to cancel):", null, true)); //forces upper case (toLower = null), newLine = true
     }
 
     //Generate the DiceListCode as a string
@@ -371,6 +371,9 @@ class DiceSet
             }
         }
     }
+
+    //Add a new dice to the list
+
 
     //Mass Dice Modification
     //Set all dice by a copy of a dice object
