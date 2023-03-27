@@ -168,10 +168,29 @@ class Dice
         //&Remove Side
         //&Edit Side
         //&Set All Sides 
-        //Randomi&ze Side List
+        //Replace Sides With Random
+        //Scramble Side Order
         //Go &Back
         //UiMenu diceSettings
         //diceSettings.UiLoop();
+        bool refreshUi = true;
+        while(refreshUi)
+        {
+            //Create the UiMenu
+            UiMenu diceSettingsMenu = new UiMenu(
+                new List<UiOption>
+                {
+                    new UiOption(DiceCodeConsole,"Edit With &Dice-Code")
+                }
+            );
+            //Refresh the UiMenu
+
+        }
+    }
+    public void DiceCodeConsole()
+    {
+        //
+        Console.WriteLine("Current Sides:");
     }
     //Setting support function, used both internally and externally
     public string LettersToString(char sepChar = '\u0000') //Default char value found here https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/char#literals
@@ -206,9 +225,9 @@ class Dice
     //Add or remove sides
     private void AddSide(char inputChar, bool strict = false)
     {
-        if(inputChar == '?' || char.IsAsciiLetter(inputChar)) 
+        if(inputChar == '?' || inputChar == '*' || char.IsAsciiLetter(inputChar)) //Accept only recognized characters
         {
-            _sideList.Add(char.ToUpper(inputChar));
+            _sideList.Add((inputChar == '*') ? GetRandomLetter() : char.ToUpper(inputChar)); //Automatically add upper case letters (which doesn't change '?') to the side list, if the char is '*' pick a random letter to save as the side
         }
         else if(strict) //For debugging
         {
