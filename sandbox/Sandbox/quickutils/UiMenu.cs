@@ -124,7 +124,7 @@ namespace QuickUtils
         /*
         UiMenu myMinorClassListMenu = new UiMenu(minorClassList, (inputMinorClass) => {((inputMinorClass)inputMinorClass).MyMethod();},"MyClass as String $",(inputMinorClass)=>{((inputMinorClass)inputMinorClass).ToDisplayString();})
         */
-        public UiMenu(List<object> classCollection, Action<object> classActionMethod, string sharedDisplayString, Func<object, string> classStringMethod)
+        public UiMenu(List<object> classCollection, Action<object> classActionMethod, string sharedDisplayString, Func<object, string> classStringMethod, bool haveExit = true, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="", string indentString = "", bool clearConsole = true)
         {
             for(int i = 0 ; i < classCollection.Count; i++)
             {
@@ -134,6 +134,17 @@ namespace QuickUtils
                     ()=>{return classStringMethod(classCollection[i]);} //Capture the current item as the input of the classStringMethod, put that inside a lambda which will be the "updateStrFun" the UiOption uses to update this item
                 ));
             }
+            //Add a cancel option
+            if(classCollection.Count > 0 && haveExit)
+            {
+                _optionList.Add(new UiOption(new Action(()=>{throw new UiMenuExitException();}),"Go &Back"));
+            }
+            //Update remaining attributes
+            _menuMsg = menuMsg;
+            _inputMsg = inputMsg;
+            _exitMsg = exitMsg;
+            _indentString = indentString;
+            _clearConsole = clearConsole;
         }
 
         //Input Menu Constructor
