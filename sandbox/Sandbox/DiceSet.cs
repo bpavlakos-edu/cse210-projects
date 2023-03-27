@@ -258,14 +258,19 @@ class DiceSet
         UiMenu diceListSettings = new UiMenu(
             _diceList.ToList<object>(),
             (inputDice) => {((Dice)inputDice).OpenSettings();},
-            "Edit Dice $ (Sides", //$ is replaced by index in loop + 1
+            "Open Dice $ Settings (Sides", //$ is replaced by index in loop + 1
             (inputDice) => {return ((Dice)inputDice).LettersToString()+")";}, //Add the parenthesis here to finish the display string
             "Go &Back",
             "Dice List and Options:",
             "Select a dice number, choice, or [hotkey] from the menu: "
         );
-        //Add additional Options before the exit button:
-        diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Filler"));
+        //Add additional Edit All Options before the exit button:
+        //diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Export Dice List to File"));
+        //diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Import Dice List from File")); //Should be included in export settings
+        diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"Set Dice List To &Default"));
+        diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Fill Dice List"));
+        diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Add New Dice"));
+        
         diceListSettings.UiLoop();
     }
 
