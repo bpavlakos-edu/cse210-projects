@@ -181,11 +181,18 @@ class Dice
             UiMenu diceSettingsMenu = new UiMenu(
                 new List<UiOption>
                 {
-                    new UiOption(SimpleDiceCode,"Edit With &Dice-Code")
-                }
+                    new UiOption(SimpleDiceCode,"Edit With &Dice-Code"),
+                    new UiOption(()=>{},"Scramble Side &Order"),
+                    new UiOption(()=>{},"&Replace Sides with Random Letters"),
+                    new UiOption(()=>{throw new UiMenuExitException();},"Go &Back") //Go back to the previous menu
+                },
+                "Dice Settings:",
+                "Select a setting or [hotkey] from the menu: ",
+                "" //Hide the exit message
             );
-            refreshUi = diceSettingsMenu.UiLoop(); //Refresh the UiMenu
+            refreshUi = diceSettingsMenu.UiLoop(()=>{Console.WriteLine("Current Sides: "+LettersToString());Console.WriteLine($"Side Count: {_sideList.Count}");}); //Refresh the UiMenu
         }
+        throw new UiMenuExitException();
     }
     public void SimpleDiceCode()
     {
