@@ -36,7 +36,9 @@ namespace QuickUtils
         {
 
         }
+        //Change field by user input constructor
         //Fill using a Getter, Setter and a hotkey string (For the settingsMenu constructor), I really wish these could all be 1 shared constructor, but the typing on getterFun and setterFun prevents that
+        //String
         public UiOption(Func<string> getterFun, Action<string> setterFun, string hotkeyVarName, bool newLine = false, bool toLower = false) //ToLower is false by default here
         {
             //This is quite complex so I'll do it in the constructor body
