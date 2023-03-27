@@ -79,7 +79,7 @@ namespace QuickUtils
 
         This method uses composite formatting to generate the option string: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/strings/#composite-formatting
         */
-        //Choice Menu Constructor
+        //Choice Menu Constructor (essentially a user input function)
         public UiMenu(List<object> inputCollection, Action<object> lambdaToStoreReturn, List<string> displayStringList = null, bool haveExit = true, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="", string indentString = "", bool clearConsole = true)
         {
             for(int i = 0; i < inputCollection.Count; i++)
@@ -114,6 +114,15 @@ namespace QuickUtils
             _exitMsg = exitMsg;//Hide the exit message by default
             _indentString = indentString;
             _clearConsole = clearConsole;
+        }
+
+        //Class-List Method Invoking Menu Auto-Constructor
+        //This constructor takes an input of a list of classes and invokes a method on them by capturing the method in a lambda
+        //This lets us set each MenuOption to invoke a method of a class on each corresponding item from the Class Collection
+        //There's also a itemDisplayFunction, which lets us iterate over each object and generate a string using them, or using a function they have by calling it in the lambda function
+        public UiMenu(List<object> classCollection, Action<object> lambdaToInvokeClassMethod, Func<string,object> itemDisplayFunction)
+        {
+
         }
 
         //Input Menu Constructor
