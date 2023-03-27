@@ -323,13 +323,13 @@ class DiceSet
         };
     }
 
-    //
-    public void ToDiceListCode()
+    //Generate the DiceListCode
+    public void GenerateDiceListCode()
     {
-        List<char> diceChars = new List<char>();
-        for(int i = 0; i<_diceList.Count; i++)
+        List<char> newDiceCodeBuffer = new List<char>(); //Use a char buffer, it's List<char> because each dice can have a different size (we are also avoiding arithmatic operations using string)
+        for(int i = 0; i < _diceList.Count; i++) //Convert each dice to chars
         {
-            
+            _diceList[i].AppendToCharList(newDiceCodeBuffer, i);
         }
     }
 

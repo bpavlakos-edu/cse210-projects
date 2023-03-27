@@ -141,7 +141,6 @@ class Dice
         {
             Console.WriteLine($"Dice is empty! Please add sides before rolling!");
         }
-        
     }
     public void ToggleHidden(int rChance = 1, int rChanceMax = 4, bool showOnFail = true)
     {
@@ -177,6 +176,15 @@ class Dice
     public string LettersToString(char sepChar = '\u0000') //Default char value found here https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/char#literals
     {
         return string.Join(sepChar,_sideList); //String.Join puts all chars in a list together to form a string
+    }
+    //Append this dice as a list of characters to a buffer, for quickly writing dice codes
+    public void AppendToCharList(List<char> charListBufferTarget, int index = 0)
+    {
+        if(charListBufferTarget.Count != 0) //When this isn't the first index
+        {
+            charListBufferTarget.Add(','); //Add 0
+        }
+        charListBufferTarget.AddRange(_sideList);
     }
     //Utility
     //Determine if the random chance has been met
