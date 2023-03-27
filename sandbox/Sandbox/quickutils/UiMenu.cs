@@ -120,16 +120,19 @@ namespace QuickUtils
         //This constructor takes an input of a list of classes and invokes a method on them by capturing the method in a lambda
         //This lets us set each MenuOption to invoke a method of a class on each corresponding item from the Class Collection
         //There's also a itemDisplayFunction, which lets us iterate over each object and generate a string using them, or using a function they have by calling it in the lambda function
-        //Input example:
-
-        public UiMenu(List<object> classCollection, Action<object> classActionMethod, Func<object, string> itemDisplayFunction)
+        //Example:
+        /*
+        UiMenu myMinorClassListMenu = new UiMenu(minorClassList, (inputMinorClass) => {((inputMinorClass)inputMinorClass).MyMethod();},"MyClass as String",(inputMinorClass)=>{((inputMinorClass)inputMinorClass).ToDisplayString();})
+        */
+        public UiMenu(List<object> classCollection, Action<object> classActionMethod, string sharedDisplayString, Func<object, string> classStringMethod)
         {
             for(int i = 0 ; i < classCollection.Count; i++)
             {
                 _optionList.Add(new UiOption(
                     ()=>{classActionMethod(classCollection[i]);}, //This captures the current list item as the input of the action that will run the desired method in the class
-                    itemDisplayFunction(classCollection[i]) 
-                )); 
+                    sharedDisplayString.Replace("$",(i+1)+"")+": ", //This string will be the same for each item in the item list, the rest will be generated using the updateStrFun //Replace $ with the index if present
+                    ()=>{return classStringMethod(classCollection[i]);} //Capture the current item as the input of the classStringMethod, put that inside a lambda which will be the "updateStrFun" the UiOption uses to update this item
+                ));
             }
         }
 
