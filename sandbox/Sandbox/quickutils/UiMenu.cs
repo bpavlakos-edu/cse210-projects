@@ -80,7 +80,7 @@ namespace QuickUtils
         This method uses composite formatting to generate the option string: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/strings/#composite-formatting
         */
         //Choice Menu Constructor (essentially a user input function)
-        public UiMenu(List<object> inputCollection, Action<object> lambdaToStoreReturn, List<string> displayStringList = null, bool haveExit = true, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="", string indentString = "", bool clearConsole = true)
+        public UiMenu(List<object> inputCollection, Action<object> lambdaToStoreReturn, List<string> displayStringList = null, string exitOptionStr = "Go &Back", string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="", string indentString = "", bool clearConsole = true)
         {
             for(int i = 0; i < inputCollection.Count; i++)
             {
@@ -104,9 +104,9 @@ namespace QuickUtils
                 );
             }
             //Add a cancel option
-            if(inputCollection.Count > 0 && haveExit)
+            if(inputCollection.Count > 0 && exitOptionStr != "")
             {
-                _optionList.Add(new UiOption(new Action(()=>{throw new UiMenuExitException();}),"Go &Back"));
+                _optionList.Add(new UiOption(new Action(()=>{throw new UiMenuExitException();}),exitOptionStr));
             }
             //Update remaining attributes
             _menuMsg = menuMsg;
@@ -124,7 +124,7 @@ namespace QuickUtils
         /*
         UiMenu myMinorClassListMenu = new UiMenu(minorClassList, (inputMinorClass) => {((inputMinorClass)inputMinorClass).MyMethod();},"MyClass as String $",(inputMinorClass)=>{((inputMinorClass)inputMinorClass).ToDisplayString();})
         */
-        public UiMenu(List<object> classCollection, Action<object> classActionMethod, string sharedDisplayString, Func<object, string> classStringMethod, bool haveExit = true, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="", string indentString = "", bool clearConsole = true)
+        public UiMenu(List<object> classCollection, Action<object> classActionMethod, string sharedDisplayString, Func<object, string> classStringMethod, string exitOptionStr="Go &Back", string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="", string indentString = "", bool clearConsole = true)
         {
             for(int i = 0 ; i < classCollection.Count; i++)
             {
@@ -135,9 +135,9 @@ namespace QuickUtils
                 ));
             }
             //Add a cancel option
-            if(classCollection.Count > 0 && haveExit)
+            if(classCollection.Count > 0 && exitOptionStr != "")
             {
-                _optionList.Add(new UiOption(new Action(()=>{throw new UiMenuExitException();}),"Go &Back"));
+                _optionList.Add(new UiOption(new Action(()=>{throw new UiMenuExitException();}), exitOptionStr));
             }
             //Update remaining attributes
             _menuMsg = menuMsg;
