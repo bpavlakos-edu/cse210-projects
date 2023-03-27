@@ -366,7 +366,7 @@ namespace QuickUtils
                 _optionList.Insert(index ?? 0, newOption); //Insert the option at the location specified as a parameter (?? was needed to convince the compiler that it can't be null here, even though it pyhsically can't be null here)
             }
         }
-        public void AddOptionFromEnd(UiOption newOption, int index = 0)
+        public void AddOptionFromEnd(UiOption newOption, int index = 1)
         {
             AddOption(newOption, (_optionList.Count) - index);
         }
