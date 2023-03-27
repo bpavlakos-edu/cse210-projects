@@ -3,6 +3,7 @@ using UiOption = QuickUtils.UiOption;
 using Inp = QuickUtils.Inputs;
 using Msc = QuickUtils.Misc;
 using UiMenuExitException = QuickUtils.UiMenuExitException; //Exit exception for the menu to use
+using UiMenuRefreshException = QuickUtils.UiMenuRefreshException; //Refresh exception for the menu to use
 class Dice
 {
     //Attributes
@@ -198,19 +199,30 @@ class Dice
         +ABCD = Add ABCD as sides to the end
         -ABCD = Remove all instances of ABCD
         ABCD,EFGH = Set the sides to ABCDEFGH
+        ># = Skip number of sides
         $ = Reset the side list
         Special Characters:
         ? = Randomly Pick a letter from A to Z
         * = Randomly Pick a letter to save as the side
         */
         Console.WriteLine("Current Sides: "+LettersToString(','));
+        Console.WriteLine("Dice-Code Rules:");
+        Console.WriteLine("Each letter represents 1 side of the dice");
+        Console.WriteLine("Each dice can have a unique number of sides");
+        //Console.WriteLine("Add \",\" to seperate each dice entry");
+        Console.WriteLine("\"?\" picks a random letter each time it's rolled in-game");
+        Console.WriteLine("\"*\" picks a random letter to save as the side");
+        Console.WriteLine("Invalid characters are ignored, letters aren't case-sensitive");
+        //Console.WriteLine("When the dice list is empty, it will automatically be filled by a single dice");
+        SetSideList(Inp.GetInput("Enter Your Dice-Code (Leave blank to cancel):", null, true)); //forces upper case (toLower = null), newLine = true
+        throw new UiMenuRefreshException();
     }
     public void ProcessDiceCode(string diceCodeString)
     {
         List<char> newSideList = Msc.ListCopy<char>(_sideList,(char inChar) => {char returnChar = inChar; return returnChar;}); //Copy the list of chars, just use a simple lambda to copy the value of char to a new char variable to break the reference
-        char[] diceCodeBuffer = diceCodeString.ToCharArray(); //Initalize the
-        
+        char[] diceCodeBuffer = diceCodeString.ToCharArray(); //Initalize the diceCode buffer
     }
+
     //Setting support function, used both internally and externally
     public string LettersToString(char sepChar = '\u0000') //Default char value found here https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/char#literals
     {
