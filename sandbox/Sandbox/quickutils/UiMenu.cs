@@ -120,9 +120,17 @@ namespace QuickUtils
         //This constructor takes an input of a list of classes and invokes a method on them by capturing the method in a lambda
         //This lets us set each MenuOption to invoke a method of a class on each corresponding item from the Class Collection
         //There's also a itemDisplayFunction, which lets us iterate over each object and generate a string using them, or using a function they have by calling it in the lambda function
-        public UiMenu(List<object> classCollection, Action<object> lambdaToInvokeClassMethod, Func<string,object> itemDisplayFunction)
-        {
+        //Input example:
 
+        public UiMenu(List<object> classCollection, Action<object> classActionMethod, Func<object, string> itemDisplayFunction)
+        {
+            for(int i = 0 ; i < classCollection.Count; i++)
+            {
+                _optionList.Add(new UiOption(
+                    ()=>{classActionMethod(classCollection[i]);}, //This captures the current list item as the input of the action that will run the desired method in the class
+                    itemDisplayFunction(classCollection[i]) 
+                )); 
+            }
         }
 
         //Input Menu Constructor
