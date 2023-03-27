@@ -370,6 +370,14 @@ namespace QuickUtils
         {
             AddOption(newOption, (_optionList.Count) - index);
         }
+        //Add multiple options from the same index at the end (very useful for adding lots of options all at once)
+        public void AddOptionFromEnd(List<UiOption> newOptionList, int index = 1)
+        {
+            foreach(UiOption newOption in newOptionList)
+            {
+                AddOption(newOption, (_optionList.Count) - index);
+            }
+        }
         //Remove an option from the list
         public void RemoveOption(int index)
         {
