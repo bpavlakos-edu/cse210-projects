@@ -222,7 +222,7 @@ namespace QuickUtils
         //Issue with compile time constants, which prevents you from setting a default value of a class: https://stackoverflow.com/questions/18740421/default-parameter-for-value-must-be-a-compile-time-constant
         //It seems the only viable solution is to use "null" as suggested by this first comment to this: https://stackoverflow.com/a/18740471
         //I've already been using null, but I really wanted to know if there's a better way to use a default value, other than a manual function overload
-        public void UiLoop(Action preLoopAction = null, bool debugMode = false)
+        public bool UiLoop(Action preLoopAction = null, bool debugMode = false)
         {
             try
             {
@@ -251,30 +251,37 @@ namespace QuickUtils
                     }
                     catch (UiMenuRemoveException) //Remove this option from the list
                     {
-
+                        //Needs a way to track which input was triggered, likely by going through the same activation sequence
+                        //_optionList.RemoveAt();
                     }
-                    
                     if(_clearConsole) //Added a flag to control if the console is cleared or not
                     {
                         Console.Clear(); //Reset the console before printing
                     }
                 }
             }
-            //The title of: https://stackoverflow.com/questions/10226314/what-is-the-best-way-to-catch-operation-cancelled-by-user-exception helped me find this exception type using intellisense
+            //Exit Sqeuences
             catch (UiMenuExitException) //Exiting this menu
             {
                 if(_exitMsg != "")
                 { 
                     Console.WriteLine(_exitMsg); //Display non-empty exit messages
                 }
-                //Do nothing, just return
+                return false; //Do nothing, just return (false means exit, not necessary for UiMenus that don't need to update)
             }
+            catch (UiMenuRefreshException) // Exiting this menu while requesting a refresh
+            {
+                return true; //Tell the source function to re-generate the UiMenu
+            }
+            //Legacy code
+            //The title of: https://stackoverflow.com/questions/10226314/what-is-the-best-way-to-catch-operation-cancelled-by-user-exception helped me find this exception type using intellisense
             catch (OperationCanceledException) //Exiting this menu with legacy code (Will be removed eventually)
             {
                 if(_exitMsg != "")
                 { 
                     Console.WriteLine(_exitMsg); //Display non-empty exit messages
                 }
+                return false; //(false means exit, not necessary for UiMenus that don't need to update)
             }
         }
 
@@ -433,6 +440,18 @@ namespace QuickUtils
         public UiMenuRemoveException(string message) : base(message) { }
         public UiMenuRemoveException(string message, System.Exception inner) : base(message, inner) { }
         protected UiMenuRemoveException(
+            System.Runtime.Serialization.SerializationInfo info,
+            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+
+    //Refresh Menu Exception, for telling the source function that this UiMenu needs to refresh
+    [System.Serializable]
+    public class UiMenuRefreshException : System.Exception
+    {
+        public UiMenuRefreshException() { }
+        public UiMenuRefreshException(string message) : base(message) { }
+        public UiMenuRefreshException(string message, System.Exception inner) : base(message, inner) { }
+        protected UiMenuRefreshException(
             System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
