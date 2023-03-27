@@ -244,7 +244,7 @@ class DiceSet
     public void OpenSettings()
     {
         UiMenu diceSetSettings = new UiMenu(new List<UiOption>{
-            new UiOption(OpenDiceListSettingsMenu,"Edit &Dice"), //Open Dice Edit Menu
+            new UiOption(OpenDiceListSettingsMenu,"Edit &Dice List"), //Open Dice Edit Menu
             new UiOption(GetWidth, SetWidth, "Grid &Width", 2), //Set Width
             new UiOption(GetHeight, SetHeight, "Grid &Height", 2), //Set Height
             new UiOption(GetGridSize, SetGridSize, "Grid &Size", 2), //Set Height
@@ -253,6 +253,7 @@ class DiceSet
         });
         diceSetSettings.UiLoop();
     }
+    //Dice List Settings Menu
     public void OpenDiceListSettingsMenu()
     {
         UiMenu diceListSettings = new UiMenu(
@@ -270,9 +271,42 @@ class DiceSet
         diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"Set Dice List To &Default"));
         diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Fill Dice List"));
         diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Add New Dice"));
-        
+        diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Remove Dice")); //Should Be In Dice Menu
         diceListSettings.UiLoop();
     }
+    //Set to default
+    public void SetToDefaultDiceList()
+    {
+        _diceList = new List<Dice>
+        {//Default dice list was digitized from a real boggle set
+            new Dice(new List<char>{'N','G','M','A','N','E'}),
+            new Dice(new List<char>{'E','T','I','L','C','I'}),
+            new Dice(new List<char>{'N','R','L','D','D','O'}),
+            new Dice(new List<char>{'A','I','A','F','R','S'}),
+            new Dice(new List<char>{'D','L','O','N','H','R'}),
+            new Dice(new List<char>{'E','A','E','A','E','E'}),
+            new Dice(new List<char>{'W','Z','C','C','T','S'}),
+            new Dice(new List<char>{'D','L','O','H','H','R'}),
+            new Dice(new List<char>{'P','L','E','T','C','I'}),
+            new Dice(new List<char>{'H','Y','R','R','P','I'}),
+            new Dice(new List<char>{'S','C','T','I','P','E'}),
+            new Dice(new List<char>{'Z','X','Q','K','B','J'}),
+            new Dice(new List<char>{'F','S','A','R','A','A'}),
+            new Dice(new List<char>{'S','F','R','Y','I','P'}),
+            new Dice(new List<char>{'N','O','W','O','T','U'}),
+            new Dice(new List<char>{'N','A','N','D','E','N'}),
+            new Dice(new List<char>{'I','I','E','I','T','T'}),
+            new Dice(new List<char>{'S','S','S','N','U','E'}),
+            new Dice(new List<char>{'T','T','O','T','E','M'}),
+            new Dice(new List<char>{'M','E','A','G','E','U'}),
+            new Dice(new List<char>{'W','R','O','V','R','G'}),
+            new Dice(new List<char>{'O','T','T','U','O','O'}),
+            new Dice(new List<char>{'H','H','T','O','D','N'}),
+            new Dice(new List<char>{'E','E','E','E','M','A'}),
+            new Dice(new List<char>{'S','F','A','Y','I','A'})
+        };
+    }
+
 
     //Mass Dice Modification
     //Set all dice by a copy of a dice object
