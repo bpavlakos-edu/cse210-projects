@@ -264,6 +264,8 @@ class DiceSet
             "Dice List and Options:",
             "Select a dice number, choice, or [hotkey] from the menu: "
         );
+        //Add additional Options before the exit button:
+        diceListSettings.AddOptionFromEnd(new UiOption(()=>{},"&Filler"));
         diceListSettings.UiLoop();
     }
 
