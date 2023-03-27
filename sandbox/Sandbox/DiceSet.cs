@@ -255,7 +255,12 @@ class DiceSet
     }
     public void DiceListSettingsMenu()
     {
-        
+        UiMenu diceListSettings = new UiMenu(
+            _diceList.ToList<object>(),
+            (inputDice) => {((Dice)inputDice).OpenSettings();},
+            "Dice $ Sides",
+            (inputDice) => {return ((Dice)inputDice).LettersToString();}
+        );
     }
 
     //Mass Dice Modification
