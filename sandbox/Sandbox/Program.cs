@@ -163,20 +163,29 @@ class Program
         configTextRaw.ReplaceLineEndings(";"); //Automatically remove all line endings by replacing them with ";" (Found this with intellisense)
         string[] fileLines = configTextRaw.Split(";",options:StringSplitOptions.RemoveEmptyEntries & StringSplitOptions.TrimEntries); //Split by all instances of new line and remove all whitespace and empty entries //The options use bitwise to merge StringSplitOptions. I have no idea why 3 can't be manually chosen, since 3 == 2 & 1
         //Load each line
-        for(int offset = 0; offset < fileLines.Length;) //No increment here! It will be handled inside the loop
+        for(int offset = 0; offset < fileLines.Length;) //No increment here! It will be handled inside the loop. This for loop is functioning like a while loop, with the ability to declare the counter at the start
         {
             //use ref to pass offset to classes
             //Load All Game Mode Settings
             List<Type> GmModeTypes = Msc.ListMap<GameMode,Type>(_gameModeList,(GameMode gmItem) => {return gmItem.GetType();}); //Use the ListMap function to get each game mode's type
             Dictionary<string,Type> GmTypesByString = new Dictionary<string, Type>(){{"gmClassic", new GmClassic().GetType()},{"gmRandom", new GmRandom().GetType()},{"gmBlink", new GmBlink().GetType()},{"gmGrow", new GameMode().GetType()},{"gmDecay", new GameMode().GetType()}}; //Create a dictionary containing each game modes type, it's accessible by string
-            while(Msc.ReadFileLine(fileLines, ref offset).Contains("GmName="))
+            while(Msc.ReadFileLine(fileLines, ref offset).Contains("GmName=")) //Repeat this block until the next line isn't "GmName="
             {
-                offset--;
-                string gmName = Msc.ReadFileLine(fileLines, ref offset,"GmName="); //Load the Game Mode's name
-                
-                _gameModeList[0].LoadFromFile(fileLines, ref offset); //Use each game modes file load functions
+                try
+                {
+                    offset--; //Go back to the line that the while loop just read
+                    string gmName = Msc.ReadFileLine(fileLines, ref offset,"GmName="); //Load the Game Mode's name
+                    int gmIndex = GmModeTypes.IndexOf(GmTypesByString[gmName]); //Get the game modes index by looking for the first game mode with a matching "GetType()" result
+                    _gameModeList[gmIndex].LoadFromFile(fileLines, ref offset); //Use each game mode's file load functions, by using the index we found, we garuntee that it loads using the correct index, we also ignore game modes that weren't changed
+                }
+                catch(KeyNotFoundException e) //Key errors are bad news, exit file reading because we're desynced!
+                {
+                    throw new IOException($"Config File Line: {offset}, Invalid game mode detected: {e.ToString()}"); //We can print the invalid game mode by printing the error as well
+                }
             }
-            offset--;
+            //Load the dice set
+            offset--; //Go back to the line that the while loop just read
+            _mainDiceSet.LoadFromFile(fileLines, ref offset);
         }
     }
     static void SaveConfigStart(string path = "doggle.cfg", bool silent = true)
