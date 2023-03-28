@@ -143,6 +143,10 @@ class Program
                 fileLinesRaw = myFile.ReadToEnd();
             }
             LoadConfigValues(fileLinesRaw);//Load the values from the lines
+            if(!programStart)
+            {
+                Console.WriteLine("File Reading Completed!");
+            }
         }
         //Exceptions
         catch(FileNotFoundException) 

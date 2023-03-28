@@ -423,9 +423,9 @@ class DiceSet
             }
             if(newDiceList.Count > 0) //Update the actual Dice List if the New Dice List isn't empty
             {
-                if(clearList)
+                if(clearList) //Clear the list when the flag is active
                 {
-                    _diceList.Clear(); //Clear the list when the flag is active
+                    _diceList.Clear(); 
                     _diceList = Msc.ListCopy<Dice>(newDiceList, (Dice inputDice)=>{return new Dice(inputDice);}); //Copy the dice list using the ListCopy Function
                 }
                 else
