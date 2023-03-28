@@ -140,22 +140,11 @@ class Program
 
             }
         }
-        catch(FileNotFoundException) //This is not an error, it's intended behavior
-        {
-            SaveConfig();
-        } 
-        catch(IOException e)
-        {
-            Console.WriteLine($"An IO Error has occured {e.ToString()}");
-        }
-        catch(UnauthorizedAccessException)
-        {
-            Console.WriteLine($"Unable to load file {path}, please try again with permissions");
-        }
-        catch(NotSupportedException e)
-        {
-            Console.WriteLine($"This OS doesn't support opening files, {e.ToString()}");
-        }
+        //Exceptions
+        catch(FileNotFoundException) {SaveConfig();} //This is not an error, it's intended behavior for when the file is missing
+        catch(IOException e){Console.WriteLine($"An IO Error has occured {e.ToString()}");}
+        catch(UnauthorizedAccessException){Console.WriteLine($"Unable to load file {path}, please try again with permissions");}
+        catch(NotSupportedException e){Console.WriteLine($"This OS doesn't support opening files, {e.ToString()}");}
     }
     static void SaveConfig(string path = "doggle.cfg", bool silent = true)
     {
