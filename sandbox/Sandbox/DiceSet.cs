@@ -283,9 +283,9 @@ class DiceSet
                 new List<UiOption>
                 {
                     new UiOption(ShowDiceCode,"&Generate a Dice-List Code for Sharing"),
-                    new UiOption(()=>{EnterDiceCode(true);},"&Enter Dice-List Code"),
+                    new UiOption(()=>{EnterDiceCode();},"&Enter Dice-List Code"), //Needs parenthesis (and a lambda by extension) because it has a parameter
                     new UiOption(()=>{Shuffle(); throw new UiMenuRefreshException();},"&Shuffle Dice Set"),
-                    new UiOption(()=>{EnterDiceCode();},"&Add New Dice Using Dice-List Code"),
+                    new UiOption(()=>{EnterDiceCode(false);},"&Add New Dice Using Dice-List Code"),
                     new UiOption(()=>{},"&Delete Dice"),
                     //new UiOption(()=>{},"&Set Dice List"), //Dice code makes this obsolete
                     new UiOption(DiceListToDefault,"&Reset Dice List to Default"),
@@ -384,8 +384,12 @@ class DiceSet
                 if(clearList)
                 {
                     _diceList.Clear(); //Clear the list when the flag is active
+                    _diceList = Msc.ListCopy<Dice>(newDiceList, (Dice inputDice)=>{return new Dice(inputDice);}); //Copy the dice list using the ListCopy Function
                 }
-                _diceList = Msc.ListCopy<Dice>(newDiceList, (Dice inputDice)=>{return new Dice(inputDice);}); //Copy the dice list using the ListCopy Function
+                else
+                {
+                    _diceList.AddRange(Msc.ListCopy<Dice>(newDiceList, (Dice inputDice)=>{return new Dice(inputDice);}));  //Copy the dice list using the ListCopy Function
+                }
             }
         }
     }
