@@ -92,7 +92,7 @@ namespace QuickUtils
         //Sort a 2d list using the last entry of each sub list
         public static void Sort2dList(List<int[]> inputList)
         {
-            inputList.Sort((int[] a, int[] b) => {return (a.Last() >= b.Last()) ? a.Last() : b.Last();});
+            inputList.Sort((int[] a, int[] b) => {return (a.Last() >= b.Last()) ? 1 : -1;}); //Example where it tells you to use 1 and -1 to sort the lists is found here: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.sort?view=net-8.0#system-collections-generic-list-1-sort(system-comparison((-0)))
         }
     }
 }
