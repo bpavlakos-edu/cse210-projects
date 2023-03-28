@@ -241,19 +241,26 @@ namespace QuickUtils /*Library name*/
         public static List<int[]> GetIntRangeInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int?[] curValue = null, int subtractNum = 0)
         {
             string userInput = GetInput(inMsg, true, newLine, (curValue != null) ? curValue + "":null);
-            string[] subEntryArray = userInput.Split(","); //Split each entry by a comma
-            List<int[]> returnList = new List<int[]>();
-            //Process every sub entry into an appropriate range
-            for(int i = 0; i < subEntryArray.Length; i++)
+            if(userInput.Contains('!') && min != null && max != null)  //This condition is explained on the "else" line
             {
-                int[] subEntryIntRange = RangeFromStringEntry(subEntryArray[i], min, max, subtractNum); //Process the sub entry
-                if(subEntryArray.Length > 0) //Only store it in the return list if it's not empty
+                string[] subEntryArray = userInput.Split(","); //Split each entry by a comma
+                List<int[]> returnList = new List<int[]>();
+                //Process every sub entry into an appropriate range
+                for(int i = 0; i < subEntryArray.Length; i++)
                 {
-                    returnList.Add(subEntryIntRange); //Add the sub entry after processing it
+                    int[] subEntryIntRange = RangeFromStringEntry(subEntryArray[i], min, max, subtractNum); //Process the sub entry
+                    if(subEntryArray.Length > 0) //Only store it in the return list if it's not empty
+                    {
+                        returnList.Add(subEntryIntRange); //Add the sub entry after processing it
+                    }
                 }
+                Misc.MergeRangeList(returnList);
+                return returnList; //Return the final list
             }
-            Misc.MergeRangeList(returnList);
-            return returnList; //Return the final list
+            else //When the string contains '!' and the minimum and maximum are not null, select the whole range
+            {
+                return new List<int[]>{new int[]{((int) min) - subtractNum, ((int) max) - subtractNum}};
+            }
         }
         //Create a range from a single string entry
         private static int[] RangeFromStringEntry(string stringRange, int? min = null, int? max = null, int subtractNum = 0)
