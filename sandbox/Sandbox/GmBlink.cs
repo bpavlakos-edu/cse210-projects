@@ -1,6 +1,7 @@
 //Blink Game mode, contains the "Blink" game mode functionality
 using UiMenu = QuickUtils.UiMenu;
 using UiOption = QuickUtils.UiOption;
+using Msc = QuickUtils.Misc;
 class GmBlink : GameMode
 {
     //Subclass specific attributes 
@@ -91,5 +92,15 @@ class GmBlink : GameMode
         settingsMenu.AddOptionFromEnd(new UiOption(GetBlinkRanChance, SetBlinkMsecGap, "Blink Odds &Chance" , 1), 1);
         settingsMenu.AddOptionFromEnd(new UiOption(GetBlinkRanChanceMax, SetBlinkRanChanceMax, "Blink Odds &Maximum", 1), 1);
         return settingsMenu;
+    }
+
+    //Load from a file
+    public override void LoadFromFile(string[] fileLines, ref int offset, string gmName = "gmBlink")
+    {
+        base.LoadFromFile(fileLines, ref offset, gmName); //Load the shared values from the original
+        //Load all blink-specific fields
+        _blinkMsecGap = int.Parse(Msc.ReadFileLine(fileLines, ref offset, $"{gmName}_hideMsecGap="));
+        _blinkRanChance = int.Parse(Msc.ReadFileLine(fileLines, ref offset, $"{gmName}_hideRanChance="));
+        _blinkRanChanceMax = int.Parse(Msc.ReadFileLine(fileLines, ref offset, $"{gmName}_hideRanChanceMax="));
     }
 }
