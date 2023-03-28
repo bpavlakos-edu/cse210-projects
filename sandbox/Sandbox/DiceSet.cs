@@ -288,6 +288,7 @@ class DiceSet
                     new UiOption(()=>{EnterDiceCode(false); throw new UiMenuRefreshException();},"&Add New Dice Using Dice-List Code"),
                     new UiOption(()=>{DeleteDice(); throw new UiMenuRefreshException();},"&Delete Dice From List"),
                     new UiOption(()=>{ReplaceAllRandom(); throw new UiMenuRefreshException();},"Re&place all Dice Sides with Random Letters"), //Fill With Random Letter
+                    new UiOption(()=>{ScrambleAll(); throw new UiMenuRefreshException();},"Re&place all Dice Sides with Random Letters"), //Fill With Random Letter
                     new UiOption(()=>{DiceListToDefault(); throw new UiMenuRefreshException();},"&Reset Dice List to Default"),
                 }
             );
@@ -413,11 +414,6 @@ class DiceSet
         }
     }
 
-    public void ReplaceAllRandom()
-    {
-        _diceList.ForEach((curDice) => {curDice.RandomSideLetters();});
-    }
-
     //Mass Dice Modification
     //Set all dice by a copy of a dice object
     public void SetAll(Dice newDice)
@@ -434,6 +430,18 @@ class DiceSet
     public void SetAllVisibility(bool hidden = false)
     {
         _diceList.ForEach((curDice) => {curDice.SetHidden(hidden);}); //Use SetHidden() to set the hidden status of all dice
+    }
+
+    //Replace all sides of all dice with random letters
+    public void ReplaceAllRandom()
+    {
+        _diceList.ForEach((curDice) => {curDice.RandomSideLetters();});
+    }
+
+    //Scramble all dice
+    public void ScrambleAll()
+    {
+        _diceList.ForEach((curDice) => {curDice.ScrambleSides();});
     }
 
     //Utility
