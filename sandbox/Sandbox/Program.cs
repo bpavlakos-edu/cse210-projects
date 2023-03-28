@@ -215,6 +215,7 @@ class Program
             //Load the dice set
             offset--; //Go back to the line that the while loop just read
             _mainDiceSet.LoadFromFile(fileLines, ref offset);
+            break; //Exit, our job is done
         }
     }
     static void SaveConfigFile(string path = "doggle.cfg", bool silent = true)
