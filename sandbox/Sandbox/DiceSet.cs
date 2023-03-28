@@ -286,7 +286,7 @@ class DiceSet
                     new UiOption(()=>{EnterDiceCode();},"&Enter Dice-List Code"), //Needs parenthesis (and a lambda by extension) because it has a parameter
                     new UiOption(()=>{Shuffle(); throw new UiMenuRefreshException();},"&Shuffle Dice Set"),
                     new UiOption(()=>{EnterDiceCode(false);},"&Add New Dice Using Dice-List Code"),
-                    new UiOption(()=>{},"&Delete Dice"),
+                    new UiOption(()=>{},"&Delete Dice From List"),
                     //new UiOption(()=>{},"&Set Dice List"), //Dice code makes this obsolete
                     new UiOption(DiceListToDefault,"&Reset Dice List to Default"),
                 }
