@@ -158,9 +158,9 @@ class Program
     //Load the values from config lines
     static void LoadConfigValues(string configTextRaw)
     {
-        //configTextRaw.ReplaceLineEndings(";");
-        string splitTarget = (Environment.NewLine)+"";
-        configTextRaw.Split(splitTarget,options:StringSplitOptions.RemoveEmptyEntries & StringSplitOptions.TrimEntries); //Split by all instances of new line and remove all  //The options use bitwise to merge. I have no idea why 3 can't be manually chosen, since 3 == 2 & 1
+        configTextRaw.ReplaceLineEndings(";"); //Automatically remove all line endings by replacing them with ";" (Found this with intellisense)
+        configTextRaw.Split(";",options:StringSplitOptions.RemoveEmptyEntries & StringSplitOptions.TrimEntries); //Split by all instances of new line and remove all  //The options use bitwise to merge StringSplitOptions. I have no idea why 3 can't be manually chosen, since 3 == 2 & 1
+
     }
     static void SaveConfigStart(string path = "doggle.cfg", bool silent = true)
     {
