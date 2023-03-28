@@ -187,7 +187,7 @@ class Dice
                 {
                     new UiOption(()=>{SimpleDiceCode(); throw new UiMenuRefreshException();},"&Edit With Dice-Code"),
                     new UiOption(()=>{SimpleDiceCode(false); throw new UiMenuRefreshException();},"&Add Sides With Dice-Code"),
-                    //new UiOption(()=>{DeleteSides(); throw new UiMenuRefreshException();},"&Delete Sides"),
+                    new UiOption(()=>{DeleteSides(); throw new UiMenuRefreshException();},"&Delete Sides"),
                     new UiOption(()=>{ScrambleSides(); throw new UiMenuRefreshException();},"&Scramble Side Order"),
                     new UiOption(()=>{RandomSideLetters(); throw new UiMenuRefreshException();},"&Replace Sides with Random Letters"),
                     new UiOption(()=>{throw new UiMenuExitException();},"Go &Back") //Go back to the previous menu
@@ -304,6 +304,7 @@ class Dice
     //Delete sides
     public void DeleteSides()
     {
+        Console.WriteLine("Current Sides: "+LettersToString(','));
         List<int[]> deletionIndexes = Inp.GetIntRangeInput("Enter the ranges of sides to delete (\"-\" to make a range, \",\" to seperate): ",1,_sideList.Count,subtractNum:1);
         for(int i = deletionIndexes.Count - 1; i >= 0; i--) //Reverse for loops go backwards so that the greatest item is removed first, to prevent index errors
         {

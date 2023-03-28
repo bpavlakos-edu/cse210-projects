@@ -283,12 +283,12 @@ class DiceSet
                 new List<UiOption>
                 {
                     new UiOption(ShowDiceCode,"&Generate a Dice-List Code for Sharing"),
-                    new UiOption(()=>{EnterDiceCode();},"&Enter Dice-List Code"), //Needs parenthesis (and a lambda by extension) because it has a parameter
+                    new UiOption(()=>{EnterDiceCode(); throw new UiMenuRefreshException();},"&Enter Dice-List Code"), //Needs parenthesis (and a lambda by extension) because it has a parameter
                     new UiOption(()=>{Shuffle(); throw new UiMenuRefreshException();},"&Shuffle Dice Set"),
-                    new UiOption(()=>{EnterDiceCode(false);},"&Add New Dice Using Dice-List Code"),
-                    new UiOption(()=>{},"&Delete Dice From List"),
+                    new UiOption(()=>{EnterDiceCode(false); throw new UiMenuRefreshException();},"&Add New Dice Using Dice-List Code"),
+                    new UiOption(()=>{Inp.GetInput("Not implemented"); throw new UiMenuRefreshException();},"&Delete Dice From List"),
                     //new UiOption(()=>{},"&Set Dice List"), //Dice code makes this obsolete
-                    new UiOption(DiceListToDefault,"&Reset Dice List to Default"),
+                    new UiOption(()=>{DiceListToDefault(); throw new UiMenuRefreshException();},"&Reset Dice List to Default"),
                 }
             );
             refreshUi = diceListSettings.UiLoop(); //When a UiMenuRefreshException occurs, the list will be refreshed

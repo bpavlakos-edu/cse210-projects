@@ -284,7 +284,7 @@ namespace QuickUtils /*Library name*/
                         {
                             return returnVal;
                         }
-                        else if((returnVal >= (min ?? returnVal)) && (returnVal <= (max ?? returnVal))) //Check boundaries
+                        else if((returnVal + subtractNum >= (min ?? (returnVal + subtractNum))) && ((returnVal + subtractNum) <= (max ?? (returnVal + subtractNum)))) //Check boundaries
                         {
                             //If the boundary is "null" it will automatically turn into "returnVal", which will make it's half true! 
                             //But since they are both null in the first if statement, that means one of these two is garunteed to be checked

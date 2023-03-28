@@ -39,7 +39,7 @@ namespace QuickUtils
         //The only way to exit the loop is to sort the list completely
         public static void MergeRangeList(List<int[]> inputList) //Hopefully we'll be able to use list mutability to our advantage here
         {
-            inputList.Sort(); //Sort the input list first
+            //inputList.Sort(); //Sort the input list first
             for(int i = 0; i < inputList.Count; i++)
             {
                 bool rangeExists = false; //A boolean to track if the range exists
