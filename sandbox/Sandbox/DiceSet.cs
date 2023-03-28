@@ -24,9 +24,9 @@ class DiceSet
     protected List<Dice> _diceList = new List<Dice>();
     protected int _width = 5;
     protected int _height = 5;
-    //protected bool _autoFillEnabled = true; //Enable or disable auto filling of this dice set
+    protected bool _allowAutoFill = true; //Enable or disable auto filling of this dice set
     protected bool _allowQu = true; //Enable or disable displaying Q as Qu
-    //protected Char[] _diceBorder = new char[]{'\u0000','u0000'}; //Warning for settings menu! You must be able to reset this from the console!
+    protected char[] _diceBorder = new char[]{'\u0000','\u0000'}; //Warning for settings menu! You must be able to reset this from the console!
     protected bool _updating = false; //A flag for threaded functions to check to see if they can print to the console
     
     //Constructors
@@ -123,6 +123,33 @@ class DiceSet
     {
         _allowQu = allowQu;
     }
+    //Autofill option
+    public bool GetAllowAutoFill()
+    {
+        return _allowAutoFill;
+    }
+    public void SetAllowAutoFill(bool allowAutoFill)
+    {
+        _allowAutoFill = allowAutoFill;
+    }
+    //Dice wall characters
+    public char[] GetDiceBorder()
+    {
+        SetDiceBorder(null);
+        return _diceBorder;
+    }
+    public void SetDiceBorder(params char[] diceBorder)
+    {
+        if(diceBorder != null && diceBorder.Length > 0)
+        {
+            _diceBorder = (diceBorder.Length > 1) ? new char[]{diceBorder[0],diceBorder[1]} : new char[]{diceBorder[0],diceBorder[0]}; //Let an input of 1 char fill both slots, this will let the user type "|" to fill both
+        }
+        else
+        {
+            _diceBorder = new char[]{'\u0000','\u0000'};
+        }
+    }
+
     //Use a dice set to set the values of this dice set (useful for file loading)
     public void SetDiceSet(DiceSet newDiceSet)
     {
