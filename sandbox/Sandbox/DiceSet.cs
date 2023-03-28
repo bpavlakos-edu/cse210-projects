@@ -572,4 +572,33 @@ class DiceSet
         sWriter.WriteLine($"diceSetBorder="+((_diceBorder.Length == 2 && _diceBorder[0] == '\u0000' && _diceBorder[1] == '\u0000') ? "" : string.Join(',',_diceBorder))); //This ternary operator is confusing to look at, but it just writes "" when both are set to (char) 0, it only does this check when the length is 2 (to prevent index errors). Otherwise it writes the diceBorder seperated by "," [The only reason I have this is because the default value is '\u0000' and not null]
         sWriter.WriteLine($"diceSetCode="+GenerateDiceListCode()); //Write the dice-set code, and the dice by extension
     }
+
+    //Export Dice Code
+    public void ExportDiceSetCode()
+    {
+        string path = Inp.GetInput("Enter the file name you want to save this dice-code to (leave blank to cancel): ",false);
+        if(path != "")
+        {
+            try
+            {
+                try
+                {
+                    using(StreamWriter sWriter = new StreamWriter(File.Open(path,FileMode.Create)))
+                    {
+
+                    }
+                    Inp.GetInput($"File {path} Was Successfully Written");
+                }
+                catch(ArgumentException e){throw new IOException(e.ToString());}
+                catch(UnauthorizedAccessException e){throw new IOException(e.ToString());}
+                catch(NotSupportedException e){throw new IOException(e.ToString());}
+            }
+            catch(IOException e)
+            {
+                Inp.GetInput($"Error {e.ToString()}! Failed to Write {path}! Press enter to continue");
+            }
+            
+        }
+        
+    }
 }
