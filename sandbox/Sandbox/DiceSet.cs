@@ -287,7 +287,7 @@ class DiceSet
                     new UiOption(()=>{Shuffle(); throw new UiMenuRefreshException();},"&Shuffle Dice Set"),
                     new UiOption(()=>{EnterDiceCode(false); throw new UiMenuRefreshException();},"&Add New Dice Using Dice-List Code"),
                     new UiOption(()=>{DeleteDice(); throw new UiMenuRefreshException();},"&Delete Dice From List"),
-                    //new UiOption(()=>{},"&Set Dice List"), //Dice code makes this obsolete
+                    new UiOption(()=>{ReplaceAllRandom(); throw new UiMenuRefreshException();},"Re&place all Dice Sides with Random Letters"), //Fill With Random Letter
                     new UiOption(()=>{DiceListToDefault(); throw new UiMenuRefreshException();},"&Reset Dice List to Default"),
                 }
             );
@@ -413,6 +413,10 @@ class DiceSet
         }
     }
 
+    public void ReplaceAllRandom()
+    {
+        _diceList.ForEach((curDice) => {curDice.RandomSideLetters();});
+    }
 
     //Mass Dice Modification
     //Set all dice by a copy of a dice object

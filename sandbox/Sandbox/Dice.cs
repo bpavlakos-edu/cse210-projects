@@ -231,6 +231,7 @@ class Dice
         //ABCD,EFGH = Set the sides to ABCDEFGH
         //># = Skip number of sides
         //$ = Reset the side list
+        //_ = Keep current side
         //Special Characters:
         //? = Randomly Pick a letter from A to Z
         //* = Randomly Pick a letter to save as the side
@@ -362,6 +363,7 @@ class Dice
             throw new NotImplementedException();
         }
     }
+    //Remove a side by index
     private void RemoveSide(int index)
     {
         try
@@ -370,4 +372,12 @@ class Dice
         } 
         catch (ArgumentOutOfRangeException){} //Ignore index errors
     }
+
+    //Fill all sides with a character
+    /*
+    public void FillSides(char fillChar = '*')
+    {
+        SetSideList(new string(fillChar,_sideList.Count));
+    }
+    */
 }
