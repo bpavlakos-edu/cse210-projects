@@ -131,22 +131,38 @@ class Program
         bool? newShowCDown = null;*/
     }
     //Config file importing / exporting
-    static void LoadConfig(string path = "doggle.cfg", bool silent = true)
+    static void LoadConfigText(string path = "doggle.cfg", bool programStart = true)
     {
         try
         {
+            //Load file lines into memory
+            string fileLinesRaw = "";
             using(StreamReader myFile = File.OpenText(path))
             {
-
+                fileLinesRaw = myFile.ReadToEnd();
             }
+            LoadConfigValues(fileLinesRaw);//Load the values from the lines
         }
         //Exceptions
-        catch(FileNotFoundException) {SaveConfig();} //This is not an error, it's intended behavior for when the file is missing
+        catch(FileNotFoundException) 
+        {
+            if(programStart)
+            {
+                SaveConfigStart();
+            }
+        } //This is not an error, it's intended behavior for when the file is missing
         catch(IOException e){Console.WriteLine($"An IO Error has occured {e.ToString()}");}
         catch(UnauthorizedAccessException){Console.WriteLine($"Unable to load file {path}, please try again with permissions");}
         catch(NotSupportedException e){Console.WriteLine($"This OS doesn't support opening files, {e.ToString()}");}
     }
-    static void SaveConfig(string path = "doggle.cfg", bool silent = true)
+    //Load the values from config lines
+    static void LoadConfigValues(string configTextRaw)
+    {
+        //configTextRaw.ReplaceLineEndings(";");
+        string splitTarget = (Environment.NewLine)+"";
+        configTextRaw.Split(splitTarget,options:StringSplitOptions.RemoveEmptyEntries & StringSplitOptions.TrimEntries); //Split by all instances of new line and remove all  //The options use bitwise to merge. I have no idea why 3 can't be manually chosen, since 3 == 2 & 1
+    }
+    static void SaveConfigStart(string path = "doggle.cfg", bool silent = true)
     {
         if(!silent)
         {
