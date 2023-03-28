@@ -106,6 +106,7 @@ class GmBlink : GameMode
     //Write to a file
     public override void WriteToFile(StreamWriter sWriter, string gmName = "gmBlink")
     {
+        gmName = "gmBlink"; //Manually overwriting any input parameter, as that's just to match the function header of the base class
         base.WriteToFile(sWriter, "gmBlink"); //Write the regular fields first
         sWriter.WriteLine($"{gmName}_hideMsecGap={_blinkMsecGap}");
         sWriter.WriteLine($"{gmName}_hideRanChance={_blinkRanChance}");
