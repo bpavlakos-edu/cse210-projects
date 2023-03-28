@@ -83,12 +83,12 @@ namespace QuickUtils
                     }
                     inputList[i] = CleanRange(inputList[i]); //Sort this range entry
                     //When the range exists reset i to -1 (which will make it 0 after i++)
-                    if(rangeExists)
+                    if(rangeExists) //When the range exist's it's time to rest loop
                     {
                         i = -1; //Reset the loop (Which I couldn't do in a python for loop, this is nice!)
                     }
                 }
-                Sort2dList(inputList); //Sort the entire
+                Sort2dList(inputList); //Sort the entire list
             }
         }
         //Sort a 2d list using the last entry of each sub list
