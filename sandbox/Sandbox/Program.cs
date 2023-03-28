@@ -168,7 +168,7 @@ class Program
             //Load Game Mode Settings
             for(int i = 0; i < _gameModeList.Count; i++)
             {
-                _gameModeList[i].LoadFromFile(fileLines, ref offset);
+                _gameModeList[i].LoadFromFile(fileLines, ref offset); //Use each game modes file load functions
             }
         }
     }

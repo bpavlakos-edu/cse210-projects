@@ -163,8 +163,9 @@ class GameMode
     }
 
     //File Loading
-    public virtual void LoadFromFile(string[] fileLines, ref int offset) //Use the reference type to update the offset ( https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#passing-an-argument-by-reference-an-example )
+    public virtual void LoadFromFile(string[] fileLines, ref int offset, string gmName = "Null") //Use the reference type to update the offset ( https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#passing-an-argument-by-reference-an-example )
     {
-
+        _durationSec = int.Parse(fileLines[offset].Replace($"{gmName}_durSec=",null)); //Store the countdown value//gmName_durSec=getThisInteger
+        _showCDown = fileLines[offset + 1].Replace($"{gmName}_showCountDown=",null) == "true"; //gmName_durSec=getThisInteger
     }
 }

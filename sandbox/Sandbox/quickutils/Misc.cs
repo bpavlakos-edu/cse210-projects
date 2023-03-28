@@ -127,4 +127,6 @@ namespace QuickUtils
             }
         }
     }
+
+    //Small file reading and writing functions
 }
