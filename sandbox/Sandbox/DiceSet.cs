@@ -283,9 +283,9 @@ class DiceSet
                 new List<UiOption>
                 {
                     new UiOption(ShowDiceCode,"&Generate a Dice-List Code for Sharing"),
-                    new UiOption(()=>{EnterDiceCode();},"&Enter Dice-List Code"),
+                    new UiOption(()=>{EnterDiceCode(true);},"&Enter Dice-List Code"),
                     new UiOption(()=>{Shuffle(); throw new UiMenuRefreshException();},"&Shuffle Dice Set"),
-                    new UiOption(()=>{EnterDiceCode(true);},"&Add New Dice Using Dice-List Code"),
+                    new UiOption(()=>{EnterDiceCode();},"&Add New Dice Using Dice-List Code"),
                     new UiOption(()=>{},"&Delete Dice"),
                     //new UiOption(()=>{},"&Set Dice List"), //Dice code makes this obsolete
                     new UiOption(DiceListToDefault,"&Reset Dice List to Default"),
@@ -348,7 +348,7 @@ class DiceSet
         Console.WriteLine("\"*\" picks a random letter to save as the side");
         Console.WriteLine("Invalid characters are ignored, letters aren't case-sensitive");
         Console.WriteLine("When the dice list is empty, it will automatically be filled by a single dice");
-        LoadDiceListCode(Inp.GetInput("Enter Your Dice-List Code (Leave blank to cancel):", null, true)); //forces upper case (toLower = null), newLine = true
+        LoadDiceListCode(Inp.GetInput("Enter Your Dice-List Code (Leave blank to cancel):", null, true), clearList); //forces upper case (toLower = null), newLine = true
         throw new UiMenuRefreshException();
     }
 
