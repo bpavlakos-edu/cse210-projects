@@ -34,22 +34,28 @@ class DiceSet
     //No blank constructor, it should never be blank!!!
     
     //Fill all attributes
-    public DiceSet(List<Dice> diceList, int width = 5, int height = 5)
+    public DiceSet(List<Dice> diceList, int width = 5, int height = 5, bool allowAutoFill = true, bool allowQu = true, char[] diceBorder = null)
     {
         _diceList = diceList.ToList<Dice>(); //Copy the list to break the reference to the original
         _width = width;
         _height = height;
+        _allowAutoFill = true;
+        _allowQu = true;
+        _diceBorder = diceBorder ?? new char[]{'\u0000','\u0000'};
     }
     //Fill all attributes but use the default dice list (also doubles as the blank constructor)
-    public DiceSet(int width = 5, int height = 5)
+    public DiceSet(int width = 5, int height = 5, bool allowAutoFill = true, bool allowQu = true, char[] diceBorder = null)
     {
         _width = width;
         _height = height;
         DiceListToDefault(); //Update the diceList to be the default values
+        _allowAutoFill = true;
+        _allowQu = true;
+        _diceBorder = new char[]{'\u0000','\u0000'};
     }
 
     //Copy an existing DiceSet so GameModes can modify it without changing the original
-    public DiceSet(DiceSet sourceDiceSet) : this(sourceDiceSet.GetDiceList(), sourceDiceSet.GetWidth(), sourceDiceSet.GetHeight())
+    public DiceSet(DiceSet sourceDiceSet) : this(sourceDiceSet.GetDiceList(), sourceDiceSet.GetWidth(), sourceDiceSet.GetHeight(), sourceDiceSet.GetAllowAutoFill(), sourceDiceSet.GetAllowQu(), sourceDiceSet.GetDiceBorder())
     {
         //Use the Fill all fields constructor to re-use code, and make it easier to change
         /*_diceList = sourceDiceSet._diceList;
@@ -59,7 +65,7 @@ class DiceSet
     //Special copy constructor, auto fills remaining dice slots when the autoFillFlag constructor is enabled
     public DiceSet(DiceSet sourceDiceSet, bool forceAutoFill) : this(sourceDiceSet) //Use the original copy constructor to create the inital object
     {
-        if((/*_autoFillEnabled ||*/ forceAutoFill) && CheckSize()) //Only run this check when allow auto fill is true
+        if((_allowAutoFill || forceAutoFill) && CheckSize()) //Only run this check when allow auto fill is true
         {
             FillToCount(_width * _height, sourceDiceSet.GetDiceList(false).ToArray()); //Use the dice list to fill the new dice list
         }
@@ -156,6 +162,9 @@ class DiceSet
         _diceList = newDiceSet.GetDiceList();
         _width = newDiceSet.GetWidth();
         _height = newDiceSet.GetHeight();
+        _allowQu = newDiceSet.GetAllowQu();
+        _allowAutoFill = newDiceSet.GetAllowAutoFill();
+        _diceBorder = newDiceSet.GetDiceBorder();
     }
     //Get and set using the largest axis of the grid
     public int GetGridSize()
