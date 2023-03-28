@@ -126,21 +126,21 @@ namespace QuickUtils
                 return new int[]{}; //Return a blank array
             }
         }
-        
+
         //Small file reading and writing functions
         public static string ReadFileLine(string[] fileLines, ref int offset, string expectedStartString = null)
         {
-            string returnStr = fileLines[offset];
-            if(expectedStartString != null) //Has a valid
+            string returnStr = fileLines[offset]; //Initalize the return value to the current entry in fileLines (skips having to manually return it)
+            if(expectedStartString != null) //Has a valid expectedStartString, process it so that we can remove it from the return
             {
-                if(!fileLines[offset].Contains(expectedStartString))
+                if(!fileLines[offset].Contains(expectedStartString)) //Check for the start string
                 {
                     throw new IOException($"Error! \"{expectedStartString}\" was not found on file line {offset}!"); //Throw an exception to cancel file reading
                 }
-                returnStr = fileLines[offset].Replace(expectedStartString, null);
+                returnStr = fileLines[offset].Replace(expectedStartString, null); //Otherwise, remove everything except for the expected start string, now it should return the string we're actually looking for
             }
-            offset += 1;
-            return returnStr;
+            offset += 1; //Increment the offset by 1, this change should effect the offset all the way up to the original declaration of it
+            return returnStr; //Return the string
         }
     }
 }
