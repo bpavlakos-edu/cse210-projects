@@ -12,6 +12,8 @@ Version 3 Changes:
 //To add this static class to a project: "using Inp = QuickUtils.Inputs"
 //To use it: "Inp.GetInput()"
 
+using Misc = QuickUtils.Misc;
+
 namespace QuickUtils /*Library name*/
 {
     //User Inputs
@@ -250,6 +252,7 @@ namespace QuickUtils /*Library name*/
                     returnList.Add(subEntryIntRange); //Add the sub entry after processing it
                 }
             }
+            Misc.MergeRangeList(returnList);
             return returnList; //Return the final list
         }
         //Create a range from a single string entry

@@ -305,6 +305,13 @@ class Dice
     public void DeleteSides()
     {
         List<int[]> deletionIndexes = Inp.GetIntRangeInput("Enter the ranges of sides to delete (\"-\" to make a range, \",\" to seperate): ",1,_sideList.Count,subtractNum:1);
+        for(int i = deletionIndexes.Count - 1; i >= 0; i--) //Reverse for loops go backwards so that the greatest item is removed first, to prevent index errors
+        {
+            for(int j = deletionIndexes[i][deletionIndexes[i].Length - 1]; j >= deletionIndexes[i][0]; j--) //Start at the end range, end when we are below the start range
+            {//j = deletionIndexesEnd, j >= deletionIndexesStart, go backwards
+                RemoveSide(j); //Remove this side from the list
+            }
+        }
     }
 
     //Setting support function, used both internally and externally
