@@ -63,8 +63,12 @@ class Dice
         _sideList = Msc.ListCopy<char>(sideList,(char inObj) => {return inObj;});
     }
     //SetSide list from a string (custom)
-    public void SetSideList(string inString)
+    public void SetSideList(string inString, bool clearList = true)
     {
+        if(clearList)
+        {
+            _sideList = new List<char>();
+        }
         List<char> charList = inString.ToUpper().ToList<char>();//Captialize the input string before turning it into a list of char
         //Add each side to the list
         charList.ForEach((curChar) => {AddSide(curChar);});//Use AddSide() to filter out invalid characters
