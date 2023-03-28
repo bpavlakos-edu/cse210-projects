@@ -185,9 +185,9 @@ class Dice
             UiMenu diceSettingsMenu = new UiMenu(
                 new List<UiOption>
                 {
-                    new UiOption(SimpleDiceCode,"Edit With &Dice-Code"),
-                    new UiOption(ScrambleSides,"Scramble Side &Order"),
-                    new UiOption(()=>{},"&Replace Sides with Random Letters"),
+                    new UiOption(()=>{SimpleDiceCode(); throw new UiMenuRefreshException();},"Edit With &Dice-Code"),
+                    new UiOption(()=>{ScrambleSides(); throw new UiMenuRefreshException();},"Scramble Side &Order"),
+                    new UiOption(()=>{RandomSideLetters(); throw new UiMenuRefreshException();},"&Replace Sides with Random Letters"),
                     new UiOption(()=>{throw new UiMenuExitException();},"Go &Back") //Go back to the previous menu
                 },
                 "Dice Settings:",
@@ -198,9 +198,9 @@ class Dice
         }
         throw new UiMenuRefreshException(); //Refresh the menu that this menu has been called from (the DiceSetSettings > Edit Dice List menu)
     }
+    //Simple DiceCode Method
     public void SimpleDiceCode()
     {
-        
         Console.WriteLine("Current Sides: "+LettersToString(','));
         Console.WriteLine("Dice-Code Rules:");
         Console.WriteLine("Each letter represents 1 side of the dice");
@@ -211,7 +211,7 @@ class Dice
         Console.WriteLine("Invalid characters are ignored, letters aren't case-sensitive");
         //Console.WriteLine("When the dice list is empty, it will automatically be filled by a single dice");
         SetSideList(Inp.GetInput("Enter Your Dice-Code (Leave blank to cancel):", null, true)); //forces upper case (toLower = null), newLine = true
-        throw new UiMenuRefreshException();
+        //throw new UiMenuRefreshException();
     }
     //Advanced Dice Code
     /*
@@ -294,7 +294,11 @@ class Dice
         }
         _sideList = Msc.ListCopy<char>(_newSideList,(char inputChar)=>{return inputChar;}); //Copy the final list
     }
-    
+    //Set the side list using random characters
+    public void RandomSideLetters()
+    {
+        SetSideList(new string('*',_sideList.Count));
+    }
 
     //Setting support function, used both internally and externally
     public string LettersToString(char sepChar = '\u0000') //Default char value found here https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/char#literals
