@@ -185,8 +185,10 @@ class Dice
             UiMenu diceSettingsMenu = new UiMenu(
                 new List<UiOption>
                 {
-                    new UiOption(()=>{SimpleDiceCode(); throw new UiMenuRefreshException();},"Edit With &Dice-Code"),
-                    new UiOption(()=>{ScrambleSides(); throw new UiMenuRefreshException();},"Scramble Side &Order"),
+                    new UiOption(()=>{SimpleDiceCode(); throw new UiMenuRefreshException();},"&Edit With Dice-Code"),
+                    new UiOption(()=>{SimpleDiceCode(false); throw new UiMenuRefreshException();},"&Add Sides With Dice-Code"),
+                    //new UiOption(()=>{DeleteSides(); throw new UiMenuRefreshException();},"&Delete Sides"),
+                    new UiOption(()=>{ScrambleSides(); throw new UiMenuRefreshException();},"&Scramble Side Order"),
                     new UiOption(()=>{RandomSideLetters(); throw new UiMenuRefreshException();},"&Replace Sides with Random Letters"),
                     new UiOption(()=>{throw new UiMenuExitException();},"Go &Back") //Go back to the previous menu
                 },
@@ -199,7 +201,7 @@ class Dice
         throw new UiMenuRefreshException(); //Refresh the menu that this menu has been called from (the DiceSetSettings > Edit Dice List menu)
     }
     //Simple DiceCode Method
-    public void SimpleDiceCode()
+    public void SimpleDiceCode(bool clearList = true)
     {
         Console.WriteLine("Current Sides: "+LettersToString(','));
         Console.WriteLine("Dice-Code Rules:");
@@ -210,7 +212,7 @@ class Dice
         Console.WriteLine("\"*\" picks a random letter to save as the side");
         Console.WriteLine("Invalid characters are ignored, letters aren't case-sensitive");
         //Console.WriteLine("When the dice list is empty, it will automatically be filled by a single dice");
-        SetSideList(Inp.GetInput("Enter Your Dice-Code (Leave blank to cancel):", null, true)); //forces upper case (toLower = null), newLine = true
+        SetSideList(Inp.GetInput("Enter Your Dice-Code (Leave blank to cancel):", null, clearList)); //forces upper case (toLower = null), newLine = true
         //throw new UiMenuRefreshException();
     }
     //Advanced Dice Code
