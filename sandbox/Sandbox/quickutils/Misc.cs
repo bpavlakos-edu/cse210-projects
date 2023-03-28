@@ -101,10 +101,14 @@ namespace QuickUtils
         {
             if(inputArr.Length > 0)
             {
+                if(inputArr.Length == 1) //Exit early when the length is 1, because it won't be changed at the ended
+                {
+                    return inputArr;
+                }
                 //Find the minimum and maximum of this array
                 int? min = null;
                 int? max = null;
-                for(int i = 0; i<inputArr.Length;i++)
+                for(int i = 0; i < inputArr.Length;i++)
                 {
                     if(min == null || min > inputArr[i])
                     {
