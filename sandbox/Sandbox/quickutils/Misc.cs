@@ -43,13 +43,16 @@ namespace QuickUtils
             for(int i = 0; i < inputList.Count; i++)
             {
                 bool rangeExists = false; //A boolean to track if the range exists
+                //Load start values
                 int curRangeStart = inputList[i][0]; //Get the first item
                 int curRangeEnd = inputList[i][inputList[i].Length - 1]; //Get the last item
+                //Create variables to store the newRange Start and End inside
                 int newRangeStart = -1;
                 int newRangeEnd = -1;
+                //Check every existing range in the input list
                 for(int j = 0; j < inputList.Count; j++)
                 {
-                    if(inputList.FindLastIndex((int[] inputArr)=>{return inputArr == inputList[i];}) == i) //If the last index of the current item is i, it's unique
+                    if(inputList.FindLastIndex((int[] inputArr) => {return inputArr == inputList[i];}) == i) //If the last index of the current item is i, it's unique
                     {
                         if(j != i) //Ignore testing the same range
                         {
@@ -84,14 +87,42 @@ namespace QuickUtils
                                 {
                                     newRangeEnd = d;
                                 }
-                                rangeExists = true;
+                                rangeExists = true; //"Regardless of the results of the if statement the range is in one that exists, so this is true"
                             }
 
                             if(rangeExists)
                             {
-
+                                if(i > j) //The entry we loaded comes after the entry we just checked
+                                {
+                                    inputList.RemoveAt(i); //Remove i first so we don't get an index error
+                                    inputList.RemoveAt(j);
+                                }
+                                else
+                                {
+                                    inputList.RemoveAt(j); //Remove j first so we don't get an index error
+                                    inputList.RemoveAt(i);
+                                }
+                                if(newRangeStart == newRangeEnd) //When the new range start and end are the same
+                                {
+                                    inputList.Insert(0, new int[]{newRangeStart}); //Merge them into a single entry of an int
+                                }
+                                else //"If the range doesn't start and stop at the same index"
+                                {
+                                    inputList.Insert(0, new int[]{newRangeStart, newRangeEnd});
+                                }
+                                break; //"End the for loop early, any other duplicates will be tested in the next part of the [for] loop"
                             }
                         }
+                    }
+                    else //Not a unique entry
+                    {
+                        rangeExists = true; //The range definitely exists
+                        inputList.RemoveAt(i); //Remove the item if it's not unique, the next one will automatically be tested
+                    }
+                    //When the range exists reset i to -1 (which will make it 0 after i++)
+                    if(rangeExists)
+                    {
+                        i = -1; //Reset the loop (Which I couldn't do in a python for loop, this is nice!)
                     }
                 }
             }
