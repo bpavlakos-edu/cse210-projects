@@ -89,5 +89,10 @@ namespace QuickUtils
                 }
             }
         }
+        //Sort a 2d list using the last entry of each sub list
+        public static void Sort2dList(List<int[]> inputList)
+        {
+            inputList.Sort((int[] a, int[] b) => {return (a.Last() >= b.Last()) ? a.Last() : b.Last();});
+        }
     }
 }
