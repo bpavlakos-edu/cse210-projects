@@ -171,7 +171,7 @@ class Program
             if(!programStart) //When this isn't silently loading in the background
             {
                 path = (path.Contains('\\') == false) ? $"{Environment.CurrentDirectory}\\{path}" : path; //If the path doesn't have a backslash, append the local directory
-                Inp.GetInput($"File loaded ({path}), Press Enter to Continue");
+                Inp.GetInput($"File Loaded ({path}), Press Enter to Continue");
             }
         }
         //Exceptions
