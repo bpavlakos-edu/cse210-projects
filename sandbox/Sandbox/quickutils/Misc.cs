@@ -69,47 +69,16 @@ namespace QuickUtils
 
                             if((a <= d && b >= c) || (a >= d && b <= c)) //"If the following line is within the range of the other line it will meet this condition"
                             {
-                                //Determine the lowest start range
-                                if(a <= c) //"Start of range 1 is less than the start of range 2"
-                                {
-                                    newRangeStart = a;
-                                }
-                                else //a > c
-                                {
-                                    newRangeStart = c;
-                                }
-                                //Determine the Greatest End Range
-                                if(b >= d)
-                                {
-                                    newRangeEnd = b;
-                                }
-                                else //b < d
-                                {
-                                    newRangeEnd = d;
-                                }
+                                newRangeStart = (a <= c) ? a : c; //Set new range start to the lowest value
+                                newRangeEnd = (b >= d) ? b : d; //Set new range end to the greatest value
                                 rangeExists = true; //"Regardless of the results of the if statement the range is in one that exists, so this is true"
                             }
 
-                            if(rangeExists)
+                            if(rangeExists) //Ranges exist
                             {
-                                if(i > j) //The entry we loaded comes after the entry we just checked
-                                {
-                                    inputList.RemoveAt(i); //Remove i first so we don't get an index error
-                                    inputList.RemoveAt(j);
-                                }
-                                else
-                                {
-                                    inputList.RemoveAt(j); //Remove j first so we don't get an index error
-                                    inputList.RemoveAt(i);
-                                }
-                                if(newRangeStart == newRangeEnd) //When the new range start and end are the same
-                                {
-                                    inputList.Insert(0, new int[]{newRangeStart}); //Merge them into a single entry of an int
-                                }
-                                else //"If the range doesn't start and stop at the same index"
-                                {
-                                    inputList.Insert(0, new int[]{newRangeStart, newRangeEnd});
-                                }
+                                inputList.RemoveAt((i > j) ? i : j); //Remove the greatest index first, so we don't get an index error
+                                inputList.RemoveAt((i > j) ? j : i); //Remove the other index
+                                inputList.Insert(0, (newRangeStart == newRangeEnd) ? new int[]{newRangeStart} : new int[]{newRangeStart, newRangeEnd}); //When the new range start and end are the same send 1 number, if they are different send the array with the newRangeStart and newRangeEnd
                                 break; //"End the for loop early, any other duplicates will be tested in the next part of the [for] loop"
                             }
                         }
