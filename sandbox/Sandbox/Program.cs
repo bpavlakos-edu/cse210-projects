@@ -130,6 +130,40 @@ class Program
         /*int? newDurationSec = null;
         bool? newShowCDown = null;*/
     }
+    //Config file importing / exporting
+    static void LoadConfig(string path = "doggle.cfg", bool silent = true)
+    {
+        try
+        {
+            using(StreamReader myFile = File.OpenText(path))
+            {
+
+            }
+        }
+        catch(FileNotFoundException) //This is not an error, it's intended behavior
+        {
+            SaveConfig();
+        }
+        catch(IOException e)
+        {
+
+        }
+        catch(UnauthorizedAccessException e)
+        {
+
+        }
+        catch(NotSupportedException e)
+        {
+            
+        }
+    }
+    static void SaveConfig(string path = "doggle.cfg", bool silent = true)
+    {
+        if(!silent)
+        {
+            Inp.GetInput($"File Saved ({Environment.CurrentDirectory}\\doggle.cfg), Press Enter to Continue");
+        }
+    }
     //For testing basic functionality
     static void TestMode()
     {
