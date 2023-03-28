@@ -33,5 +33,68 @@ namespace QuickUtils
             return returnList;
             //inputList.ForEach((objType inObj) => {objType newObj = new objType();}); //Attempted usage of a constructor
         }
+
+        //Range List Merging Function
+        //Based on an algorithim I made in my python class (CSE-110) that resets the loop every time an overlapping range is detected
+        //The only way to exit the loop is to sort the list completely
+        public static void SortRangeList(List<int[]> inputList)
+        {
+            inputList.Sort(); //Sort the input list first
+            for(int i = 0; i < inputList.Count; i++)
+            {
+                bool rangeExists = false; //A boolean to track if the range exists
+                int curRangeStart = inputList[i][0]; //Get the first item
+                int curRangeEnd = inputList[i][inputList[i].Length - 1]; //Get the last item
+                int newRangeStart = -1;
+                int newRangeEnd = -1;
+                for(int j = 0; j < inputList.Count; j++)
+                {
+                    if(inputList.FindLastIndex((int[] inputArr)=>{return inputArr == inputList[i];}) == i) //If the last index of the current item is i, it's unique
+                    {
+                        if(j != i) //Ignore testing the same range
+                        {
+                            //inputList.Sort(); //Sort the list first
+                            int testRangeStart = inputList[i][0]; //Get the first entry
+                            int testRangeEnd = inputList[i][inputList[i].Length - 1]; //Get the last entry
+
+                            //Like in my python script, this is too complicated for full variable names so we need to simplify
+                            //As my python code explained: "Just imagine they are horizontal lines parallel to eachother where if they overlap at all they are combined into one big line"
+                            int a = curRangeStart;
+                            int b = curRangeEnd;
+                            int c = testRangeStart;
+                            int d = testRangeEnd;
+
+                            if((a <= d && b >= c) || (a >= d && b <= c)) //"If the following line is within the range of the other line it will meet this condition"
+                            {
+                                //Determine the lowest start range
+                                if(a <= c) //"Start of range 1 is less than the start of range 2"
+                                {
+                                    newRangeStart = a;
+                                }
+                                else //a > c
+                                {
+                                    newRangeStart = c;
+                                }
+                                //Determine the Greatest End Range
+                                if(b >= d)
+                                {
+                                    newRangeEnd = b;
+                                }
+                                else //b < d
+                                {
+                                    newRangeEnd = d;
+                                }
+                                rangeExists = true;
+                            }
+
+                            if(rangeExists)
+                            {
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
