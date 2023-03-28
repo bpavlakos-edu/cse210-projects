@@ -181,9 +181,9 @@ class Program
                 SaveConfigFile();
             }
         } //This is not an error, it's intended behavior for when the file is missing
-        catch(IOException e){Console.WriteLine($"A file loading Error has occured: {e.ToString()}");}
-        catch(UnauthorizedAccessException){Console.WriteLine($"Unable to load file {path}, please try again with permissions");}
-        catch(NotSupportedException e){Console.WriteLine($"This OS doesn't support opening files, {e.ToString()}");}
+        catch(IOException e){Console.WriteLine($"A file loading Error has occured: {e.ToString()}");Inp.GetInput("Press enter to continue");}
+        catch(UnauthorizedAccessException){Console.WriteLine($"Unable to load file {path}, please try again with permissions");Inp.GetInput("Press enter to continue");}
+        catch(NotSupportedException e){Console.WriteLine($"This OS doesn't support opening files, {e.ToString()}");Inp.GetInput("Press enter to continue");}
     }
     //Load the values from config lines
     static void LoadConfigValues(string configTextRaw)
@@ -240,10 +240,12 @@ class Program
         catch(IOException e) //Catch all IO Exceptions
         {
             Console.WriteLine($"{e.ToString()}");
+            Inp.GetInput("Press enter to continue");
         }
         catch(ArgumentException e) //Catch ArgumentNullException, ArgumentOutOfRangeException
         {
             Console.WriteLine($"{e.ToString()}");
+            Inp.GetInput("Press enter to continue");
         }
     }
 
