@@ -505,4 +505,10 @@ class DiceSet
     //Bit shifting
     //Compact a byte to 1 bit
     //Will not be implemented
+
+    //File Loading
+    public void LoadFromFile(string[] fileLines, ref int offset) //Use the reference type to update the offset ( https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#passing-an-argument-by-reference-an-example )
+    {
+
+    }
 }

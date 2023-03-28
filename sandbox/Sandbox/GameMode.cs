@@ -161,4 +161,10 @@ class GameMode
             _desc = newGameMode.GetDesc();
         }
     }
+
+    //File Loading
+    public virtual void LoadFromFile(string[] fileLines, ref int offset) //Use the reference type to update the offset ( https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#passing-an-argument-by-reference-an-example )
+    {
+
+    }
 }
