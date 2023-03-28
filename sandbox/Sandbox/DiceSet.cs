@@ -141,19 +141,25 @@ class DiceSet
     //Dice wall characters
     public char[] GetDiceBorder()
     {
-        SetDiceBorder(null);
         return _diceBorder;
     }
+    //Automatically handles null arrays, ignores entries in arrays larger than 2, and automatically duplicates arrays with length 1
     public void SetDiceBorder(params char[] diceBorder)
     {
-        if(diceBorder != null && diceBorder.Length > 0)
+        if(diceBorder != null && diceBorder.Length > 0) //Only assing
         {
-            _diceBorder = (diceBorder.Length > 1) ? new char[]{diceBorder[0],diceBorder[1]} : new char[]{diceBorder[0],diceBorder[0]}; //Let an input of 1 char fill both slots, this will let the user type "|" to fill both
+            _diceBorder = (diceBorder.Length > 1) ? new char[]{diceBorder[0],diceBorder[1]} : new char[]{diceBorder[0],diceBorder[0]}; //Let an input of 1 char fill both slots, this will let the user type "|" to fill both, otherwise just fill using the first and second entry
         }
         else
         {
             _diceBorder = new char[]{'\u0000','\u0000'};
         }
+    }
+    //Constructor to automatically handle string input of any kind
+    public void SetDiceBorder(string diceBorderString)
+    {
+        char[] diceBorder = diceBorderString.Replace(",",null).Replace(" ",null).ToCharArray(); //Yes this is very confusing, but this lets us treat each character as one of the border entries, even if it's entered wrong. Because we have these rules the following is true: "[,]" == "[ ]" == "[]" == '[',']'
+        SetDiceBorder(diceBorder);
     }
 
     //Use a dice set to set the values of this dice set (useful for file loading)
@@ -545,6 +551,14 @@ class DiceSet
     //File Loading
     public void LoadFromFile(string[] fileLines, ref int offset) //Use the reference type to update the offset ( https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#passing-an-argument-by-reference-an-example )
     {
-
+        //Load attributes
+        //Width and height
+        string[] gridSize = Msc.ReadFileLine(fileLines, ref offset, "diceSetSize=").Replace(" ","").Split(","); //Remove all spaces and split by "," //Format: "diceGridSize=5,5"
+        if(gridSize.Length != 2){throw new IOException($"Error on Line {offset}! Dice Set Size is Invalid: {string.Join(",", gridSize)}");} //Detect invalid width and height, throw an IO error
+        _width = int.Parse(gridSize[0]); //Try to parse their entry
+        _height = int.Parse(gridSize[1]); //Try to parse their entry
+        _allowAutoFill = Msc.ReadFileLine(fileLines, ref offset, "diceSetAllowAutoFill=").ToLower() != "false"; //The flag will be true when true or unrecognized
+        _allowQu = Msc.ReadFileLine(fileLines, ref offset, "diceSetAllowQu=").ToLower() != "false"; //The flag will be true when "true" or unrecognized
+        //string[] diceBorder = Msc.ReadFileLine
     }
 }
