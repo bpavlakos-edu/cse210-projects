@@ -49,6 +49,6 @@ class GmRandom : GameMode
     //File Writing
     public override void WriteToFile(StreamWriter sWriter, string gmName = "gmRandom")
     {
-        base.WriteToFile(sWriter, gmName);
+        base.WriteToFile(sWriter, "gmRandom");
     }
 }

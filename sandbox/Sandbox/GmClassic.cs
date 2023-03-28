@@ -49,7 +49,7 @@ class GmClassic : GameMode
     //File Writing
     public override void WriteToFile(StreamWriter sWriter, string gmName = "gmClassic")
     {
-        base.WriteToFile(sWriter, gmName);
+        base.WriteToFile(sWriter, "gmClassic");
     }
 
 }

@@ -7,7 +7,7 @@ using Msc = QuickUtils.Misc; //Added to load files
 class Program
 {
     //Global Variables
-    static bool _autoSave = true;
+    //static bool _autoSave = true;
     static List<GameMode> _gameModeList = new List<GameMode>{new GmClassic(), new GmRandom(), new GmBlink()};
     static DiceSet _mainDiceSet = new DiceSet(new List<Dice>
     {//Default dice list was digitized from a real boggle set
@@ -58,6 +58,7 @@ class Program
     );
     static void Main(string[] args)
     {
+        LoadConfigFile();
         _mainMenu.UiLoop(); //Open the main menu
     }
     static void ShowGmHelp()
@@ -145,7 +146,7 @@ class Program
     {
         string filePath = Inp.GetInput("",false,false,"doggle.cfg");
     }
-    static void LoadConfigText(string path = "doggle.cfg", bool programStart = true)
+    static void LoadConfigFile(string path = "doggle.cfg", bool programStart = true)
     {
         try
         {
