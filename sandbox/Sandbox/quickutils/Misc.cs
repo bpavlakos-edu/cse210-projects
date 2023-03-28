@@ -94,5 +94,31 @@ namespace QuickUtils
         {
             inputList.Sort((int[] a, int[] b) => {return (a.Last() >= b.Last()) ? 1 : -1;}); //Example where it tells you to use 1 and -1 to sort the lists is found here: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.sort?view=net-8.0#system-collections-generic-list-1-sort(system-comparison((-0)))
         }
+
+        private static int[] SortArr(int[] inputArr)
+        {
+            if(inputArr.Length > 0)
+            {
+                //Find the minimum and maximum of this array
+                int? min = null;
+                int? max = null;
+                for(int i = 0; i<inputArr.Length;i++)
+                {
+                    if(min == null || min > inputArr[i])
+                    {
+                        min = inputArr[i];
+                    }
+                    if(max == null || max < inputArr[i])
+                    {
+                        max = inputArr[i];
+                    }
+                }
+                return (min == max) ? new int[]{(int)min} : new int[]{(int)min,(int)max}; //Return 1 number if they are equal, or min/max if they are not
+            }
+            else
+            {
+                return new int[]{}; //Return a blank array
+            }
+        }
     }
 }
