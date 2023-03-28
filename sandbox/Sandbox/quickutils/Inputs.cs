@@ -235,21 +235,36 @@ namespace QuickUtils /*Library name*/
             }
             return  GetInput(inMsg, toLower, newLine, curValue); //Default return value
         }
+        //Get input as a list
         public static List<int[]> GetIntRangeInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int?[] curValue = null)
         {
-            string userInput = GetInput(GetInput(inMsg, true, newLine, (curValue != null) ? curValue + "":null));
-
-            return new List<int[]>{};
-        }
-        private static int[] RangeFromStringEntry(string stringItems, int? min = null, int? max = null)
-        {
-            string[] entryArr = stringItems.Split("-");
-            int[] returnIntArr = new int[entryArr.Length];
-            for(int i = 0; i< stringItems.Length; i++)
+            string userInput = GetInput(inMsg, true, newLine, (curValue != null) ? curValue + "":null);
+            string[] subEntryArray = userInput.Split(","); //Split each entry by a comma
+            List<int[]> returnList = new List<int[]>();
+            //Process every sub entry into an appropriate range
+            for(int i = 0; i < subEntryArray.Length; i++)
             {
-
+                int[] subEntryIntRange = RangeFromStringEntry(subEntryArray[i]); //Process the sub entry
+                if(subEntryArray.Length > 0) //Only store it in the return list if it's not empty
+                {
+                    returnList.Add(subEntryIntRange); //Add the sub entry after processing it
+                }
             }
-            return returnIntArr;
+            return returnList; //Return the final list
+        }
+        private static int[] RangeFromStringEntry(string stringRange, int? min = null, int? max = null)
+        {
+            string[] splitStringArr = stringRange.Split("-");
+            List<int> returnIntList = new List<int>();
+            for(int i = 0; i < splitStringArr.Length; i++)
+            {
+                int? entryToInt = ProcessInt(splitStringArr[i]);
+                if(entryToInt != null)
+                {
+                    returnIntList.Add((int)entryToInt);//Add this item to the list//Again, why do I need to type cast this??? It's always not null!!!
+                }
+            }
+            return returnIntList.ToArray<int>(); //Convert to an array before returning
         }
         //Process an integer (this is so it can be repeatedly called by a list input function)
         private static int? ProcessInt(string inputVal, int? min = null, int? max = null)
