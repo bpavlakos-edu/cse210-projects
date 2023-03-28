@@ -40,52 +40,52 @@ namespace QuickUtils
         public static void MergeRangeList(List<int[]> inputList) //Hopefully we'll be able to use list mutability to our advantage here
         {
             //inputList.Sort(); //Sort the input list first
-            for(int i = 0; i < inputList.Count; i++)
+            for(int loadedIndex = 0; loadedIndex < inputList.Count; loadedIndex++)
             {
-                bool rangeExists = false; //A boolean to track if the range exists
+                bool rangeDuplicate = false; //A boolean to track if the range exists
                 //Load start values
-                int curRangeStart = inputList[i][0]; //Get the first item
-                int curRangeEnd = inputList[i][inputList[i].Length - 1]; //Get the last item
+                int loadRangeStart = inputList[loadedIndex][0]; //Get the first item
+                int loadRangeEnd = inputList[loadedIndex][inputList[loadedIndex].Length - 1]; //Get the last item
                 //Create variables to store the newRange Start and End inside
-                int newRangeStart = -1;
-                int newRangeEnd = -1;
+                int minRangeStart = -1;
+                int maxRangeEnd = -1;
                 //Check every existing range in the input list
-                for(int j = 0; j < inputList.Count; j++)
+                for(int checkIndex = 0; checkIndex < inputList.Count; checkIndex++)
                 {
-                    if(inputList.FindLastIndex((int[] inputArr) => {return inputArr == inputList[i];}) == i) //If the last index of the current item is i, it's unique
+                    if(inputList.FindLastIndex((int[] inputArr) => {return inputArr == inputList[loadedIndex];}) == loadedIndex) //If the last index of the current item is i, it's unique
                     {
-                        if(j != i) //Ignore testing the same range
+                        if(checkIndex != loadedIndex) //Ignore testing the same range
                         {
                             //inputList.Sort(); //Sort the list first
-                            int testRangeStart = inputList[i][0]; //Get the first entry
-                            int testRangeEnd = inputList[i][inputList[i].Length - 1]; //Get the last entry
+                            int checkRangeStart = inputList[checkIndex][0]; //Get the first entry
+                            int checkRangeEnd = inputList[checkIndex][inputList[checkIndex].Length - 1]; //Get the last entry
                             //Find the lowest start, and the highest end points
                             //As my python code explained: "Just imagine they are horizontal lines parallel to eachother where if they overlap at all they are combined into one big line"
-                            if((curRangeStart <= testRangeEnd && curRangeEnd >= testRangeStart) || (curRangeStart >= testRangeEnd && curRangeEnd <= testRangeStart)) //"If the following line is within the range of the other line it will meet this condition"
+                            if((loadRangeStart <= checkRangeEnd && loadRangeEnd >= checkRangeStart) || (loadRangeStart >= checkRangeEnd && loadRangeEnd <= checkRangeStart)) //"If the following line is within the range of the other line it will meet this condition"
                             {
-                                newRangeStart = (curRangeStart <= testRangeStart) ? curRangeStart : testRangeStart; //Set new range start to the lowest value
-                                newRangeEnd = (curRangeEnd >= testRangeEnd) ? curRangeEnd : testRangeEnd; //Set new range end to the greatest value
-                                rangeExists = true; //"Regardless of the results of the if statement the range is in one that exists, so this is true"
+                                minRangeStart = (loadRangeStart <= checkRangeStart) ? loadRangeStart : checkRangeStart; //Set new range start to the lowest value
+                                maxRangeEnd = (loadRangeEnd >= checkRangeEnd) ? loadRangeEnd : checkRangeEnd; //Set new range end to the greatest value
+                                rangeDuplicate = true; //"Regardless of the results of the if statement the range is in one that exists, so this is true"
                             }
-                            if(rangeExists) //Ranges existing already, means we need to remove / merge the duplicates based on the indexes we found
+                            if(rangeDuplicate) //Ranges existing already, means we need to remove / merge the duplicates based on the indexes we found
                             {
-                                inputList.RemoveAt((i > j) ? i : j); //Remove the greatest index first, so we don't get an index error
-                                inputList.RemoveAt((i > j) ? j : i); //Remove the other index
-                                inputList.Insert(0, (newRangeStart == newRangeEnd) ? new int[]{newRangeStart} : new int[]{newRangeStart, newRangeEnd}); //When the new range start and end are the same send 1 number, if they are different send the array with the newRangeStart and newRangeEnd
+                                inputList.RemoveAt((loadedIndex > checkIndex) ? loadedIndex : checkIndex); //Remove the greatest index first, so we don't get an index error
+                                inputList.RemoveAt((loadedIndex > checkIndex) ? checkIndex : loadedIndex); //Remove the other index
+                                inputList.Insert(0, (minRangeStart == maxRangeEnd) ? new int[]{minRangeStart} : new int[]{minRangeStart, maxRangeEnd}); //When the new range start and end are the same send 1 number, if they are different send the array with the newRangeStart and newRangeEnd
                                 break; //"End the for loop early, any other duplicates will be tested in the next part of the [for] loop"
                             }
                         }
                     }
                     else //Not a unique entry
                     {
-                        rangeExists = true; //The range definitely exists
-                        inputList.RemoveAt(i); //Remove the item if it's not unique, the next one will automatically be tested
+                        rangeDuplicate = true; //The range definitely exists
+                        inputList.RemoveAt(loadedIndex); //Remove the item if it's not unique, the next one will automatically be tested
                     }
-                    inputList[i] = CleanRange(inputList[i]); //Sort this range entry
+                    inputList[loadedIndex] = CleanRange(inputList[loadedIndex]); //Sort this range entry
                     //When the range exists reset i to -1 (which will make it 0 after i++)
-                    if(rangeExists) //When the range exist's it's time to rest loop
+                    if(rangeDuplicate) //When the range exist's it's time to rest loop
                     {
-                        i = -1; //Reset the loop (Which I couldn't do in a python for loop, this is nice!)
+                        loadedIndex = -1; //Reset the loop (Which I couldn't do in a python for loop, this is nice!)
                     }
                 }
                 Sort2dList(inputList); //Sort the entire list
