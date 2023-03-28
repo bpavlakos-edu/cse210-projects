@@ -331,7 +331,7 @@ class DiceSet
     //Print a diceListCode to the console
     public void ShowDiceCode()
     {
-        Console.WriteLine("Dice List Code:");
+        Console.WriteLine("Dice List Code (Highlight and right click to copy):");
         Console.WriteLine("");
         Console.WriteLine(GenerateDiceListCode());
         Console.WriteLine("");
