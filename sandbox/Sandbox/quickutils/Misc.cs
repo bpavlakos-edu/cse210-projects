@@ -34,6 +34,18 @@ namespace QuickUtils
             //inputList.ForEach((objType inObj) => {objType newObj = new objType();}); //Attempted usage of a constructor
         }
 
+        //List Map (Similar to JavaScript)
+        //inType = input list data type
+        //outType = expected output type
+        //inputList = list to convert
+        //mappingFunction = function to run on each item in the input list, to store it in the return list
+        public static List<outType> ListMap<inType, outType>(List<inType> inputList, Func<inType,outType> mappingFunction)
+        {
+            List<outType> returnList = new List<outType>();
+            inputList.ForEach((inType inputValue) =>{returnList.Add(mappingFunction(inputValue));});
+            return returnList;
+        }
+
         //Range List Merging Function
         //Based on an algorithim I made in my python class (CSE-110) that resets the loop every time an overlapping range is detected
         //The only way to exit the loop is to sort the list completely
