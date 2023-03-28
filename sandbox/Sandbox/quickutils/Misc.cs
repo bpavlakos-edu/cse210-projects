@@ -37,7 +37,7 @@ namespace QuickUtils
         //Range List Merging Function
         //Based on an algorithim I made in my python class (CSE-110) that resets the loop every time an overlapping range is detected
         //The only way to exit the loop is to sort the list completely
-        public static void SortRangeList(List<int[]> inputList)
+        public static void MergeRangeList(List<int[]> inputList)
         {
             inputList.Sort(); //Sort the input list first
             for(int i = 0; i < inputList.Count; i++)
