@@ -194,9 +194,25 @@ class Program
     }
     static void SaveConfigStart(string path = "doggle.cfg", bool silent = true)
     {
-        if(!silent)
+        try
         {
-            Inp.GetInput($"File Saved ({Environment.CurrentDirectory}\\doggle.cfg), Press Enter to Continue");
+            using(StreamWriter sWriter = new StreamWriter(File.Open(path,FileMode.Create)))  //Get a stream writer which is much more useful in this situation
+            {
+                
+            }
+            if(!silent)
+            {
+                path = (path.Contains('\\') == false) ? $"{Environment.CurrentDirectory}\\{path}" : path; //If the path doesn't have a backslash, append the local directory
+                Inp.GetInput($"File Saved ({path}), Press Enter to Continue");
+            }
+        }
+        catch(IOException e) //Catch all Io Exceptions
+        {
+            Console.WriteLine($"{e.ToString()}");
+        }
+        catch(ArgumentException e) //Catch ArgumentNullException, ArgumentOutOfRangeException
+        {
+            Console.WriteLine($"{e.ToString()}");
         }
     }
 
