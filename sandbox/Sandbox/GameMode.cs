@@ -169,4 +169,8 @@ class GameMode
         _showCDown = Msc.ReadFileLine(fileLines, ref offset, $"{gmName}_showCountDown=").ToLower() != "false"; //Store the timer visiblity option value read from the file, treat unrecognized values as "true" //gmName_showCountDown=true
     }
     //When writing, write an extra line telling us what game mode this is
+    public virtual void WriteToFile(StreamWriter sWriter, string gmName = "Null")
+    {
+
+    }
 }

@@ -562,4 +562,9 @@ class DiceSet
         SetDiceBorder(Msc.ReadFileLine(fileLines, ref offset, "diceSetBorder=")); //Read the next line, use that string as the argument for the SetDiceBorder() method that is designed for this purpose
         LoadDiceListCode(Msc.ReadFileLine(fileLines, ref offset, "diceSetCode=")); //Load the diceList using the diceSetCode
     }
+
+    public void WriteToFile(StreamWriter sWriter)
+    {
+        
+    }
 }

@@ -196,9 +196,14 @@ class Program
     {
         try
         {
-            using(StreamWriter sWriter = new StreamWriter(File.Open(path,FileMode.Create)))  //Get a stream writer which is much more useful in this situation
+            using(StreamWriter sWriter = new StreamWriter(File.Open(path,FileMode.Create))) //Get a stream writer which is much more useful in this situation
             {
-                
+                //Write all game modes to the file
+                for(int i = 0; i < _gameModeList.Count; i++)
+                {
+                    _gameModeList[i].WriteToFile(sWriter); //Write the Current Game Mode Item
+                }
+                _mainDiceSet.WriteToFile(sWriter); //Write the DiceSet
             }
             if(!silent)
             {
@@ -206,7 +211,7 @@ class Program
                 Inp.GetInput($"File Saved ({path}), Press Enter to Continue");
             }
         }
-        catch(IOException e) //Catch all Io Exceptions
+        catch(IOException e) //Catch all IO Exceptions
         {
             Console.WriteLine($"{e.ToString()}");
         }
