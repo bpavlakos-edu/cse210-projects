@@ -140,11 +140,21 @@ class Program
     //Ui Helper Functions
     static void LoadConfigOption()
     {
-        string filePath = Inp.GetInput("",false,false,"doggle.cfg");
+        string filePath = Inp.GetInput("Enter the file path to load from (leave blank to cancel, [d] to load default): ", false, false);
+        if(filePath != "")
+        {
+            filePath = (filePath.ToLower() == "d") ? null : filePath; //Replace d with null, so it uses the default path "doggle.cfg"
+            LoadConfigFile(filePath, false);
+        }
     }
     static void SaveConfigOption()
     {
-        string filePath = Inp.GetInput("",false,false,"doggle.cfg");
+        string filePath = Inp.GetInput("Enter the file path to save to (leave blank to cancel, [d] to load default): ", false, false);
+        if(filePath != "")
+        {
+            filePath = (filePath.ToLower() == "d") ? null : filePath; //Replace d with null, so it uses the default path "doggle.cfg"
+            SaveConfigFile(filePath, false);
+        }
     }
     static void LoadConfigFile(string path = "doggle.cfg", bool programStart = true)
     {
@@ -154,7 +164,7 @@ class Program
             string fileLinesRaw = "";
             using(StreamReader myFile = File.OpenText(path))
             {
-                fileLinesRaw = myFile.ReadToEnd();
+                fileLinesRaw = myFile.ReadToEnd(); //read to end to read all lines
             }
             LoadConfigValues(fileLinesRaw);//Load the values from the lines
             if(!programStart)
@@ -167,7 +177,7 @@ class Program
         {
             if(programStart)
             {
-                SaveConfig();
+                SaveConfigFile();
             }
         } //This is not an error, it's intended behavior for when the file is missing
         catch(IOException e){Console.WriteLine($"A file loading Error has occured: {e.ToString()}");}
@@ -206,7 +216,7 @@ class Program
             _mainDiceSet.LoadFromFile(fileLines, ref offset);
         }
     }
-    static void SaveConfig(string path = "doggle.cfg", bool silent = true)
+    static void SaveConfigFile(string path = "doggle.cfg", bool silent = true)
     {
         try
         {
