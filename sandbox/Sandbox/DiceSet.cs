@@ -413,7 +413,7 @@ class DiceSet
         {
             //Make the new Dice list
             List<Dice> newDiceList = new List<Dice>();
-            string[] diceStrArr = diceSetCode.Split(","); //Split the string by using ","
+            string[] diceStrArr = diceSetCode.Split(","); //Split the string by using "," This will tell us how many dice there are
             for(int i = 0; i < diceStrArr.Length; i++)
             {
                 if(diceStrArr[i] != "") //Ignore empty strings, so we don't accidently fill the actual dice list with an empty list
@@ -559,6 +559,7 @@ class DiceSet
         _height = int.Parse(gridSize[1]); //Try to parse their entry
         _allowAutoFill = Msc.ReadFileLine(fileLines, ref offset, "diceSetAllowAutoFill=").ToLower() != "false"; //The flag will be true when true or unrecognized
         _allowQu = Msc.ReadFileLine(fileLines, ref offset, "diceSetAllowQu=").ToLower() != "false"; //The flag will be true when "true" or unrecognized
-        //string[] diceBorder = Msc.ReadFileLine
+        SetDiceBorder(Msc.ReadFileLine(fileLines, ref offset, "diceSetBorder=")); //Read the next line, use that string as the argument for the SetDiceBorder() method that is designed for this purpose
+        LoadDiceListCode(Msc.ReadFileLine(fileLines, ref offset, "diceSetCode=")); //Load the diceList using the diceSetCode
     }
 }
