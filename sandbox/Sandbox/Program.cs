@@ -168,9 +168,10 @@ class Program
                 fileLinesRaw = myFile.ReadToEnd(); //read to end to read all lines
             }
             LoadConfigValues(fileLinesRaw);//Load the values from the lines
-            if(!programStart)
+            if(!programStart) //When this isn't silently loading in the background
             {
-                Console.WriteLine("File Reading Completed!");
+                path = (path.Contains('\\') == false) ? $"{Environment.CurrentDirectory}\\{path}" : path; //If the path doesn't have a backslash, append the local directory
+                Inp.GetInput($"File loaded ({path}), Press Enter to Continue");
             }
         }
         //Exceptions
