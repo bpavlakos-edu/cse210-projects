@@ -304,7 +304,7 @@ class Dice
     //Delete sides
     public void DeleteSides()
     {
-        Inp.GetInput("");
+        List<int[]> deletionIndexes = Inp.GetIntRangeInput("Enter the ranges of sides to delete (\"-\" to make a range, \",\" to seperate): ",1,_sideList.Count,subtractNum:1);
     }
 
     //Setting support function, used both internally and externally

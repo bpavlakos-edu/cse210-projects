@@ -236,7 +236,7 @@ namespace QuickUtils /*Library name*/
             return  GetInput(inMsg, toLower, newLine, curValue); //Default return value
         }
         //Get input as a list
-        public static List<int[]> GetIntRangeInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int?[] curValue = null)
+        public static List<int[]> GetIntRangeInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int?[] curValue = null, int subtractNum = 0)
         {
             string userInput = GetInput(inMsg, true, newLine, (curValue != null) ? curValue + "":null);
             string[] subEntryArray = userInput.Split(","); //Split each entry by a comma
@@ -244,7 +244,7 @@ namespace QuickUtils /*Library name*/
             //Process every sub entry into an appropriate range
             for(int i = 0; i < subEntryArray.Length; i++)
             {
-                int[] subEntryIntRange = RangeFromStringEntry(subEntryArray[i]); //Process the sub entry
+                int[] subEntryIntRange = RangeFromStringEntry(subEntryArray[i], min, max, subtractNum); //Process the sub entry
                 if(subEntryArray.Length > 0) //Only store it in the return list if it's not empty
                 {
                     returnList.Add(subEntryIntRange); //Add the sub entry after processing it
@@ -252,13 +252,14 @@ namespace QuickUtils /*Library name*/
             }
             return returnList; //Return the final list
         }
-        private static int[] RangeFromStringEntry(string stringRange, int? min = null, int? max = null)
+        //Create a range from a single string entry
+        private static int[] RangeFromStringEntry(string stringRange, int? min = null, int? max = null, int subtractNum = 0)
         {
             string[] splitStringArr = stringRange.Split("-");
             List<int> returnIntList = new List<int>();
             for(int i = 0; i < splitStringArr.Length; i++)
             {
-                int? entryToInt = ProcessInt(splitStringArr[i]);
+                int? entryToInt = ProcessInt(splitStringArr[i], min, max, subtractNum);
                 if(entryToInt != null)
                 {
                     returnIntList.Add((int)entryToInt);//Add this item to the list//Again, why do I need to type cast this??? It's always not null!!!
@@ -267,14 +268,14 @@ namespace QuickUtils /*Library name*/
             return returnIntList.ToArray<int>(); //Convert to an array before returning
         }
         //Process an integer (this is so it can be repeatedly called by a list input function)
-        private static int? ProcessInt(string inputVal, int? min = null, int? max = null)
+        private static int? ProcessInt(string inputVal, int? min = null, int? max = null, int subtractNum = 0)
         {
             int? result = null;
             try //Main exception
                 {
                 try //Exception funnel
                     {
-                        int returnVal = int.Parse(inputVal); //Parse the input (This ternary codition prevents null from being turned into a string, while also letting us turn int into a string)
+                        int returnVal = int.Parse(inputVal) - subtractNum; //Parse the input (This ternary codition prevents null from being turned into a string, while also letting us turn int into a string)
                         //Determine if the value is in our boundaries
                         if(min == null && max == null) //No boundaries
                         {
