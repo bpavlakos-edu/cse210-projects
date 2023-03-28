@@ -46,4 +46,10 @@ class GmClassic : GameMode
         base.LoadFromFile(fileLines, ref offset, gmName);
     }
 
+    //File Writing
+    public override void WriteToFile(StreamWriter sWriter, string gmName = "gmClassic")
+    {
+        base.WriteToFile(sWriter, gmName);
+    }
+
 }

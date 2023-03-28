@@ -45,4 +45,10 @@ class GmRandom : GameMode
     {
         base.LoadFromFile(fileLines, ref offset, gmName);
     }
+
+    //File Writing
+    public override void WriteToFile(StreamWriter sWriter, string gmName = "gmRandom")
+    {
+        base.WriteToFile(sWriter, gmName);
+    }
 }

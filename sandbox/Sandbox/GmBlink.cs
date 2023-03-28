@@ -103,4 +103,12 @@ class GmBlink : GameMode
         _blinkRanChance = int.Parse(Msc.ReadFileLine(fileLines, ref offset, $"{gmName}_hideRanChance="));
         _blinkRanChanceMax = int.Parse(Msc.ReadFileLine(fileLines, ref offset, $"{gmName}_hideRanChanceMax="));
     }
+    //Write to a file
+    public override void WriteToFile(StreamWriter sWriter, string gmName = "gmBlink")
+    {
+        base.WriteToFile(sWriter, gmName); //Write the regular fields first
+        sWriter.WriteLine($"{gmName}_hideMsecGap={_blinkMsecGap}");
+        sWriter.WriteLine($"{gmName}_hideRanChance={_blinkRanChance}");
+        sWriter.WriteLine($"{gmName}_hideRanChanceMax={_blinkRanChanceMax}");
+    }
 }
