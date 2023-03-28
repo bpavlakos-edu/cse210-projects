@@ -235,16 +235,65 @@ namespace QuickUtils /*Library name*/
             }
             return  GetInput(inMsg, toLower, newLine, curValue); //Default return value
         }
-        public static int[] GetIntRangeInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int?[] curValue = null)
+        public static List<int[]> GetIntRangeInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int?[] curValue = null)
         {
-            GetInput("");
-            return new int[]{1,2,3};
-        }
+            string userInput = GetInput(GetInput(inMsg, true, newLine, (curValue != null) ? curValue + "":null));
 
+            return new List<int[]>{};
+        }
+        private static int[] RangeFromStringEntry(string stringItems, int? min = null, int? max = null)
+        {
+            string[] entryArr = stringItems.Split("-");
+            int[] returnIntArr = new int[entryArr.Length];
+            for(int i = 0; i< stringItems.Length; i++)
+            {
+
+            }
+            return returnIntArr;
+        }
+        //Process an integer (this is so it can be repeatedly called by a list input function)
         private static int? ProcessInt(string inputVal, int? min = null, int? max = null)
         {
             int? result = null;
-            
+            try //Main exception
+                {
+                try //Exception funnel
+                    {
+                        int returnVal = int.Parse(inputVal); //Parse the input (This ternary codition prevents null from being turned into a string, while also letting us turn int into a string)
+                        //Determine if the value is in our boundaries
+                        if(min == null && max == null) //No boundaries
+                        {
+                            return returnVal;
+                        }
+                        else if((returnVal >= (min ?? returnVal)) && (returnVal <= (max ?? returnVal))) //Check boundaries
+                        {
+                            //If the boundary is "null" it will automatically turn into "returnVal", which will make it's half true! 
+                            //But since they are both null in the first if statement, that means one of these two is garunteed to be checked
+                            return returnVal;
+                        }
+                        else //Not within range
+                        {
+                            //Use the ternary conditional operator to generate most of the strings, this saved us a few lines of code!
+                            //See this site for info: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator
+                            //Syntax: type myVar = (condition) ? valueIftrue : valueIfFalse;
+                            string minStr = (min != null) ? $"minimum {min}" : "";
+                            string maxStr = (max != null) ? $"maximum {max}" : "";
+                            string toStr = (min != null && max != null) ? " to " : "";
+                            string inTheRange = (min != null || max != null) ? $" in the range: {minStr}{toStr}{maxStr}. P" : ", p";
+                            Console.WriteLine($"Sorry {returnVal} is not a valid number{inTheRange}lease try again!");
+                        }
+                    }
+                    /*Funnel all invalid entries to FormatException*/
+                    catch(ArgumentNullException) //Check argument null exceptions
+                    {
+                        throw new FormatException(); //If there's no current value, act like all the other exceptions
+                    }
+                    catch(OverflowException){throw new FormatException();}
+                }
+                catch(FormatException)
+                {
+                    Console.WriteLine("Sorry! That's not a valid number, please try again!");
+                }
             return result;
         }
     }
