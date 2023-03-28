@@ -126,7 +126,21 @@ namespace QuickUtils
                 return new int[]{}; //Return a blank array
             }
         }
+        
+        //Small file reading and writing functions
+        public static string ReadFileLine(string[] fileLines, ref int offset, string expectedStartString = null)
+        {
+            string returnStr = fileLines[offset];
+            if(expectedStartString != null) //Has a valid
+            {
+                if(!fileLines[offset].Contains(expectedStartString))
+                {
+                    throw new IOException($"Error! \"{expectedStartString}\" was not found on file line {offset}!"); //Throw an exception to cancel file reading
+                }
+                returnStr = fileLines[offset].Replace(expectedStartString, null);
+            }
+            offset += 1;
+            return returnStr;
+        }
     }
-
-    //Small file reading and writing functions
 }
