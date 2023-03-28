@@ -305,7 +305,7 @@ namespace QuickUtils /*Library name*/
                     /*Funnel all invalid entries to FormatException*/
                     catch(ArgumentNullException) //Check argument null exceptions
                     {
-                        throw new FormatException(); //If there's no current value, act like all the other exceptions
+                        //throw new FormatException(); //If it's empty ignore it
                     }
                     catch(OverflowException){throw new FormatException();}
                 }
