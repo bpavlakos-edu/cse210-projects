@@ -41,8 +41,8 @@ namespace QuickUtils
         //mappingFunction = function to run on each item in the input list, to store it in the return list
         public static List<outType> ListMap<inType, outType>(List<inType> inputList, Func<inType,outType> mappingFunction)
         {
-            List<outType> returnList = new List<outType>();
-            inputList.ForEach((inType inputValue) =>{returnList.Add(mappingFunction(inputValue));});
+            List<outType> returnList = new List<outType>(); //Initalize the return list
+            inputList.ForEach((inType inputValue) =>{returnList.Add(mappingFunction(inputValue));}); //Use the mapping function on each entry
             return returnList;
         }
 
