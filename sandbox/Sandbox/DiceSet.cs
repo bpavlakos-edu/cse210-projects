@@ -325,6 +325,7 @@ class DiceSet
                 new List<UiOption>
                 {
                     new UiOption(ShowDiceCode,"&Generate a Dice-List Code for Sharing"),
+                    new UiOption(ExportDiceSetCode,"E&xport a Dice-List Code to a File"),
                     new UiOption(()=>{EnterDiceCode(); throw new UiMenuRefreshException();},"&Enter Dice-List Code"), //Needs parenthesis (and a lambda by extension) because it has a parameter
                     new UiOption(()=>{Shuffle(); throw new UiMenuRefreshException();},"&Shuffle Dice Set"),
                     new UiOption(()=>{EnterDiceCode(false); throw new UiMenuRefreshException();},"&Add New Dice Using Dice-List Code"),
@@ -577,15 +578,15 @@ class DiceSet
     public void ExportDiceSetCode()
     {
         string path = Inp.GetInput("Enter the file name you want to save this dice-code to (leave blank to cancel): ",false);
-        if(path != "")
+        if(path != "") //Do not accept blank paths
         {
             try
             {
                 try
                 {
-                    using(StreamWriter sWriter = new StreamWriter(File.Open(path,FileMode.Create)))
+                    using(StreamWriter sWriter = new StreamWriter(File.Open(path,FileMode.Create))) //Open the file and truncate, or create the file
                     {
-
+                        sWriter.Write(GenerateDiceListCode()); //Write the Dice-List code
                     }
                     Inp.GetInput($"File {path} Was Successfully Written");
                 }
