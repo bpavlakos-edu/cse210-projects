@@ -221,6 +221,7 @@ class Program
     {
         try
         {
+            path ??= "doggle.cfg"; //Use the ternary null setter to set the path to default if it's nulled (by the key 'd')
             using(StreamWriter sWriter = new StreamWriter(File.Open(path,FileMode.Create))) //Get a stream writer which is much more useful in this situation
             {
                 //Write all game modes to the file
