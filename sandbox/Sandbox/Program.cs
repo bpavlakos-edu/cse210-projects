@@ -162,6 +162,7 @@ class Program
         {
             //Load file lines into memory
             string fileLinesRaw = "";
+            path ??= "doggle.cfg"; //Use the ternary null setter to set the path to default if it's nulled (by the key 'd')
             using(StreamReader myFile = File.OpenText(path))
             {
                 fileLinesRaw = myFile.ReadToEnd(); //read to end to read all lines
