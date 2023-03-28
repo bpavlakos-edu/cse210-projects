@@ -59,6 +59,7 @@ namespace QuickUtils
                             //inputList.Sort(); //Sort the list first
                             int testRangeStart = inputList[i][0]; //Get the first entry
                             int testRangeEnd = inputList[i][inputList[i].Length - 1]; //Get the last entry
+                            //Find the lowest start, and the highest end points
                             //As my python code explained: "Just imagine they are horizontal lines parallel to eachother where if they overlap at all they are combined into one big line"
                             if((curRangeStart <= testRangeEnd && curRangeEnd >= testRangeStart) || (curRangeStart >= testRangeEnd && curRangeEnd <= testRangeStart)) //"If the following line is within the range of the other line it will meet this condition"
                             {
@@ -66,8 +67,7 @@ namespace QuickUtils
                                 newRangeEnd = (curRangeEnd >= testRangeEnd) ? curRangeEnd : testRangeEnd; //Set new range end to the greatest value
                                 rangeExists = true; //"Regardless of the results of the if statement the range is in one that exists, so this is true"
                             }
-
-                            if(rangeExists) //Ranges exist
+                            if(rangeExists) //Ranges existing already, means we need to remove / merge the duplicates based on the indexes we found
                             {
                                 inputList.RemoveAt((i > j) ? i : j); //Remove the greatest index first, so we don't get an index error
                                 inputList.RemoveAt((i > j) ? j : i); //Remove the other index
