@@ -286,14 +286,13 @@ class DiceSet
                     new UiOption(()=>{EnterDiceCode(); throw new UiMenuRefreshException();},"&Enter Dice-List Code"), //Needs parenthesis (and a lambda by extension) because it has a parameter
                     new UiOption(()=>{Shuffle(); throw new UiMenuRefreshException();},"&Shuffle Dice Set"),
                     new UiOption(()=>{EnterDiceCode(false); throw new UiMenuRefreshException();},"&Add New Dice Using Dice-List Code"),
-                    new UiOption(()=>{Inp.GetInput("Not implemented"); throw new UiMenuRefreshException();},"&Delete Dice From List"),
+                    new UiOption(()=>{DeleteDice(); throw new UiMenuRefreshException();},"&Delete Dice From List"),
                     //new UiOption(()=>{},"&Set Dice List"), //Dice code makes this obsolete
                     new UiOption(()=>{DiceListToDefault(); throw new UiMenuRefreshException();},"&Reset Dice List to Default"),
                 }
             );
             refreshUi = diceListSettings.UiLoop(); //When a UiMenuRefreshException occurs, the list will be refreshed
         }while(refreshUi);
-            
     }
     //Ui Support Functions
     //Set to default dice list
@@ -396,6 +395,24 @@ class DiceSet
 
     //Add a new dice to the list
 
+    //Delete Dice using user input
+    public void DeleteDice()
+    {
+        PrintDiceList(); //Show the dice list
+        List<int[]> deletionIndexes = Inp.GetIntRangeInput("Enter the ranges of sides to delete (\"-\" to make a range, \",\" to seperate numbers): ",1,_diceList.Count,subtractNum:1);
+        for(int i = deletionIndexes.Count - 1; i >= 0; i--) //Reverse for loops go backwards so that the greatest item is removed first, to prevent index errors
+        {
+            for(int j = deletionIndexes[i][deletionIndexes[i].Length - 1]; j >= deletionIndexes[i][0]; j--) //Start at the end range, end when we are below the start range
+            {//j = deletionIndexesEnd, j >= deletionIndexesStart, go backwards
+                _diceList.RemoveAt(j); //Remove this dice from the dice list (Consider using removeAtRange)
+            }
+        }
+        if(_diceList.Count == 0) //If it's empty by the end
+        {
+            _diceList.Add(new Dice("?")); //Add ? to fill it
+        }
+    }
+
 
     //Mass Dice Modification
     //Set all dice by a copy of a dice object
@@ -444,12 +461,11 @@ class DiceSet
             FillToCount(_width * _height, Msc.ListCopy<Dice>(_diceList,(Dice inDice)=>{return new Dice(inDice);}).ToArray<Dice>()); //Use a copy of our own list to fill the array
         }
     }
-
+    //Boolean to quickly check the size, to make sure it's valid
     private bool CheckSize()
     {
         return _diceList.Count < (_width * _height);
     }
-
     //Fill the dice list to an integer
     //Fill using a list of dice
     public void FillToCount(int newDiceCount, params Dice[] inputDice) //Utilizes the params keyword, which lets us use each item as an individual parameter: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/params
@@ -464,6 +480,17 @@ class DiceSet
     {
         FillToCount(newDiceCount, new Dice(inputChars.ToList<char>(), 0, ' ', false)); //Convert input chars to a list to use to create a new dice to send to the original function
     }
+    //Display full dice list
+    private void PrintDiceList(string displayMsg = "Current Dice:")
+    {
+        Console.WriteLine(displayMsg);
+        for(int i = 0; i < _diceList.Count; i++)
+        {
+            Console.WriteLine($"{i+1}. Dice Sides: {_diceList[i].LettersToString()}");
+        }
+    }
+
     //Bit shifting
     //Compact a byte to 1 bit
+    //Will not be implemented
 }
