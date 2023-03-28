@@ -40,7 +40,7 @@ namespace QuickUtils
         public static void MergeRangeList(List<int[]> inputList) //Hopefully we'll be able to use list mutability to our advantage here
         {
             //inputList.Sort(); //Sort the input list first
-            for(int loadedIndex = 0; loadedIndex < inputList.Count; loadedIndex++)
+            for(int loadedIndex = 0; loadedIndex < inputList.Count; loadedIndex++) //Load each range item
             {
                 bool rangeDuplicate = false; //A boolean to track if the range exists
                 //Load start values
@@ -54,7 +54,7 @@ namespace QuickUtils
                 {
                     if(inputList.FindLastIndex((int[] inputArr) => {return inputArr == inputList[loadedIndex];}) == loadedIndex) //If the last index of the current item is i, it's unique
                     {
-                        if(checkIndex != loadedIndex) //Ignore testing the same range
+                        if(checkIndex != loadedIndex) //Ignore testing the same range against itself
                         {
                             //inputList.Sort(); //Sort the list first
                             int checkRangeStart = inputList[checkIndex][0]; //Get the first entry
