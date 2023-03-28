@@ -295,7 +295,7 @@ namespace QuickUtils
             //Display the UI options
             if(_clearConsole) //Added a flag to control if the console is cleared or not
             {
-                Console.Clear();
+                //Console.Clear(); //Displaying options shouldn't refresh the list
             }
             Console.WriteLine(_menuMsg); //Write the menu message
             for(int i = 0; i < _optionList.Count; i++)

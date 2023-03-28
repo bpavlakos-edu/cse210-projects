@@ -192,7 +192,7 @@ class Dice
             );
             refreshUi = diceSettingsMenu.UiLoop(()=>{Console.WriteLine("Current Sides: "+LettersToString());Console.WriteLine($"Side Count: {_sideList.Count}");}); //Refresh the UiMenu
         }
-        throw new UiMenuExitException();
+        throw new UiMenuRefreshException(); //Refresh the menu that this menu has been called from (the DiceSetSettings > Edit Dice List menu)
     }
     public void SimpleDiceCode()
     {
