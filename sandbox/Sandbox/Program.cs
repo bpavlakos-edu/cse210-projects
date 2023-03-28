@@ -3,6 +3,7 @@ using UiMenu = QuickUtils.UiMenu;
 using UiOption = QuickUtils.UiOption;
 using UiMenuExitException = QuickUtils.UiMenuExitException; //Exit exception for the menu to use
 using Inp = QuickUtils.Inputs; //Added for testing
+using Msc = QuickUtils.Misc; //Added to load files
 class Program
 {
     //Global Variables
@@ -151,7 +152,7 @@ class Program
                 SaveConfigStart();
             }
         } //This is not an error, it's intended behavior for when the file is missing
-        catch(IOException e){Console.WriteLine($"An IO Error has occured {e.ToString()}");}
+        catch(IOException e){Console.WriteLine($"A file loading Error has occured: {e.ToString()}");}
         catch(UnauthorizedAccessException){Console.WriteLine($"Unable to load file {path}, please try again with permissions");}
         catch(NotSupportedException e){Console.WriteLine($"This OS doesn't support opening files, {e.ToString()}");}
     }
@@ -165,11 +166,17 @@ class Program
         for(int offset = 0; offset < fileLines.Length;) //No increment here! It will be handled inside the loop
         {
             //use ref to pass offset to classes
-            //Load Game Mode Settings
-            for(int i = 0; i < _gameModeList.Count; i++)
+            //Load All Game Mode Settings
+            List<Type> GmModeTypes = Msc.ListMap<GameMode,Type>(_gameModeList,(GameMode gmItem) => {return gmItem.GetType();}); //Use the ListMap function to get each game mode's type
+            Dictionary<string,Type> GmTypesByString = new Dictionary<string, Type>(){{"gmClassic", new GmClassic().GetType()},{"gmRandom", new GmRandom().GetType()},{"gmBlink", new GmBlink().GetType()},{"gmGrow", new GameMode().GetType()},{"gmDecay", new GameMode().GetType()}}; //Create a dictionary containing each game modes type, it's accessible by string
+            while(Msc.ReadFileLine(fileLines, ref offset).Contains("GmName="))
             {
-                _gameModeList[i].LoadFromFile(fileLines, ref offset); //Use each game modes file load functions
+                offset--;
+                string gmName = Msc.ReadFileLine(fileLines, ref offset,"GmName="); //Load the Game Mode's name
+                
+                _gameModeList[0].LoadFromFile(fileLines, ref offset); //Use each game modes file load functions
             }
+            offset--;
         }
     }
     static void SaveConfigStart(string path = "doggle.cfg", bool silent = true)
@@ -179,6 +186,7 @@ class Program
             Inp.GetInput($"File Saved ({Environment.CurrentDirectory}\\doggle.cfg), Press Enter to Continue");
         }
     }
+
     //For testing basic functionality
     static void TestMode()
     {
