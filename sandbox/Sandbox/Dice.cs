@@ -186,7 +186,7 @@ class Dice
                 new List<UiOption>
                 {
                     new UiOption(SimpleDiceCode,"Edit With &Dice-Code"),
-                    new UiOption(()=>{},"Scramble Side &Order"),
+                    new UiOption(ScrambleSides,"Scramble Side &Order"),
                     new UiOption(()=>{},"&Replace Sides with Random Letters"),
                     new UiOption(()=>{throw new UiMenuExitException();},"Go &Back") //Go back to the previous menu
                 },
@@ -282,6 +282,18 @@ class Dice
         }
     }
     */
+    //Scramble the order of dice sides
+    public void ScrambleSides()
+    {
+        List<char> _newSideList = new List<char>(); //create a temporary list to store the sides we pick from the real list at random
+        while(_sideList.Count > 0) //Repeat until the original list is empty
+        {
+            int nextIndex = new Random().Next(0,_sideList.Count); //Pick the next index
+            _newSideList.Add(_sideList[nextIndex]); //Add the picked item
+            _sideList.RemoveAt(nextIndex); //Remove the picked index
+        }
+        _sideList = Msc.ListCopy<char>(_newSideList,(char inputChar)=>{return inputChar;}); //Copy the final list
+    }
     
 
     //Setting support function, used both internally and externally
