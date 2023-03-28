@@ -59,18 +59,11 @@ namespace QuickUtils
                             //inputList.Sort(); //Sort the list first
                             int testRangeStart = inputList[i][0]; //Get the first entry
                             int testRangeEnd = inputList[i][inputList[i].Length - 1]; //Get the last entry
-
-                            //Like in my python script, this is too complicated for full variable names so we need to simplify
                             //As my python code explained: "Just imagine they are horizontal lines parallel to eachother where if they overlap at all they are combined into one big line"
-                            int a = curRangeStart;
-                            int b = curRangeEnd;
-                            int c = testRangeStart;
-                            int d = testRangeEnd;
-
-                            if((a <= d && b >= c) || (a >= d && b <= c)) //"If the following line is within the range of the other line it will meet this condition"
+                            if((curRangeStart <= testRangeEnd && curRangeEnd >= testRangeStart) || (curRangeStart >= testRangeEnd && curRangeEnd <= testRangeStart)) //"If the following line is within the range of the other line it will meet this condition"
                             {
-                                newRangeStart = (a <= c) ? a : c; //Set new range start to the lowest value
-                                newRangeEnd = (b >= d) ? b : d; //Set new range end to the greatest value
+                                newRangeStart = (curRangeStart <= testRangeStart) ? curRangeStart : testRangeStart; //Set new range start to the lowest value
+                                newRangeEnd = (curRangeEnd >= testRangeEnd) ? curRangeEnd : testRangeEnd; //Set new range end to the greatest value
                                 rangeExists = true; //"Regardless of the results of the if statement the range is in one that exists, so this is true"
                             }
 
