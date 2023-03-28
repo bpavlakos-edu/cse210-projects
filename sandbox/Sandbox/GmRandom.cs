@@ -43,7 +43,7 @@ class GmRandom : GameMode
     //An override to change the gmName because the rest is the same
     public override void LoadFromFile(string[] fileLines, ref int offset, string gmName = "gmRandom")
     {
-        base.LoadFromFile(fileLines, ref offset, gmName);
+        base.LoadFromFile(fileLines, ref offset, "gmRandom");
     }
 
     //File Writing

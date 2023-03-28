@@ -97,6 +97,7 @@ class GmBlink : GameMode
     //Load from a file
     public override void LoadFromFile(string[] fileLines, ref int offset, string gmName = "gmBlink")
     {
+        gmName = "gmBlink";
         base.LoadFromFile(fileLines, ref offset, gmName); //Load the shared values from the original
         //Load all blink-specific fields
         _blinkMsecGap = int.Parse(Msc.ReadFileLine(fileLines, ref offset, $"{gmName}_hideMsecGap="));
