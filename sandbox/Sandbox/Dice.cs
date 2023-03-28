@@ -301,6 +301,11 @@ class Dice
     {
         SetSideList(new string('*',_sideList.Count));
     }
+    //Delete sides
+    public void DeleteSides()
+    {
+        Inp.GetInput("");
+    }
 
     //Setting support function, used both internally and externally
     public string LettersToString(char sepChar = '\u0000') //Default char value found here https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/char#literals

@@ -55,11 +55,11 @@ namespace QuickUtils /*Library name*/
                             //Use the ternary conditional operator to generate most of the strings, this saved us a few lines of code!
                             //See this site for info: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator
                             //Syntax: type myVar = (condition) ? valueIftrue : valueIfFalse;
-                            string minStr = (min != null) ? $"minimum {min}":"";
-                            string maxStr = (max != null) ? $"maximum {max}":"";
-                            string toStr = (min != null && max != null) ? " to ":"";
-                            string inTheRange = (min != null || max != null) ? $" in the range: {minStr}{toStr}{maxStr}. P":", p";
-                            Console.WriteLine($"Sorry that's not a valid number{inTheRange}lease try again!");
+                            string minStr = (min != null) ? $"minimum {min}" : "";
+                            string maxStr = (max != null) ? $"maximum {max}" : "";
+                            string toStr = (min != null && max != null) ? " to " : "";
+                            string inTheRange = (min != null || max != null) ? $" in the range: {minStr}{toStr}{maxStr}. P" : ", p";
+                            Console.WriteLine($"Sorry {returnVal} is not a valid number{inTheRange}lease try again!");
                         }
                     }
                     /*Funnel all invalid entries to FormatException*/
@@ -141,7 +141,7 @@ namespace QuickUtils /*Library name*/
                             string maxStr = (max != null) ? $"maximum {max}":"";
                             string toStr = (min != null && max != null) ? " to ":"";
                             string inTheRange = (min != null || max != null) ? $" in the range: {minStr}{toStr}{maxStr}. P":", p"; //Sorry that's not a valid decimal number in the range min to max, please try again!
-                            Console.WriteLine($"Sorry that's not a valid decimal number{inTheRange}lease try again!");
+                            Console.WriteLine($"Sorry {returnVal} is not a valid decimal number{inTheRange}lease try again!");
                         }
                     }
                     /*Funnel all invalid entries to FormatException*/
@@ -234,6 +234,18 @@ namespace QuickUtils /*Library name*/
                 }
             }
             return  GetInput(inMsg, toLower, newLine, curValue); //Default return value
+        }
+        public static int[] GetIntRangeInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int?[] curValue = null)
+        {
+            GetInput("");
+            return new int[]{1,2,3};
+        }
+
+        private static int? ProcessInt(string inputVal, int? min = null, int? max = null)
+        {
+            int? result = null;
+            
+            return result;
         }
     }
 }
