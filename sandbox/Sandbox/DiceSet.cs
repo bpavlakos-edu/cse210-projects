@@ -566,6 +566,10 @@ class DiceSet
     //File Writing
     public void WriteToFile(StreamWriter sWriter)
     {
-
+        sWriter.WriteLine($"diceSetSize={_width},{_height}"); ///Write the width and height
+        sWriter.WriteLine($"diceSetAllowAutoFill="+((_allowAutoFill) ? "true" : "false")); //Write the status of AllowAutoFill
+        sWriter.WriteLine($"diceSetAllowQu="+((_allowAutoFill) ? "true" : "false")); //Write the status of AllowQu
+        sWriter.WriteLine($"diceSetBorder="+((_diceBorder.Length == 2 && _diceBorder[0] == '\u0000' && _diceBorder[1] == '\u0000') ? "" : string.Join(',',_diceBorder))); //This ternary operator is confusing to look at, but it just writes "" when both are set to (char) 0, it only does this check when the length is 2 (to prevent index errors). Otherwise it writes the diceBorder seperated by "," [The only reason I have this is because the default value is '\u0000' and not null]
+        sWriter.WriteLine($"diceSetCode="+GenerateDiceListCode()); //Write the dice-set code, and the dice by extension
     }
 }
