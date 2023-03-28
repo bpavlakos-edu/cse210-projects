@@ -81,12 +81,14 @@ namespace QuickUtils
                         rangeExists = true; //The range definitely exists
                         inputList.RemoveAt(i); //Remove the item if it's not unique, the next one will automatically be tested
                     }
+                    inputList[i] = CleanRange(inputList[i]); //Sort this range entry
                     //When the range exists reset i to -1 (which will make it 0 after i++)
                     if(rangeExists)
                     {
                         i = -1; //Reset the loop (Which I couldn't do in a python for loop, this is nice!)
                     }
                 }
+                Sort2dList(inputList); //Sort the entire
             }
         }
         //Sort a 2d list using the last entry of each sub list
@@ -94,8 +96,8 @@ namespace QuickUtils
         {
             inputList.Sort((int[] a, int[] b) => {return (a.Last() >= b.Last()) ? 1 : -1;}); //Example where it tells you to use 1 and -1 to sort the lists is found here: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.sort?view=net-8.0#system-collections-generic-list-1-sort(system-comparison((-0)))
         }
-
-        private static int[] SortArr(int[] inputArr)
+        //Pick the highest number as the end, and the lowest number as the start, if they are identical merge them
+        private static int[] CleanRange(int[] inputArr)
         {
             if(inputArr.Length > 0)
             {
