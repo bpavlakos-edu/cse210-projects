@@ -45,7 +45,7 @@ class Program
             new UiOption(()=>{_gameModeList[2].Start(_mainDiceSet);},"Play the &Blink Game Mode"),
             new UiOption(ShowGmHelp,"Open the &Help Menu"),
             new UiOption(OptionsMenu,"Open the &Options Menu"),
-            new UiOption(()=>{throw new OperationCanceledException();},"&Exit")
+            new UiOption(()=>{throw new UiMenuExitException();},"&Exit")
         },
         $"Welcome to Doggle!{Environment.NewLine}Menu Options:",
         "Select a Game Mode or [hotkey] from the menu: ",
