@@ -563,8 +563,9 @@ class DiceSet
         LoadDiceListCode(Msc.ReadFileLine(fileLines, ref offset, "diceSetCode=")); //Load the diceList using the diceSetCode
     }
 
+    //File Writing
     public void WriteToFile(StreamWriter sWriter)
     {
-        
+
     }
 }

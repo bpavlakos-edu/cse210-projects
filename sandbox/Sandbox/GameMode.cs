@@ -165,12 +165,14 @@ class GameMode
     //File Loading
     public virtual void LoadFromFile(string[] fileLines, ref int offset, string gmName = "Null") //Use the reference type to update the offset ( https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#passing-an-argument-by-reference-an-example )
     {
-        _durationSec = int.Parse(Msc.ReadFileLine(fileLines, ref offset, $"{gmName}_durSec=")); //Store the countdown duration read from the file//gmName_durSec=getThisInteger
+        _durationSec = int.Parse(Msc.ReadFileLine(fileLines, ref offset, $"{gmName}_durationSec=")); //Store the countdown duration read from the file//gmName_durSec=getThisInteger
         _showCDown = Msc.ReadFileLine(fileLines, ref offset, $"{gmName}_showCountDown=").ToLower() != "false"; //Store the timer visiblity option value read from the file, treat unrecognized values as "true" //gmName_showCountDown=true
     }
     //When writing, write an extra line telling us what game mode this is
     public virtual void WriteToFile(StreamWriter sWriter, string gmName = "Null")
     {
-
+        sWriter.WriteLine($"GmName={gmName}");
+        sWriter.WriteLine($"{gmName}_durationSec={_durationSec}");
+        sWriter.WriteLine($"{gmName}_showCountDown=" + ((_showCDown) ? "true" : "false")); //Use the ternary operator to write true or false depending on what _showCDown is set to
     }
 }
