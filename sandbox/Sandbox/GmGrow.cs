@@ -53,11 +53,11 @@ class GmGrow : GameMode
     //An overrideable function call to the Grow method, so we can override it in decay
     protected virtual void GrowStart(DiceSet diceSetCopy, Func<bool> gmStatusCheck)
     {
-        Grow(diceSetCopy, gmStatusCheck, false, "growThread");
+        Grow(diceSetCopy, gmStatusCheck, true, "growThread");
     }
 
     //Actual Grow Functionality
-    protected void Grow(DiceSet diceSetCopy, Func<bool> gmStatusCheck, bool hiddenStateSet = false, string threadName = "growThread")
+    protected void Grow(DiceSet diceSetCopy, Func<bool> gmStatusCheck, bool hiddenStateSet = true, string threadName = "growThread")
     {
         //Calculate growth stages and durations
         int remainingDice = diceSetCopy.GetGridArea();
