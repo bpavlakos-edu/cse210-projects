@@ -161,17 +161,19 @@ class GameMode
                     {
                         if(Console.KeyAvailable) //The solution to avoiding the Console.ReadKey freeze here is to use console.KeyAvailable: https://stackoverflow.com/questions/14385044/console-readkey-canceling https://learn.microsoft.com/en-us/dotnet/api/system.console.keyavailable?view=net-7.0
                         {
-                            ConsoleKey ReadKey = Console.ReadKey(true).Key;
-                            if(ReadKey == ConsoleKey.X /* && !paused */)
+                            ConsoleKey ReadKey = Console.ReadKey(true).Key; //Console.readKey pauses the thread //Setting readkey to true hides it
+                            if(ReadKey == ConsoleKey.X /* && !paused */) //Exit sequence
                             {
                                 /* duration = new TimeSpan(0);
                                 paused = false; */
                                 exiting = true;
                                 exitAction(); //Activate the exit action
-
                             }
-                            paused = (ReadKey == ConsoleKey.P) ? !paused : paused; //Console.readKey pauses the thread //Flip the paused state if p is pressed, otherwise just keep it the same //Setting readkey to true hides it
-                            setPausedFunction(paused); //Update the callback parameter to update the paused state in the function that uses this timer
+                            else if(ReadKey == ConsoleKey.P) //if p is pressed
+                            {
+                                paused = !paused; //Flip the paused state , otherwise just keep it the same
+                                setPausedFunction(paused); //Update the callback parameter to update the paused state in the function that uses this timer
+                            }
                         }
                         Thread.Sleep(msecPerCheck); //If we don't restrict the while loop it will drive up CPU usage (it also gives a location to be interuppted)
                     }
