@@ -8,7 +8,7 @@ class Program
 {
     //Global Variables
     //static bool _autoSave = true;
-    static List<GameMode> _gameModeList = new List<GameMode>{new GmClassic(), new GmRandom(), new GmBlink(), new GmGrow()};
+    static List<GameMode> _gameModeList = new List<GameMode>{new GmClassic(), new GmRandom(), new GmBlink(), new GmGrow(), new GmDecay()};
     static DiceSet _mainDiceSet = new DiceSet(new List<Dice>
     {//Default dice list was digitized from a real boggle set
         new Dice(new List<char>{'N','G','M','A','N','E'}),
