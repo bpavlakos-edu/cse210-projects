@@ -144,19 +144,25 @@ class DiceSet
         return _diceBorder;
     }
     //Automatically handles null arrays, ignores entries in arrays larger than 2, and automatically duplicates arrays with length 1
-    public void SetDiceBorder(params char[] diceBorder)
+    public void SetDiceBorder(bool resetOnInvalid = true, params char[] diceBorder)
     {
         if(diceBorder != null && diceBorder.Length > 0) //Only assing
         {
             _diceBorder = (diceBorder.Length > 1) ? new char[]{diceBorder[0],diceBorder[1]} : new char[]{diceBorder[0],diceBorder[0]}; //Let an input of 1 char fill both slots, this will let the user type "|" to fill both, otherwise just fill using the first and second entry
         }
-        else
+        else if(resetOnInvalid)
         {
             _diceBorder = new char[]{'\u0000','\u0000'};
         }
+        //When reseting is disabled, ignore it
+    }
+    //Function overload to use only the diceBorder, which was the format before adding the resetOnInvalid flag
+    public void SetDiceBorder(params char[] diceBorder)
+    {
+        SetDiceBorder(true, diceBorder);
     }
     //Constructor to automatically handle string input of any kind
-    public void SetDiceBorder(string diceBorderString)
+    public void SetDiceBorder(string diceBorderString, bool resetOnInvalid = true)
     {
         char[] diceBorder = diceBorderString.Replace(",",null).Replace(" ",null).ToCharArray(); //Yes this is very confusing, but this lets us treat each character as one of the border entries, even if it's entered wrong. Because we have these rules the following is true: "[,]" == "[ ]" == "[]" == '[',']'
         SetDiceBorder(diceBorder);
@@ -230,8 +236,8 @@ class DiceSet
     {
         _updating = true; //Let asyncronous functions know we are updating
         Console.Clear(); //Clear the console
-        char dWallStart = (char) 0;
-        char dWallEnd = (char) 0;
+        char dWallStart = _diceBorder[0]; //Load from the settings
+        char dWallEnd = _diceBorder[1]; //Load from the settings
         bool hasQu = _allowQu && _diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';}); //"Exists" uses predicates (inline functions that return when a boolean is met) to search a list
         char[] newLineChars = Environment.NewLine.ToCharArray(); //Convert the newline 
         int newLineLength = newLineChars.Length; //Store the new line length so we don't need to repeatedly calculate it
@@ -298,7 +304,9 @@ class DiceSet
             new UiOption(GetWidth, SetWidth, "Grid &Width", 2), //Set Width
             new UiOption(GetHeight, SetHeight, "Grid &Height", 2), //Set Height
             new UiOption(GetGridSize, SetGridSize, "Grid &Size", 2), //Set Height
+            new UiOption(GetAllowAutoFill, SetAllowAutoFill,"&Auto-Fill Dice to Grid Size in Game Modes"), //Allow auto-filling dice set
             new UiOption(GetAllowQu, SetAllowQu,"&Qu Allowed"), //Allow Qu Setting
+            new UiOption(()=>{return new string(GetDiceBorder());}, (string inStr)=>{SetDiceBorder(inStr);},"D&ice Border"), //Dice border setting
             new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
         });
         diceSetSettings.UiLoop();
@@ -545,6 +553,16 @@ class DiceSet
         }
     }
 
+    //Enter Dice Border with user input
+    public void EnterDiceBorder()
+    {
+        string userInput = Inp.GetInput("Enter Dice Border Characters (Leave Blank to Cancel, Invalid values are Ignored): ");
+        if(userInput != "")
+        {
+            SetDiceBorder();
+        }
+    }
+
     //Bit shifting
     //Compact a byte to 1 bit
     //Will not be implemented
@@ -598,8 +616,6 @@ class DiceSet
             {
                 Inp.GetInput($"Error {e.ToString()}! Failed to Write {path}! Press enter to continue");
             }
-            
         }
-        
     }
 }
