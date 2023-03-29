@@ -63,6 +63,7 @@ class GmGrow : GameMode
         int cycle = _stages;
         int growCycleMsecGap = ((_durationSec * 1000) / _stages);
         int dicePerCycle = (remainingDice / _stages);
+        int finalCycle = ((hiddenStateStart) ? 1 : 0); //For grow, the final cycle is cylce 1, for decay the final cycle is 0
         //Store the current thread
         Thread growThread = Thread.CurrentThread;
         growThread.Name = threadName;
@@ -71,7 +72,7 @@ class GmGrow : GameMode
             diceSetCopy.SetAllVisibility(hiddenStateStart);
             while(!gmStatusCheck()) //Repeat until the game mode has ended, check this using the lambda function
             {
-                dicePerCycle = ((remainingDice - dicePerCycle) < 0 || (((remainingDice - dicePerCycle) > 0) && ((cycle - 1) == 1))) ? remainingDice : dicePerCycle; //Use a ternary operator to detect if the next cycle will be negative
+                dicePerCycle = ((remainingDice - dicePerCycle) < 0 || (((remainingDice - dicePerCycle) > 0) && ((cycle - 1) == finalCycle))) ? remainingDice : dicePerCycle; //Use a ternary operator to detect if the next cycle will be negative
                 diceSetCopy.RandomQueryRun(dicePerCycle,
                     (Dice diceToCheck)=>{return diceToCheck.GetHidden() == hiddenStateStart;}, //Only accept dice that don't match the current state
                     (Dice diceToSet)=>{diceToSet.SetHidden(!hiddenStateStart);} //
