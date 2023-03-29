@@ -77,7 +77,7 @@ namespace QuickUtils /*Library name*/
                     }
                     catch(OverflowException){throw new FormatException();}
                 }
-                catch(FormatException e)
+                catch(FormatException)
                 {
                     Console.WriteLine("Sorry! That's not a valid number, please try again!"); //Figure out why empty strings are going here and not to agument null
                 }
