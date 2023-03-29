@@ -32,7 +32,7 @@ namespace QuickUtils /*Library name*/
         }
         
         //Integer Input
-        public static int? GetIntInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int? curValue = null, bool allowEmpty = false)
+        public static int? GetIntInput(bool allowEmpty, string inMsg, int? min = null, int? max = null, bool newLine = false, int? curValue = null)
         {   
             while(true) //Infinite loop
             {
@@ -83,7 +83,7 @@ namespace QuickUtils /*Library name*/
         }
         public static int GetIntInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int? curValue = null)
         {
-            return (int) GetIntInput(inMsg, min, max, newLine, curValue, false);
+            return (int) GetIntInput(false, inMsg, min, max, newLine, curValue);
         }
         //Integer input with a maximum
         public static int GetIntInputMax(string inMsg, int max, bool newLine = false, int? curValue = null)

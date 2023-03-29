@@ -149,7 +149,7 @@ class Program
                     "Set All &Timer Length in Seconds"),
                     new UiOption(() => 
                     {
-                        showCDown = Inp.GetBoolInput("Please enter the new duration (leave blank to cancel): ",curValue:null);
+                        showCDown = Inp.GetBoolInput(false,"Please enter the new duration (leave blank to cancel): ",curValue:null);
                     },
                     "Set All &Timer Length in Seconds"),
                 }
