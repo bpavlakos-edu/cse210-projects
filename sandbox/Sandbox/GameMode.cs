@@ -59,14 +59,17 @@ class GameMode
         do
         {
             DiceSet diceSetCopy = new DiceSet(curDiceSet, false); //Copy the current dice set so the main dice set isn't modified during the game mode
-            Console.CursorVisible = false; //Hide the cursor
+            Console.CursorVisible = false; //Hide the cursor (Okay, this is actually out of my control, and a know issue with dotnet: https://github.com/dotnet/runtime/issues/31063 )
+            //int cursorSize = Console.CursorSize;
+            //Console.CursorSize = 1;
             Console.Write("");//Flush the buffer to ensure the cursor visibility is updated
             try
             {
                 GameLoop(diceSetCopy); //Start the Game Mode Loop
             }
-            catch(UiMenuExitException){} //Exit immediately when the user requests an early exit
+            catch(ThreadInterruptedException){} //Exit immediately when the user requests an early exit
             Console.CursorVisible = true; //Show the cursor
+            //Console.CursorSize = cursorSize; //Reload the cursor size
             ShowEndMsg(diceSetCopy); //Print the end message when it finishes
         }
         while(Inp.GetBoolInput("Would you like to play again?: ", curValue:false, hideCurValue:true) == true); //Repeat until the user says they are finished. This input configuartion will default to false if it's left blank
