@@ -46,7 +46,7 @@ class Program
             new UiOption(()=>{_gameModeList[1].Start(_mainDiceSet);},"Play the &Random Game Mode"),
             new UiOption(()=>{_gameModeList[2].Start(_mainDiceSet);},"Play the &Blink Game Mode"),
             new UiOption(()=>{_gameModeList[3].Start(_mainDiceSet);},"Play the &Grow Game Mode"),
-            //new UiOption(()=>{_gameModeList[4].Start(_mainDiceSet);},"Play the &Decay Game Mode"),
+            new UiOption(()=>{_gameModeList[4].Start(_mainDiceSet);},"Play the &Decay Game Mode"),
             new UiOption(ShowGmHelp,"Open the &Help Menu"),
             new UiOption(OptionsMenu,"Open the &Options Menu"),
             new UiOption(()=>{throw new UiMenuExitException();},"&Exit")
@@ -70,7 +70,7 @@ class Program
                 new UiOption(_gameModeList[1].DisplayHelp,"About the &Random Game Mode"),
                 new UiOption(_gameModeList[2].DisplayHelp,"About the Bli&nk Game Mode"),
                 new UiOption(_gameModeList[3].DisplayHelp,"About the &Grow Game Mode"),
-                //new UiOption(_gameModeList[4].DisplayHelp,"About the &Decay Game Mode"),
+                new UiOption(_gameModeList[4].DisplayHelp,"About the &Decay Game Mode"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             }
         );
@@ -106,7 +106,7 @@ class Program
                 new UiOption(_gameModeList[1].OpenSettings,"&Random Mode Options"),
                 new UiOption(_gameModeList[2].OpenSettings,"Bli&nk Mode Options"),
                 new UiOption(_gameModeList[3].OpenSettings,"&Grow Mode Options"),
-                //new UiOption(_gameModeList[4].OpenSettings,"&Decay Mode Options"),
+                new UiOption(_gameModeList[4].OpenSettings,"&Decay Mode Options"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             },
             "Game Mode Options:",
@@ -198,7 +198,7 @@ class Program
             //use ref to pass offset to classes
             //Load All Game Mode Settings
             List<Type> GmModeTypes = Msc.ListMap<GameMode,Type>(_gameModeList,(GameMode gmItem) => {return gmItem.GetType();}); //Use the ListMap function to get each game mode's type
-            Dictionary<string,Type> GmTypesByString = new Dictionary<string, Type>(){{"gmClassic", new GmClassic().GetType()},{"gmRandom", new GmRandom().GetType()},{"gmBlink", new GmBlink().GetType()},{"gmGrow", new GmGrow().GetType()},/*{"gmDecay", new GameMode().GetType()}*/}; //Create a dictionary containing each game modes type, it's accessible by string
+            Dictionary<string,Type> GmTypesByString = new Dictionary<string, Type>(){{"gmClassic", new GmClassic().GetType()},{"gmRandom", new GmRandom().GetType()},{"gmBlink", new GmBlink().GetType()},{"gmGrow", new GmGrow().GetType()},{"gmDecay", new GmDecay().GetType()}}; //Create a dictionary containing each game modes type, it's accessible by string
             while(Msc.ReadFileLine(fileLines, ref offset).Contains("GmName=")) //Repeat this block until the next line isn't "GmName="
             {
                 try
