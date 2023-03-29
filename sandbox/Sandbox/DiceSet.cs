@@ -543,6 +543,23 @@ class DiceSet
     {
         FillToCount(newDiceCount, new Dice(inputChars.ToList<char>(), 0, ' ', false)); //Convert input chars to a list to use to create a new dice to send to the original function
     }
+
+    //Query a number of dice that meet the required predicate, then run the action on them
+    public void RandomQueryRun(int maxDiceCount, Predicate<Dice> diceFilter, Action<Dice> diceAction)
+    {
+        List<Dice> filteredList = _diceList.FindAll(diceFilter); //Filter using the predicate
+        //Shuffle the dice list
+        List<Dice> shuffledList = new List<Dice>();
+        while(filteredList.Count > 0 && shuffledList.Count < maxDiceCount) //Continue until we either meet the max dice count or we run out of items in the filter list
+        {
+            int randomIdx = new Random().Next(filteredList.Count); //Pick an index from the list at random
+            shuffledList.Add(filteredList[randomIdx]); //Add the randomly picked item from the filter list to the shuffle list
+            filteredList.RemoveAt(randomIdx); //Delete the randomly picked item from the filtered list
+        }
+        //Use the dice action on each of the members
+        shuffledList.ForEach(diceAction);
+    }
+
     //Display full dice list
     private void PrintDiceList(string displayMsg = "Current Dice:")
     {

@@ -40,10 +40,10 @@ class GmGrow : GameMode
         //This is a little complicated because both threads need to be able to draw at the same time, luckily the grid size is fixed we theoretically can force them to write to the correct positions
         bool hasEnded = false; //Flag to send to the blink thread
         Thread timerThread = new Thread(()=>{CountDownSec(_durationSec);}); //Create a thread that calls the timer function
-        Thread blinkThread = new Thread(()=>{GrowStart(diceSetCopy,()=>{return hasEnded;});}); //Create a thread for blinking, yes that's two lambdas, one to put the function in the thread, the other is the Func<bool> parameter in the function we are calling, we use lambdas to pass parameters, since including them would store the result of the function not the function call (which is what we want)
+        Thread growThread = new Thread(()=>{GrowStart(diceSetCopy,()=>{return hasEnded;});}); //Create a thread for blinking, yes that's two lambdas, one to put the function in the thread, the other is the Func<bool> parameter in the function we are calling, we use lambdas to pass parameters, since including them would store the result of the function not the function call (which is what we want)
         
         diceSetCopy.RollAll(); //Roll all the dice, which will display them
-        blinkThread.Start(); //Start the blink thread first, so the timer isn't cleared
+        growThread.Start(); //Start the blink thread first, so the timer isn't cleared
         timerThread.Start(); //Start the timer thread
         
         bool threadEndedOnTime = timerThread.Join(_durationSec * 1000); //Join by the duration specified for this game mode, store whether it Joined in time into a boolean
@@ -56,9 +56,10 @@ class GmGrow : GameMode
         Grow(diceSetCopy, gmStatusCheck, false);
     }
 
+    //Actual Grow Functionality
     protected void Grow(DiceSet diceSetCopy, Func<bool> gmStatusCheck, bool inverse = false)
     {
-
+        
     }
 
     //Utility
