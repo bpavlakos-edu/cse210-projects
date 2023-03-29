@@ -32,7 +32,7 @@ namespace QuickUtils /*Library name*/
         }
         
         //Integer Input
-        public static int GetIntInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int? curValue = null)
+        public static int? GetIntInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int? curValue = null, bool allowEmpty = false)
         {   
             while(true) //Infinite loop
             {
@@ -67,9 +67,9 @@ namespace QuickUtils /*Library name*/
                     /*Funnel all invalid entries to FormatException*/
                     catch(ArgumentNullException) //Check argument null exceptions
                     {
-                        if(curValue != null) //Return curValue when curValue isn't null
+                        if(curValue != null || allowEmpty) //Return curValue when curValue isn't null
                         {
-                            return (int) curValue; //Why do I need to type cast this?
+                            return curValue; //Why do I need to type cast this?
                         }
                         throw new FormatException(); //If there's no current value, act like all the other exceptions
                     }
@@ -80,6 +80,10 @@ namespace QuickUtils /*Library name*/
                     Console.WriteLine("Sorry! That's not a valid number, please try again!");
                 }
             }
+        }
+        public static int GetIntInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int? curValue = null)
+        {
+            return (int) GetIntInput(inMsg, min, max, newLine, curValue, false);
         }
         //Integer input with a maximum
         public static int GetIntInputMax(string inMsg, int max, bool newLine = false, int? curValue = null)
@@ -165,7 +169,7 @@ namespace QuickUtils /*Library name*/
         }
 
         //Boolean input
-        public static bool GetBoolInput(string inMsg, char yesChar = 'y', char noChar = 'n', bool newLine = false, bool? curValue = null, bool hideCurValue = false)
+        public static bool? GetBoolInput(bool acceptBlank, string inMsg, char yesChar = 'y', char noChar = 'n', bool newLine = false, bool? curValue = null, bool hideCurValue = false)
         {
 
             while(true) //Infinite loop
@@ -181,9 +185,21 @@ namespace QuickUtils /*Library name*/
                 }
                 else //Unrecognized input
                 {
-                    Console.WriteLine("Sorry! That's not a valid input, please try again!");
+                    if(acceptBlank && userInput == "")
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Sorry! That's not a valid input, please try again!");
+                    }
                 }
             }
+        }
+        //Old Method call header / Force Non-Null Return
+        public static bool GetBoolInput(string inMsg, char yesChar = 'y', char noChar = 'n', bool newLine = false, bool? curValue = null, bool hideCurValue = false)
+        {
+            return (bool) GetBoolInput(false, inMsg, yesChar, noChar, newLine, curValue, hideCurValue);
         }
 
         //List input

@@ -139,8 +139,21 @@ class Program
         {
             int? durationSec = null;
             bool? showCDown = null;
-            GameMode _mainGm = new GameMode(); //Create a new instance of GameMode with the current global settings
-            _mainGm.OpenSettings(); //Open the settings
+            UiMenu _allGmMenu = new UiMenu(
+                new List<UiOption>
+                {
+                    new UiOption(() => 
+                    {
+                        durationSec = Inp.GetIntInput("Please enter the new duration (leave blank to cancel): ", 1, null, false, -1);
+                    },
+                    "Set All &Timer Length in Seconds"),
+                    new UiOption(() => 
+                    {
+                        showCDown = Inp.GetBoolInput("Please enter the new duration (leave blank to cancel): ",curValue:null);
+                    },
+                    "Set All &Timer Length in Seconds"),
+                }
+            );
             //Todo: Find a way to only apply settings if they are changed, so default values don't overwrite custom ones
             for(int i = 0; i < _gameModeList.Count; i++)
             {
