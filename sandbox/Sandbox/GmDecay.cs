@@ -27,7 +27,7 @@ class GmDecay : GmGrow
     //An override to change the MakeSettingsMenu message, all the other variables are the same
     protected override UiMenu MakeSettingsMenu(string menuMsg="Decay Mode Settings:")
     {
-        UiMenu settingsMenu = base.MakeSettingsMenu(menuMsg); //Get the original menu, using the new default parameter
+        UiMenu settingsMenu = base.MakeSettingsMenu("Decay Mode Settings:"); //Get the original menu, using the new default parameter
         //Add the new settings at the end before
         settingsMenu.RemoveOptionFromEnd(1); //Remove the grow option
         settingsMenu.AddOptionFromEnd(new UiOption(GetStages, SetStages, "De&cay Stages", 2), 1);
