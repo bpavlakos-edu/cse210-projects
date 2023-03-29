@@ -106,28 +106,36 @@ class GameMode
     //Utility
     protected void CountDown(int msecDuration, int refreshMsecDelay = 1000)
     {
-        bool paused = false;
-        if(_showCDown) //Check the show countdown setting, to make sure we need to display anything
+        try
         {
-            Console.CursorVisible = false; //Disable the cursor marker [Credit: http://dontcodetired.com/blog/post/Creating-a-Spinner-Animation-in-a-Console-Application-in-C ] [Microsoft Docs: http://msdn.microsoft.com/en-us/library/system.console.cursorvisible%28v=vs.110%29.aspx ]
-            int strBufferSize = 0; //Use this to keep track of the previous string's length
-            for(int remainingTimeMsec = (msecDuration - (msecDuration % refreshMsecDelay)); remainingTimeMsec > 0; remainingTimeMsec -= refreshMsecDelay) //Use a for loop to calculate the remaining time, it starts at the msecDuration with any leftover miliseconds that don't fit into the refresh rate removed, every loop cycle it updates the remaining time by subtracting the refreshDelay
+            bool paused = false;
+            UiMenuExitException exitException = new UiMenuExitException(); //Exit exception is stored here so it can be triggered inside a lambda
+            if(_showCDown) //Check the show countdown setting, to make sure we need to display anything
             {
-                long cycleStartTime = DateTime.Now.Ticks; //Capture the start time
+                Console.CursorVisible = false; //Disable the cursor marker [Credit: http://dontcodetired.com/blog/post/Creating-a-Spinner-Animation-in-a-Console-Application-in-C ] [Microsoft Docs: http://msdn.microsoft.com/en-us/library/system.console.cursorvisible%28v=vs.110%29.aspx ]
+                int strBufferSize = 0; //Use this to keep track of the previous string's length
+                for(int remainingTimeMsec = (msecDuration - (msecDuration % refreshMsecDelay)); remainingTimeMsec > 0; remainingTimeMsec -= refreshMsecDelay) //Use a for loop to calculate the remaining time, it starts at the msecDuration with any leftover miliseconds that don't fit into the refresh rate removed, every loop cycle it updates the remaining time by subtracting the refreshDelay
+                {
+                    long cycleStartTime = DateTime.Now.Ticks; //Capture the start time
 
-                string tStr = TicksToTimerStr(remainingTimeMsec * 10000); //multiply remaining time by 10,000 to get ticks, then use it to get the countdown string
-                int newBufferSize = tStr.Length; //Store the new strings length, because we're going to change it next
-                tStr = (strBufferSize > tStr.Length) ? (tStr + new string(' ', strBufferSize - tStr.Length)) : tStr; //Add gaps to overwrite the previous timer if the length isn't the same. Using the ternary operator, do this only if the last string length is greater than the current string length
-                Console.Write(tStr + new String('\b', (strBufferSize >= tStr.Length) ? strBufferSize : tStr.Length)); //Write the timer string, make sure to backspace (using '\b') everything (including the extra spaces) so the next timer string overwrites this one. Use the ternary operator to detect when the new string's length is longer than the original so it can backspace with that instead
-                strBufferSize = newBufferSize; //Update the buffer size, so the next timer string has an accurate length to overwrite
-                TimeSpan SleepDuration = (new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - cycleStartTime))); //Calculate the remaining time we have until the next cycle and sleep by that amount of time
-                PausedSleep(paused, SleepDuration, (bool pauseStatus) => {paused = true; WritePauseStatus(pauseStatus);}, () => {throw new UiMenuExitException();}); //Use the new pauseable timer
+                    string tStr = TicksToTimerStr(remainingTimeMsec * 10000); //multiply remaining time by 10,000 to get ticks, then use it to get the countdown string
+                    int newBufferSize = tStr.Length; //Store the new strings length, because we're going to change it next
+                    tStr = (strBufferSize > tStr.Length) ? (tStr + new string(' ', strBufferSize - tStr.Length)) : tStr; //Add gaps to overwrite the previous timer if the length isn't the same. Using the ternary operator, do this only if the last string length is greater than the current string length
+                    Console.Write(tStr + new String('\b', (strBufferSize >= tStr.Length) ? strBufferSize : tStr.Length)); //Write the timer string, make sure to backspace (using '\b') everything (including the extra spaces) so the next timer string overwrites this one. Use the ternary operator to detect when the new string's length is longer than the original so it can backspace with that instead
+                    strBufferSize = newBufferSize; //Update the buffer size, so the next timer string has an accurate length to overwrite
+                    TimeSpan SleepDuration = (new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - cycleStartTime))); //Calculate the remaining time we have until the next cycle and sleep by that amount of time
+                    PausedSleep(paused, SleepDuration, (bool pauseStatus) => {paused = true; WritePauseStatus(pauseStatus);}, () => {throw new UiMenuExitException();}); //Use the new pauseable timer
+                }
+                Console.CursorVisible = true; //Timer has ended, restore console cursor visibility
             }
-            Console.CursorVisible = true; //Timer has ended, restore console cursor visibility
+            else //Simple thread sleep for the requested duration
+            {
+                PausedSleep(paused, new TimeSpan(0,0,0,0,msecDuration), (bool pauseStatus)=>{paused = true; WritePauseStatus(pauseStatus);},() => {throw exitException;});
+            }
         }
-        else //Simple thread sleep for the requested duration
+        catch(UiMenuExitException)
         {
-            PausedSleep(paused, new TimeSpan(0,0,0,0,msecDuration), (bool pauseStatus)=>{paused = true; WritePauseStatus(pauseStatus);},() => {throw new UiMenuExitException();});
+
         }
     }
 
