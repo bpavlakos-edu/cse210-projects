@@ -75,7 +75,7 @@ class Program
                 new UiOption(_gameModeList[4].DisplayHelp,"About the &Decay Game Mode"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             },
-            "Help Menu:"
+            "Main Menu > Help Menu:"
         );
         _helpMenu.UiLoop();
     }
@@ -102,7 +102,7 @@ class Program
                 new UiOption(_mainDiceSet.OpenSettings,"Open the &Dice-Set Options Menu"),
                 new UiOption(SaveConfigOption,"&Save Config File"),
                 new UiOption(LoadConfigOption,"&Load Config File"),
-                new UiOption(()=>{return _autoSave;},(bool newVal)=>{_autoSave = newVal;},"&Auto Save Config File on Settings Exit"),
+                new UiOption(()=>{return _autoSave;},(bool newVal)=>{_autoSave = newVal;},"Allow &Auto Save Config File when Exiting Options"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             },
             "Main Menu > Options:",
