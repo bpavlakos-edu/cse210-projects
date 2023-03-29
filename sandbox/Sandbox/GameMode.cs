@@ -107,6 +107,7 @@ class GameMode
     protected void CountDown(int msecDuration, int refreshMsecDelay = 1000)
     {
         Thread countDownThread = Thread.CurrentThread;
+        countDownThread.Name = "countDownThread";
         try
         {
             bool paused = false;
