@@ -51,7 +51,7 @@ class Program
             new UiOption(OptionsMenu,"Open the &Options Menu"),
             new UiOption(()=>{throw new UiMenuExitException();},"&Exit")
         },
-        $"Welcome to Doggle!{Environment.NewLine}Menu Options:",
+        $"Welcome to Doggle!{Environment.NewLine}Main Menu:",
         "Select a Game Mode or [hotkey] from the menu: ",
         "Thank you for playing!"
         //Use default settings for the other parameters
@@ -74,7 +74,8 @@ class Program
                 new UiOption(_gameModeList[3].DisplayHelp,"About the &Grow Game Mode"),
                 new UiOption(_gameModeList[4].DisplayHelp,"About the &Decay Game Mode"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
-            }
+            },
+            "Help Menu:"
         );
         _helpMenu.UiLoop();
     }
@@ -101,7 +102,7 @@ class Program
                 new UiOption(_mainDiceSet.OpenSettings,"Open the &Dice-Set Options Menu"),
                 new UiOption(SaveConfigOption,"&Save Config File"),
                 new UiOption(LoadConfigOption,"&Load Config File"),
-                new UiOption(()=>{return _autoSave;},(bool newVal)=>{_autoSave = newVal;},"Exit Settings Menu to &Auto Save Config File"),
+                new UiOption(()=>{return _autoSave;},(bool newVal)=>{_autoSave = newVal;},"&Auto Save Config File on Settings Exit"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             },
             "Options:",
@@ -128,7 +129,7 @@ class Program
                 new UiOption(_gameModeList[4].OpenSettings,"&Decay Mode Options"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             },
-            "Game Mode Options:",
+            "Game Mode Main Options:",
             "Select a game mode or [hotkey] from the menu: ",
             ""
         );
