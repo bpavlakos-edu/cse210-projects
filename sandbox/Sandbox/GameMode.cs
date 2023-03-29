@@ -59,9 +59,10 @@ class GameMode
         do
         {
             DiceSet diceSetCopy = new DiceSet(curDiceSet, false); //Copy the current dice set so the main dice set isn't modified during the game mode
+            Console.CursorVisible = false; //Hide the cursor
+            Console.Write("");//Flush the buffer to ensure the cursor visibility is updated
             try
             {
-                Console.CursorVisible = false; //Hide the cursor
                 GameLoop(diceSetCopy); //Start the Game Mode Loop
             }
             catch(UiMenuExitException){} //Exit immediately when the user requests an early exit
