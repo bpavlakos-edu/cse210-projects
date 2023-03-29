@@ -7,7 +7,7 @@ using Msc = QuickUtils.Misc; //Added to load files
 class Program
 {
     //Global Variables
-    //static bool _autoSave = true;
+    static bool _autoSave = true;
     static List<GameMode> _gameModeList = new List<GameMode>{new GmClassic(), new GmRandom(), new GmBlink(), new GmGrow(), new GmDecay()};
     static DiceSet _mainDiceSet = new DiceSet(new List<Dice>
     {//Default dice list was digitized from a real boggle set
@@ -81,6 +81,7 @@ class Program
     //Hints
     static void ControlHints()
     {
+        Console.WriteLine("You can change both dice grid dimensions at once using the \"Grid Size\" setting in the Dice Menu");
         Console.WriteLine("Press \"P\" to pause or unpause the timer");
         Console.WriteLine("Press \"X\" to end the game early");
         Console.WriteLine("Change game mode settings to match your preferences");
@@ -100,7 +101,7 @@ class Program
                 new UiOption(_mainDiceSet.OpenSettings,"Open the &Dice-Set Options Menu"),
                 new UiOption(SaveConfigOption,"&Save Config File"),
                 new UiOption(LoadConfigOption,"&Load Config File"),
-                //new UiOption(()=>{return _autoSave;},(bool newVal)=>{_autoSave = newVal;},"&Auto Save"),
+                new UiOption(()=>{return _autoSave;},(bool newVal)=>{_autoSave = newVal;},"Exit Settings Menu to &Auto Save Config File"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             },
             "Options:",
@@ -108,6 +109,10 @@ class Program
             ""
         );
         _rootOptionsMenu.UiLoop();
+        if(_autoSave)
+        {
+            SaveConfigFile();
+        }
     }
     //Pick which Game Mode to open the settings menu for (All, Classic, Random, or Blink)
     static void GameModeOptionsMenu()
