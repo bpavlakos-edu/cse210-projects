@@ -75,19 +75,20 @@ class GmBlink : GameMode
     //Accepts the current dice set so we have access to randomHide, accepts a function to check if the game has ended or not
     private void Blink(DiceSet curDiceSet, Func<bool> gmStatusCheck)
     {
-        Thread.CurrentThread.Name = "blinkThread";
+        Thread blinkThread = Thread.CurrentThread;
+        blinkThread.Name = "blinkThread";
         try
         {
             bool exitFlag = false; //A variable to pass to the pausable timespan
             while(!gmStatusCheck() && !exitFlag) //Repeat until the game mode has ended, check this using the lambda function
             {
                 curDiceSet.RandomHide(_blinkRanChance, _blinkRanChanceMax); //Trigger random hiding using the settings this game mode currently has
-                PausedSleep(false,new TimeSpan(0,0,0,_blinkMsecGap),(bool inBool)=>{},()=>{exitFlag = true; throw new ThreadInterruptedException();}); //Use paused sleep, but only fill the exit action, because that's all we need to exit this thread
+                PausedSleep(false,new TimeSpan(0,0,0,0,_blinkMsecGap),(bool inBool)=>{},()=>{exitFlag = true; blinkThread.Interrupt();}); //Use paused sleep, but only fill the exit action, because that's all we need to exit this thread
             }
         }
         catch(ThreadInterruptedException)
         {
-            return;
+            blinkThread.Interrupt();
         }
     }
 
