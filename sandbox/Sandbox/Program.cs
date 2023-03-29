@@ -144,16 +144,18 @@ class Program
                 {
                     new UiOption(() => 
                     {
-                        durationSec = Inp.GetIntInput(false,"Please enter the new duration (leave blank to cancel): ", 1, null);
+                        durationSec = Inp.GetIntInput(true,"Please enter the new duration (leave blank to cancel): ", 1, null);
                     },
                     "Set &Timer Length in Seconds for All Game Modes"),
                     new UiOption(() => 
                     {
-                        showCDown = Inp.GetBoolInput(false,"Please enter the new duration (leave blank to cancel): ",curValue:null);
+                        showCDown = Inp.GetBoolInput(true,"Please enter the new duration (leave blank to cancel): ",curValue:null);
                     },
                     "Enable or Disable Timer &Display for All Game Modes"),
                     new UiOption(() => {throw new UiMenuExitException();},"Go &Back") //Give us the exit option
-                }
+                },
+                "All Game Mode Options:",
+                exitMsg:"" //Get rid of the exit message
             );
             _allGmSettingsMenu.UiLoop(); //Open the menu
             //Todo: Find a way to only apply settings if they are changed, so default values don't overwrite custom ones

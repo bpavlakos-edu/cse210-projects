@@ -40,7 +40,9 @@ namespace QuickUtils /*Library name*/
                 {
                     try //Exception funnel
                     {
-                        int returnVal = int.Parse(GetInput(inMsg, true, newLine, (curValue != null) ? curValue + "":null)); //Parse the input (This ternary codition prevents null from being turned into a string, while also letting us turn int into a string)
+                        string userInput = GetInput(inMsg, true, newLine, (curValue != null) ? curValue + "":null);
+                        if(userInput == ""){throw new ArgumentNullException();} //Detect empty strings
+                        int returnVal = int.Parse(userInput); //Parse the input (This ternary codition prevents null from being turned into a string, while also letting us turn int into a string)
                         //Determine if the value is in our boundaries
                         if(min == null && max == null) //No boundaries
                         {
@@ -75,9 +77,9 @@ namespace QuickUtils /*Library name*/
                     }
                     catch(OverflowException){throw new FormatException();}
                 }
-                catch(FormatException)
+                catch(FormatException e)
                 {
-                    Console.WriteLine("Sorry! That's not a valid number, please try again!");
+                    Console.WriteLine("Sorry! That's not a valid number, please try again!"); //Figure out why empty strings are going here and not to agument null
                 }
             }
         }
