@@ -149,6 +149,7 @@ class GameMode
     {
         bool paused = false;
         bool timerEnded = false;
+        bool exiting = false;
         //The primary reason why this is here and not in it's own function is so that it can access both paused and set paused function easily
         Thread pauseThread = new Thread(()=>
             {
@@ -163,6 +164,7 @@ class GameMode
                             {
                                 /* duration = new TimeSpan(0);
                                 paused = false; */
+                                exiting = true;
                                 exitAction(); //Activate the exit action
 
                             }
@@ -174,7 +176,11 @@ class GameMode
                 }
                 catch(ThreadInterruptedException)
                 {
-                    exitAction(); //Return to main thread when interrupt is ordered, activate the exit action for the third time!
+                    if(exiting)
+                    {
+                        exiting = false;
+                        exitAction(); //Return to main thread when interrupt is ordered, activate the exit action for the third time!
+                    }
                 }
             }
         );
