@@ -82,13 +82,15 @@ class Program
     //Hints
     static void ControlHints()
     {
-        Console.WriteLine("You can change both dice grid dimensions at once using the \"Grid Size\" setting in the Dice Menu");
-        Console.WriteLine("Press \"P\" to pause or unpause the timer");
-        Console.WriteLine("Press \"X\" to end the game early");
+        Console.WriteLine("Controls and Hints:");
+        Console.WriteLine("Press \"P\" to pause or unpause the timer, even if it's not visible");
+        Console.WriteLine("Press \"X\" to end a game early");
         Console.WriteLine("Change game mode settings to match your preferences");
+        Console.WriteLine("You can change both dice grid dimensions at once using the \"Grid Size\" setting in the Dice Menu");
         Console.WriteLine("You can manually save your settings to a file");
         Console.WriteLine("The default configuration file will be loaded when the program starts");
         Console.WriteLine("The default configuration file will be saved when the program ends");
+        Console.WriteLine("The default configuration auto saves when exiting the options menu, unless you disable the option for it");
         Console.WriteLine("");
         Inp.GetInput("Press enter to continue");
     }
