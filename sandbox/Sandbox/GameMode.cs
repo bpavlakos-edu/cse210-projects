@@ -61,9 +61,11 @@ class GameMode
             DiceSet diceSetCopy = new DiceSet(curDiceSet, false); //Copy the current dice set so the main dice set isn't modified during the game mode
             try
             {
+                Console.CursorVisible = false; //Hide the cursor
                 GameLoop(diceSetCopy); //Start the Game Mode Loop
             }
             catch(UiMenuExitException){} //Exit immediately when the user requests an early exit
+            Console.CursorVisible = true; //Show the cursor
             ShowEndMsg(diceSetCopy); //Print the end message when it finishes
         }
         while(Inp.GetBoolInput("Would you like to play again?: ", curValue:false, hideCurValue:true) == true); //Repeat until the user says they are finished. This input configuartion will default to false if it's left blank
