@@ -9,6 +9,7 @@ class GameMode
     protected int _durationSec = 180; //Game mode duration
     protected bool _showCDown = true; //Flag to control whether to display a timer or not
     protected string _desc = ""; //Game mode description for the help menu, shouldn't really be changed
+    protected bool _paused = false; //This is not an externally accessible property, it's a global variable for threaded functions
 
     //Constructors
     //Blank Constructor
@@ -110,7 +111,7 @@ class GameMode
         countDownThread.Name = "countDownThread";
         try
         {
-            bool paused = false;
+            _paused = false;
             if(_showCDown) //Check the show countdown setting, to make sure we need to display anything
             {
                 Console.CursorVisible = false; //Disable the cursor marker [Credit: http://dontcodetired.com/blog/post/Creating-a-Spinner-Animation-in-a-Console-Application-in-C ] [Microsoft Docs: http://msdn.microsoft.com/en-us/library/system.console.cursorvisible%28v=vs.110%29.aspx ]
@@ -125,13 +126,13 @@ class GameMode
                     Console.Write(tStr + new String('\b', (strBufferSize >= tStr.Length) ? strBufferSize : tStr.Length)); //Write the timer string, make sure to backspace (using '\b') everything (including the extra spaces) so the next timer string overwrites this one. Use the ternary operator to detect when the new string's length is longer than the original so it can backspace with that instead
                     strBufferSize = newBufferSize; //Update the buffer size, so the next timer string has an accurate length to overwrite
                     TimeSpan SleepDuration = (new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - cycleStartTime))); //Calculate the remaining time we have until the next cycle and sleep by that amount of time
-                    PausedSleep(paused, SleepDuration, (bool pauseStatus) => {paused = true; WritePauseStatus(pauseStatus);}, () => {countDownThread.Interrupt();}); //Use the new pauseable timer
+                    PausedSleep(_paused, SleepDuration, (bool pauseStatus) => {_paused = true; WritePauseStatus(pauseStatus);}, () => {countDownThread.Interrupt();}); //Use the new pauseable timer
                 }
                 Console.CursorVisible = true; //Timer has ended, restore console cursor visibility
             }
             else //Simple thread sleep for the requested duration
             {
-                PausedSleep(paused, new TimeSpan(0,0,0,0,msecDuration), (bool pauseStatus)=>{paused = true; WritePauseStatus(pauseStatus);},() => {countDownThread.Interrupt();});
+                PausedSleep(_paused, new TimeSpan(0,0,0,0,msecDuration), (bool pauseStatus)=>{_paused = true; WritePauseStatus(pauseStatus);},() => {countDownThread.Interrupt();});
             }
         }
         catch(ThreadInterruptedException)
@@ -210,6 +211,19 @@ class GameMode
             pauseThread.Interrupt();
             pauseThread.Join();
             Thread.CurrentThread.Interrupt(); //Force the current thread to exit (I'm really not sure if this works)
+        }
+    }
+
+    //Paused sleep with no input control
+    protected void PausedSleepNoControl(TimeSpan duration, Func<bool> checkExitStatus, int msecPerCheck = 100)
+    {
+        while(duration.Ticks > 0 && !checkExitStatus())
+        {
+            Thread.Sleep(msecPerCheck); //Sleep for the refresh duration, it needs to be longer than the computation time of this function, otherwise we'll sleep longer than needed
+            if(!_paused) //When it's not paused
+            {
+                duration -= new TimeSpan(0,0,0,0,msecPerCheck); //Subtract from the remaining time
+            }
         }
     }
 

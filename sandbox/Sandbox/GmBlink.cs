@@ -79,11 +79,10 @@ class GmBlink : GameMode
         blinkThread.Name = "blinkThread";
         try
         {
-            bool exitFlag = false; //A variable to pass to the pausable timespan
-            while(!gmStatusCheck() && !exitFlag) //Repeat until the game mode has ended, check this using the lambda function
+            while(!gmStatusCheck()) //Repeat until the game mode has ended, check this using the lambda function
             {
                 curDiceSet.RandomHide(_blinkRanChance, _blinkRanChanceMax); //Trigger random hiding using the settings this game mode currently has
-                PausedSleep(false,new TimeSpan(0,0,0,0,_blinkMsecGap),(bool inBool)=>{},()=>{exitFlag = true; blinkThread.Interrupt();}); //Use paused sleep, but only fill the exit action, because that's all we need to exit this thread
+                PausedSleepNoControl(new TimeSpan(0,0,0,0,_blinkMsecGap),gmStatusCheck); //Use paused sleep, but only fill the exit action, because that's all we need to exit this thread
             }
         }
         catch(ThreadInterruptedException)
