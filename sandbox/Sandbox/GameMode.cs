@@ -102,6 +102,7 @@ class GameMode
     //Utility
     protected void CountDown(int msecDuration, int refreshMsecDelay = 1000)
     {
+        bool paused = false;
         if(_showCDown) //Check the show countdown setting, to make sure we need to display anything
         {
             Console.CursorVisible = false; //Disable the cursor marker [Credit: http://dontcodetired.com/blog/post/Creating-a-Spinner-Animation-in-a-Console-Application-in-C ] [Microsoft Docs: http://msdn.microsoft.com/en-us/library/system.console.cursorvisible%28v=vs.110%29.aspx ]
@@ -115,19 +116,24 @@ class GameMode
                 tStr = (strBufferSize > tStr.Length) ? (tStr + new string(' ', strBufferSize - tStr.Length)) : tStr; //Add gaps to overwrite the previous timer if the length isn't the same. Using the ternary operator, do this only if the last string length is greater than the current string length
                 Console.Write(tStr + new String('\b', (strBufferSize >= tStr.Length) ? strBufferSize : tStr.Length)); //Write the timer string, make sure to backspace (using '\b') everything (including the extra spaces) so the next timer string overwrites this one. Use the ternary operator to detect when the new string's length is longer than the original so it can backspace with that instead
                 strBufferSize = newBufferSize; //Update the buffer size, so the next timer string has an accurate length to overwrite
-
-                Thread.Sleep((new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - cycleStartTime)))); //Calculate the remaining time we have until the next cycle and sleep by that amount of time
+                TimeSpan SleepDuration = (new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - cycleStartTime))); //Calculate the remaining time we have until the next cycle and sleep by that amount of time
+                PausedSleep(paused, SleepDuration, (bool pauseStatus)=>{paused = true; WritePauseStatus(pauseStatus);}); //Use the new pauseable timer
             }
             Console.CursorVisible = true; //Timer has ended, restore console cursor visibility
         }
         else //Simple thread sleep for the requested duration
         {
-            Thread.Sleep(msecDuration);
+            PausedSleep(paused, new TimeSpan(0,0,0,0,msecDuration), (bool pauseStatus)=>{paused = true; WritePauseStatus(pauseStatus);});
         }
     }
 
+    protected void WritePauseStatus(bool paused, string pauseMsg = "~ Paused Press 'p' to Continue ~")
+    {
+        Console.Write((paused) ? pauseMsg : new string('\b',pauseMsg.Length) + new String(' ',pauseMsg.Length));
+    }
+
     //Paused Sleep function, developed in offline sandbox
-    protected void PausedSleep(TimeSpan duration, Action<bool> setPausedFunction, int msecPerCheck = 100)
+    protected void PausedSleep(bool pauseInput, TimeSpan duration, Action<bool> setPausedFunction, int msecPerCheck = 100)
     {
         bool paused = false;
         bool timerEnded = false;
@@ -161,6 +167,7 @@ class GameMode
             }
         }
         timerEnded = true; //Tell the pause thread the waiting is over
+        setPausedFunction(false); //Tell the original function that pausing is over
         if(!pauseThread.Join(0)) //Tell it to join instantly, use it's Join status (which is a boolean) to activate this code
         {
             pauseThread.Interrupt(); //When it fails to join in time, Interrupt it manually
