@@ -188,6 +188,10 @@ class DiceSet
         SetWidth(newSize);
         SetHeight(newSize);
     }
+    public int GetGridArea()
+    {
+        return GetWidth() * GetHeight();
+    }
 
     //Methods
 

@@ -53,13 +53,40 @@ class GmGrow : GameMode
     //An overrideable function call to the Grow method, so we can override it in decay
     protected virtual void GrowStart(DiceSet diceSetCopy, Func<bool> gmStatusCheck)
     {
-        Grow(diceSetCopy, gmStatusCheck, false);
+        Grow(diceSetCopy, gmStatusCheck, false, "growThread");
     }
 
     //Actual Grow Functionality
-    protected void Grow(DiceSet diceSetCopy, Func<bool> gmStatusCheck, bool inverse = false)
+    protected void Grow(DiceSet diceSetCopy, Func<bool> gmStatusCheck, bool hiddenStateSet = false, string threadName = "growThread")
     {
-        
+        //Calculate growth stages and durations
+        int remainingDice = diceSetCopy.GetGridArea();
+        int cycle = _stages;
+        int growCycleMsecGap = ((_durationSec * 1000) / _stages);
+        int dicePerCycle = (remainingDice / _stages);
+        //Store the current thread
+        Thread growThread = Thread.CurrentThread;
+        growThread.Name = threadName;
+        try
+        {
+            diceSetCopy.SetAllVisibility(hiddenStateSet);
+            while(!gmStatusCheck()) //Repeat until the game mode has ended, check this using the lambda function
+            {
+                dicePerCycle = ((remainingDice - dicePerCycle) < 0 || (remainingDice - dicePerCycle > 0 && cycle - 1 == 0)) ? remainingDice : dicePerCycle; //Use a ternary operator to detect if the next cycle will be negative
+                diceSetCopy.RandomQueryRun(dicePerCycle,
+                    (Dice diceToCheck)=>{return diceToCheck.GetHidden() != hiddenStateSet;}, //Only accept dice that don't match the current state
+                    (Dice diceToSet)=>{diceToSet.SetHidden(hiddenStateSet);} //
+                );
+                PausedSleepNoControl(new TimeSpan(0,0,0,0,growCycleMsecGap), gmStatusCheck); //Use paused sleep, but only fill the exit action, because that's all we need to exit this thread
+                //Update counters
+                cycle--;
+                remainingDice -= dicePerCycle;
+            }
+        }
+        catch(ThreadInterruptedException)
+        {
+            growThread.Interrupt();
+        }
     }
 
     //Utility
