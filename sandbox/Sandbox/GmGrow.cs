@@ -19,7 +19,6 @@ class GmGrow : GameMode
     }
 
     //New getters and setters
-
     public int GetStages()
     {
         return _stages;
