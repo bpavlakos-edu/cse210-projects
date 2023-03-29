@@ -29,6 +29,7 @@ class GmDecay : GmGrow
     {
         UiMenu settingsMenu = base.MakeSettingsMenu(menuMsg); //Get the original menu, using the new default parameter
         //Add the new settings at the end before
+        //settingsMenu.RemoveOptionFromEnd(2); //Remove the grow option
         settingsMenu.AddOptionFromEnd(new UiOption(GetStages, SetStages, "De&cay Stages", 2), 1);
         return settingsMenu;
     }
@@ -37,13 +38,11 @@ class GmDecay : GmGrow
     public override void LoadFromFile(string[] fileLines, ref int offset, string gmName = "gmDecay")
     {
         base.LoadFromFile(fileLines, ref offset, "gmDecay");
-        _stages = int.Parse(Msc.ReadFileLine(fileLines, ref offset, $"{gmName}_stages="));
     }
 
     //File Writing
     public override void WriteToFile(StreamWriter sWriter, string gmName = "gmDecay")
     {
         base.WriteToFile(sWriter, "gmDecay");
-        sWriter.WriteLine($"{gmName}_stages={_stages}");
     }
 }

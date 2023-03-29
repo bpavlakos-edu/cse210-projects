@@ -104,14 +104,16 @@ class GmGrow : GameMode
     //An override to change the gmName because the rest is the same
     public override void LoadFromFile(string[] fileLines, ref int offset, string gmName = "gmGrow")
     {
-        base.LoadFromFile(fileLines, ref offset, "gmGrow");
+        gmName = (gmName == "Null") ? "gmGrow" : gmName; //Correct the parameter, because when the base gamemode class is called from here the default value is null, but when a child calls this it's the parameter
+        base.LoadFromFile(fileLines, ref offset, gmName);
         _stages = int.Parse(Msc.ReadFileLine(fileLines, ref offset, $"{gmName}_stages="));
     }
 
     //File Writing
     public override void WriteToFile(StreamWriter sWriter, string gmName = "gmGrow")
     {
-        base.WriteToFile(sWriter, "gmGrow");
+        gmName = (gmName == "Null") ? "gmGrow" : gmName; //Correct the parameter, because when the base gamemode class is called from here the default value is null, but when a child calls this it's the parameter
+        base.WriteToFile(sWriter, gmName);
         sWriter.WriteLine($"{gmName}_stages={_stages}");
     }
 }
