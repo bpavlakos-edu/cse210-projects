@@ -29,7 +29,7 @@ class GmDecay : GmGrow
     {
         UiMenu settingsMenu = base.MakeSettingsMenu(menuMsg); //Get the original menu, using the new default parameter
         //Add the new settings at the end before
-        //settingsMenu.RemoveOptionFromEnd(2); //Remove the grow option
+        settingsMenu.RemoveOptionFromEnd(2); //Remove the grow option
         settingsMenu.AddOptionFromEnd(new UiOption(GetStages, SetStages, "De&cay Stages", 2), 1);
         return settingsMenu;
     }
