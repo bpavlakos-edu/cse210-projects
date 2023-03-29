@@ -60,12 +60,14 @@ class Program
     {
         LoadConfigFile();
         _mainMenu.UiLoop(); //Open the main menu
+        SaveConfigFile();
     }
     static void ShowGmHelp()
     {
         UiMenu _helpMenu = new UiMenu(
             new List<UiOption>
             {
+                new UiOption(ControlHints,"Controls and &Hints"),
                 new UiOption(_gameModeList[0].DisplayHelp,"About the &Classic Game Mode"),
                 new UiOption(_gameModeList[1].DisplayHelp,"About the &Random Game Mode"),
                 new UiOption(_gameModeList[2].DisplayHelp,"About the Bli&nk Game Mode"),
@@ -75,6 +77,18 @@ class Program
             }
         );
         _helpMenu.UiLoop();
+    }
+    //Hints
+    static void ControlHints()
+    {
+        Console.WriteLine("Press \"P\" to pause or unpause the timer");
+        Console.WriteLine("Press \"X\" to end the game early");
+        Console.WriteLine("Change game mode settings to match your preferences");
+        Console.WriteLine("You can manually save your settings to a file");
+        Console.WriteLine("The default configuration file will be loaded when the program starts");
+        Console.WriteLine("The default configuration file will be saved when the program ends");
+        Console.WriteLine("");
+        Inp.GetInput("Press enter to continue");
     }
     //Pick the settings menu to open (GameMode or DiceSet)
     static void OptionsMenu()
@@ -123,13 +137,15 @@ class Program
         //also make sure that individual game modes don't change when different from default settings, or give the user a warning
         if(_gameModeList.Count > 0)
         {
+            int? durationSec = null;
+            bool? showCDown = null;
             GameMode _mainGm = new GameMode(); //Create a new instance of GameMode with the current global settings
             _mainGm.OpenSettings(); //Open the settings
             //Todo: Find a way to only apply settings if they are changed, so default values don't overwrite custom ones
             for(int i = 0; i < _gameModeList.Count; i++)
             {
-                _gameModeList[i].SetDurationSec(_mainGm.GetDurationSec());
-                _gameModeList[i].SetShowCDown(_mainGm.GetShowCDown());
+                _gameModeList[i].SetDurationSec(durationSec ?? _gameModeList[i].GetDurationSec());
+                _gameModeList[i].SetShowCDown(showCDown ?? _gameModeList[i].GetShowCDown());
             }
         }
         //Consider using the input capture menu (options menu from the previous project)
@@ -252,7 +268,7 @@ class Program
     }
 
     //For testing basic functionality
-    static void TestMode()
+    /*static void TestMode()
     {
         DiceSet diceSetCopy = new DiceSet(_mainDiceSet);
         //diceSetCopy.Display();
@@ -282,5 +298,5 @@ class Program
                 diceSetCopy.RollAll();
             }
         }
-    }
+    }*/
 }
