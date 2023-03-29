@@ -125,6 +125,48 @@ class GameMode
             Thread.Sleep(msecDuration);
         }
     }
+
+    //Paused Sleep function, developed in offline sandbox
+    protected void PausedSleep(TimeSpan duration, Action<bool> setPausedFunction, int msecPerCheck = 100)
+    {
+        bool paused = false;
+        bool timerEnded = false;
+        //The primary reason why this is here and not in it's own function is so that it can access both paused and set paused function easily
+        Thread pauseThread = new Thread(()=>
+            {
+                try
+                {
+                    while(!timerEnded) //Repeat Until Timer has ended or it's interrupted
+                    {
+                        if(Console.KeyAvailable) //The solution to avoiding the Console.ReadKey freeze here is to use console.KeyAvailable: https://stackoverflow.com/questions/14385044/console-readkey-canceling https://learn.microsoft.com/en-us/dotnet/api/system.console.keyavailable?view=net-7.0
+                        {
+                            paused = (Console.ReadKey(true).Key == ConsoleKey.P) ? !paused : paused; //Console.readKey pauses the thread //Flip the paused state if p is pressed, otherwise just keep it the same //Setting readkey to true hides it
+                            setPausedFunction(paused); //Update the callback parameter to update the paused state in the function that uses this timer
+                        }
+                        Thread.Sleep(msecPerCheck); //If we don't restrict the while loop it will drive up CPU usage (it also gives a location to be interuppted)
+                    }
+                }
+                catch(ThreadInterruptedException){}//Return to main thread when interrupt is ordered
+            }
+        );
+        pauseThread.Name = "PauseThread";
+        //Sleeping timer, decrements by the desired timespan
+        pauseThread.Start(); //Start the pause thread
+        while(duration.Ticks > 0)
+        {
+            Thread.Sleep(msecPerCheck); //Sleep for the refresh duration, it needs to be longer than the computation time of this function, otherwise we'll sleep longer than needed
+            if(!paused) //When it's not paused
+            {
+                duration -= new TimeSpan(0,0,0,0,msecPerCheck); //Subtract from the remaining time
+            }
+        }
+        timerEnded = true; //Tell the pause thread the waiting is over
+        if(!pauseThread.Join(0)) //Tell it to join instantly, use it's Join status (which is a boolean) to activate this code
+        {
+            pauseThread.Interrupt(); //When it fails to join in time, Interrupt it manually
+        }
+    }
+
     //Function overload for counting down by seconds, needs a different name to make it not conflict due to having the same parameter types
     protected void CountDownSec(int secDuration, int refreshMsecDelay = 1000)
     {
