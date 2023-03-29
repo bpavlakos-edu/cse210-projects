@@ -4,7 +4,7 @@ using Msc = QuickUtils.Misc;
 class GmGrow : GameMode
 {
     //New Attribute
-    protected int _stages = 10; //The number of "stages" the game is divided by
+    protected int _stages = 25; //The number of "stages" the game is divided by
     //Constructors
     public GmGrow() : base()
     {
@@ -57,7 +57,7 @@ class GmGrow : GameMode
     }
 
     //Actual Grow Functionality
-    protected void Grow(DiceSet diceSetCopy, Func<bool> gmStatusCheck, bool hiddenStateSet = true, string threadName = "growThread")
+    protected void Grow(DiceSet diceSetCopy, Func<bool> gmStatusCheck, bool hiddenStateStart = true, string threadName = "growThread")
     {
         //Calculate growth stages and durations
         int remainingDice = diceSetCopy.GetGridArea();
@@ -69,13 +69,13 @@ class GmGrow : GameMode
         growThread.Name = threadName;
         try
         {
-            diceSetCopy.SetAllVisibility(hiddenStateSet);
+            diceSetCopy.SetAllVisibility(hiddenStateStart);
             while(!gmStatusCheck()) //Repeat until the game mode has ended, check this using the lambda function
             {
-                dicePerCycle = ((remainingDice - dicePerCycle) < 0 || (remainingDice - dicePerCycle > 0 && cycle - 1 == 0)) ? remainingDice : dicePerCycle; //Use a ternary operator to detect if the next cycle will be negative
+                dicePerCycle = ((remainingDice - dicePerCycle) < 0 || (((remainingDice - dicePerCycle) > 0) && ((cycle - 1) == 1))) ? remainingDice : dicePerCycle; //Use a ternary operator to detect if the next cycle will be negative
                 diceSetCopy.RandomQueryRun(dicePerCycle,
-                    (Dice diceToCheck)=>{return diceToCheck.GetHidden() != hiddenStateSet;}, //Only accept dice that don't match the current state
-                    (Dice diceToSet)=>{diceToSet.SetHidden(hiddenStateSet);} //
+                    (Dice diceToCheck)=>{return diceToCheck.GetHidden() == hiddenStateStart;}, //Only accept dice that don't match the current state
+                    (Dice diceToSet)=>{diceToSet.SetHidden(!hiddenStateStart);} //
                 );
                 diceSetCopy.Display();
                 PausedSleepNoControl(new TimeSpan(0,0,0,0,growCycleMsecGap), gmStatusCheck); //Use paused sleep, but only fill the exit action, because that's all we need to exit this thread
