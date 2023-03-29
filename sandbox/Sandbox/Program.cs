@@ -161,8 +161,8 @@ class Program
             //Todo: Find a way to only apply settings if they are changed, so default values don't overwrite custom ones
             for(int i = 0; i < _gameModeList.Count; i++)
             {
-                _gameModeList[i].SetDurationSec(durationSec ?? _gameModeList[i].GetDurationSec());
-                _gameModeList[i].SetShowCDown(showCDown ?? _gameModeList[i].GetShowCDown());
+                _gameModeList[i].SetDurationSec(durationSec ?? _gameModeList[i].GetDurationSec());//Set value if input is not null, use the ternary operator to set it to it's current value if the variable is null
+                _gameModeList[i].SetShowCDown(showCDown ?? _gameModeList[i].GetShowCDown());//Set value if input is not null, use the ternary operator to set it to it's current value if the variable is null
             }
         }
         //Consider using the input capture menu (options menu from the previous project)
