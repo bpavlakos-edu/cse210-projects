@@ -58,7 +58,11 @@ class GameMode
         do
         {
             DiceSet diceSetCopy = new DiceSet(curDiceSet, false); //Copy the current dice set so the main dice set isn't modified during the game mode
-            GameLoop(diceSetCopy); //Start the Game Mode Loop
+            try
+            {
+                GameLoop(diceSetCopy); //Start the Game Mode Loop
+            }
+            catch(UiMenuExitException){} //Exit immediately when the user requests an early exit
             ShowEndMsg(diceSetCopy); //Print the end message when it finishes
         }
         while(Inp.GetBoolInput("Would you like to play again?: ", curValue:false, hideCurValue:true) == true); //Repeat until the user says they are finished. This input configuartion will default to false if it's left blank
@@ -117,23 +121,23 @@ class GameMode
                 Console.Write(tStr + new String('\b', (strBufferSize >= tStr.Length) ? strBufferSize : tStr.Length)); //Write the timer string, make sure to backspace (using '\b') everything (including the extra spaces) so the next timer string overwrites this one. Use the ternary operator to detect when the new string's length is longer than the original so it can backspace with that instead
                 strBufferSize = newBufferSize; //Update the buffer size, so the next timer string has an accurate length to overwrite
                 TimeSpan SleepDuration = (new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - cycleStartTime))); //Calculate the remaining time we have until the next cycle and sleep by that amount of time
-                PausedSleep(paused, SleepDuration, (bool pauseStatus)=>{paused = true; WritePauseStatus(pauseStatus);}); //Use the new pauseable timer
+                PausedSleep(paused, SleepDuration, (bool pauseStatus) => {paused = true; WritePauseStatus(pauseStatus);}, () => {throw new UiMenuExitException();}); //Use the new pauseable timer
             }
             Console.CursorVisible = true; //Timer has ended, restore console cursor visibility
         }
         else //Simple thread sleep for the requested duration
         {
-            PausedSleep(paused, new TimeSpan(0,0,0,0,msecDuration), (bool pauseStatus)=>{paused = true; WritePauseStatus(pauseStatus);});
+            PausedSleep(paused, new TimeSpan(0,0,0,0,msecDuration), (bool pauseStatus)=>{paused = true; WritePauseStatus(pauseStatus);},() => {throw new UiMenuExitException();});
         }
     }
 
     protected void WritePauseStatus(bool paused, string pauseMsg = "~ Paused Press 'p' to Continue ~")
     {
-        Console.Write((paused) ? pauseMsg : new string('\b',pauseMsg.Length) + new String(' ',pauseMsg.Length));
+        Console.Write((paused) ? pauseMsg : new string('\b',pauseMsg.Length) + new String(' ',pauseMsg.Length) + new string('\b',pauseMsg.Length));
     }
 
     //Paused Sleep function, developed in offline sandbox
-    protected void PausedSleep(bool pauseInput, TimeSpan duration, Action<bool> setPausedFunction, int msecPerCheck = 100)
+    protected void PausedSleep(bool pauseInput, TimeSpan duration, Action<bool> setPausedFunction, Action exitAction, int msecPerCheck = 100)
     {
         bool paused = false;
         bool timerEnded = false;
@@ -146,7 +150,12 @@ class GameMode
                     {
                         if(Console.KeyAvailable) //The solution to avoiding the Console.ReadKey freeze here is to use console.KeyAvailable: https://stackoverflow.com/questions/14385044/console-readkey-canceling https://learn.microsoft.com/en-us/dotnet/api/system.console.keyavailable?view=net-7.0
                         {
-                            paused = (Console.ReadKey(true).Key == ConsoleKey.P) ? !paused : paused; //Console.readKey pauses the thread //Flip the paused state if p is pressed, otherwise just keep it the same //Setting readkey to true hides it
+                            ConsoleKey ReadKey = Console.ReadKey(true).Key;
+                            if(ReadKey == ConsoleKey.X)
+                            {
+                                exitAction();   
+                            }
+                            paused = (ReadKey == ConsoleKey.P) ? !paused : paused; //Console.readKey pauses the thread //Flip the paused state if p is pressed, otherwise just keep it the same //Setting readkey to true hides it
                             setPausedFunction(paused); //Update the callback parameter to update the paused state in the function that uses this timer
                         }
                         Thread.Sleep(msecPerCheck); //If we don't restrict the while loop it will drive up CPU usage (it also gives a location to be interuppted)
@@ -167,7 +176,7 @@ class GameMode
             }
         }
         timerEnded = true; //Tell the pause thread the waiting is over
-        setPausedFunction(false); //Tell the original function that pausing is over
+        paused = false; //Tell the original function that pausing is over
         if(!pauseThread.Join(0)) //Tell it to join instantly, use it's Join status (which is a boolean) to activate this code
         {
             pauseThread.Interrupt(); //When it fails to join in time, Interrupt it manually
