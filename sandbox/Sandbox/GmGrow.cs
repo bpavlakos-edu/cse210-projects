@@ -77,6 +77,7 @@ class GmGrow : GameMode
                     (Dice diceToCheck)=>{return diceToCheck.GetHidden() != hiddenStateSet;}, //Only accept dice that don't match the current state
                     (Dice diceToSet)=>{diceToSet.SetHidden(hiddenStateSet);} //
                 );
+                diceSetCopy.Display();
                 PausedSleepNoControl(new TimeSpan(0,0,0,0,growCycleMsecGap), gmStatusCheck); //Use paused sleep, but only fill the exit action, because that's all we need to exit this thread
                 //Update counters
                 cycle--;
