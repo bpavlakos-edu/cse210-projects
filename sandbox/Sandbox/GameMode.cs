@@ -106,10 +106,10 @@ class GameMode
     //Utility
     protected void CountDown(int msecDuration, int refreshMsecDelay = 1000)
     {
+        Thread countDownThread = Thread.CurrentThread;
         try
         {
             bool paused = false;
-            Thread countDownThread = Thread.CurrentThread;
             if(_showCDown) //Check the show countdown setting, to make sure we need to display anything
             {
                 Console.CursorVisible = false; //Disable the cursor marker [Credit: http://dontcodetired.com/blog/post/Creating-a-Spinner-Animation-in-a-Console-Application-in-C ] [Microsoft Docs: http://msdn.microsoft.com/en-us/library/system.console.cursorvisible%28v=vs.110%29.aspx ]
@@ -133,9 +133,9 @@ class GameMode
                 PausedSleep(paused, new TimeSpan(0,0,0,0,msecDuration), (bool pauseStatus)=>{paused = true; WritePauseStatus(pauseStatus);},() => {countDownThread.Interrupt();});
             }
         }
-        catch(UiMenuExitException)
+        catch(ThreadInterruptedException)
         {
-
+            //End the timer early
         }
     }
 
@@ -172,25 +172,37 @@ class GameMode
                         Thread.Sleep(msecPerCheck); //If we don't restrict the while loop it will drive up CPU usage (it also gives a location to be interuppted)
                     }
                 }
-                catch(ThreadInterruptedException){}//Return to main thread when interrupt is ordered
+                catch(ThreadInterruptedException)
+                {
+                    exitAction(); //Return to main thread when interrupt is ordered, activate the exit action for the third time!
+                }
             }
         );
         pauseThread.Name = "PauseThread";
         //Sleeping timer, decrements by the desired timespan
         pauseThread.Start(); //Start the pause thread
-        while(duration.Ticks > 0)
+        try
         {
-            Thread.Sleep(msecPerCheck); //Sleep for the refresh duration, it needs to be longer than the computation time of this function, otherwise we'll sleep longer than needed
-            if(!paused) //When it's not paused
+            while(duration.Ticks > 0)
             {
-                duration -= new TimeSpan(0,0,0,0,msecPerCheck); //Subtract from the remaining time
+                Thread.Sleep(msecPerCheck); //Sleep for the refresh duration, it needs to be longer than the computation time of this function, otherwise we'll sleep longer than needed
+                if(!paused) //When it's not paused
+                {
+                    duration -= new TimeSpan(0,0,0,0,msecPerCheck); //Subtract from the remaining time
+                }
+            }
+            timerEnded = true; //Tell the pause thread the waiting is over
+            paused = false; //Tell the original function that pausing is over
+            if(!pauseThread.Join(0)) //Tell it to join instantly, use it's Join status (which is a boolean) to activate this code
+            {
+                pauseThread.Interrupt(); //When it fails to join in time, Interrupt it manually
             }
         }
-        timerEnded = true; //Tell the pause thread the waiting is over
-        paused = false; //Tell the original function that pausing is over
-        if(!pauseThread.Join(0)) //Tell it to join instantly, use it's Join status (which is a boolean) to activate this code
+        catch(ThreadInterruptedException) //When this thread is interrupted, catch the error before forcing the other one to join
         {
-            pauseThread.Interrupt(); //When it fails to join in time, Interrupt it manually
+            pauseThread.Interrupt();
+            pauseThread.Join();
+            Thread.CurrentThread.Interrupt(); //Force the current thread to exit (I'm really not sure if this works)
         }
     }
 
