@@ -116,7 +116,7 @@ class GameMode
             _paused = false;
             if(_showCDown) //Check the show countdown setting, to make sure we need to display anything
             {
-                Console.CursorVisible = false; //Disable the cursor marker [Credit: http://dontcodetired.com/blog/post/Creating-a-Spinner-Animation-in-a-Console-Application-in-C ] [Microsoft Docs: http://msdn.microsoft.com/en-us/library/system.console.cursorvisible%28v=vs.110%29.aspx ]
+                //Console.CursorVisible = false; //Disable the cursor marker [Credit: http://dontcodetired.com/blog/post/Creating-a-Spinner-Animation-in-a-Console-Application-in-C ] [Microsoft Docs: http://msdn.microsoft.com/en-us/library/system.console.cursorvisible%28v=vs.110%29.aspx ]
                 int strBufferSize = 0; //Use this to keep track of the previous string's length
                 for(int remainingTimeMsec = (msecDuration - (msecDuration % refreshMsecDelay)); remainingTimeMsec > 0; remainingTimeMsec -= refreshMsecDelay) //Use a for loop to calculate the remaining time, it starts at the msecDuration with any leftover miliseconds that don't fit into the refresh rate removed, every loop cycle it updates the remaining time by subtracting the refreshDelay
                 {
@@ -130,7 +130,7 @@ class GameMode
                     TimeSpan SleepDuration = (new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - cycleStartTime))); //Calculate the remaining time we have until the next cycle and sleep by that amount of time
                     PausedSleep(_paused, SleepDuration, (bool pauseStatus) => {_paused = true; WritePauseStatus(pauseStatus);}, () => {countDownThread.Interrupt();}); //Use the new pauseable timer
                 }
-                Console.CursorVisible = true; //Timer has ended, restore console cursor visibility
+                //Console.CursorVisible = true; //Timer has ended, restore console cursor visibility
             }
             else //Simple thread sleep for the requested duration
             {
