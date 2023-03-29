@@ -94,7 +94,7 @@ class GmGrow : GameMode
     //An override to change the MakeSettingsMenu message, all the other variables are the same
     protected override UiMenu MakeSettingsMenu(string menuMsg="Grow Mode Settings:")
     {
-        menuMsg = (menuMsg == "All Game Mode Settings:") ? "Grow Mode Settings:" : menuMsg; //Detect base class default string, and replace with this classe's default string, when it's not the default string update it so decay can work correctly
+        menuMsg = (menuMsg == "All Game Mode Settings:") ? "Main Menu > Options > Game Mode Options > Grow Mode Options:" : menuMsg; //Detect base class default string, and replace with this classe's default string, when it's not the default string update it so decay can work correctly
         UiMenu settingsMenu = base.MakeSettingsMenu(menuMsg); //Get the original menu, using the new default parameter
         //Add the new settings at the end before
         settingsMenu.AddOptionFromEnd(new UiOption(GetStages, SetStages, "&Growth Stages", 2), 1);

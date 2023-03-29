@@ -95,7 +95,7 @@ class GmBlink : GameMode
     //An override to change the MakeSettingsMenu message, and add additional settings for each parameter
     protected override UiMenu MakeSettingsMenu(string menuMsg="Blink Mode Settings:")
     {
-        UiMenu settingsMenu = base.MakeSettingsMenu("Blink Mode Settings:"); //Get the original menu, using the new default parameter
+        UiMenu settingsMenu = base.MakeSettingsMenu("Main Menu > Options > Game Mode Options > Blink Mode Options:"); //Get the original menu, using the new default parameter
         //Add the new settings at the end before
         settingsMenu.AddOptionFromEnd(new UiOption(GetBlinkMsecGap, SetBlinkMsecGap, "Bli&nk Delay in Milliseconds", 10), 1);
         settingsMenu.AddOptionFromEnd(new UiOption(GetBlinkRanChance, SetBlinkMsecGap, "Blink Odds &Chance" , 1), 1);

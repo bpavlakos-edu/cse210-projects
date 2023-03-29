@@ -303,16 +303,19 @@ class DiceSet
     //Open the settings menu
     public void OpenSettings()
     {
-        UiMenu diceSetSettings = new UiMenu(new List<UiOption>{
-            new UiOption(OpenDiceListSettingsMenu,"Edit &Dice List"), //Open Dice Edit Menu
-            new UiOption(GetWidth, SetWidth, "Grid &Width", 2), //Set Width
-            new UiOption(GetHeight, SetHeight, "Grid &Height", 2), //Set Height
-            new UiOption(GetGridSize, SetGridSize, "Grid &Size", 2), //Set Height
-            new UiOption(GetAllowAutoFill, SetAllowAutoFill,"&Auto-Fill Dice to Grid Size in Game Modes"), //Allow auto-filling dice set
-            new UiOption(GetAllowQu, SetAllowQu,"&Qu Allowed"), //Allow Qu Setting
-            new UiOption(()=>{return new string(GetDiceBorder());}, (string inStr)=>{SetDiceBorder(inStr);},"D&ice Border"), //Dice border setting
-            new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
-        });
+        UiMenu diceSetSettings = new UiMenu(new List<UiOption>
+            {
+                new UiOption(OpenDiceListSettingsMenu,"Edit &Dice List"), //Open Dice Edit Menu
+                new UiOption(GetWidth, SetWidth, "Grid &Width", 2), //Set Width
+                new UiOption(GetHeight, SetHeight, "Grid &Height", 2), //Set Height
+                new UiOption(GetGridSize, SetGridSize, "Grid &Size", 2), //Set Height
+                new UiOption(GetAllowAutoFill, SetAllowAutoFill,"&Auto-Fill Dice to Grid Size in Game Modes"), //Allow auto-filling dice set
+                new UiOption(GetAllowQu, SetAllowQu,"&Qu Allowed"), //Allow Qu Setting
+                new UiOption(()=>{return new string(GetDiceBorder());}, (string inStr)=>{SetDiceBorder(inStr);},"D&ice Border"), //Dice border setting
+                new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
+            },
+            "Main Menu > Options > Dice-Set Options:"
+        );
         diceSetSettings.UiLoop();
     }
     //Dice List Settings Menu
@@ -327,7 +330,7 @@ class DiceSet
                 "Open Dice $ Settings (Sides", //$ is replaced by index in loop + 1
                 (inputDice) => {return ((Dice)inputDice).LettersToString()+")";}, //Add the parenthesis here to finish the display string
                 "Go &Back",
-                "Dice List and Options:",
+                "Main Menu > Options > Dice-Set Options > Dice List and Options:",
                 "Select a dice number, choice, or [hotkey] from the menu: "
             );
             //Add additional Edit All Options before the exit button:

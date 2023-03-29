@@ -192,7 +192,7 @@ class Dice
                     new UiOption(()=>{RandomSideLetters(); throw new UiMenuRefreshException();},"&Replace Sides with Random Letters"),
                     new UiOption(()=>{throw new UiMenuExitException();},"Go &Back") //Go back to the previous menu
                 },
-                "Dice Settings:",
+                "Main Menu > Settings > Dice-Set Options > Dice List and Options > Dice Settings:",
                 "Select a setting or [hotkey] from the menu: ",
                 "" //Hide the exit message
             );

@@ -105,7 +105,7 @@ class Program
                 new UiOption(()=>{return _autoSave;},(bool newVal)=>{_autoSave = newVal;},"&Auto Save Config File on Settings Exit"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             },
-            "Options:",
+            "Main Menu > Options:",
             "Select an option or [hotkey] from the menu: ",
             ""
         );
@@ -129,7 +129,7 @@ class Program
                 new UiOption(_gameModeList[4].OpenSettings,"&Decay Mode Options"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             },
-            "Game Mode Main Options:",
+            "Main Menu > Options > Game Mode Options:",
             "Select a game mode or [hotkey] from the menu: ",
             ""
         );
@@ -160,7 +160,7 @@ class Program
                     "Enable or Disable Timer &Display for All Game Modes"),
                     new UiOption(() => {throw new UiMenuExitException();},"Go &Back") //Give us the exit option
                 },
-                "All Game Mode Options:",
+                "Main Menu > Options > Game Mode Options > All Game Mode Options:",
                 exitMsg:"" //Get rid of the exit message
             );
             _allGmSettingsMenu.UiLoop(); //Open the menu
