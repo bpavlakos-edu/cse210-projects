@@ -109,8 +109,8 @@ class GameMode
     //Utility
     protected void CountDown(int msecDuration, int refreshMsecDelay = 1000)
     {
-        Thread countDownThread = Thread.CurrentThread;
-        countDownThread.Name = "countDownThread";
+        Thread countDownThread = Thread.CurrentThread; //Store the current thread for the PausedSleep to interrupt
+        countDownThread.Name = "countDownThread"; //Name the thread for debugging
         try
         {
             _paused = false;
