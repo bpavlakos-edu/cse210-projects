@@ -109,7 +109,7 @@ class GameMode
         try
         {
             bool paused = false;
-            UiMenuExitException exitException = new UiMenuExitException(); //Exit exception is stored here so it can be triggered inside a lambda
+            Thread countDownThread = Thread.CurrentThread;
             if(_showCDown) //Check the show countdown setting, to make sure we need to display anything
             {
                 Console.CursorVisible = false; //Disable the cursor marker [Credit: http://dontcodetired.com/blog/post/Creating-a-Spinner-Animation-in-a-Console-Application-in-C ] [Microsoft Docs: http://msdn.microsoft.com/en-us/library/system.console.cursorvisible%28v=vs.110%29.aspx ]
@@ -124,13 +124,13 @@ class GameMode
                     Console.Write(tStr + new String('\b', (strBufferSize >= tStr.Length) ? strBufferSize : tStr.Length)); //Write the timer string, make sure to backspace (using '\b') everything (including the extra spaces) so the next timer string overwrites this one. Use the ternary operator to detect when the new string's length is longer than the original so it can backspace with that instead
                     strBufferSize = newBufferSize; //Update the buffer size, so the next timer string has an accurate length to overwrite
                     TimeSpan SleepDuration = (new TimeSpan(((long) refreshMsecDelay * 10000) - (DateTime.Now.Ticks - cycleStartTime))); //Calculate the remaining time we have until the next cycle and sleep by that amount of time
-                    PausedSleep(paused, SleepDuration, (bool pauseStatus) => {paused = true; WritePauseStatus(pauseStatus);}, () => {throw new UiMenuExitException();}); //Use the new pauseable timer
+                    PausedSleep(paused, SleepDuration, (bool pauseStatus) => {paused = true; WritePauseStatus(pauseStatus);}, () => {countDownThread.Interrupt();}); //Use the new pauseable timer
                 }
                 Console.CursorVisible = true; //Timer has ended, restore console cursor visibility
             }
             else //Simple thread sleep for the requested duration
             {
-                PausedSleep(paused, new TimeSpan(0,0,0,0,msecDuration), (bool pauseStatus)=>{paused = true; WritePauseStatus(pauseStatus);},() => {throw exitException;});
+                PausedSleep(paused, new TimeSpan(0,0,0,0,msecDuration), (bool pauseStatus)=>{paused = true; WritePauseStatus(pauseStatus);},() => {countDownThread.Interrupt();});
             }
         }
         catch(UiMenuExitException)
@@ -159,9 +159,12 @@ class GameMode
                         if(Console.KeyAvailable) //The solution to avoiding the Console.ReadKey freeze here is to use console.KeyAvailable: https://stackoverflow.com/questions/14385044/console-readkey-canceling https://learn.microsoft.com/en-us/dotnet/api/system.console.keyavailable?view=net-7.0
                         {
                             ConsoleKey ReadKey = Console.ReadKey(true).Key;
-                            if(ReadKey == ConsoleKey.X)
+                            if(ReadKey == ConsoleKey.X /* && !paused */)
                             {
-                                exitAction();   
+                                /* duration = new TimeSpan(0);
+                                paused = false; */
+                                exitAction(); //Activate the exit action
+
                             }
                             paused = (ReadKey == ConsoleKey.P) ? !paused : paused; //Console.readKey pauses the thread //Flip the paused state if p is pressed, otherwise just keep it the same //Setting readkey to true hides it
                             setPausedFunction(paused); //Update the callback parameter to update the paused state in the function that uses this timer
