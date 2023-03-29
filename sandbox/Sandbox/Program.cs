@@ -177,8 +177,10 @@ class Program
         /*int? newDurationSec = null;
         bool? newShowCDown = null;*/
     }
+
     //Config file importing / exporting
     //Ui Helper Functions
+    //Load Config from path with user input
     static void LoadConfigOption()
     {
         string filePath = Inp.GetInput("Enter the file path to load from (leave blank to cancel, [d] to load default): ", false, false);
@@ -188,6 +190,7 @@ class Program
             LoadConfigFile(filePath, false);
         }
     }
+    //Save config to path with user input
     static void SaveConfigOption()
     {
         string filePath = Inp.GetInput("Enter the file path to save to (leave blank to cancel, [d] to load default): ", false, false);
@@ -197,6 +200,7 @@ class Program
             SaveConfigFile(filePath, false);
         }
     }
+    //Actual Config File Loading
     static void LoadConfigFile(string path = "doggle.cfg", bool programStart = true)
     {
         try
@@ -227,7 +231,7 @@ class Program
         catch(UnauthorizedAccessException){Console.WriteLine($"Unable to load file {path}, please try again with permissions");Inp.GetInput("Press enter to continue");}
         catch(NotSupportedException e){Console.WriteLine($"This OS doesn't support opening files, {e.ToString()}");Inp.GetInput("Press enter to continue");}
     }
-    //Load the values from config lines
+    //Load the values from config text lines
     static void LoadConfigValues(string configTextRaw)
     {
         //Process the lines before loading
@@ -236,6 +240,7 @@ class Program
         //Load each line
         for(int offset = 0; offset < fileLines.Length;) //No increment here! It will be handled inside the loop. This for loop is functioning like a while loop, with the ability to declare the counter at the start
         {
+            _autoSave = Msc.ReadFileLine(fileLines, ref offset, "autoSaveConfigOnOptionsExit=").ToLower() != "false"; //Load the config file auto save flag //Treat unrecognized input as true
             //use ref to pass offset to classes
             //Load All Game Mode Settings
             List<Type> GmModeTypes = Msc.ListMap<GameMode,Type>(_gameModeList,(GameMode gmItem) => {return gmItem.GetType();}); //Use the ListMap function to get each game mode's type
@@ -267,6 +272,7 @@ class Program
             path ??= "doggle.cfg"; //Use the ternary null setter to set the path to default if it's nulled (by the key 'd')
             using(StreamWriter sWriter = new StreamWriter(File.Open(path,FileMode.Create))) //Get a stream writer which is much more useful in this situation
             {
+                sWriter.WriteLine("autoSaveConfigOnOptionsExit=" + ((_autoSave) ? "true" : "false"));//Write the Auto Save Setting //Use the ternary operator to auto write "true" or "false" to represent the status of the boolean
                 //Write all game modes to the file
                 for(int i = 0; i < _gameModeList.Count; i++)
                 {
