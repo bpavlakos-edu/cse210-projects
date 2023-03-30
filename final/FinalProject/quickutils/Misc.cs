@@ -170,6 +170,16 @@ namespace QuickUtils
         {
             return Random(0,max);
         }
+        //Float
+        public static float RandomFloat()
+        {
+            return new Random(RandomNumberGenerator.GetInt32(int.MaxValue)).NextSingle(); //Use the cryptographically secure random to generate the seed the regular random uses to make float values
+        }
+        //Double Precision Decimal Number
+        public static double RandomDouble()
+        {
+            return new Random(RandomNumberGenerator.GetInt32(int.MaxValue)).NextDouble();  //Use the cryptographically secure random to generate the seed the regular random uses to make double values
+        }
 
     }
 }
