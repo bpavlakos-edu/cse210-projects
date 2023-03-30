@@ -59,10 +59,11 @@ class Program
     );
     static void Main(string[] args)
     {
-        //SaveConfigFile("doggle_reset.cfg");
+        SaveConfigFile("d_r_temp.cfg"); //Create a temporary file using the default values, to load if the user wants to reset all settings
         LoadConfigFile();
         _mainMenu.UiLoop(); //Open the main menu
         SaveConfigFile();
+        DeleteResetConfig(); //Delete the temporary config file
     }
     static void ShowGmHelp()
     {
@@ -106,8 +107,9 @@ class Program
                 new UiOption(_mainDiceSet.OpenSettings,"Open the &Dice-Set Options Menu"),
                 new UiOption(SaveConfigOption,"&Save Config File"),
                 new UiOption(LoadConfigOption,"&Load Config File"),
+                new UiOption(ResetAllSettings,"&Reset All Settings and Config File"),
                 new UiOption(()=>{return _autoSave;},(bool newVal)=>{_autoSave = newVal;},"Allow &Auto Save Config File when Exiting Options"),
-                new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
+                new UiOption(()=>{throw new UiMenuExitException();},"Go &Back")
             },
             "Main Menu > Options:",
             "Select an option or [hotkey] from the menu: ",
@@ -244,7 +246,7 @@ class Program
         for(int offset = 0; offset < fileLines.Length;) //No increment here! It will be handled inside the loop. This for loop is functioning like a while loop, with the ability to declare the counter at the start
         {
             _autoSave = Msc.ReadFileLine(fileLines, ref offset, "autoSaveConfigOnOptionsExit=").ToLower() != "false"; //Load the config file auto save flag //Treat unrecognized input as true
-            _autoSave = Msc.ReadFileLine(fileLines, ref offset, "skipGmIntro=").ToLower() == "true"; //Load the config file auto save flag //Treat unrecognized input as false
+            _skipIntro = Msc.ReadFileLine(fileLines, ref offset, "skipGmIntro=").ToLower() == "true"; //Load the config file auto save flag //Treat unrecognized input as false
             //use ref to pass offset to classes
             //Load All Game Mode Settings
             List<Type> GmModeTypes = Msc.ListMap<GameMode,Type>(_gameModeList,(GameMode gmItem) => {return gmItem.GetType();}); //Use the ListMap function to get each game mode's type
@@ -277,7 +279,7 @@ class Program
             using(StreamWriter sWriter = new StreamWriter(File.Open(path,FileMode.Create))) //Get a stream writer which is much more useful in this situation
             {
                 sWriter.WriteLine("autoSaveConfigOnOptionsExit=" + ((_autoSave) ? "true" : "false"));//Write the Auto Save Setting //Use the ternary operator to auto write "true" or "false" to represent the status of the boolean
-                sWriter.WriteLine("skipGmIntro=" + ((_autoSave) ? "true" : "false"));//Write the Skip Intro Setting //Use the ternary operator to auto write "true" or "false" to represent the status of the boolean
+                sWriter.WriteLine("skipGmIntro=" + ((_skipIntro) ? "true" : "false"));//Write the Skip Intro Setting //Use the ternary operator to auto write "true" or "false" to represent the status of the boolean
                 //Write all game modes to the file
                 for(int i = 0; i < _gameModeList.Count; i++)
                 {
@@ -301,6 +303,25 @@ class Program
             Console.WriteLine($"{e.ToString()}");
             Inp.GetInput("Press enter to continue");
         }
+    }
+    //Delete the temporary config file
+    static void DeleteResetConfig()
+    {
+        try
+        {
+            File.Delete("d_r_temp.cfg");
+        }
+        //Silently Catch Exceptions
+        catch(IOException){}
+        catch(ArgumentException){}
+        catch(NotSupportedException){}
+        catch(UnauthorizedAccessException){}
+    }
+    //Load Default settings using the temporary config file, and immediately save them
+    static void ResetAllSettings()
+    {
+        LoadConfigFile("d_r_temp.cfg");
+        SaveConfigFile("doggle.cfg", false);
     }
 
     //For testing basic functionality
