@@ -7,11 +7,13 @@ class GmDecay : GmGrow
     public GmDecay() : base()
     {
         _desc = "Decay Mode:_Has the same rules as classic mode_Shows all dice at first but makes them disappear by a set number of stages_Suggested Grid Size: 8 by 8 or larger_Suggested Stages Count: Less than or equal to dice count";
+        _displayName = "Decay Mode";
         //All other attributes are filled by the GmDecay class constructor
     }
     //Fill all attributes constructor
     public GmDecay(int durationSec, bool? showCDown = null, string desc = "Decay Mode:_Has the same rules as classic mode_Shows all dice at first but makes them disappear by a set number of stages_Suggested Grid Size: 8 by 8 or larger_Suggested Stages Count: Less than or equal to dice count", int stages = 10) : base(durationSec, showCDown, desc, stages)
     {
+        _displayName = "Decay Mode"; //Decay inherits GmGrow, which doesn't have a constructor that includes the gmName field
         //All attributes are filled by the GmDecay class constructor
     }
     

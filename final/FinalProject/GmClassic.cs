@@ -8,10 +8,11 @@ class GmClassic : GameMode
     public GmClassic() : base()
     {
         _desc = "Classic Mode:_Rolls all dice and starts a timer_Write down as many words as you can find_The player with the most unique words wins!_Suggested Grid Size: 5 by 5 or larger";
+        _displayName = "Classic Mode";
         //All other attributes are filled by the GameMode class constructor
     }
     //Fill Attributes Constructor
-    public GmClassic(int durationSec, bool? showCDown = null, string desc = "Classic Mode:_Rolls all dice and starts a timer_Write down as many words as you can find_The player with the most unique words wins!_Suggested Grid Size: 5 by 5 or larger") : base(durationSec, showCDown, desc)
+    public GmClassic(int durationSec, bool? showCDown = null, string desc = "Classic Mode:_Rolls all dice and starts a timer_Write down as many words as you can find_The player with the most unique words wins!_Suggested Grid Size: 5 by 5 or larger") : base(durationSec, showCDown, desc, "Classic Mode")
     {
         //All attributes are filled by the GameMode class constructor
     }

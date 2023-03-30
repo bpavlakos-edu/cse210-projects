@@ -14,10 +14,11 @@ class GmBlink : GameMode
     public GmBlink() : base()
     {
         _desc = "Blink Mode:_Same rules as classic mode_Randomly hides/shows dice periodically_It chooses dice to hide using the settings the game mode currently has_Suggested Grid Size: 5 by 5 or larger";
+        _displayName = "Blink Mode";
         //All other attributes are filled by the GameMode class constructor
     }
     //Fill Attributes Constructor
-    public GmBlink(int durationSec, bool? showCDown = null, string desc = "Blink Mode:_Same rules as classic mode_Randomly hides/shows dice periodically_It chooses dice to hide using the settings the game mode currently has_Suggested Grid Size: 5 by 5 or larger", int? blinkMsecGap = null, int? blinkRanChance = null, int? blinkRanChanceMax = null) : base(durationSec, showCDown, desc)
+    public GmBlink(int durationSec, bool? showCDown = null, string desc = "Blink Mode:_Same rules as classic mode_Randomly hides/shows dice periodically_It chooses dice to hide using the settings the game mode currently has_Suggested Grid Size: 5 by 5 or larger", int? blinkMsecGap = null, int? blinkRanChance = null, int? blinkRanChanceMax = null) : base(durationSec, showCDown, desc, "Blink Mode")
     {
         //All base attributes are filled by the GameMode class constructor
         //Fill the new attributes or use their default values

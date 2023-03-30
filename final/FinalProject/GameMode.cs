@@ -8,9 +8,9 @@ class GameMode
     //Attributes
     protected int _durationSec = 180; //Game mode duration
     protected bool _showCDown = true; //Flag to control whether to display a timer or not
-    protected string _desc = ""; //Game mode description for the help menu, shouldn't really be changed
+    protected string _desc = ""; //Game mode description for the help menu, it should always be hardcoded
     protected bool _paused = false; //This is not an externally accessible property, it's a global variable for threaded functions
-    protected string _displayName = "Test Mode"; //Game mode display name
+    protected string _displayName = "Test Mode"; //Game mode display name, shouldn't be accessible by a constructor, it should always be hardcoded
 
     //Constructors
     //Blank Constructor
@@ -19,11 +19,12 @@ class GameMode
         
     }
     //Fill all attributes (Supports using null to get default values)
-    public GameMode(int durationSec, bool? showCDown = null, string desc = null)
+    public GameMode(int durationSec, bool? showCDown = null, string desc = null, string displayName = null)
     {
         _durationSec = durationSec;
         _showCDown = showCDown ?? _showCDown;
         _desc = desc ?? _desc;
+        _displayName = displayName ?? _displayName;
     }
 
     //Getters and Setters (Normal external access Getters and Setters were auto generated using my AutoGetterSetter Python Script in C# mode)

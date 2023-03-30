@@ -9,10 +9,11 @@ class GmGrow : GameMode
     public GmGrow() : base()
     {
         _desc = "Grow Mode:_Has the same rules as classic mode_Hides all dice at first but makes them re-appear by a set number of stages_Suggested Grid Size: 8 by 8 or larger_Suggested Stages Count: Less than or equal to dice count";
+        _displayName = "Grow Mode";
         //All other attributes are filled by the GameMode class constructor
     }
     //Fill all attributes constructor
-    public GmGrow(int durationSec, bool? showCDown = null, string desc = "Grow Mode:_Has the same rules as classic mode_Hides all dice at first but makes them re-appear by a set number of stages_Suggested Grid Size: 8 by 8 or larger_Suggested Stages Count: Less than or equal to dice count", int stages = 10) : base(durationSec, showCDown, desc)
+    public GmGrow(int durationSec, bool? showCDown = null, string desc = "Grow Mode:_Has the same rules as classic mode_Hides all dice at first but makes them re-appear by a set number of stages_Suggested Grid Size: 8 by 8 or larger_Suggested Stages Count: Less than or equal to dice count", int stages = 10) : base(durationSec, showCDown, desc, "Grow Mode")
     {
         _stages = stages;
         //All other attributes are filled by the GameMode class constructor
