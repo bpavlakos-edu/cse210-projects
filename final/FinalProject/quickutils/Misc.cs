@@ -1,7 +1,9 @@
+using System.Security.Cryptography;
 namespace QuickUtils
 {
     static class Misc
     {
+        
         //Display friendly strings for common data types, this was occuring too much in the code, and I want to control it from one place
         public static string BoolStr(bool inBool, string trueStr = "Enabled", string falseStr = "Disabled")
         {
@@ -154,5 +156,20 @@ namespace QuickUtils
             offset += 1; //Increment the offset by 1, this change should effect the offset all the way up to the original declaration of it
             return returnStr; //Return the string
         }
+
+        //private static Random rngGen = new Random();
+        private static RandomNumberGenerator _randomGen = RandomNumberGenerator.Create(); //Random number generator, cryptographically secure (https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.randomnumbergenerator?view=net-7.0)
+
+        //Randomization function, to prevent stale randomness
+        public static int Random(int min, int max)
+        {
+            return RandomNumberGenerator.GetInt32(min, max);
+        }
+        //Function overload for only providing the max
+        public static int Random(int max)
+        {
+            return Random(0,max);
+        }
+
     }
 }
