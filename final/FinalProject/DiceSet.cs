@@ -305,13 +305,13 @@ class DiceSet
     {
         UiMenu diceSetSettings = new UiMenu(new List<UiOption>
             {
-                new UiOption(OpenDiceListSettingsMenu,"Edit &Dice List"), //Open Dice Edit Menu
+                new UiOption(OpenDiceListSettingsMenu,"Edit &Dice List",updateStrFun:()=>{return $" (Number of Dice: {_diceList.Count})";}), //Open Dice Edit Menu
                 new UiOption(GetWidth, SetWidth, "Grid &Width", 2), //Set Width
                 new UiOption(GetHeight, SetHeight, "Grid &Height", 2), //Set Height
                 new UiOption(GetGridSize, SetGridSize, "Grid &Size", 2), //Set Height
                 new UiOption(GetAllowAutoFill, SetAllowAutoFill,"&Auto-Fill Dice to Grid Size in Game Modes"), //Allow auto-filling dice set
                 new UiOption(GetAllowQu, SetAllowQu,"&Qu Allowed"), //Allow Qu Setting
-                new UiOption(()=>{return new string(GetDiceBorder());}, (string inStr)=>{SetDiceBorder(inStr);},"D&ice Border"), //Dice border setting
+                new UiOption(()=>{return new string(GetDiceBorder());}, (string inStr)=>{SetDiceBorder(inStr);},"D&ice Border"), //Dice border setting (By using lambdas with an input type of string for the getters and setters, it will use the UiOption constructor that auto generates GetString as the action)
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             },
             "Main Menu > Options > Dice-Set Options:"
