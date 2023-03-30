@@ -140,7 +140,7 @@ class Dice
     {
         try
         {
-            _side = new Random().Next(0, _sideList.Count); //Pick a random side of the dice, using the char list
+            _side = Msc.RandomInt(0, _sideList.Count); //Pick a random side of the dice, using the char list
             _curLetter = (_sideList[_side] != '?') ? _sideList[_side] : GetRandomLetter(); //Update _curLetter, set using the current side from the list, or by getting a random letter when it's side is set to '?' (Uses ternary operator)
         }
         catch(OperationCanceledException) //Disabled this catch to check for errors //catch(ArgumentOutOfRangeException) //Detect when the user tries to roll 0 length lists
@@ -291,7 +291,7 @@ class Dice
         List<char> _newSideList = new List<char>(); //create a temporary list to store the sides we pick from the real list at random
         while(_sideList.Count > 0) //Repeat until the original list is empty
         {
-            int nextIndex = new Random().Next(0,_sideList.Count); //Pick the next index
+            int nextIndex = Msc.RandomInt(0,_sideList.Count); //Pick the next index
             _newSideList.Add(_sideList[nextIndex]); //Add the picked item
             _sideList.RemoveAt(nextIndex); //Remove the picked index
         }
@@ -339,12 +339,12 @@ class Dice
     private bool RandomChance(int rChance, int rChanceMax, bool reverseCheck = false)
     {
         double rThreshold = (double) rChance / (double) rChanceMax; //Calculate the random threshold, "Random" uses a double, so we have to make them doubles too
-        return (!reverseCheck) ? new Random().NextDouble() >= 1.0 - rThreshold : new Random().NextDouble() <= rThreshold; //Return Random >= rThreshold, or Random <= rThreshold if the reverse flag is activated (using the Ternary Conditional Operator)
+        return (!reverseCheck) ? Msc.RandomDouble() >= 1.0 - rThreshold : Msc.RandomDouble() <= rThreshold; //Return Random >= rThreshold, or Random <= rThreshold if the reverse flag is activated (using the Ternary Conditional Operator)
     }
     //Get a random letter by calling the IntToChar function after picking a number from 0 to 25 as the offset (Consider merging this function with IntTochar)
     private char GetRandomLetter()
     {
-        return IntToChar(new Random().Next(0,26));
+        return IntToChar(Msc.RandomInt(0,26));
     }
     private char IntToChar(int alphabetValue, int asciiStartIndex = 65) //97 is 'a', 65 is 'A'
     {

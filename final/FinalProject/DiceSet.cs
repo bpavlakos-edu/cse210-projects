@@ -559,7 +559,7 @@ class DiceSet
         List<Dice> shuffledList = new List<Dice>();
         while(filteredList.Count > 0 && shuffledList.Count < maxDiceCount) //Continue until we either meet the max dice count or we run out of items in the filter list
         {
-            int randomIdx = new Random().Next(filteredList.Count); //Pick an index from the list at random
+            int randomIdx = Msc.RandomInt(filteredList.Count); //Pick an index from the list at random
             shuffledList.Add(filteredList[randomIdx]); //Add the randomly picked item from the filter list to the shuffle list
             filteredList.RemoveAt(randomIdx); //Delete the randomly picked item from the filtered list
         }
