@@ -162,7 +162,7 @@ class Program
                     "Set &Timer Length in Seconds for All Game Modes"),
                     new UiOption(() => 
                     {
-                        showCDown = Inp.GetBoolInput(true,"Please enter the new duration (leave blank to cancel): ",curValue:null);
+                        showCDown = Inp.GetBoolInput(true,"Would you like to enable the timer across all game modes? (leave blank to cancel): ",curValue:null);
                     },
                     "Enable or Disable Timer &Display for All Game Modes"),
                     new UiOption(() => {throw new UiMenuExitException();},"Go &Back") //Give us the exit option
