@@ -69,7 +69,7 @@ namespace QuickUtils
         public UiOption(Func<bool> getterFun, Action<bool> setterFun, string hotkeyVarName, char yesChar='y', char noChar='n', bool newLine = false)
         {
             //This is quite complex so I'll do it in the constructor body
-            _runAction = () => {setterFun(Inputs.GetBoolInput($"What would you like to enable {hotkeyVarName.Replace("&","").ToLower()} to?: ", yesChar, noChar, newLine, getterFun())); /*throw new OperationCanceledException();*/};
+            _runAction = () => {setterFun(Inputs.GetBoolInput($"Do you want to enable {hotkeyVarName.Replace("&","").ToLower()}?: ", yesChar, noChar, newLine, getterFun())); /*throw new OperationCanceledException();*/};
             _dispStr = MakeDisplayName("Enable or disable "+hotkeyVarName);
             _hotkey = MakeHotkey(hotkeyVarName);
             _updateStrFun = () => {return " (Currently: "+Misc.BoolStr(getterFun())+")";};
