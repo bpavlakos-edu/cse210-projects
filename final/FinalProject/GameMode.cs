@@ -10,6 +10,7 @@ class GameMode
     protected bool _showCDown = true; //Flag to control whether to display a timer or not
     protected string _desc = ""; //Game mode description for the help menu, shouldn't really be changed
     protected bool _paused = false; //This is not an externally accessible property, it's a global variable for threaded functions
+    protected string _displayName = "Test Mode"; //Game mode display name
 
     //Constructors
     //Blank Constructor
@@ -50,18 +51,28 @@ class GameMode
     {
         _desc = desc;
     }
+    //Custom
+    //Display name
+    public string GetDisplayName()
+    {
+        return _displayName;
+    }
+    public void SetDisplayName(string displayName)
+    {
+        _displayName = displayName;
+    }
 
     //Methods
     //Main Functionality
     //Start this game mode
-    public void Start(DiceSet curDiceSet, bool showStartMsg = false)
+    public void Start(DiceSet curDiceSet, bool skipIntro = false)
     {
         do
         {
             DiceSet diceSetCopy = new DiceSet(curDiceSet, false); //Copy the current dice set so the main dice set isn't modified during the game mode
-            if(showStartMsg)
+            if(!skipIntro)
             {
-                ShowStartMsgOverride(); //
+                ShowStartMsgOverride(); //show the intro message
             }
             Console.CursorVisible = false; //Hide the cursor (Okay, this is actually out of my control, and a know issue with dotnet: https://github.com/dotnet/runtime/issues/31063 )
             //int cursorSize = Console.CursorSize;
@@ -75,6 +86,7 @@ class GameMode
             Console.CursorVisible = true; //Show the cursor
             //Console.CursorSize = cursorSize; //Reload the cursor size
             ShowEndMsg(diceSetCopy); //Print the end message when it finishes
+            skipIntro = true; //Skip the intro on play again
         }
         while(Inp.GetBoolInput("Would you like to play again?: ", curValue:false, hideCurValue:true) == true); //Repeat until the user says they are finished. This input configuartion will default to false if it's left blank
     }
@@ -96,7 +108,7 @@ class GameMode
     //Show the start message
     private void ShowStartMsg(string gmName)
     {
-        Inp.GetInput($"Press Enter To Begin {gmName}: ");
+        Inp.GetInput($"Press Enter to Begin {gmName}");
     }
     //Show the end message, and let the user check the current dice set
     private void ShowEndMsg(DiceSet diceCopy)

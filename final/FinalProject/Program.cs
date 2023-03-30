@@ -243,6 +243,7 @@ class Program
         for(int offset = 0; offset < fileLines.Length;) //No increment here! It will be handled inside the loop. This for loop is functioning like a while loop, with the ability to declare the counter at the start
         {
             _autoSave = Msc.ReadFileLine(fileLines, ref offset, "autoSaveConfigOnOptionsExit=").ToLower() != "false"; //Load the config file auto save flag //Treat unrecognized input as true
+            _autoSave = Msc.ReadFileLine(fileLines, ref offset, "skipGmIntro=").ToLower() != "false"; //Load the config file auto save flag //Treat unrecognized input as true
             //use ref to pass offset to classes
             //Load All Game Mode Settings
             List<Type> GmModeTypes = Msc.ListMap<GameMode,Type>(_gameModeList,(GameMode gmItem) => {return gmItem.GetType();}); //Use the ListMap function to get each game mode's type
@@ -275,6 +276,7 @@ class Program
             using(StreamWriter sWriter = new StreamWriter(File.Open(path,FileMode.Create))) //Get a stream writer which is much more useful in this situation
             {
                 sWriter.WriteLine("autoSaveConfigOnOptionsExit=" + ((_autoSave) ? "true" : "false"));//Write the Auto Save Setting //Use the ternary operator to auto write "true" or "false" to represent the status of the boolean
+                sWriter.WriteLine("skipGmIntro=" + ((_autoSave) ? "true" : "false"));//Write the Skip Intro Setting //Use the ternary operator to auto write "true" or "false" to represent the status of the boolean
                 //Write all game modes to the file
                 for(int i = 0; i < _gameModeList.Count; i++)
                 {
