@@ -72,7 +72,7 @@ class GameMode
             DiceSet diceSetCopy = new DiceSet(curDiceSet, false); //Copy the current dice set so the main dice set isn't modified during the game mode
             if(!skipIntro)
             {
-                ShowStartMsgOverride(); //show the intro message
+                ShowStartMsg(); //show the intro message
             }
             Console.CursorVisible = false; //Hide the cursor (Okay, this is actually out of my control, and a know issue with dotnet: https://github.com/dotnet/runtime/issues/31063 )
             //int cursorSize = Console.CursorSize;
@@ -100,15 +100,10 @@ class GameMode
         bool threadEndedOnTime = timerThread.Join(_durationSec * 1000); //Join by the duration specified for this game mode, store whether it Joined in time into a boolean
         timerThread.Join();//Temporary patch until I can find out how to prevent the timer end message bug from happening when the dice set is very large
     }
-    //An Override for child classes to override the call to the ShowStartMsg method
-    protected virtual void ShowStartMsgOverride()
-    {
-        ShowStartMsg("Test Mode"); //Names get hardcoded here
-    }
     //Show the start message
-    private void ShowStartMsg(string gmName)
+    private void ShowStartMsg()
     {
-        Inp.GetInput($"Press Enter to Begin {gmName}");
+        Inp.GetInput($"Press Enter to Begin {_displayName}");
     }
     //Show the end message, and let the user check the current dice set
     private void ShowEndMsg(DiceSet diceCopy)
