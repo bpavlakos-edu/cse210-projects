@@ -155,16 +155,14 @@ class Program
             UiMenu _allGmSettingsMenu = new UiMenu(
                 new List<UiOption>
                 {
-                    new UiOption(() => 
-                    {
+                    //Timer duration
+                    new UiOption(() => {
                         durationSec = Inp.GetIntInput(true,"Please enter the new duration (leave blank to cancel): ", 1, null);
-                    },
-                    "Set &Timer Length in Seconds for All Game Modes"),
-                    new UiOption(() => 
-                    {
-                        showCDown = Inp.GetBoolInput(true,"Would you like to enable the timer across all game modes? (leave blank to cancel): ",curValue:null);
-                    },
-                    "Enable or Disable Timer &Display for All Game Modes"),
+                    },"Set &Timer Length in Seconds for All Game Modes"),
+                    //Show the Timer
+                    new UiOption(() => {
+                        showCDown = Inp.GetBoolInput(true,"Would you like to show the timer in all game modes? (leave blank to cancel): ",curValue:null);
+                    },"Enable or Disable Timer &Display for All Game Modes"),
                     new UiOption(() => {throw new UiMenuExitException();},"Go &Back") //Give us the exit option
                 },
                 "Main Menu > Options > Game Mode Options > All Game Mode Options:",
