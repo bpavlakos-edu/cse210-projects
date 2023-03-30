@@ -330,4 +330,19 @@ class Program
             }
         }
     }*/
+/*     static void ResetSettings()
+    {
+        try
+        {
+            File.Delete("doggle.cfg");
+        }
+        catch(UnauthorizedAccessException)
+        {
+            Console.WriteLine("You do not have permission to delete the config file!");
+        }
+        catch(FileNotFoundException)
+        {
+
+        }
+    } */
 }
