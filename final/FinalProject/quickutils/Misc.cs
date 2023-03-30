@@ -161,21 +161,21 @@ namespace QuickUtils
         private static RandomNumberGenerator _randomGen = RandomNumberGenerator.Create(); //Random number generator, cryptographically secure (https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.randomnumbergenerator?view=net-7.0)
 
         //Randomization function, to prevent stale randomness
-        public static int Random(int min, int max)
+        public static int RandomInt(int min, int max)
         {
             return RandomNumberGenerator.GetInt32(min, max);
         }
         //Function overload for only providing the max
-        public static int Random(int max)
+        public static int RandomInt(int max)
         {
-            return Random(0,max);
+            return RandomInt(0, max);
         }
-        //Float
+        //Random Float (Single Precision Decimal Number / FloatInt)
         public static float RandomFloat()
         {
             return new Random(RandomNumberGenerator.GetInt32(int.MaxValue)).NextSingle(); //Use the cryptographically secure random to generate the seed the regular random uses to make float values
         }
-        //Double Precision Decimal Number
+        //Random Double (Double Precision Decimal Number / Float64)
         public static double RandomDouble()
         {
             return new Random(RandomNumberGenerator.GetInt32(int.MaxValue)).NextDouble();  //Use the cryptographically secure random to generate the seed the regular random uses to make double values
