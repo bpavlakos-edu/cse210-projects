@@ -8,7 +8,7 @@ class Program
 {
     //Global Variables
     static bool _autoSave = true; //Boolean setting for auto saving the config file when you exit settings
-    static bool _skipIntro = true; //Boolean setting for displaying "Press Enter to Begin"
+    static bool _skipIntro = false; //Boolean setting for displaying "Press Enter to Begin"
     static List<GameMode> _gameModeList = new List<GameMode>{new GmClassic(), new GmRandom(), new GmBlink(), new GmGrow(), new GmDecay()};
     static DiceSet _mainDiceSet = new DiceSet(new List<Dice>
     {//Default dice list was digitized from a real boggle set
@@ -59,6 +59,7 @@ class Program
     );
     static void Main(string[] args)
     {
+        //SaveConfigFile("doggle_reset.cfg");
         LoadConfigFile();
         _mainMenu.UiLoop(); //Open the main menu
         SaveConfigFile();
@@ -130,7 +131,7 @@ class Program
                 new UiOption(_gameModeList[2].OpenSettings,"Bli&nk Mode Options"),
                 new UiOption(_gameModeList[3].OpenSettings,"&Grow Mode Options"),
                 new UiOption(_gameModeList[4].OpenSettings,"&Decay Mode Options"),
-                new UiOption(()=>{return _skipIntro;},(bool enabled)=>{_skipIntro = enabled;},"&Skip Intro"),
+                new UiOption(()=>{return _skipIntro;},(bool enabled)=>{_skipIntro = enabled;},"&Skip Game Mode Intro"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             },
             "Main Menu > Options > Game Mode Options:",
@@ -243,7 +244,7 @@ class Program
         for(int offset = 0; offset < fileLines.Length;) //No increment here! It will be handled inside the loop. This for loop is functioning like a while loop, with the ability to declare the counter at the start
         {
             _autoSave = Msc.ReadFileLine(fileLines, ref offset, "autoSaveConfigOnOptionsExit=").ToLower() != "false"; //Load the config file auto save flag //Treat unrecognized input as true
-            _autoSave = Msc.ReadFileLine(fileLines, ref offset, "skipGmIntro=").ToLower() != "false"; //Load the config file auto save flag //Treat unrecognized input as true
+            _autoSave = Msc.ReadFileLine(fileLines, ref offset, "skipGmIntro=").ToLower() == "true"; //Load the config file auto save flag //Treat unrecognized input as false
             //use ref to pass offset to classes
             //Load All Game Mode Settings
             List<Type> GmModeTypes = Msc.ListMap<GameMode,Type>(_gameModeList,(GameMode gmItem) => {return gmItem.GetType();}); //Use the ListMap function to get each game mode's type
