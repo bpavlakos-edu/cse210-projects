@@ -7,7 +7,8 @@ using Msc = QuickUtils.Misc; //Added to load files
 class Program
 {
     //Global Variables
-    static bool _autoSave = true;
+    static bool _autoSave = true; //Boolean setting for auto saving the config file when you exit settings
+    static bool _skipIntro = true; //Boolean setting for displaying "Press Enter to Begin"
     static List<GameMode> _gameModeList = new List<GameMode>{new GmClassic(), new GmRandom(), new GmBlink(), new GmGrow(), new GmDecay()};
     static DiceSet _mainDiceSet = new DiceSet(new List<Dice>
     {//Default dice list was digitized from a real boggle set
@@ -42,11 +43,11 @@ class Program
         new List<UiOption>
         {
             //new UiOption(()=>{TestMode();},"&Test Mode"), //For debugging //Disabled
-            new UiOption(()=>{_gameModeList[0].Start(_mainDiceSet);},"Play the &Classic Game Mode"),
-            new UiOption(()=>{_gameModeList[1].Start(_mainDiceSet);},"Play the &Random Game Mode"),
-            new UiOption(()=>{_gameModeList[2].Start(_mainDiceSet);},"Play the &Blink Game Mode"),
-            new UiOption(()=>{_gameModeList[3].Start(_mainDiceSet);},"Play the &Grow Game Mode"),
-            new UiOption(()=>{_gameModeList[4].Start(_mainDiceSet);},"Play the &Decay Game Mode"),
+            new UiOption(()=>{_gameModeList[0].Start(_mainDiceSet, _skipIntro);},"Play the &Classic Game Mode"),
+            new UiOption(()=>{_gameModeList[1].Start(_mainDiceSet, _skipIntro);},"Play the &Random Game Mode"),
+            new UiOption(()=>{_gameModeList[2].Start(_mainDiceSet, _skipIntro);},"Play the &Blink Game Mode"),
+            new UiOption(()=>{_gameModeList[3].Start(_mainDiceSet, _skipIntro);},"Play the &Grow Game Mode"),
+            new UiOption(()=>{_gameModeList[4].Start(_mainDiceSet, _skipIntro);},"Play the &Decay Game Mode"),
             new UiOption(ShowGmHelp,"Open the &Help Menu"),
             new UiOption(OptionsMenu,"Open the &Options Menu"),
             new UiOption(()=>{throw new UiMenuExitException();},"&Exit")
@@ -129,6 +130,7 @@ class Program
                 new UiOption(_gameModeList[2].OpenSettings,"Bli&nk Mode Options"),
                 new UiOption(_gameModeList[3].OpenSettings,"&Grow Mode Options"),
                 new UiOption(_gameModeList[4].OpenSettings,"&Decay Mode Options"),
+                new UiOption(()=>{return _skipIntro;},(bool enabled)=>{_skipIntro = enabled;},"&Skip Intro"),
                 new UiOption(()=>{throw new UiMenuExitException();},"Go &Back"),
             },
             "Main Menu > Options > Game Mode Options:",
