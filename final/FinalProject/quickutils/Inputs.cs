@@ -12,13 +12,15 @@ Version 3 Changes:
 //To add this static class to a project: "using Inp = QuickUtils.Inputs"
 //To use it: "Inp.GetInput()"
 
+using Misc = QuickUtils.Misc;
+
 namespace QuickUtils /*Library name*/
 {
     //User Inputs
     public static class Inputs /*Library static class*/
     {
         //Basic string input
-        public static string GetInput(string inMsg, bool toLower = true, bool newLine = false, string curValue = null)
+        public static string GetInput(string inMsg, bool? toLower = true, bool newLine = false, string curValue = null)
         {
             //Code size has decreased through the use of the ternary operator [ex: dataType myVar = (boolean condition) ? valueIfTrue : valueIfFalse;]
             inMsg = (curValue != null) ? inMsg.Replace(":",$" (currently: "+Misc.QuoteStr(curValue)+" leave blank to cancel):") : inMsg; //When we have a current value, display it
@@ -26,11 +28,11 @@ namespace QuickUtils /*Library name*/
             Console.Write(inMsg);
             string returnStr = Console.ReadLine() ?? curValue ?? "";//Return the read line, if it's null, return a blank string (or curValue if not empty)
             //Flag for lowercase support (on by default)
-            return (toLower) ? returnStr.ToLower() : returnStr; //Return the return string 
+            return (toLower == null) ? returnStr.ToUpper() : ((bool)toLower) ? returnStr.ToLower() : returnStr; //Return the return string, false = ignore case, true = ToLower(), null = ToUpper() 
         }
         
         //Integer Input
-        public static int GetIntInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int? curValue = null)
+        public static int? GetIntInput(bool allowEmpty, string inMsg, int? min = null, int? max = null, bool newLine = false, int? curValue = null)
         {   
             while(true) //Infinite loop
             {
@@ -38,7 +40,9 @@ namespace QuickUtils /*Library name*/
                 {
                     try //Exception funnel
                     {
-                        int returnVal = int.Parse(GetInput(inMsg, true, newLine, (curValue != null) ? curValue + "":null)); //Parse the input (This ternary codition prevents null from being turned into a string, while also letting us turn int into a string)
+                        string userInput = GetInput(inMsg, true, newLine, (curValue != null) ? curValue + "":null);
+                        if(userInput == ""){throw new ArgumentNullException();} //Detect empty strings
+                        int returnVal = int.Parse(userInput); //Parse the input (This ternary codition prevents null from being turned into a string, while also letting us turn int into a string)
                         //Determine if the value is in our boundaries
                         if(min == null && max == null) //No boundaries
                         {
@@ -55,19 +59,19 @@ namespace QuickUtils /*Library name*/
                             //Use the ternary conditional operator to generate most of the strings, this saved us a few lines of code!
                             //See this site for info: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator
                             //Syntax: type myVar = (condition) ? valueIftrue : valueIfFalse;
-                            string minStr = (min != null) ? $"minimum {min}":"";
-                            string maxStr = (max != null) ? $"maximum {max}":"";
-                            string toStr = (min != null && max != null) ? " to ":"";
-                            string inTheRange = (min != null || max != null) ? $" in the range: {minStr}{toStr}{maxStr}. P":", p";
-                            Console.WriteLine($"Sorry that's not a valid number{inTheRange}lease try again!");
+                            string minStr = (min != null) ? $"minimum {min}" : "";
+                            string maxStr = (max != null) ? $"maximum {max}" : "";
+                            string toStr = (min != null && max != null) ? " to " : "";
+                            string inTheRange = (min != null || max != null) ? $" in the range: {minStr}{toStr}{maxStr}. P" : ", p";
+                            Console.WriteLine($"Sorry {returnVal} is not a valid number{inTheRange}lease try again!");
                         }
                     }
                     /*Funnel all invalid entries to FormatException*/
                     catch(ArgumentNullException) //Check argument null exceptions
                     {
-                        if(curValue != null) //Return curValue when curValue isn't null
+                        if(curValue != null || allowEmpty) //Return curValue when curValue isn't null
                         {
-                            return (int) curValue; //Why do I need to type cast this?
+                            return curValue; //Why do I need to type cast this?
                         }
                         throw new FormatException(); //If there's no current value, act like all the other exceptions
                     }
@@ -75,9 +79,13 @@ namespace QuickUtils /*Library name*/
                 }
                 catch(FormatException)
                 {
-                    Console.WriteLine("Sorry! That's not a valid number, please try again!");
+                    Console.WriteLine("Sorry! That's not a valid number, please try again!"); //Figure out why empty strings are going here and not to agument null
                 }
             }
+        }
+        public static int GetIntInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int? curValue = null)
+        {
+            return (int) GetIntInput(false, inMsg, min, max, newLine, curValue);
         }
         //Integer input with a maximum
         public static int GetIntInputMax(string inMsg, int max, bool newLine = false, int? curValue = null)
@@ -141,7 +149,7 @@ namespace QuickUtils /*Library name*/
                             string maxStr = (max != null) ? $"maximum {max}":"";
                             string toStr = (min != null && max != null) ? " to ":"";
                             string inTheRange = (min != null || max != null) ? $" in the range: {minStr}{toStr}{maxStr}. P":", p"; //Sorry that's not a valid decimal number in the range min to max, please try again!
-                            Console.WriteLine($"Sorry that's not a valid decimal number{inTheRange}lease try again!");
+                            Console.WriteLine($"Sorry {returnVal} is not a valid decimal number{inTheRange}lease try again!");
                         }
                     }
                     /*Funnel all invalid entries to FormatException*/
@@ -163,7 +171,7 @@ namespace QuickUtils /*Library name*/
         }
 
         //Boolean input
-        public static bool GetBoolInput(string inMsg, char yesChar = 'y', char noChar = 'n', bool newLine = false, bool? curValue = null, bool hideCurValue = false)
+        public static bool? GetBoolInput(bool acceptBlank, string inMsg, char yesChar = 'y', char noChar = 'n', bool newLine = false, bool? curValue = null, bool hideCurValue = false)
         {
 
             while(true) //Infinite loop
@@ -179,9 +187,21 @@ namespace QuickUtils /*Library name*/
                 }
                 else //Unrecognized input
                 {
-                    Console.WriteLine("Sorry! That's not a valid input, please try again!");
+                    if(acceptBlank && userInput == "")
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Sorry! That's not a valid input, please try again!");
+                    }
                 }
             }
+        }
+        //Old Method call header / Force Non-Null Return
+        public static bool GetBoolInput(string inMsg, char yesChar = 'y', char noChar = 'n', bool newLine = false, bool? curValue = null, bool hideCurValue = false)
+        {
+            return (bool) GetBoolInput(false, inMsg, yesChar, noChar, newLine, curValue, hideCurValue);
         }
 
         //List input
@@ -234,6 +254,91 @@ namespace QuickUtils /*Library name*/
                 }
             }
             return  GetInput(inMsg, toLower, newLine, curValue); //Default return value
+        }
+        //Get input as a list
+        public static List<int[]> GetIntRangeInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int?[] curValue = null, int subtractNum = 0)
+        {
+            string userInput = GetInput(inMsg, true, newLine, (curValue != null) ? curValue + "":null);
+            if(userInput.Contains('!') && min != null && max != null)  //This condition is explained on the "else" line
+            {
+                string[] subEntryArray = userInput.Split(","); //Split each entry by a comma
+                List<int[]> returnList = new List<int[]>();
+                //Process every sub entry into an appropriate range
+                for(int i = 0; i < subEntryArray.Length; i++)
+                {
+                    int[] subEntryIntRange = RangeFromStringEntry(subEntryArray[i], min, max, subtractNum); //Process the sub entry
+                    if(subEntryArray.Length > 0) //Only store it in the return list if it's not empty
+                    {
+                        returnList.Add(subEntryIntRange); //Add the sub entry after processing it
+                    }
+                }
+                Misc.MergeRangeList(returnList);
+                return returnList; //Return the final list
+            }
+            else //When the string contains '!' and the minimum and maximum are not null, select the whole range
+            {
+                return new List<int[]>{new int[]{((int) min) - subtractNum, ((int) max) - subtractNum}};
+            }
+        }
+        //Create a range from a single string entry
+        private static int[] RangeFromStringEntry(string stringRange, int? min = null, int? max = null, int subtractNum = 0)
+        {
+            string[] splitStringArr = stringRange.Split("-");
+            List<int> returnIntList = new List<int>();
+            for(int i = 0; i < splitStringArr.Length; i++)
+            {
+                int? entryToInt = ProcessInt(splitStringArr[i], min, max, subtractNum);
+                if(entryToInt != null)
+                {
+                    returnIntList.Add((int)entryToInt);//Add this item to the list//Again, why do I need to type cast this??? It's always not null!!!
+                }
+            }
+            return returnIntList.ToArray<int>(); //Convert to an array before returning
+        }
+        //Process an integer (this is so it can be repeatedly called by a list input function)
+        private static int? ProcessInt(string inputVal, int? min = null, int? max = null, int subtractNum = 0)
+        {
+            int? result = null;
+            try //Main exception
+                {
+                try //Exception funnel
+                    {
+                        int returnVal = int.Parse(inputVal) - subtractNum; //Parse the input (This ternary codition prevents null from being turned into a string, while also letting us turn int into a string)
+                        //Determine if the value is in our boundaries
+                        if(min == null && max == null) //No boundaries
+                        {
+                            return returnVal;
+                        }
+                        else if((returnVal + subtractNum >= (min ?? (returnVal + subtractNum))) && ((returnVal + subtractNum) <= (max ?? (returnVal + subtractNum)))) //Check boundaries
+                        {
+                            //If the boundary is "null" it will automatically turn into "returnVal", which will make it's half true! 
+                            //But since they are both null in the first if statement, that means one of these two is garunteed to be checked
+                            return returnVal;
+                        }
+                        else //Not within range
+                        {
+                            //Use the ternary conditional operator to generate most of the strings, this saved us a few lines of code!
+                            //See this site for info: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator
+                            //Syntax: type myVar = (condition) ? valueIftrue : valueIfFalse;
+                            string minStr = (min != null) ? $"minimum {min}" : "";
+                            string maxStr = (max != null) ? $"maximum {max}" : "";
+                            string toStr = (min != null && max != null) ? " to " : "";
+                            string inTheRange = (min != null || max != null) ? $" in the range: {minStr}{toStr}{maxStr}. P" : ", p";
+                            Console.WriteLine($"Sorry {returnVal} is not a valid number{inTheRange}lease try again!");
+                        }
+                    }
+                    /*Funnel all invalid entries to FormatException*/
+                    catch(ArgumentNullException) //Check argument null exceptions
+                    {
+                        //throw new FormatException(); //If it's empty ignore it
+                    }
+                    catch(OverflowException){throw new FormatException();}
+                }
+                catch(FormatException)
+                {
+                    Console.WriteLine("Sorry! That's not a valid number, please try again!");
+                }
+            return result;
         }
     }
 }

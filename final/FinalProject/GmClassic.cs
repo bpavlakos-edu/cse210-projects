@@ -36,6 +36,20 @@ class GmClassic : GameMode
     //An override to change the MakeSettingsMenu message, all the other variables are the same
     protected override UiMenu MakeSettingsMenu(string menuMsg="Classic Mode Settings:")
     {
-        return base.MakeSettingsMenu(menuMsg); //Get the original menu, using the new default parameter
+        return base.MakeSettingsMenu("Main Menu > Options > Game Mode Options > Classic Mode Options:"); //Get the original menu, using the new default parameter
     }
+
+    //File loading
+    //An override to change the gmName because the rest is the same
+    public override void LoadFromFile(string[] fileLines, ref int offset, string gmName = "gmClassic")
+    {
+        base.LoadFromFile(fileLines, ref offset, "gmClassic");
+    }
+
+    //File Writing
+    public override void WriteToFile(StreamWriter sWriter, string gmName = "gmClassic")
+    {
+        base.WriteToFile(sWriter, "gmClassic");
+    }
+
 }

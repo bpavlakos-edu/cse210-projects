@@ -3,6 +3,7 @@ using UiOption = QuickUtils.UiOption;
 using Inp = QuickUtils.Inputs;
 using Msc = QuickUtils.Misc;
 using UiMenuExitException = QuickUtils.UiMenuExitException; //Exit exception for the menu to use
+using UiMenuRefreshException = QuickUtils.UiMenuRefreshException; //Refresh exception for the menu to use
 class Dice
 {
     //Attributes
@@ -36,6 +37,16 @@ class Dice
         _hidden = false;
     }
 
+    //Fill attributes using a string as the char list
+    public Dice(string diceCodeString, int side = 0, char curLetter = ' ', bool hidden = false)
+    {
+        _sideList = new List<char>();
+        SetSideList(diceCodeString);
+        _side = side;
+        _curLetter = curLetter;
+        _hidden = hidden;
+    }
+
     //Copy an existing Dice
     public Dice(Dice newDice) : this(newDice.GetSideList(), newDice.GetSide(), newDice.GetCurLetter(), newDice.GetHidden())
     {
@@ -52,8 +63,12 @@ class Dice
         _sideList = Msc.ListCopy<char>(sideList,(char inObj) => {return inObj;});
     }
     //SetSide list from a string (custom)
-    public void SetSideList(string inString)
+    public void SetSideList(string inString, bool clearList = true)
     {
+        if(clearList)
+        {
+            _sideList = new List<char>();
+        }
         List<char> charList = inString.ToUpper().ToList<char>();//Captialize the input string before turning it into a list of char
         //Add each side to the list
         charList.ForEach((curChar) => {AddSide(curChar);});//Use AddSide() to filter out invalid characters
@@ -132,7 +147,6 @@ class Dice
         {
             Console.WriteLine($"Dice is empty! Please add sides before rolling!");
         }
-        
     }
     public void ToggleHidden(int rChance = 1, int rChanceMax = 4, bool showOnFail = true)
     {
@@ -159,15 +173,166 @@ class Dice
         //&Remove Side
         //&Edit Side
         //&Set All Sides 
-        //Randomi&ze Side List
+        //Replace Sides With Random
+        //Scramble Side Order
         //Go &Back
         //UiMenu diceSettings
         //diceSettings.UiLoop();
+        bool refreshUi = true;
+        while(refreshUi)
+        {
+            //Create the UiMenu
+            UiMenu diceSettingsMenu = new UiMenu(
+                new List<UiOption>
+                {
+                    new UiOption(()=>{SimpleDiceCode(); throw new UiMenuRefreshException();},"&Edit With Dice-Code"),
+                    new UiOption(()=>{SimpleDiceCode(false); throw new UiMenuRefreshException();},"&Add Sides With Dice-Code"),
+                    new UiOption(()=>{DeleteSides(); throw new UiMenuRefreshException();},"&Delete Sides"),
+                    new UiOption(()=>{ScrambleSides(); throw new UiMenuRefreshException();},"&Scramble Side Order"),
+                    new UiOption(()=>{RandomSideLetters(); throw new UiMenuRefreshException();},"&Replace Sides with Random Letters"),
+                    new UiOption(()=>{throw new UiMenuExitException();},"Go &Back") //Go back to the previous menu
+                },
+                "Main Menu > Settings > Dice-Set Options > Dice List and Options > Dice Settings:",
+                "Select a setting or [hotkey] from the menu: ",
+                "" //Hide the exit message
+            );
+            refreshUi = diceSettingsMenu.UiLoop(()=>{Console.WriteLine("Current Sides: "+LettersToString());Console.WriteLine($"Side Count: {_sideList.Count}");}); //Refresh the UiMenu
+        }
+        throw new UiMenuRefreshException(); //Refresh the menu that this menu has been called from (the DiceSetSettings > Edit Dice List menu)
     }
+    //Simple DiceCode Method
+    public void SimpleDiceCode(bool clearList = true)
+    {
+        Console.WriteLine("Current Sides: "+LettersToString(','));
+        Console.WriteLine("Dice-Code Rules:");
+        Console.WriteLine("Each letter represents 1 side of the dice");
+        Console.WriteLine("Each dice can have a unique number of sides");
+        //Console.WriteLine("Add \",\" to seperate each dice entry");
+        Console.WriteLine("\"?\" picks a random letter each time it's rolled in-game");
+        Console.WriteLine("\"*\" picks a random letter to save as the side");
+        Console.WriteLine("Invalid characters are ignored, letters aren't case-sensitive");
+        //Console.WriteLine("When the dice list is empty, it will automatically be filled by a single dice");
+        SetSideList(Inp.GetInput("Enter Your Dice-Code (Leave blank to cancel):", null, clearList)); //forces upper case (toLower = null), newLine = true
+        //throw new UiMenuRefreshException();
+    }
+    //Advanced Dice Code
+    /*
+    public void DiceCodeConsole()
+    {
+        //Syntax:
+        //Commands:
+        //A = Set it to 1 side, being A
+        //ABCD = Set the sides to ABCD
+        //5A = set side 5 to A
+        //25A = set side 25 to A
+        //+ABCD = Add ABCD as sides to the end
+        //-ABCD = Remove all instances of ABCD
+        //25+ABCD = At slot 25 add the sides ABCD
+        //ABCD,EFGH = Set the sides to ABCDEFGH
+        //># = Skip number of sides
+        //$ = Reset the side list
+        //_ = Keep current side
+        //Special Characters:
+        //? = Randomly Pick a letter from A to Z
+        //* = Randomly Pick a letter to save as the side
+        
+    }
+    //Process the Dice Code
+    public void ProcessDiceCode(string diceCodeString)
+    {
+        List<char> newSideList = Msc.ListCopy<char>(_sideList,(char inChar) => {char returnChar = inChar; return returnChar;}); //Copy the list of chars, just use a simple lambda to copy the value of char to a new char variable to break the reference
+        char[] diceCodeBuffer = diceCodeString.ToCharArray(); //Initalize the diceCode buffer
+        int offset = 0;
+        int sideIndex = 0;
+        while(offset < diceCodeBuffer.Length)
+        {
+            char codeChar = diceCodeBuffer[offset];
+            if(char.IsAsciiDigit(codeChar))
+            {
+                sideIndex = GetNumber(diceCodeBuffer, offset) ?? sideIndex; //Only update when not null
+            }
+            else if(codeChar == '+') //Add Sides
+            {
+                //Get new index if it's an integer
+            }
+            else if(codeChar == '-') //Remove Sides
+            {
+                //Get new index if it's an integer
+            }
+            else if(codeChar == ',') //Ingnore command, prepare for next one
+            {
+
+            }
+        }
+    }
+    //Get an integer from a dice code buffer
+    public int? GetDiceCodeNumber(char[] diceCodeBuffer, int offset)
+    {
+        List<char> numberCharList = new List<char>();
+        while(char.IsNumber(diceCodeBuffer[offset]) == true && offset < diceCodeBuffer.Length)
+        {
+            numberCharList.Add(diceCodeBuffer[offset]);
+            offset++;
+        }
+        //Try and return the result
+        try
+        {
+            return int.Parse(new string(numberCharList.ToArray()));
+        }
+        catch(ArgumentNullException)
+        {
+            return null;
+        }
+    }
+    */
+    //Scramble the order of dice sides
+    public void ScrambleSides()
+    {
+        List<char> _newSideList = new List<char>(); //create a temporary list to store the sides we pick from the real list at random
+        while(_sideList.Count > 0) //Repeat until the original list is empty
+        {
+            int nextIndex = new Random().Next(0,_sideList.Count); //Pick the next index
+            _newSideList.Add(_sideList[nextIndex]); //Add the picked item
+            _sideList.RemoveAt(nextIndex); //Remove the picked index
+        }
+        _sideList = Msc.ListCopy<char>(_newSideList,(char inputChar)=>{return inputChar;}); //Copy the final list
+    }
+    //Set the side list using random characters
+    public void RandomSideLetters()
+    {
+        SetSideList(new string('*',_sideList.Count));
+    }
+    //Delete sides
+    public void DeleteSides()
+    {
+        Console.WriteLine("Current Sides: "+LettersToString(','));
+        List<int[]> deletionIndexes = Inp.GetIntRangeInput("Enter the ranges of sides to delete (\"-\" to make a range, \",\" to seperate numbers, \"!\" to select all): ",1,_sideList.Count,subtractNum:1);
+        for(int i = deletionIndexes.Count - 1; i >= 0; i--) //Reverse for loops go backwards so that the greatest item is removed first, to prevent index errors
+        {
+            for(int j = deletionIndexes[i][deletionIndexes[i].Length - 1]; j >= deletionIndexes[i][0]; j--) //Start at the end range, end when we are below the start range
+            {//j = deletionIndexesEnd, j >= deletionIndexesStart, go backwards
+                RemoveSide(j); //Remove this side from the list
+            }
+        }
+        if(_sideList.Count == 0) //If it's empty by the end
+        {
+            _sideList.Add('?'); //Add ? to fill it
+        }
+    }
+
     //Setting support function, used both internally and externally
     public string LettersToString(char sepChar = '\u0000') //Default char value found here https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/char#literals
     {
         return string.Join(sepChar,_sideList); //String.Join puts all chars in a list together to form a string
+    }
+    //Append this dice as a list of characters to a buffer, for quickly writing dice codes
+    public void AppendToCharList(List<char> charListBufferTarget, int index = 0)
+    {
+        if(charListBufferTarget.Count != 0) //When this isn't the first index
+        {
+            charListBufferTarget.Add(','); //Add 0
+        }
+        charListBufferTarget.AddRange(_sideList);
     }
     //Utility
     //Determine if the random chance has been met
@@ -188,23 +353,17 @@ class Dice
     //Add or remove sides
     private void AddSide(char inputChar, bool strict = false)
     {
-        if(inputChar == '?' || char.IsAsciiLetter(inputChar)) 
+        if(inputChar == '?' || inputChar == '*' || char.IsAsciiLetter(inputChar)) //Accept only recognized characters
         {
-            _sideList.Add(char.ToLower(inputChar));
-            //_sideList.Add(inputChar); //For the if statement version if it's faster
+            _sideList.Add((inputChar == '*') ? GetRandomLetter() : char.ToUpper(inputChar)); //Automatically add upper case letters (which doesn't change '?') to the side list, if the char is '*' pick a random letter to save as the side
         }
-
-        /*else if(char.IsAsciiLetterLower(inputChar)) //IsAsciiLetterUpper must be added above to use this
-        {
-            _sideList.Add(char.ToLower(inputChar));
-        }*/
-
         else if(strict) //For debugging
         {
             Console.WriteLine($"Invalid character {inputChar}");
             throw new NotImplementedException();
         }
     }
+    //Remove a side by index
     private void RemoveSide(int index)
     {
         try
@@ -213,4 +372,14 @@ class Dice
         } 
         catch (ArgumentOutOfRangeException){} //Ignore index errors
     }
+
+    //Fill all sides with a character
+    /*
+    public void FillSides(char fillChar = '*')
+    {
+        SetSideList(new string(fillChar,_sideList.Count));
+    }
+    */
+
+    //File Loading Is Handled By Dice-Set Code in config file
 }

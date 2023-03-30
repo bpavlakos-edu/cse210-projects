@@ -79,8 +79,8 @@ namespace QuickUtils
 
         This method uses composite formatting to generate the option string: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/strings/#composite-formatting
         */
-        //Choice Menu Constructor
-        public UiMenu(List<object> inputCollection, Action<object> lambdaToStoreReturn, List<string> displayStringList = null, bool haveExit = true, string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="", string indentString = "", bool clearConsole = true)
+        //Choice Menu Constructor (essentially a user input function)
+        public UiMenu(List<object> inputCollection, Action<object> lambdaToStoreReturn, List<string> displayStringList = null, string exitOptionStr = "Go &Back", string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="", string indentString = "", bool clearConsole = true)
         {
             for(int i = 0; i < inputCollection.Count; i++)
             {
@@ -104,14 +104,51 @@ namespace QuickUtils
                 );
             }
             //Add a cancel option
-            if(inputCollection.Count > 0 && haveExit)
+            if(inputCollection.Count > 0 && exitOptionStr != "")
             {
-                _optionList.Add(new UiOption(new Action(()=>{throw new UiMenuExitException();}),"Go &Back"));
+                _optionList.Add(new UiOption(new Action(()=>{throw new UiMenuExitException();}),exitOptionStr));
             }
             //Update remaining attributes
             _menuMsg = menuMsg;
             _inputMsg = inputMsg;
             _exitMsg = exitMsg;//Hide the exit message by default
+            _indentString = indentString;
+            _clearConsole = clearConsole;
+        }
+
+        //Class-List Method Invoking Menu Auto-Constructor
+        //This constructor takes an input of a list of classes and invokes a method on them by capturing the method in a lambda
+        //This lets us set each MenuOption to invoke a method of a class on each corresponding item from the Class Collection
+        //There's also a itemDisplayFunction, which lets us iterate over each object and generate a string using them, or using a function they have by calling it in the lambda function
+        //Example:
+        /*
+        UiMenu myMinorClassListMenu = new UiMenu(
+            minorClassList.ToList<object>(),
+            (inputMinorClass) => {((inputMinorClass)inputMinorClass).MyMethod();},
+            "MyClass as String $",
+            (inputMinorClass)=>{((inputMinorClass)inputMinorClass).ToDisplayString();}
+        );
+        */
+        public UiMenu(List<object> classCollection, Action<object> classActionMethod, string sharedDisplayString, Func<object, string> classStringMethod, string exitOptionStr="Go &Back", string menuMsg = "Menu Options:", string inputMsg = "Select a choice or [hotkey] from the menu: ", string exitMsg="", string indentString = "", bool clearConsole = true)
+        {
+            for(int i = 0 ; i < classCollection.Count; i++)
+            {
+                int index = i; //Make sure the current index is stored in the lambda, not the memory address of i
+                _optionList.Add(new UiOption(
+                    ()=>{classActionMethod(classCollection[index]);}, //This captures the current list item as the input of the action that will run the desired method in the class
+                    sharedDisplayString.Replace("$",(index+1)+"")+": ", //This string will be the same for each item in the item list, the rest will be generated using the updateStrFun //Replace $ with the index if present
+                    ()=>{return classStringMethod(classCollection[index]);} //Capture the current item as the input of the classStringMethod, put that inside a lambda which will be the "updateStrFun" the UiOption uses to update this item
+                ));
+            }
+            //Add a cancel option
+            if(classCollection.Count > 0 && exitOptionStr != "")
+            {
+                _optionList.Add(new UiOption(new Action(()=>{throw new UiMenuExitException();}), exitOptionStr));
+            }
+            //Update remaining attributes
+            _menuMsg = menuMsg;
+            _inputMsg = inputMsg;
+            _exitMsg = exitMsg;
             _indentString = indentString;
             _clearConsole = clearConsole;
         }
@@ -185,7 +222,7 @@ namespace QuickUtils
         //Issue with compile time constants, which prevents you from setting a default value of a class: https://stackoverflow.com/questions/18740421/default-parameter-for-value-must-be-a-compile-time-constant
         //It seems the only viable solution is to use "null" as suggested by this first comment to this: https://stackoverflow.com/a/18740471
         //I've already been using null, but I really wanted to know if there's a better way to use a default value, other than a manual function overload
-        public void UiLoop(Action preLoopAction = null, bool debugMode = false)
+        public bool UiLoop(Action preLoopAction = null, bool debugMode = false)
         {
             try
             {
@@ -214,30 +251,41 @@ namespace QuickUtils
                     }
                     catch (UiMenuRemoveException) //Remove this option from the list
                     {
-
+                        //Needs a way to track which input was triggered, likely by going through the same activation sequence
+                        //_optionList.RemoveAt();
                     }
-                    
                     if(_clearConsole) //Added a flag to control if the console is cleared or not
                     {
                         Console.Clear(); //Reset the console before printing
                     }
                 }
             }
-            //The title of: https://stackoverflow.com/questions/10226314/what-is-the-best-way-to-catch-operation-cancelled-by-user-exception helped me find this exception type using intellisense
+            //Exit Sqeuences
             catch (UiMenuExitException) //Exiting this menu
             {
                 if(_exitMsg != "")
                 { 
                     Console.WriteLine(_exitMsg); //Display non-empty exit messages
                 }
-                //Do nothing, just return
+                return false; //Do nothing, just return (false means exit, not necessary for UiMenus that don't need to update)
             }
+            catch (UiMenuRefreshException) // Exiting this menu while requesting a refresh
+            {
+                if(_clearConsole)
+                {
+                    Console.Clear();
+                }
+                return true; //Tell the source function to re-generate the UiMenu
+            }
+            //Legacy code
+            //The title of: https://stackoverflow.com/questions/10226314/what-is-the-best-way-to-catch-operation-cancelled-by-user-exception helped me find this exception type using intellisense
             catch (OperationCanceledException) //Exiting this menu with legacy code (Will be removed eventually)
             {
                 if(_exitMsg != "")
                 { 
                     Console.WriteLine(_exitMsg); //Display non-empty exit messages
                 }
+                return false; //(false means exit, not necessary for UiMenus that don't need to update)
             }
         }
 
@@ -247,7 +295,7 @@ namespace QuickUtils
             //Display the UI options
             if(_clearConsole) //Added a flag to control if the console is cleared or not
             {
-                Console.Clear();
+                //Console.Clear(); //Displaying options shouldn't refresh the list, it's already being refreshed before this
             }
             Console.WriteLine(_menuMsg); //Write the menu message
             for(int i = 0; i < _optionList.Count; i++)
@@ -329,9 +377,17 @@ namespace QuickUtils
                 _optionList.Insert(index ?? 0, newOption); //Insert the option at the location specified as a parameter (?? was needed to convince the compiler that it can't be null here, even though it pyhsically can't be null here)
             }
         }
-        public void AddOptionFromEnd(UiOption newOption, int index = 0)
+        public void AddOptionFromEnd(UiOption newOption, int index = 1)
         {
             AddOption(newOption, (_optionList.Count) - index);
+        }
+        //Add multiple options from the same index at the end (very useful for adding lots of options all at once)
+        public void AddOptionFromEnd(List<UiOption> newOptionList, int index = 1)
+        {
+            foreach(UiOption newOption in newOptionList)
+            {
+                AddOption(newOption, (_optionList.Count) - index);
+            }
         }
         //Remove an option from the list
         public void RemoveOption(int index)
@@ -388,6 +444,18 @@ namespace QuickUtils
         public UiMenuRemoveException(string message) : base(message) { }
         public UiMenuRemoveException(string message, System.Exception inner) : base(message, inner) { }
         protected UiMenuRemoveException(
+            System.Runtime.Serialization.SerializationInfo info,
+            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+
+    //Refresh Menu Exception, for telling the source function that this UiMenu needs to refresh
+    [System.Serializable]
+    public class UiMenuRefreshException : System.Exception
+    {
+        public UiMenuRefreshException() { }
+        public UiMenuRefreshException(string message) : base(message) { }
+        public UiMenuRefreshException(string message, System.Exception inner) : base(message, inner) { }
+        protected UiMenuRefreshException(
             System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }

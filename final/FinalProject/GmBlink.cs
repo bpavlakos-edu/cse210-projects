@@ -1,6 +1,7 @@
 //Blink Game mode, contains the "Blink" game mode functionality
 using UiMenu = QuickUtils.UiMenu;
 using UiOption = QuickUtils.UiOption;
+using Msc = QuickUtils.Misc;
 class GmBlink : GameMode
 {
     //Subclass specific attributes 
@@ -74,10 +75,19 @@ class GmBlink : GameMode
     //Accepts the current dice set so we have access to randomHide, accepts a function to check if the game has ended or not
     private void Blink(DiceSet curDiceSet, Func<bool> gmStatusCheck)
     {
-        while(!gmStatusCheck()) //Repeat until the game mode has ended, check this using the lambda function
+        Thread blinkThread = Thread.CurrentThread;
+        blinkThread.Name = "blinkThread";
+        try
         {
-            curDiceSet.RandomHide(_blinkRanChance, _blinkRanChanceMax); //Trigger random hiding using the settings this game mode currently has
-            Thread.Sleep(_blinkMsecGap); //Sleep for the blink gap
+            while(!gmStatusCheck()) //Repeat until the game mode has ended, check this using the lambda function
+            {
+                curDiceSet.RandomHide(_blinkRanChance, _blinkRanChanceMax); //Trigger random hiding using the settings this game mode currently has
+                PausedSleepNoControl(new TimeSpan(0,0,0,0,_blinkMsecGap),gmStatusCheck); //Use paused sleep, but only fill the exit action, because that's all we need to exit this thread
+            }
+        }
+        catch(ThreadInterruptedException)
+        {
+            blinkThread.Interrupt();
         }
     }
 
@@ -85,11 +95,31 @@ class GmBlink : GameMode
     //An override to change the MakeSettingsMenu message, and add additional settings for each parameter
     protected override UiMenu MakeSettingsMenu(string menuMsg="Blink Mode Settings:")
     {
-        UiMenu settingsMenu = base.MakeSettingsMenu(menuMsg); //Get the original menu, using the new default parameter
+        UiMenu settingsMenu = base.MakeSettingsMenu("Main Menu > Options > Game Mode Options > Blink Mode Options:"); //Get the original menu, using the new default parameter
         //Add the new settings at the end before
         settingsMenu.AddOptionFromEnd(new UiOption(GetBlinkMsecGap, SetBlinkMsecGap, "Bli&nk Delay in Milliseconds", 10), 1);
         settingsMenu.AddOptionFromEnd(new UiOption(GetBlinkRanChance, SetBlinkMsecGap, "Blink Odds &Chance" , 1), 1);
         settingsMenu.AddOptionFromEnd(new UiOption(GetBlinkRanChanceMax, SetBlinkRanChanceMax, "Blink Odds &Maximum", 1), 1);
         return settingsMenu;
+    }
+
+    //Load from a file
+    public override void LoadFromFile(string[] fileLines, ref int offset, string gmName = "gmBlink")
+    {
+        gmName = "gmBlink";
+        base.LoadFromFile(fileLines, ref offset, gmName); //Load the shared values from the original
+        //Load all blink-specific fields
+        _blinkMsecGap = int.Parse(Msc.ReadFileLine(fileLines, ref offset, $"{gmName}_hideMsecGap="));
+        _blinkRanChance = int.Parse(Msc.ReadFileLine(fileLines, ref offset, $"{gmName}_hideRanChance="));
+        _blinkRanChanceMax = int.Parse(Msc.ReadFileLine(fileLines, ref offset, $"{gmName}_hideRanChanceMax="));
+    }
+    //Write to a file
+    public override void WriteToFile(StreamWriter sWriter, string gmName = "gmBlink")
+    {
+        gmName = "gmBlink"; //Manually overwriting any input parameter, as that's just to match the function header of the base class
+        base.WriteToFile(sWriter, "gmBlink"); //Write the regular fields first
+        sWriter.WriteLine($"{gmName}_hideMsecGap={_blinkMsecGap}");
+        sWriter.WriteLine($"{gmName}_hideRanChance={_blinkRanChance}");
+        sWriter.WriteLine($"{gmName}_hideRanChanceMax={_blinkRanChanceMax}");
     }
 }

@@ -36,6 +36,19 @@ class GmRandom : GameMode
     //An override to change the MakeSettingsMenu message, all the other variables are the same
     protected override UiMenu MakeSettingsMenu(string menuMsg="Random Mode Settings:")
     {
-        return base.MakeSettingsMenu(menuMsg); //Get the original menu, using the new default parameter
+        return base.MakeSettingsMenu("Main Menu > Options > Game Mode Options > Random Mode Options:"); //Get the original menu, using the new default parameter
+    }
+
+    //File loading
+    //An override to change the gmName because the rest is the same
+    public override void LoadFromFile(string[] fileLines, ref int offset, string gmName = "gmRandom")
+    {
+        base.LoadFromFile(fileLines, ref offset, "gmRandom");
+    }
+
+    //File Writing
+    public override void WriteToFile(StreamWriter sWriter, string gmName = "gmRandom")
+    {
+        base.WriteToFile(sWriter, "gmRandom");
     }
 }
