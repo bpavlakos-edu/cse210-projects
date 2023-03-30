@@ -255,30 +255,65 @@ namespace QuickUtils /*Library name*/
             }
             return  GetInput(inMsg, toLower, newLine, curValue); //Default return value
         }
-        //Get input as a list
-        public static List<int[]> GetIntRangeInput(string inMsg, int? min = null, int? max = null, bool newLine = false, int?[] curValue = null, int subtractNum = 0)
+        //Get input as a list of ranges
+        public static List<int[]> GetRangeIntInput(string inMsg, int? min = null, int? max = null, bool newLine = false, List<int[]> curValue = null, int subtractNum = 0, bool allowNull = false)
         {
-            string userInput = GetInput(inMsg, true, newLine, (curValue != null) ? curValue + "":null);
-            if(userInput.Contains('!') && min != null && max != null)  //This condition is explained on the "else" line
+            while(true)
             {
-                string[] subEntryArray = userInput.Split(","); //Split each entry by a comma
-                List<int[]> returnList = new List<int[]>();
-                //Process every sub entry into an appropriate range
-                for(int i = 0; i < subEntryArray.Length; i++)
+                try
                 {
-                    int[] subEntryIntRange = RangeFromStringEntry(subEntryArray[i], min, max, subtractNum); //Process the sub entry
-                    if(subEntryArray.Length > 0) //Only store it in the return list if it's not empty
+                    string userInput = GetInput(inMsg, true, newLine, (curValue != null) ? string.Join(',',curValue) + "":null); //If the current value is not null, send it in the input
+                    if(!userInput.Contains('!') && userInput != "")  //This condition is explained on the "else" line
                     {
-                        returnList.Add(subEntryIntRange); //Add the sub entry after processing it
+                        string[] subEntryArray = userInput.Split(","); //Split each entry by a comma
+                        List<int[]> returnList = new List<int[]>(); //Initalize the return list
+                        //Process every sub entry into an appropriate range
+                        for(int i = 0; i < subEntryArray.Length; i++)
+                        {
+                            int[] subEntryIntRange = RangeFromStringEntry(subEntryArray[i], min, max, subtractNum); //Process the sub entry
+                            if(subEntryArray.Length > 0) //Only store it in the return list if it's not empty
+                            {
+                                returnList.Add(subEntryIntRange); //Add the sub entry after processing it
+                            }
+                        }
+                        Misc.MergeRangeList(returnList);
+                        return returnList; //Return the final list
+                    }
+                    else if(userInput.Contains('!') && min != null && max != null)//When the string contains '!' and the minimum and maximum are not null, select the whole range
+                    {
+                        return new List<int[]>{new int[]{((int) min) - subtractNum, ((int) max) - subtractNum}};
+                    }
+                    else if(userInput == "") //Blank input
+                    {
+                        throw new ArgumentNullException();
+                    }
+                    else //Any other unrecognized input is ignored
+                    {
+                        throw new FormatException();
                     }
                 }
-                Misc.MergeRangeList(returnList);
-                return returnList; //Return the final list
+                catch(ArgumentNullException)
+                {
+                    if(curValue != null)
+                    {
+                        return curValue;
+                    }
+                    else if(allowNull)
+                    {
+                        new List<int[]>(); //Return a blank list
+                    }
+                    Console.WriteLine("Sorry! That's not a valid range, please try again!");
+                }
+                catch(OverflowException)
+                {
+                    Console.WriteLine("Sorry! That's not a valid range, please try again!");
+                }
+                catch(FormatException)
+                {
+                    Console.WriteLine("Sorry! That's not a valid range, please try again!");
+                }
             }
-            else //When the string contains '!' and the minimum and maximum are not null, select the whole range
-            {
-                return new List<int[]>{new int[]{((int) min) - subtractNum, ((int) max) - subtractNum}};
-            }
+            
         }
         //Create a range from a single string entry
         private static int[] RangeFromStringEntry(string stringRange, int? min = null, int? max = null, int subtractNum = 0)
@@ -287,7 +322,7 @@ namespace QuickUtils /*Library name*/
             List<int> returnIntList = new List<int>();
             for(int i = 0; i < splitStringArr.Length; i++)
             {
-                int? entryToInt = ProcessInt(splitStringArr[i], min, max, subtractNum);
+                int? entryToInt = ProcessInt(splitStringArr[i], min, max, subtractNum, true); //Turn this string into an integer //Activate strict mode
                 if(entryToInt != null)
                 {
                     returnIntList.Add((int)entryToInt);//Add this item to the list//Again, why do I need to type cast this??? It's always not null!!!
@@ -296,7 +331,7 @@ namespace QuickUtils /*Library name*/
             return returnIntList.ToArray<int>(); //Convert to an array before returning
         }
         //Process an integer (this is so it can be repeatedly called by a list input function)
-        private static int? ProcessInt(string inputVal, int? min = null, int? max = null, int subtractNum = 0)
+        private static int? ProcessInt(string inputVal, int? min = null, int? max = null, int subtractNum = 0, bool strictMode = false)
         {
             int? result = null;
             try //Main exception
@@ -328,14 +363,27 @@ namespace QuickUtils /*Library name*/
                         }
                     }
                     /*Funnel all invalid entries to FormatException*/
-                    catch(ArgumentNullException) //Check argument null exceptions
+                    catch(ArgumentNullException e) //Check argument null exceptions
                     {
-                        //throw new FormatException(); //If it's empty ignore it
+                        if(strictMode) //When strict mode is active
+                        {
+                            throw e; //Throw the error back to the sender
+                        }
                     }
-                    catch(OverflowException){throw new FormatException();}
+                    catch(OverflowException e)
+                    {
+                        if(strictMode) //When strict mode is active
+                        {
+                            throw e; //Throw the error back to the sender
+                        }
+                    }
                 }
-                catch(FormatException)
+                catch(FormatException e)
                 {
+                    if(strictMode) //When strict mode is active
+                    {
+                        throw e; //Throw the error back to the sender
+                    }
                     Console.WriteLine("Sorry! That's not a valid number, please try again!");
                 }
             return result;
