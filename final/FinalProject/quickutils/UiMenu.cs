@@ -406,18 +406,49 @@ namespace QuickUtils
         public void validateHotkeys()
         {
             List<string> hotkeyList = new List<string>();
+            List<int> duplicatedIndexes = new List<int>(); //List to keep track of duplicates
             for(int i = 0; i<_optionList.Count;i++)
             {
                 string curHotkey = _optionList[i].GetHotkey(); //Get the hotkey from this option
                 if(hotkeyList.Contains(curHotkey) && curHotkey != "")
                 {
                     Console.WriteLine($"Duplicate hotkey detected! {curHotkey} {i+1}");
+                    duplicatedIndexes.Add(i);
                     //break; //Continue to report duplicate hotkeys
                 }
                 else
                 {
                     hotkeyList.Add(curHotkey);
                 }
+            }
+            //Suggest new hotkeys
+            for(int i=0; i<duplicatedIndexes.Count; i++)
+            {
+                SuggestNewHotkey(duplicatedIndexes[i], hotkeyList);
+            }
+        }
+
+        //Accept an option index and a list of current hotkeys as string, then search for an unused hotkey
+        private void SuggestNewHotkey(int optionIdx, List<string> curHotkeyList)
+        {
+            //I probably should change hotkey to a char... but it's too late now
+            char[] displayStringChars = _optionList[optionIdx].GetDispStr().Replace(" ","").Replace("&","").ToCharArray();
+            List<string> suggestedCharList = new List<string>();
+            for(int i = 0; i < displayStringChars.Length; i++)
+            {
+                string scannedChar = displayStringChars[i]+"";
+                if(!curHotkeyList.Contains(scannedChar) && !suggestedCharList.Contains(scannedChar) && char.IsAsciiLetter(scannedChar[0])) //Current hotkey list doesn't have it, it wasn't already scanned, and it's a letter
+                {
+                    suggestedCharList.Add(scannedChar);
+                }
+            }
+            if(suggestedCharList.Count > 0)
+            {
+                Console.WriteLine($"Option {optionIdx} \"{_optionList[optionIdx].GetDispStr()}\" suggested hotkey alternatives: {string.Join(',',suggestedCharList)}");
+            }
+            else
+            {
+                Console.WriteLine("Cannot find a new hotkey!");
             }
         }
     }
