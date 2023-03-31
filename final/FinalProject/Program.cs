@@ -219,7 +219,7 @@ class Program
             if(!programStart) //When this isn't silently loading in the background
             {
                 path = (path.Contains('\\') == false) ? $"{Environment.CurrentDirectory}\\{path}" : path; //If the path doesn't have a backslash, append the local directory
-                Inp.GetInput($"File Loaded ({path}), Press Enter to Continue");
+                Inp.GetInput($"File Loaded ({path}), Press enter to continue");
             }
         }
         //Exceptions
@@ -288,7 +288,7 @@ class Program
             if(!silent)
             {
                 path = (path.Contains('\\') == false) ? $"{Environment.CurrentDirectory}\\{path}" : path; //If the path doesn't have a backslash, append the local directory
-                Inp.GetInput($"File Saved ({path}), Press Enter to Continue");
+                Inp.GetInput($"File Saved ({path}), Press enter to continue");
             }
         }
         catch(IOException e) //Catch all IO Exceptions
