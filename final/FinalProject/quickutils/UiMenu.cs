@@ -416,13 +416,13 @@ namespace QuickUtils
                     duplicatedIndexes.Add(i);
                     //break; //Continue to report duplicate hotkeys
                 }
-                else
+                else if(curHotkey != "")
                 {
                     hotkeyList.Add(curHotkey);
                 }
             }
             //Suggest new hotkeys
-            for(int i=0; i<duplicatedIndexes.Count; i++)
+            for(int i = 0; i < duplicatedIndexes.Count; i++)
             {
                 SuggestNewHotkey(duplicatedIndexes[i], hotkeyList);
             }
@@ -432,7 +432,7 @@ namespace QuickUtils
         private void SuggestNewHotkey(int optionIdx, List<string> curHotkeyList)
         {
             //I probably should change hotkey to a char... but it's too late now
-            char[] displayStringChars = _optionList[optionIdx].GetDispStr().Replace(" ","").Replace("&","").ToCharArray();
+            char[] displayStringChars = _optionList[optionIdx].GetDispStr().ToUpper().Replace(" ","").Replace("&","").ToCharArray();
             List<string> suggestedCharList = new List<string>();
             for(int i = 0; i < displayStringChars.Length; i++)
             {
