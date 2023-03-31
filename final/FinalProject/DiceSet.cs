@@ -692,6 +692,9 @@ class DiceSet
 
         Console.WriteLine("As dice code:");
         Console.WriteLine(letterFrequencyAsDiceCode); //Print as Dice Code
+
+        Console.WriteLine("");
+        Inp.GetInput("Press enter to continue");
     }
 
     //Enter Dice Border with user input
