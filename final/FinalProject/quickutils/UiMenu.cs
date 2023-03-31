@@ -432,7 +432,7 @@ namespace QuickUtils
         private void SuggestNewHotkey(int optionIdx, List<string> curHotkeyList)
         {
             //I probably should change hotkey to a char... but it's too late now
-            char[] displayStringChars = _optionList[optionIdx].GetDispStr().ToUpper().Replace(" ","").Replace("&","").ToCharArray();
+            char[] displayStringChars = _optionList[optionIdx].GetDispStr().ToLower().Replace(" ","").Replace("&","").ToCharArray();
             List<string> suggestedCharList = new List<string>();
             for(int i = 0; i < displayStringChars.Length; i++)
             {
