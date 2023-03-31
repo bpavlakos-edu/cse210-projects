@@ -439,16 +439,16 @@ namespace QuickUtils
                 string scannedChar = displayStringChars[i]+"";
                 if(!curHotkeyList.Contains(scannedChar) && !suggestedCharList.Contains(scannedChar) && char.IsAsciiLetter(scannedChar[0])) //Current hotkey list doesn't have it, it wasn't already scanned, and it's a letter
                 {
-                    suggestedCharList.Add(scannedChar);
+                    suggestedCharList.Add(scannedChar); //Add it to the suggestion list
                 }
             }
-            if(suggestedCharList.Count > 0)
+            if(suggestedCharList.Count > 0) //Print all suggestions
             {
-                Console.WriteLine($"Option {optionIdx} \"{_optionList[optionIdx].GetDispStr()}\" suggested hotkey alternatives: {string.Join(',',suggestedCharList)}");
+                Console.WriteLine($"Option: {optionIdx} \"{_optionList[optionIdx].GetDispStr()}\" suggested hotkey alternatives: {string.Join(',',suggestedCharList)}");
             }
-            else
+            else //Alert the user there are no suggestions
             {
-                Console.WriteLine("Cannot find a new hotkey!");
+                Console.WriteLine($"Cannot find a new hotkey! Option: {optionIdx} \"{_optionList[optionIdx].GetDispStr()}\"");
             }
         }
     }
