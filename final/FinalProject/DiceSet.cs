@@ -354,10 +354,11 @@ class DiceSet
                     new UiOption(()=>{MixAllDiceSides(); throw new UiMenuRefreshException();},"&Mix All Dice Sides"), //Mix all dice sides together
                     new UiOption(()=>{ForceDiceSizeUi(); throw new UiMenuRefreshException();},"&Force All Dice Sides to Side Count"), //Force all sides to a specific side count
                     new UiOption(()=>{PrintDiceLetterFrequency(); throw new UiMenuRefreshException();},"Show Dice-List Letter Fre&quency"), //Force all sides to a specific side count
+                    new UiOption(()=>{FillToCountUi(); throw new UiMenuRefreshException();},"Fill to &Count"), //Force all sides to a specific side count
                     new UiOption(()=>{DiceListToDefault(); throw new UiMenuRefreshException();},"&Reset Dice-List to Default")
                     /*Additional Option Ideas:
                     Fill all with dice code
-                    Fill to dice count
+                    Fill to requested dice count
                     Fill to dice count with letter pool
                     Fill with letters from set (Use @ to represent dice code letters to pick from)
                     */
@@ -566,6 +567,16 @@ class DiceSet
             FillToCount(_width * _height, Msc.ListCopy<Dice>(_diceList,(Dice inDice)=>{return new Dice(inDice);}).ToArray<Dice>()); //Use a copy of our own list to fill the array
         }
     }
+    //Fill to count by user input
+    public void FillToCountUi()
+    {
+        Console.WriteLine("Warning! This can cause permanent changes to your dice set!");
+        int? newCount = Inp.GetIntInput(true,"Select a count to set the dice-list to: ",1,null,false,_diceList.Count);
+        if(newCount != null)
+        {
+            FillToCount(newCount ?? _diceList.Count, Msc.ListCopy<Dice>(_diceList,(Dice inDice)=>{return new Dice(inDice);}).ToArray<Dice>());
+        }
+    }
     //Boolean to quickly check the size, to make sure it's valid
     private bool CheckSize()
     {
@@ -575,10 +586,25 @@ class DiceSet
     //Fill using a list of dice
     public void FillToCount(int newDiceCount, params Dice[] inputDice) //Utilizes the params keyword, which lets us use each item as an individual parameter: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/params
     {
-        for(int i = 0; _diceList.Count < newDiceCount; i++)
+        if(_diceList.Count >= newDiceCount)
         {
-            _diceList.Add(new Dice(inputDice[i % inputDice.Length])); //Use modulus to infinitely loop the input array
+            for(int i = 0; _diceList.Count < newDiceCount; i++)
+            {
+                _diceList.Add(new Dice(inputDice[i % inputDice.Length])); //Use modulus to infinitely loop the input array
+            }
         }
+        else if(_diceList.Count < newDiceCount) //Remove dice to count
+        {
+            bool userContinue = Inp.GetBoolInput("This action will permanently delete dice, are you sure you want to continue?: ",curValue:false);
+            if(userContinue != false)
+            {
+                while(_diceList.Count > newDiceCount) //Delete dice repeatedly until we reach the count
+                {
+                    _diceList.RemoveAt(_diceList.Count - 1); //Remove the last dice
+                }
+            }
+        }
+        
     }
     //Fill using chars
     public void FillToCount(int newDiceCount, params char[] inputChars)
@@ -693,7 +719,7 @@ class DiceSet
             Console.WriteLine($"{i}. {(char)sortedCharCountList[i][0]}: {(int)sortedCharCountList[i][1]} {(((double) ((int) sortedCharCountList[i][1])) / ((double) diceSideCount)).ToString("P")}"); //Example: "1. A: 34 (30%)" Used this format https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#PFormatString
         }
         Console.WriteLine("");
-        Console.WriteLine("As a single dice code (scramble this dice then split it to a size to make a new dice set):");
+        Console.WriteLine("As a single dice code (scramble this dice, then force the side list size to create a new dice set):");
         Console.WriteLine(letterFrequencyAsDiceCode); //Print as Dice Code
         Console.WriteLine("");
         Inp.GetInput("Press enter to continue");
