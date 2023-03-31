@@ -348,7 +348,8 @@ class DiceSet
                     new UiOption(()=>{ReplaceAllRandom(); throw new UiMenuRefreshException();},"Re&place all Dice Sides with Random Letters"), //Fill With Random Letter
                     new UiOption(()=>{ScrambleAll(); throw new UiMenuRefreshException();},"S&cramble All Dice Letters"), //Scramble
                     new UiOption(()=>{Shuffle(); ScrambleAll(); throw new UiMenuRefreshException();},"Shuff&le and Scramble All Dice Letters"), //Use a lambda function to use shuffle and scramble all in quick succession
-                    new UiOption(()=>{MixAllDiceSides(); throw new UiMenuRefreshException();},"Mix All Dice Sides"), //Mix all dice sides together
+                    new UiOption(()=>{MixAllDiceSides(); throw new UiMenuRefreshException();},"&Mix All Dice Sides"), //Mix all dice sides together
+                    new UiOption(()=>{ForceDiceSizeUi(); throw new UiMenuRefreshException();},"&Force Dice To Size"), //Mix all dice sides together
                     new UiOption(()=>{DiceListToDefault(); throw new UiMenuRefreshException();},"&Reset Dice List to Default")
                 }
             );
@@ -558,7 +559,7 @@ class DiceSet
     public void MixAllDiceSides()
     {
         //Put all dice sides in one giant list to pull from
-        List<char> diceSidePool = GenerateDiceListCode(false).ToCharArray().ToList<char>(); //Generate the dice code, Remove all commas, change the string into char[], change char[] into List<char> so the items are removable
+        List<char> diceSidePool = GenerateDiceListCode(false).ToList<char>(); //Generate the dice code, Remove all commas, change the string into char[], change char[] into List<char> so the items are removable
         //V2 should just use another diceListCode and replace each letter randomly as it goes through the list
         foreach(Dice diceItem in _diceList)
         {
@@ -572,12 +573,38 @@ class DiceSet
             diceItem.SetSideList(new string(newSides));//Create a string from the newSides and assign it to the dice
         }
     }
+    //Set all dice to a fixed size by user input
+    public void ForceDiceSizeUi()
+    {
+        int? forcedSize = Inp.GetIntInput(true,"Enter the number of sides you want to force each dice to (Leave blank to cancel): ", 1);
+        if(forcedSize != null)
+        {
+            ForceDiceSize((int) forcedSize); //Again, why do I have to type cast it here? The compiler should know it's not null here (nullable types must be seperate types)
+        }
+    }
 
     //Set all dice to a fixed size
     public void ForceDiceSize(int forcedSize)
     {
-        forcedSize = (forcedSize > 0) ? forcedSize : 1; //Force it to use
-        
+        forcedSize = (forcedSize > 0) ? forcedSize : 1; //Force it to use 1 by default
+        List<char> sourceDiceSides = GenerateDiceListCode(false).ToList<char>();
+        List<char> newDiceCodeChars = new List<char>();
+        int leftoverCount = sourceDiceSides.Count % forcedSize; //Get the leftover from dividing by the forced size
+        int newDiceCount = (sourceDiceSides.Count - leftoverCount) / forcedSize;
+        for(int i = 0; i < newDiceCount; i++)
+        {
+            newDiceCodeChars.AddRange(sourceDiceSides.GetRange(i * forcedSize, forcedSize)); //Add the desired size of letters from the sourceDiceSides
+            if(i < newDiceCount - 1) //For all entires except the last one, add a comma
+            {
+                newDiceCodeChars.Add(',');
+            }
+        }
+        if(leftoverCount > 0)//If there are leftovers
+        {
+            newDiceCodeChars.Add(','); //Add a comma before the next part
+            newDiceCodeChars.AddRange(sourceDiceSides.GetRange(newDiceCount * forcedSize, leftoverCount)); //Add the leftover letters, use the leftover count to get the size, and the newDiceCount * forcedSize to calculate the offset
+        }
+        LoadDiceListCode(new string(newDiceCodeChars.ToArray())); //Load the dice list code
     }
 
     //Query a number of dice that meet the required predicate, then run the action on them
