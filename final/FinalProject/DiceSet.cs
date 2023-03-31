@@ -348,7 +348,8 @@ class DiceSet
                     new UiOption(()=>{ReplaceAllRandom(); throw new UiMenuRefreshException();},"Re&place all Dice Sides with Random Letters"), //Fill With Random Letter
                     new UiOption(()=>{ScrambleAll(); throw new UiMenuRefreshException();},"S&cramble All Dice Letters"), //Scramble
                     new UiOption(()=>{Shuffle(); ScrambleAll(); throw new UiMenuRefreshException();},"Shuff&le and Scramble All Dice Letters"), //Use a lambda function to use shuffle and scramble all in quick succession
-                    new UiOption(()=>{DiceListToDefault(); throw new UiMenuRefreshException();},"&Reset Dice List to Default"),
+                    new UiOption(()=>{MixAllDiceSides(); throw new UiMenuRefreshException();},"Mix All Dice Sides"), //Mix all dice sides together
+                    new UiOption(()=>{DiceListToDefault(); throw new UiMenuRefreshException();},"&Reset Dice List to Default")
                 }
             );
             refreshUi = diceListSettings.UiLoop(); //When a UiMenuRefreshException occurs, the list will be refreshed
@@ -550,6 +551,25 @@ class DiceSet
     public void FillToCount(int newDiceCount, params char[] inputChars)
     {
         FillToCount(newDiceCount, new Dice(inputChars.ToList<char>(), 0, ' ', false)); //Convert input chars to a list to use to create a new dice to send to the original function
+    }
+
+    //Randomly swap letters across all dice
+    public void MixAllDiceSides()
+    {
+        //Put all dice sides in one giant list to pull from
+        List<char> diceSidePool = GenerateDiceListCode().Replace(",","").ToCharArray().ToList<char>(); //Generate the dice code, Remove all commas, change the string into char[], change char[] into List<char> so the items are removable
+        //V2 should just use another diceListCode and replace each letter randomly as it goes through the list
+        foreach(Dice diceItem in _diceList)
+        {
+            char[] newSides = new char[diceItem.GetSideList().Count]; //Initalize a new side list of equal length to the original
+            for(int i = 0; i < newSides.Length; i++)
+            {
+                int randomIdx = Msc.RandomInt(diceSidePool.Count); //Pick a random item from the dice side pool
+                newSides[i] = diceSidePool[randomIdx]; //Assign the new letter to the index
+                diceSidePool.RemoveAt(i);//Remove the randomly chosen side from the side pool
+            }
+            diceItem.SetSideList(new string(newSides));//Create a string from the newSides and assign it to the dice
+        }
     }
 
     //Query a number of dice that meet the required predicate, then run the action on them
