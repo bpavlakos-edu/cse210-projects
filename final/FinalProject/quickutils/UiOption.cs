@@ -94,11 +94,11 @@ namespace QuickUtils
         }
         public string GetHotkey()
         {
-            return _hotkey;
+            return _hotkey.ToLower();
         }
         public void SetHotkey(string hotkey)
         {
-            _hotkey = hotkey;
+            _hotkey = hotkey.ToLower();
         }
         //Methods
         //Invoke our action
