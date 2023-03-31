@@ -110,14 +110,7 @@ namespace QuickUtils
         {
             inputList.Sort((int[] a, int[] b) => {return (a.Last() >= b.Last()) ? 1 : -1;}); //Example where it tells you to use 1 and -1 to sort the lists is found here: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.sort?view=net-8.0#system-collections-generic-list-1-sort(system-comparison((-0)))
         }
-        //Sort a mixed list of char in index 0 and int in index 1, sort by value first and use characters to determine ties
-        public static void SortCharCounterList(List<object[]> inputList)
-        {
-            inputList.Sort((object[] a, object[] b) => 
-            {
-                return (((int) a[1] > (int) b[1]) || ((int) a[1] == (int) b[1]) && ((char) a[0] >= (char) b[0])) ? 1 : -1;
-            });
-        }
+        
         //Pick the highest number as the end, and the lowest number as the start, if they are identical merge them
         private static int[] CleanRange(int[] inputArr)
         {

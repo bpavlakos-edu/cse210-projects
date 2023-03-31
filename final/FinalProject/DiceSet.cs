@@ -676,28 +676,19 @@ class DiceSet
 
         //Scan the current dice code to get each characters count
         char[] diceCodeArr = GenerateDiceListCode(false).ToCharArray(); //Get the dice code without commas
-        for(int i = 0; i < diceCodeArr.Length; i++)
+        for(int i = 0; i < diceCodeArr.Length; i++) //Check each character in the dice code
         {
             charCounterDict[diceCodeArr[i]]++; //Increment the char in the dictionary
         }
 
         //Sort the dictionary
-        List<object[]> sortedCharCountList = new List<object[]>(); //Create a 2d list, one to store the char, the other to store the int
-        /* foreach(char charKey in charCounterDict.Keys)
+        List<object[]> sortedCharCountList = new List<object[]>(); //Create a 2d list, index 0 stores the char, index 1 stores the int
+        foreach(char charKey in charCounterDict.Keys) //Add all chars from the dictionary to 
         {
-            int charCount = charCounterDict[charKey]; //Get the count of the letter
-            if(sortedCharCountList.Count == 0) //sortedCharCountList is empty
-            {
-                sortedCharCountList.Add(new Object[]{charKey, charCount}); //Add the current entry
-            }
-            else
-            {
-                while(true)
-                {
+            sortedCharCountList.Add(new object[]{charKey,charCounterDict[charKey]});
+        }
+        SortCharCounterList(sortedCharCountList); //Sort the list for real
 
-                }
-            }
-        } */
 
         //Print the results
         Console.WriteLine("Current Dice-List Letter Frequency:");
@@ -716,6 +707,34 @@ class DiceSet
             SetDiceBorder();
         }
     }
+
+    //Sort a list of chars and counters
+    //Sort a mixed list of char in index 0 and int in index 1, sort by value first and use characters to determine ties
+    public void SortCharCounterList(List<object[]> inputList) //Example where it tells you to use 1 and -1 to sort the lists is found here: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.sort?view=net-8.0#system-collections-generic-list-1-sort(system-comparison((-0)))
+    {
+        inputList.Sort((object[] a, object[] b) => 
+        {
+            int aVal = (int) a[1]; //Load the values into something understandable
+            char aChar = (char) a[0];
+            int bVal = (int) b[1];
+            char bChar = (char) b[0];
+            if(aVal > bVal)
+            {
+                return 1; //When the int value is higher it should be sorted lower in the list
+            }
+            else if(aVal < bVal)
+            {
+                return -1; //When the int value is lower is should be sorted higher in the list
+            }
+            else //aVal == bVal (when the int value is equal, use the ascii value to determine what order to use)
+            {
+                aChar = (aChar == '?') ? '`' : aChar; //Treat '?' as the highest value which will make it be sorted in the last position
+                bChar = (bChar == '?') ? '`' : bChar;
+                return (aChar < bChar) ? 1 : -1; //If the value is lower, it should be sorted lower in the list
+            }
+        });
+    }
+    
 
     //Bit shifting
     //Compact a byte to 1 bit
