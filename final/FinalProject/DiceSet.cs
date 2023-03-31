@@ -18,6 +18,8 @@ using Inp = QuickUtils.Inputs;
 using UiMenuExitException = QuickUtils.UiMenuExitException; //Exit exception for the menu to use
 using UiMenuRefreshException = QuickUtils.UiMenuRefreshException; //Refresh exception for the menu to use
 using Msc = QuickUtils.Misc;
+using System.Collections;
+
 class DiceSet
 {
     //Attributes
@@ -665,37 +667,30 @@ class DiceSet
     private void PrintDiceLetterFrequency()
     {
         //Run calculations
-        //Create the letter dictionary to track letter frequency
-        Dictionary<char,int> charCounterDict = new Dictionary<char, int>(); //Using a dictionary
-        //Fill the dictionary
-        for(int i = 0; i < 26; i++) //Use bitwise to generate each capital letter
-        {
-            charCounterDict.Add((char) (short) (0x40 | (i + 1)), 0); // Bitwise or 0x40 means 010_ ____, which changes 1 through 26 to A through Z, 0x60 or 011_ ____ would change to lowercase //0x40 = 0100 0000, 'A' = 0100 0001, 'Z' = 0101 1010, So: 010_ ____ | (1 to 26) = Ascii Value
-        }
-        charCounterDict.Add('?',0); //Add ? which isn't a letter and won't be added
+        Dictionary<char,int> charCounterDict = MakeCharCounterDictionary(); //Create a dictionary where the key is the ascii character for A to Z (and ?), the value will be incremented by the number of times we find it in a dice code
 
-        //Scan the current dice code to get each characters count
+        //Scan the current dice code to increment each character as we find them
         char[] diceCodeArr = GenerateDiceListCode(false).ToCharArray(); //Get the dice code without commas
         for(int i = 0; i < diceCodeArr.Length; i++) //Check each character in the dice code
         {
             charCounterDict[diceCodeArr[i]]++; //Increment the char in the dictionary
         }
 
-        //Sort the dictionary
-        List<object[]> sortedCharCountList = new List<object[]>(); //Create a 2d list, index 0 stores the char, index 1 stores the int
-        foreach(char charKey in charCounterDict.Keys) //Add all chars from the dictionary to 
-        {
-            sortedCharCountList.Add(new object[]{charKey,charCounterDict[charKey]});
-        }
-        SortCharCounterList(sortedCharCountList); //Sort the list for real
+        List<object[]> sortedCharCountList = DictTo2dList<char, int>(charCounterDict); //Create a 2d list, index 0 stores the char, index 1 stores the int
+        SortCharCounterList(sortedCharCountList); //Sort the list by number of times we found it. If equal, sort by alphabetical order (with ? being last)
 
+        List<string> letterFrequencyAsStringList =  Msc.ListMap<object[], string>(sortedCharCountList, CharCounterItemToString); //Use each entry in the 2d list to generate a string representing it's frequency
+        string letterFrequencyAsDiceCode = string.Join("", letterFrequencyAsStringList); //Merge every item to generate a dice code
 
         //Print the results
         Console.WriteLine("Current Dice-List Letter Frequency:");
         for(int i = 0; i < sortedCharCountList.Count; i++)
         {
-            
+            Console.WriteLine($"{i}. {(char)sortedCharCountList[i][0]}: {(int)sortedCharCountList[i][1]}");
         }
+
+        Console.WriteLine("As dice code:");
+        Console.WriteLine(letterFrequencyAsDiceCode); //Print as Dice Code
     }
 
     //Enter Dice Border with user input
@@ -714,10 +709,10 @@ class DiceSet
     {
         inputList.Sort((object[] a, object[] b) => 
         {
-            int aVal = (int) a[1]; //Load the values into something understandable
-            char aChar = (char) a[0];
-            int bVal = (int) b[1];
+            char aChar = (char) a[0]; //Load the values into something understandable
+            int aVal = (int) a[1]; 
             char bChar = (char) b[0];
+            int bVal = (int) b[1];
             if(aVal > bVal)
             {
                 return 1; //When the int value is higher it should be sorted lower in the list
@@ -734,7 +729,40 @@ class DiceSet
             }
         });
     }
-    
+
+    //Create the letter dictionary to track letter frequency
+    public Dictionary<char,int> MakeCharCounterDictionary()
+    {
+        
+        Dictionary<char,int> charCounterDict = new Dictionary<char, int>(); //Using a dictionary
+        //Fill the dictionary
+        for(int i = 0; i < 26; i++) //Use bitwise to generate each capital letter
+        {
+            charCounterDict.Add((char) (short) (0x40 | (i + 1)), 0); // Bitwise or 0x40 means 010_ ____, which changes 1 through 26 to A through Z, 0x60 or 011_ ____ would change to lowercase //0x40 = 0100 0000, 'A' = 0100 0001, 'Z' = 0101 1010, So: 010_ ____ | (1 to 26) = Ascii Value
+        }
+        charCounterDict.Add('?',0); //Add ? which isn't a letter and won't be added
+        return charCounterDict;
+    }
+
+    //Scan a DiceCode for chars using a charCounter dictionary
+
+    //Convert a dictionary to a list of objects
+    private List<object[]> DictTo2dList<keyType, valType>(Dictionary<keyType, valType> dictionaryInput)
+    {
+        List<object[]> returnList = new List<object[]>();
+        foreach(keyType key in dictionaryInput.Keys) //Add all chars from the dictionary to 
+        {
+            returnList.Add(new object[]{key,dictionaryInput[key]});
+        }
+        return returnList;
+    }
+
+    //Convert a letter count item into a string
+    private string CharCounterItemToString(object[] charCountItem)
+    {
+        return new string((char) charCountItem[0], (int)charCountItem[1]); //Parse the known indexes into the correct data type, then use them to create a string
+    }
+
 
     //Bit shifting
     //Compact a byte to 1 bit
