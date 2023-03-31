@@ -353,7 +353,7 @@ class DiceSet
                     new UiOption(()=>{Shuffle(); ScrambleAll(); throw new UiMenuRefreshException();},"Shuff&le and Scramble All Dice Letters"), //Use a lambda function to use shuffle and scramble all in quick succession
                     new UiOption(()=>{MixAllDiceSides(); throw new UiMenuRefreshException();},"&Mix All Dice Sides"), //Mix all dice sides together
                     new UiOption(()=>{ForceDiceSizeUi(); throw new UiMenuRefreshException();},"&Force All Dice Sides to Side Count"), //Force all sides to a specific side count
-                    new UiOption(()=>{PrintDiceLetterFrequency(); throw new UiMenuRefreshException();},"Show Letter Fre&quency"), //Force all sides to a specific side count
+                    new UiOption(()=>{PrintDiceLetterFrequency(); throw new UiMenuRefreshException();},"Show Dice-List Letter Fre&quency"), //Force all sides to a specific side count
                     new UiOption(()=>{DiceListToDefault(); throw new UiMenuRefreshException();},"&Reset Dice-List to Default")
                     /*Additional Option Ideas:
                     Fill all with dice code
