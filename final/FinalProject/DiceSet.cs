@@ -413,13 +413,14 @@ class DiceSet
     }
 
     //Generate the DiceListCode as a string
-    public string GenerateDiceListCode()
+    public string GenerateDiceListCode(bool addComma = true)
     {
+        int addCommaInt = (addComma) ? 1 : 0; //Create an iteger to multiply i by to hardcode it to 1 when the boolean is enabled and 0
         //Generate the string
         List<char> newDiceCodeBuffer = new List<char>(); //Use a char buffer, it's List<char> because each dice can have a different size (we are also avoiding arithmatic operations using string)
         for(int i = 0; i < _diceList.Count; i++) //Convert each dice to chars
         {
-            _diceList[i].AppendToCharList(newDiceCodeBuffer, i); //Use the dice's method to add them to the buffer, pass the index so it knows when to add a comma
+            _diceList[i].AppendToCharList(newDiceCodeBuffer, i * addCommaInt); //Use the dice's method to add them to the buffer, pass the index so it knows when to add a comma
         }
         return new string(newDiceCodeBuffer.ToArray<char>()); //Return it as a string
     }
@@ -557,7 +558,7 @@ class DiceSet
     public void MixAllDiceSides()
     {
         //Put all dice sides in one giant list to pull from
-        List<char> diceSidePool = GenerateDiceListCode().Replace(",","").ToCharArray().ToList<char>(); //Generate the dice code, Remove all commas, change the string into char[], change char[] into List<char> so the items are removable
+        List<char> diceSidePool = GenerateDiceListCode(false).ToCharArray().ToList<char>(); //Generate the dice code, Remove all commas, change the string into char[], change char[] into List<char> so the items are removable
         //V2 should just use another diceListCode and replace each letter randomly as it goes through the list
         foreach(Dice diceItem in _diceList)
         {
@@ -570,6 +571,13 @@ class DiceSet
             }
             diceItem.SetSideList(new string(newSides));//Create a string from the newSides and assign it to the dice
         }
+    }
+
+    //Set all dice to a fixed size
+    public void ForceDiceSize(int forcedSize)
+    {
+        forcedSize = (forcedSize > 0) ? forcedSize : 1; //Force it to use
+        
     }
 
     //Query a number of dice that meet the required predicate, then run the action on them
