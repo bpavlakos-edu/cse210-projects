@@ -687,7 +687,7 @@ class DiceSet
         int diceSideCount = letterFrequencyAsDiceCode.Length;
 
         //Print the results
-        Console.WriteLine($"Current Dice-List Letter Frequency of {diceSideCount} {Pluralize("sides", diceSideCount)} across {_diceList.Count} dice:");
+        Console.WriteLine($"Current Dice-List Letter Frequency of {diceSideCount} {Pluralize("side", diceSideCount)} across {_diceList.Count} dice:");
         for(int i = 0; i < sortedCharCountList.Count; i++)
         {
             Console.WriteLine($"{i}. {(char)sortedCharCountList[i][0]}: {(int)sortedCharCountList[i][1]} {(((double) ((int) sortedCharCountList[i][1])) / ((double) diceSideCount)).ToString("P")}"); //Example: "1. A: 34 (30%)" Used this format https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#PFormatString
