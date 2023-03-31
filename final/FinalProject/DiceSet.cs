@@ -305,7 +305,7 @@ class DiceSet
     {
         UiMenu diceSetSettings = new UiMenu(new List<UiOption>
             {
-                new UiOption(OpenDiceListSettingsMenu,"Edit &Dice List",updateStrFun:()=>{return $" (Number of Dice: {_diceList.Count})";}), //Open Dice Edit Menu
+                new UiOption(OpenDiceListSettingsMenu,"Edit &Dice-List",updateStrFun:()=>{return $" (Number of Dice: {_diceList.Count})";}), //Open Dice Edit Menu
                 new UiOption(GetWidth, SetWidth, "Grid &Width", 2), //Set Width
                 new UiOption(GetHeight, SetHeight, "Grid &Height", 2), //Set Height
                 new UiOption(GetGridSize, SetGridSize, "Grid &Size", 2), //Set Height
@@ -330,7 +330,7 @@ class DiceSet
                 "Open Dice $ Settings (Sides", //$ is replaced by index in loop + 1
                 (inputDice) => {return ((Dice)inputDice).LettersToString()+")";}, //Add the parenthesis here to finish the display string
                 "Go &Back",
-                "Main Menu > Options > Dice-Set Options > Dice List and Options:",
+                "Main Menu > Options > Dice-Set Options > Dice-List and Options:",
                 "Select a dice number, choice, or [hotkey] from the menu: "
             );
             //Add additional Edit All Options before the exit button:
@@ -342,15 +342,16 @@ class DiceSet
                     new UiOption(ShowDiceCode,"&Generate a Dice-List Code for Sharing"),
                     new UiOption(ExportDiceSetCode,"E&xport a Dice-List Code to a File"),
                     new UiOption(()=>{EnterDiceCode(); throw new UiMenuRefreshException();},"&Enter Dice-List Code"), //Needs parenthesis (and a lambda by extension) because it has a parameter
-                    new UiOption(()=>{Shuffle(); throw new UiMenuRefreshException();},"&Shuffle Dice Set"),
+                    new UiOption(()=>{Shuffle(); throw new UiMenuRefreshException();},"&Shuffle Dice-List"),
                     new UiOption(()=>{EnterDiceCode(false); throw new UiMenuRefreshException();},"&Add New Dice Using Dice-List Code"),
+                    new UiOption(()=>{RepeatAddDiceCode(); throw new UiMenuRefreshException();},"Re&peatedly Add Dice using Dice-List Code"),
                     new UiOption(()=>{DeleteDice(); throw new UiMenuRefreshException();},"&Delete Dice From List"),
                     new UiOption(()=>{ReplaceAllRandom(); throw new UiMenuRefreshException();},"Re&place all Dice Sides with Random Letters"), //Fill With Random Letter
                     new UiOption(()=>{ScrambleAll(); throw new UiMenuRefreshException();},"S&cramble All Dice Letters"), //Scramble
                     new UiOption(()=>{Shuffle(); ScrambleAll(); throw new UiMenuRefreshException();},"Shuff&le and Scramble All Dice Letters"), //Use a lambda function to use shuffle and scramble all in quick succession
                     new UiOption(()=>{MixAllDiceSides(); throw new UiMenuRefreshException();},"&Mix All Dice Sides"), //Mix all dice sides together
-                    new UiOption(()=>{ForceDiceSizeUi(); throw new UiMenuRefreshException();},"&Force Dice To Size"), //Mix all dice sides together
-                    new UiOption(()=>{DiceListToDefault(); throw new UiMenuRefreshException();},"&Reset Dice List to Default")
+                    new UiOption(()=>{ForceDiceSizeUi(); throw new UiMenuRefreshException();},"&Force All Dice to Side Count"), //Force all sides to a specific side count
+                    new UiOption(()=>{DiceListToDefault(); throw new UiMenuRefreshException();},"&Reset Dice-List to Default")
                 }
             );
             refreshUi = diceListSettings.UiLoop(); //When a UiMenuRefreshException occurs, the list will be refreshed
@@ -392,14 +393,22 @@ class DiceSet
     //Print a diceListCode to the console
     public void ShowDiceCode()
     {
-        Console.WriteLine("Dice List Code (Highlight and right click to copy):"); //If only this could be used without permissions: https://learn.microsoft.com/en-us/dotnet/api/system.windows.clipboard?view=windowsdesktop-7.0
+        Console.WriteLine("Dice-List Code (Highlight and right click to copy):"); //If only this could be used without permissions: https://learn.microsoft.com/en-us/dotnet/api/system.windows.clipboard?view=windowsdesktop-7.0
         Console.WriteLine("");
         Console.WriteLine(GenerateDiceListCode());
         Console.WriteLine("");
         Inp.GetInput("Press enter to continue");
     }
     //Enter a diceList Code into the console
-    public void EnterDiceCode(bool clearList = true)
+    public void EnterDiceCode(bool clearList = true, int addCodeCount = 1)
+    {
+        string diceCode = GetDiceCodeInput();
+        LoadDiceListCode(diceCode, clearList);
+        throw new UiMenuRefreshException();
+    }
+
+    //Get dice code from input
+    public string GetDiceCodeInput()
     {
         Console.WriteLine("Dice-List Code Rules:");
         Console.WriteLine("Each letter represents 1 side of the dice");
@@ -409,8 +418,21 @@ class DiceSet
         Console.WriteLine("\"*\" picks a random letter to save as the side");
         Console.WriteLine("Invalid characters are ignored, letters aren't case-sensitive");
         Console.WriteLine("When the dice list is empty, it will automatically be filled by a single dice");
-        LoadDiceListCode(Inp.GetInput("Enter Your Dice-List Code (Leave blank to cancel):", null, true), clearList); //forces upper case (toLower = null), newLine = true
-        throw new UiMenuRefreshException();
+        return Inp.GetInput("Enter Your Dice-List Code (Leave blank to cancel):", null, true);
+    }
+
+    //Get a dice code and count to add the dice code repeatedly
+    public void RepeatAddDiceCode()
+    {
+        int? addCodeCount = Inp.GetIntInput(true, "Enter the number of dice to add using your dice code (leave blank to cancel): ");
+        if(addCodeCount != null)
+        {
+            string diceCode = GetDiceCodeInput(); //Get the dice code
+            for(int i = ((diceCode.Length > 0 ) ? 0 : (int) addCodeCount); i < addCodeCount; i++) //Skip this for loop if the diceCode has a length of 0
+            {
+                LoadDiceListCode(diceCode, false); //clearList should never be true on any cycle other than 0 //forces upper case (toLower = null), newLine = true
+            }
+        }
     }
 
     //Generate the DiceListCode as a string
