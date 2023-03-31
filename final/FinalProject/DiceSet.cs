@@ -352,6 +352,12 @@ class DiceSet
                     new UiOption(()=>{MixAllDiceSides(); throw new UiMenuRefreshException();},"&Mix All Dice Sides"), //Mix all dice sides together
                     new UiOption(()=>{ForceDiceSizeUi(); throw new UiMenuRefreshException();},"&Force All Dice to Side Count"), //Force all sides to a specific side count
                     new UiOption(()=>{DiceListToDefault(); throw new UiMenuRefreshException();},"&Reset Dice-List to Default")
+                    /*Additional Option Ideas:
+                    Fill all with dice code
+                    Fill to dice count
+                    Fill to dice count with letter pool
+                    Fill with letters from set (Use @ to represent dice code letters to pick from)
+                    */
                 }
             );
             refreshUi = diceListSettings.UiLoop(); //When a UiMenuRefreshException occurs, the list will be refreshed
@@ -652,6 +658,52 @@ class DiceSet
         for(int i = 0; i < _diceList.Count; i++)
         {
             Console.WriteLine($"{i+1}. Dice Sides: {_diceList[i].LettersToString()}");
+        }
+    }
+
+    //Display dice letters
+    private void PrintDiceLetterFrequency()
+    {
+        //Run calculations
+        //Create the letter dictionary to track letter frequency
+        Dictionary<char,int> charCounterDict = new Dictionary<char, int>(); //Using a dictionary
+        //Fill the dictionary
+        for(int i = 0; i < 26; i++) //Use bitwise to generate each capital letter
+        {
+            charCounterDict.Add((char) (short) (0x40 | (i + 1)), 0); // Bitwise or 0x40 means 010_ ____, which changes 1 through 26 to A through Z, 0x60 or 011_ ____ would change to lowercase //0x40 = 0100 0000, 'A' = 0100 0001, 'Z' = 0101 1010, So: 010_ ____ | (1 to 26) = Ascii Value
+        }
+        charCounterDict.Add('?',0); //Add ? which isn't a letter and won't be added
+
+        //Scan the current dice code to get each characters count
+        char[] diceCodeArr = GenerateDiceListCode(false).ToCharArray(); //Get the dice code without commas
+        for(int i = 0; i < diceCodeArr.Length; i++)
+        {
+            charCounterDict[diceCodeArr[i]]++; //Increment the char in the dictionary
+        }
+
+        //Sort the dictionary
+        List<object[]> sortedCharCountList = new List<object[]>(); //Create a 2d list, one to store the char, the other to store the int
+        /* foreach(char charKey in charCounterDict.Keys)
+        {
+            int charCount = charCounterDict[charKey]; //Get the count of the letter
+            if(sortedCharCountList.Count == 0) //sortedCharCountList is empty
+            {
+                sortedCharCountList.Add(new Object[]{charKey, charCount}); //Add the current entry
+            }
+            else
+            {
+                while(true)
+                {
+
+                }
+            }
+        } */
+
+        //Print the results
+        Console.WriteLine("Current Dice-List Letter Frequency:");
+        for(int i = 0; i < sortedCharCountList.Count; i++)
+        {
+            
         }
     }
 
