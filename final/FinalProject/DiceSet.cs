@@ -683,11 +683,13 @@ class DiceSet
         List<string> letterFrequencyAsStringList =  Msc.ListMap<object[], string>(sortedCharCountList, CharCounterItemToString); //Use each entry in the 2d list to generate a string representing it's frequency
         string letterFrequencyAsDiceCode = string.Join("", letterFrequencyAsStringList); //Merge every item to generate a dice code
 
+        int diceSideCount = letterFrequencyAsDiceCode.Length;
+
         //Print the results
-        Console.WriteLine("Current Dice-List Letter Frequency:");
+        Console.WriteLine($"Current Dice-List Letter Frequency of {diceSideCount} {Pluralize("sides", diceSideCount)} across {_diceList.Count} dice:");
         for(int i = 0; i < sortedCharCountList.Count; i++)
         {
-            Console.WriteLine($"{i}. {(char)sortedCharCountList[i][0]}: {(int)sortedCharCountList[i][1]}");
+            Console.WriteLine($"{i}. {(char)sortedCharCountList[i][0]}: {(int)sortedCharCountList[i][1]} {(((double) ((int) sortedCharCountList[i][1])) / ((double) diceSideCount)).ToString("P")}"); //Example: "1. A: 34 (30%)" Used this format https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#PFormatString
         }
 
         Console.WriteLine("As dice code:");
@@ -712,24 +714,24 @@ class DiceSet
     public void SortCharCounterList(List<object[]> inputList) //Example where it tells you to use 1 and -1 to sort the lists is found here: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.sort?view=net-8.0#system-collections-generic-list-1-sort(system-comparison((-0)))
     {
         inputList.Sort((object[] a, object[] b) => 
-        {
+        {//1 = move away from index 0, -1 means move closer to index 0 
             char aChar = (char) a[0]; //Load the values into something understandable
             int aVal = (int) a[1]; 
             char bChar = (char) b[0];
             int bVal = (int) b[1];
             if(aVal > bVal)
             {
-                return 1; //When the int value is higher it should be sorted lower in the list
+                return -1; //When the int value is higher it should be sorted lower in the list
             }
             else if(aVal < bVal)
             {
-                return -1; //When the int value is lower is should be sorted higher in the list
+                return 1; //When the int value is lower is should be sorted higher in the list
             }
             else //aVal == bVal (when the int value is equal, use the ascii value to determine what order to use)
             {
                 aChar = (aChar == '?') ? '`' : aChar; //Treat '?' as the highest value which will make it be sorted in the last position
                 bChar = (bChar == '?') ? '`' : bChar;
-                return (aChar < bChar) ? 1 : -1; //If the value is lower, it should be sorted lower in the list
+                return (aChar < bChar) ? -1 : 1; //If the value is lower, it should be sorted lower in the list
             }
         });
     }
@@ -765,6 +767,12 @@ class DiceSet
     private string CharCounterItemToString(object[] charCountItem)
     {
         return new string((char) charCountItem[0], (int)charCountItem[1]); //Parse the known indexes into the correct data type, then use them to create a string
+    }
+
+    //Pluralizer
+    private string Pluralize(string singularStr, int count)
+    {
+        return (count != 1) ? singularStr+"s" : singularStr;
     }
 
 
