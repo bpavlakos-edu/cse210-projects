@@ -348,13 +348,13 @@ class DiceSet
                     new UiOption(()=>{EnterDiceCode(false); throw new UiMenuRefreshException();},"&Add New Dice Using Dice-List Code"),
                     new UiOption(()=>{RepeatAddDiceCode(); throw new UiMenuRefreshException();},"Re&peatedly Add Dice using Dice-List Code"),
                     new UiOption(()=>{DeleteDice(); throw new UiMenuRefreshException();},"&Delete Dice From List"),
-                    new UiOption(()=>{ReplaceAllRandom(); throw new UiMenuRefreshException();},"Re&place all Dice Sides with Random Letters"), //Fill With Random Letter
+                    new UiOption(()=>{ReplaceAllRandom(); throw new UiMenuRefreshException();},"Replace all Dice Sides With Ra&ndom Letters"), //Fill With Random Letter
                     new UiOption(()=>{ScrambleAll(); throw new UiMenuRefreshException();},"S&cramble All Dice Letters"), //Scramble
                     new UiOption(()=>{Shuffle(); ScrambleAll(); throw new UiMenuRefreshException();},"Shuff&le and Scramble All Dice Letters"), //Use a lambda function to use shuffle and scramble all in quick succession
                     new UiOption(()=>{MixAllDiceSides(); throw new UiMenuRefreshException();},"&Mix All Dice Sides"), //Mix all dice sides together
                     new UiOption(()=>{ForceDiceSizeUi(); throw new UiMenuRefreshException();},"&Force All Dice Sides to Side Count"), //Force all sides to a specific side count
                     new UiOption(()=>{PrintDiceLetterFrequency(); throw new UiMenuRefreshException();},"Show Dice-List Letter Fre&quency"), //Force all sides to a specific side count
-                    new UiOption(()=>{FillToCountUi(); throw new UiMenuRefreshException();},"Fill to &Count"), //Force all sides to a specific side count
+                    new UiOption(()=>{FillToCountUi(); throw new UiMenuRefreshException();},"F&ill to Count"), //Force all sides to a specific side count
                     new UiOption(()=>{DiceListToDefault(); throw new UiMenuRefreshException();},"&Reset Dice-List to Default")
                     /*Additional Option Ideas:
                     Fill all with dice code
