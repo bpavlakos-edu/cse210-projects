@@ -667,6 +667,7 @@ class DiceSet
     //Display dice letters
     private void PrintDiceLetterFrequency()
     {
+        Console.Clear();
         //Run calculations
         Dictionary<char,int> charCounterDict = MakeCharCounterDictionary(); //Create a dictionary where the key is the ascii character for A to Z (and ?), the value will be incremented by the number of times we find it in a dice code
 
