@@ -693,7 +693,7 @@ class DiceSet
             Console.WriteLine($"{i}. {(char)sortedCharCountList[i][0]}: {(int)sortedCharCountList[i][1]} {(((double) ((int) sortedCharCountList[i][1])) / ((double) diceSideCount)).ToString("P")}"); //Example: "1. A: 34 (30%)" Used this format https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#PFormatString
         }
         Console.WriteLine("");
-        Console.WriteLine("As dice code:");
+        Console.WriteLine("As a single dice code (scramble this dice then split it to a size to make a new dice set):");
         Console.WriteLine(letterFrequencyAsDiceCode); //Print as Dice Code
         Console.WriteLine("");
         Inp.GetInput("Press enter to continue");
