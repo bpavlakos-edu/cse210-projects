@@ -222,7 +222,7 @@ namespace QuickUtils
         //Issue with compile time constants, which prevents you from setting a default value of a class: https://stackoverflow.com/questions/18740421/default-parameter-for-value-must-be-a-compile-time-constant
         //It seems the only viable solution is to use "null" as suggested by this first comment to this: https://stackoverflow.com/a/18740471
         //I've already been using null, but I really wanted to know if there's a better way to use a default value, other than a manual function overload
-        public bool UiLoop(Action preLoopAction = null, bool debugMode = true)
+        public bool UiLoop(Action preLoopAction = null, bool debugMode = false)
         {
             try
             {
