@@ -328,7 +328,8 @@ class Dice
     //Append this dice as a list of characters to a buffer, for quickly writing dice codes
     public void AppendToCharList(List<char> charListBufferTarget, int index = 0)
     {
-        if(charListBufferTarget.Count != 0) //When this isn't the first index
+        //if(charListBufferTarget.Count != 0) //When this isn't the first index
+        if(index != 0) //When this isn't the first index
         {
             charListBufferTarget.Add(','); //Add 0
         }
