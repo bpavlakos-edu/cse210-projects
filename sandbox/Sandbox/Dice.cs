@@ -210,8 +210,6 @@ class Dice
         //Console.WriteLine("Add \",\" to seperate each dice entry");
         Console.WriteLine("\"?\" picks a random letter each time it's rolled in-game");
         Console.WriteLine("\"*\" picks a random letter to save as the side");
-        Console.WriteLine("\"@\" picks a random vowel to save as the side");
-        Console.WriteLine("\"#\" picks a random non-vowel to save as the side");
         Console.WriteLine("Invalid characters are ignored, letters aren't case-sensitive");
         //Console.WriteLine("When the dice list is empty, it will automatically be filled by a single dice");
         SetSideList(Inp.GetInput("Enter Your Dice-Code (Leave blank to cancel):", null, clearList)); //forces upper case (toLower = null), newLine = true
