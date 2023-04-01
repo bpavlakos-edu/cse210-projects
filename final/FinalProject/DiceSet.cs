@@ -693,7 +693,7 @@ class DiceSet
     //Display dice letters
     private void PrintDiceLetterFrequency()
     {
-        Console.Clear();
+        Console.Clear();//Clear the console first
         //Run calculations
         Dictionary<char,int> charCounterDict = MakeCharCounterDictionary(); //Create a dictionary where the key is the ascii character for A to Z (and ?), the value will be incremented by the number of times we find it in a dice code
 
@@ -704,20 +704,27 @@ class DiceSet
             charCounterDict[diceCodeArr[i]]++; //Increment the char in the dictionary
         }
 
-        List<object[]> sortedCharCountList = DictTo2dList<char, int>(charCounterDict); //Create a 2d list, index 0 stores the char, index 1 stores the int
-        SortCharCounterList(sortedCharCountList); //Sort the list by number of times we found it. If equal, sort by alphabetical order (with ? being last)
+        //Original code used an array of object to count each entry
+        //List<object[]> sortedCharCountList = DictTo2dList<char, int>(charCounterDict); //Create a 2d list, index 0 stores the char, index 1 stores the int
+        //SortCharCounterList(sortedCharCountList); //Sort the list by number of times we found it. If equal, sort by alphabetical order (with ? being last)
+        //List<string> letterFrequencyAsStringList =  Msc.ListMap<object[], string>(sortedCharCountList, CharCounterItemToString); //Use each entry in the 2d list to generate a string representing it's frequency
+        
+        //Updated code uses the tuple data type instead (Read more about tuples here: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-tuples )
+        List<(char, int)> sortedCharCountList = DictToTupleList<char, int>(charCounterDict); //Create a 2d list, index 0 stores the char, index 1 stores the int
+        sortedCharCountList.Sort(CompareCounterTuples); //Sort the list by number of times we found it. If equal, sort by alphabetical order (with ? being last)
+        List<string> letterFrequencyAsStringList =  Msc.ListMap<(char, int), string>(sortedCharCountList, CharCounterTupleToString); //Use each entry in the 2d list to generate a string representing it's frequency
 
-        List<string> letterFrequencyAsStringList =  Msc.ListMap<object[], string>(sortedCharCountList, CharCounterItemToString); //Use each entry in the 2d list to generate a string representing it's frequency
         string letterFrequencyAsDiceCode = string.Join("", letterFrequencyAsStringList); //Merge every item to generate a dice code
 
-        int diceSideCount = letterFrequencyAsDiceCode.Length;
+        int diceSideCount = letterFrequencyAsDiceCode.Length; //The dice side count will always be equal to the dice code length
 
         //Print the results
-        Console.WriteLine($"Current Dice-List Letter Frequency of {diceSideCount} {Pluralize("side", diceSideCount)} across {_diceList.Count} dice:");
+        Console.WriteLine($"Current Dice-List Letter Frequency of {diceSideCount} {Msc.Pluralize("side", diceSideCount)} across {_diceList.Count} dice:");
         for(int i = 0; i < sortedCharCountList.Count; i++)
         {
-            Console.WriteLine($"{i}. {(char)sortedCharCountList[i][0]}: {(int)sortedCharCountList[i][1]} {(((double) ((int) sortedCharCountList[i][1])) / ((double) diceSideCount)).ToString("P")}"); //Example: "1. A: 34 (30%)" Used this format https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#PFormatString
+            Console.WriteLine($"{i}. {(char)sortedCharCountList[i].Item1}: {(int)sortedCharCountList[i].Item2} {(((double) sortedCharCountList[i].Item2) / ((double) diceSideCount)).ToString("P")}"); //Example: "1. A: 34 (30%)" Used this format https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#PFormatString
         }
+        //Console.WriteLine($"{i}. {(char)sortedCharCountList[i][0]}: {(int)sortedCharCountList[i][1]} {(((double) ((int) sortedCharCountList[i][1])) / ((double) diceSideCount)).ToString("P")}"); //Example: "1. A: 34 (30%)" Used this format https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#PFormatString
         Console.WriteLine("");
         Console.WriteLine("As a single dice code (scramble this dice, then force the side list size to create a new dice set):");
         Console.WriteLine(letterFrequencyAsDiceCode); //Print as Dice Code
@@ -737,7 +744,7 @@ class DiceSet
 
     //Sort a list of chars and counters
     //Sort a mixed list of char in index 0 and int in index 1, sort by value first and use characters to determine ties
-    public void SortCharCounterList(List<object[]> inputList) //Example where it tells you to use 1 and -1 to sort the lists is found here: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.sort?view=net-8.0#system-collections-generic-list-1-sort(system-comparison((-0)))
+    /* public void SortCharCounterList(List<object[]> inputList) //Example where it tells you to use 1 and -1 to sort the lists is found here: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.sort?view=net-8.0#system-collections-generic-list-1-sort(system-comparison((-0)))
     {
         inputList.Sort((object[] a, object[] b) => 
         {//1 = move away from index 0, -1 means move closer to index 0 
@@ -760,12 +767,35 @@ class DiceSet
                 return (aChar < bChar) ? -1 : 1; //If the value is lower, it should be sorted lower in the list
             }
         });
+    } */
+    /*//Tuple sorting
+    private void SortCharCounterList(List<(char, int)> inputCounterList)
+    {
+        inputCounterList.Sort(CompareCounterTuples);
+    }*/
+
+    //The sorting algorithim for tuples
+    private int CompareCounterTuples((char, int) entryA, (char, int) entryB)
+    {
+        if(entryA.Item2 > entryB.Item2)
+        {
+            return -1;
+        }
+        else if(entryA.Item2 < entryB.Item2)
+        {
+            return 1;
+        }
+        else  //aVal == bVal (when the int value is equal, use the ascii value to determine what order to use)
+        {
+            char charA = (entryA.Item1 == '?') ? '`' : entryA.Item1; //Treat '?' as the highest value which will make it be sorted in the last position
+            char charB = (entryB.Item1 == '?') ? '`' : entryB.Item1;
+            return (charA < charB) ? -1 : 1; //If the value is lower, it should be sorted lower in the list
+        }
     }
 
-    //Create the letter dictionary to track letter frequency
-    public Dictionary<char,int> MakeCharCounterDictionary()
+    //Create the letter dictionary (A to Z and ?) to track letter frequency
+    private Dictionary<char,int> MakeCharCounterDictionary()
     {
-        
         Dictionary<char,int> charCounterDict = new Dictionary<char, int>(); //Using a dictionary
         //Fill the dictionary
         for(int i = 0; i < 26; i++) //Use bitwise to generate each capital letter
@@ -779,6 +809,7 @@ class DiceSet
     //Scan a DiceCode for chars using a charCounter dictionary
 
     //Convert a dictionary to a list of objects
+    /*
     private List<object[]> DictTo2dList<keyType, valType>(Dictionary<keyType, valType> dictionaryInput)
     {
         List<object[]> returnList = new List<object[]>();
@@ -787,19 +818,33 @@ class DiceSet
             returnList.Add(new object[]{key,dictionaryInput[key]});
         }
         return returnList;
+    }*/
+
+    //Convert a Dictionary to a list of tuple
+    private List<(keyType, valType)> DictToTupleList<keyType, valType>(Dictionary<keyType, valType> dictionaryInput)
+    {
+        List<(keyType, valType)> returnList = new List<(keyType, valType)>();
+        foreach(keyType key in dictionaryInput.Keys) //Add all chars from the dictionary to 
+        {
+            //returnList.Add(new object[]{key,dictionaryInput[key]});
+            returnList.Add((key, dictionaryInput[key]));
+        }
+        return returnList;
     }
 
     //Convert a letter count item into a string
-    private string CharCounterItemToString(object[] charCountItem)
+/*     private string CharCounterItemToString(object[] charCountItem)
     {
         return new string((char) charCountItem[0], (int)charCountItem[1]); //Parse the known indexes into the correct data type, then use them to create a string
+    } */
+
+    //Convert a letter count tuple into a string
+    private string CharCounterTupleToString((char, int) charCountItem)
+    {
+        return new string(charCountItem.Item1, charCountItem.Item2); //Parse the known indexes into the correct data type, then use them to create a string
     }
 
-    //Pluralizer
-    private string Pluralize(string singularStr, int count)
-    {
-        return (count != 1) ? singularStr+"s" : singularStr;
-    }
+
 
 
     //Bit shifting
