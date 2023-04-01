@@ -1,4 +1,4 @@
-using System.Security.Cryptography; //For cryptographically secure random
+using System.Security.Cryptography; //For cryptographically secure random number generation
 namespace QuickUtils
 {
     static class Misc
@@ -8,14 +8,17 @@ namespace QuickUtils
         private static RandomNumberGenerator _randomGen = RandomNumberGenerator.Create(); //Random number generator, cryptographically secure (https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.randomnumbergenerator?view=net-7.0)
         
         //Display friendly strings for common data types, this was occuring too much in the code, and I want to control it from one place
+        //Represent Boolean as Enabled or Disabled
         public static string BoolStr(bool inBool, string trueStr = "Enabled", string falseStr = "Disabled")
         {
             return (inBool) ? trueStr : falseStr;
         }
+        //Put a quote around a string automatically
         public static string QuoteStr(string inStr, char qChar = '"')
         {
             return $"{qChar}{inStr}{qChar}"; //I think this is the fastest way to concatonate them
         }
+        //Float string rounded to a number
         public static string RoundFStr(float inFloat, int? digits = null)
         {
             //Found this: https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#currency-format-specifier-c
