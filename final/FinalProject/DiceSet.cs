@@ -488,7 +488,7 @@ class DiceSet
     public void FillToCountUi()
     {
         Console.WriteLine("---- Warning! This option makes permanent changes to your dice set! Please use it carefully! ----");
-        int? newCount = Inp.GetIntInput(true,"Select a count to set the dice-list to: ", 1, null, false, _diceList.Count);
+        int? newCount = Inp.GetIntInput(true,"Select a count to set the dice-list to: ", 0, null, false, _diceList.Count);
         if(newCount != null)
         {
             FillToCount(newCount ?? _diceList.Count, Msc.ListCopy<Dice>(_diceList,(Dice inDice)=>{return new Dice(inDice);}).ToArray<Dice>());
@@ -567,22 +567,26 @@ class DiceSet
     //Fill using a list of dice
     public void FillToCount(int newDiceCount, params Dice[] inputDice) //Utilizes the params keyword, which lets us use each item as an individual parameter: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/params
     {
-        if(_diceList.Count <= newDiceCount)
+        if(_diceList.Count <= newDiceCount) //Accept == here because the for loop will just be skipped
         {
             for(int i = 0; _diceList.Count < newDiceCount; i++)
             {
-                _diceList.Add(new Dice(inputDice[i % inputDice.Length])); //Use modulus to infinitely loop the input array
+                _diceList.Add(new Dice(inputDice[i % inputDice.Length])); //Use modulus to infinitely loop through the input array
             }
         }
         else if(_diceList.Count > newDiceCount) //Remove dice to count
         {
-            bool userContinue = Inp.GetBoolInput("This action will permanently delete dice, are you sure you want to continue?: ",curValue:false);
+            bool userContinue = Inp.GetBoolInput($"This action will permanently delete {_diceList.Count - newDiceCount} dice, are you sure you want to continue?: ", curValue: false, hideCurValue: true); //Confirm the user acutally wants to delete dice
             if(userContinue != false)
             {
                 while(_diceList.Count > newDiceCount) //Delete dice repeatedly until we reach the count
                 {
                     _diceList.RemoveAt(_diceList.Count - 1); //Remove the last dice
                 }
+                if(_diceList.Count < 1) //Detect empty dice list
+                {
+                    _diceList.Add(new Dice("?"));
+                } 
             }
         }
         
@@ -667,7 +671,7 @@ class DiceSet
         Console.WriteLine(displayMsg);
         for(int i = 0; i < _diceList.Count; i++)
         {
-            Console.WriteLine($"{i+1}. Dice Sides: {_diceList[i].LettersToString()}");
+            Console.WriteLine($"{i+1}. Dice {Msc.Pluralize("Side",_diceList.Count)}: {_diceList[i].LettersToString()}");
         }
     }
 

@@ -196,14 +196,14 @@ class Dice
                 "Select a setting or [hotkey] from the menu: ",
                 "" //Hide the exit message
             );
-            refreshUi = diceSettingsMenu.UiLoop(()=>{Console.WriteLine("Current Sides: "+LettersToString());Console.WriteLine($"Side Count: {_sideList.Count}");}); //Refresh the UiMenu
+            refreshUi = diceSettingsMenu.UiLoop(()=>{Console.WriteLine($"Current {Msc.Pluralize("Side",_sideList.Count)}: "+LettersToString());Console.WriteLine($"Side Count: {_sideList.Count}");}); //Refresh the UiMenu
         }
         throw new UiMenuRefreshException(); //Refresh the menu that this menu has been called from (the DiceSetSettings > Edit Dice List menu)
     }
     //Simple DiceCode Method
     public void SimpleDiceCode(bool clearList = true)
     {
-        Console.WriteLine("Current Sides: "+LettersToString(','));
+        Console.WriteLine($"Current {Msc.Pluralize("Side",_sideList.Count)}: "+LettersToString(','));
         Console.WriteLine("Dice-Code Rules:");
         Console.WriteLine("Each letter represents 1 side of the dice");
         Console.WriteLine("Each dice can have a unique number of sides");
@@ -235,7 +235,7 @@ class Dice
     //Delete sides
     public void DeleteSides()
     {
-        Console.WriteLine("Current Sides: "+LettersToString(','));
+        Console.WriteLine($"Current {Msc.Pluralize("Side",_sideList.Count)}: "+LettersToString(','));
         List<int[]> deletionIndexes = Inp.GetRangeIntInput("Enter the ranges of sides to delete (\"-\" to make a range, \",\" to seperate numbers, \"!\" to select all): ",1,_sideList.Count,subtractNum:1);
         for(int i = deletionIndexes.Count - 1; i >= 0; i--) //Reverse for loops go backwards so that the greatest item is removed first, to prevent index errors
         {
