@@ -179,14 +179,14 @@ namespace QuickUtils
         }
 
         //Randomization function, to prevent stale randomness
-        public static int RandomInt(int min, int max)
+        public static int RandomInt(int min, int maxExclusive)
         {
-            return RandomNumberGenerator.GetInt32(min, max);
+            return RandomNumberGenerator.GetInt32(min, maxExclusive);
         }
         //Function overload for only providing the max
-        public static int RandomInt(int max)
+        public static int RandomInt(int maxExclusive)
         {
-            return RandomInt(0, max);
+            return RandomInt(0, maxExclusive);
         }
         //Random Float (Single Precision Decimal Number / FloatInt)
         public static float RandomFloat()
