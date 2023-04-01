@@ -313,7 +313,7 @@ class DiceSet
                     new UiOption(()=>{RepeatAddDiceCode(); throw new UiMenuRefreshException();},"Re&peatedly Add Dice using Dice-List Code"),
                     new UiOption(()=>{ReplaceAllWithDiceCode(); throw new UiMenuRefreshException();},"Replace All Dice &With a Dice-Code"),
                     new UiOption(()=>{DeleteDiceByUi(); throw new UiMenuRefreshException();},"&Delete Dice From List"),
-                    new UiOption(()=>{FillToCountUi(); throw new UiMenuRefreshException();},"F&ill to Count"), //Force all sides to a specific side count
+                    new UiOption(()=>{FillToCountUi(); throw new UiMenuRefreshException();},"F&ill to Dice-List Count"), //Force all sides to a specific side count
                     new UiOption(()=>{ReplaceAllRandom(); throw new UiMenuRefreshException();},"Replace All Dice Sides With Ra&ndom Letters"), //Fill With Random Letter
                     new UiOption(()=>{Shuffle(); throw new UiMenuRefreshException();},"&Shuffle Dice-List"),
                     new UiOption(()=>{ScrambleAll(); throw new UiMenuRefreshException();},"S&cramble All Dice Letters"), //Scramble
