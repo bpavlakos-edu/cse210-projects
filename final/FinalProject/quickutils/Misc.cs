@@ -44,10 +44,12 @@ namespace QuickUtils
         }
 
         //List Map (Similar to JavaScript "Map" function)
-        //inType = input list data type
-        //outType = expected output type
-        //inputList = list to convert
-        //mappingFunction = function to run on each item in the input list, to store it in the return list
+        /*Params:
+        inType = input list data type
+        outType = expected output type
+        inputList = list to convert
+        mappingFunction = function to run on each item in the input list, to store it in the return list
+        Returns: A list of the desired output type, generated using the function passed as "mappingFunction"*/
         public static List<outType> ListMap<inType, outType>(List<inType> inputList, Func<inType,outType> mappingFunction)
         {
             List<outType> returnList = new List<outType>(); //Initalize the return list
@@ -59,12 +61,11 @@ namespace QuickUtils
         public static List<(keyType, valType)> DictToTupleList<keyType, valType>(Dictionary<keyType, valType> dictionaryInput)
         {
             List<(keyType, valType)> returnList = new List<(keyType, valType)>();
-            foreach(keyType key in dictionaryInput.Keys) //Add all chars from the dictionary to 
+            foreach(keyType key in dictionaryInput.Keys) //Get every key
             {
-                //returnList.Add(new object[]{key,dictionaryInput[key]});
-                returnList.Add((key, dictionaryInput[key]));
+                returnList.Add((key, dictionaryInput[key])); //And use it to fill the tuple
             }
-            return returnList;
+            return returnList; //Return the generated list
         }
 
         //Range List Merging Function
