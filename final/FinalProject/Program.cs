@@ -223,11 +223,11 @@ class Program
             }
         }
         //Exceptions
-        catch(FileNotFoundException) 
+        catch(FileNotFoundException) //File not found
         {
-            if(programStart)
+            if(programStart) //If it's missing on the program startup, we likely haven't made the config file yet
             {
-                SaveConfigFile();
+                SaveConfigFile(); //So make the config file now
             }
         } //This is not an error, it's intended behavior for when the file is missing
         catch(IOException e){Console.WriteLine($"A file loading Error has occured: {e.ToString()}");Inp.GetInput("Press enter to continue");}
