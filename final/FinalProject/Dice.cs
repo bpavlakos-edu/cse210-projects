@@ -210,6 +210,8 @@ class Dice
         //Console.WriteLine("Add \",\" to seperate each dice entry");
         Console.WriteLine("\"?\" picks a random letter each time it's rolled in-game");
         Console.WriteLine("\"*\" picks a random letter to save as the side");
+        Console.WriteLine("\"@\" picks a random vowel to save as the side");
+        Console.WriteLine("\"#\" picks a random non-vowel to save as the side");
         Console.WriteLine("Invalid characters are ignored, letters aren't case-sensitive");
         //Console.WriteLine("When the dice list is empty, it will automatically be filled by a single dice");
         SetSideList(Inp.GetInput("Enter Your Dice-Code (Leave blank to cancel):", null, clearList)); //forces upper case (toLower = null), newLine = true
@@ -287,6 +289,14 @@ class Dice
         if(inputChar == '?' || inputChar == '*' || char.IsAsciiLetter(inputChar)) //Accept only recognized characters
         {
             _sideList.Add((inputChar == '*') ? GetRandomLetter() : char.ToUpper(inputChar)); //Automatically add upper case letters (which doesn't change '?') to the side list, if the char is '*' pick a random letter to save as the side
+        }
+        else if(inputChar == '@')
+        {
+            _sideList.Add(new char[]{'A','E','I','O','U','Y'}[Msc.RandomInt(6)]);
+        }
+        else if(inputChar == '#')
+        {
+            _sideList.Add(new char[]{'B','C','D','F','G','H','J','K','L','M','N','Q','R','S','T','U','V','W','X','Z'}[Msc.RandomInt(20)]);
         }
         else if(strict) //For debugging
         {

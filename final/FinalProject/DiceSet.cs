@@ -311,9 +311,10 @@ class DiceSet
                     new UiOption(()=>{EnterDiceCode(); throw new UiMenuRefreshException();},"&Enter Dice-List Code"), //Needs parenthesis (and a lambda by extension) because it has a parameter
                     new UiOption(()=>{EnterDiceCode(false); throw new UiMenuRefreshException();},"&Add New Dice Using Dice-List Code"),
                     new UiOption(()=>{RepeatAddDiceCode(); throw new UiMenuRefreshException();},"Re&peatedly Add Dice using Dice-List Code"),
+                    //new UiOption(()=>{RepeatAddDiceCode(); throw new UiMenuRefreshException();},"Repla&ce All Dice With A Dice-Code"),
                     new UiOption(()=>{DeleteDiceByUi(); throw new UiMenuRefreshException();},"&Delete Dice From List"),
                     new UiOption(()=>{FillToCountUi(); throw new UiMenuRefreshException();},"F&ill to Count"), //Force all sides to a specific side count
-                    new UiOption(()=>{ReplaceAllRandom(); throw new UiMenuRefreshException();},"Replace all Dice Sides With Ra&ndom Letters"), //Fill With Random Letter
+                    new UiOption(()=>{ReplaceAllRandom(); throw new UiMenuRefreshException();},"Replace All Dice Sides With Ra&ndom Letters"), //Fill With Random Letter
                     new UiOption(()=>{Shuffle(); throw new UiMenuRefreshException();},"&Shuffle Dice-List"),
                     new UiOption(()=>{ScrambleAll(); throw new UiMenuRefreshException();},"S&cramble All Dice Letters"), //Scramble
                     new UiOption(()=>{Shuffle(); ScrambleAll(); throw new UiMenuRefreshException();},"Shuff&le and Scramble All Dice Letters"), //Use a lambda function to use shuffle and scramble all in quick succession
@@ -394,6 +395,8 @@ class DiceSet
         Console.WriteLine("Add \",\" to seperate each dice entry");
         Console.WriteLine("\"?\" picks a random letter each time it's rolled in-game");
         Console.WriteLine("\"*\" picks a random letter to save as the side");
+        Console.WriteLine("\"@\" picks a random vowel to save as the side");
+        Console.WriteLine("\"#\" picks a random non-vowel to save as the side");
         Console.WriteLine("Invalid characters are ignored, letters aren't case-sensitive");
         Console.WriteLine("When the dice list is empty, it will automatically be filled by a single dice");
         return Inp.GetInput("Enter Your Dice-List Code (Leave blank to cancel):", null, true); //Get the dice code input
