@@ -380,15 +380,15 @@ class DiceSet
     //Enter a diceList Code into the console
     public void EnterDiceCode(bool clearList = true, int addCodeCount = 1)
     {
-        string diceCode = GetDiceCodeInput();
+        string diceCode = GetDiceCodeStringInput(); //Get the dice code as a string input
         LoadDiceListCode(diceCode, clearList);
         throw new UiMenuRefreshException();
     }
 
-    //Get dice code from input
-    public string GetDiceCodeInput()
+    //Get dice code string from user input
+    public string GetDiceCodeStringInput()
     {
-        Console.WriteLine("Dice-List Code Rules:");
+        Console.WriteLine("Dice-List Code Rules:"); //Print out Dice code instructions
         Console.WriteLine("Each letter represents 1 side of the dice");
         Console.WriteLine("Each dice can have a unique number of sides");
         Console.WriteLine("Add \",\" to seperate each dice entry");
@@ -396,7 +396,7 @@ class DiceSet
         Console.WriteLine("\"*\" picks a random letter to save as the side");
         Console.WriteLine("Invalid characters are ignored, letters aren't case-sensitive");
         Console.WriteLine("When the dice list is empty, it will automatically be filled by a single dice");
-        return Inp.GetInput("Enter Your Dice-List Code (Leave blank to cancel):", null, true);
+        return Inp.GetInput("Enter Your Dice-List Code (Leave blank to cancel):", null, true); //Get the dice code input
     }
 
     //Get a dice code and count to add the dice code repeatedly
@@ -405,7 +405,7 @@ class DiceSet
         int? addCodeCount = Inp.GetIntInput(true, "Enter the number of dice to add using your dice code (leave blank to cancel): ",0);
         if(addCodeCount != null)
         {
-            string diceCode = GetDiceCodeInput(); //Get the dice code
+            string diceCode = GetDiceCodeStringInput(); //Get the dice code string input
             for(int i = ((diceCode.Length > 0 ) ? 0 : (int) addCodeCount); i < addCodeCount; i++) //Skip this for loop if the diceCode has a length of 0
             {
                 LoadDiceListCode(diceCode, false); //clearList should never be true on any cycle other than 0 //forces upper case (toLower = null), newLine = true
@@ -574,7 +574,7 @@ class DiceSet
                 _diceList.Add(new Dice(inputDice[i % inputDice.Length])); //Use modulus to infinitely loop the input array
             }
         }
-        else if(_diceList.Count < newDiceCount) //Remove dice to count
+        else if(_diceList.Count > newDiceCount) //Remove dice to count
         {
             bool userContinue = Inp.GetBoolInput("This action will permanently delete dice, are you sure you want to continue?: ",curValue:false);
             if(userContinue != false)
