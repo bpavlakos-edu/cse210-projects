@@ -3,7 +3,7 @@ namespace QuickUtils
 {
     static class Misc
     {
-        //Internal Fields (Do not externally access these!!!)
+        //Internal Fields (Do not externally access or redefine random values, it leads to really bad randomziation! https://learn.microsoft.com/en-us/dotnet/api/system.random?view=net-7.0#avoiding-multiple-instantiations)
         //private static Random rngGen = new Random(); //Standard random can be used instead of RandomNumberGenerator
         private static RandomNumberGenerator _randomGen = RandomNumberGenerator.Create(); //Random number generator, cryptographically secure (https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.randomnumbergenerator?view=net-7.0)
         
@@ -131,11 +131,11 @@ namespace QuickUtils
                 int? max = null;
                 for(int i = 0; i < inputArr.Length;i++)
                 {
-                    if(min == null || min > inputArr[i])
+                    if(min == null || min > inputArr[i]) //Found a lower minimum
                     {
                         min = inputArr[i];
                     }
-                    if(max == null || max < inputArr[i])
+                    if(max == null || max < inputArr[i]) //Found a higher maximum
                     {
                         max = inputArr[i];
                     }
