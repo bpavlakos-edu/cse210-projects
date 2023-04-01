@@ -9,8 +9,10 @@ class GameMode
     protected int _durationSec = 180; //Game mode duration
     protected bool _showCDown = true; //Flag to control whether to display a timer or not
     protected string _desc = ""; //Game mode description for the help menu, it should always be hardcoded
-    protected bool _paused = false; //This is not an externally accessible property, it's a global variable for threaded functions
     protected string _displayName = "Test Mode"; //Game mode display name, shouldn't be accessible by a constructor, it should always be hardcoded
+
+    //Threaded function helper:
+    protected bool _paused = false; //This is not an externally accessible property, it's a global variable for threaded functions, it's inherited though
 
     //Constructors
     //Blank Constructor
@@ -91,6 +93,7 @@ class GameMode
         }
         while(Inp.GetBoolInput("Would you like to play again?: ", curValue:false, hideCurValue:true) == true); //Repeat until the user says they are finished. This input configuartion will default to false if it's left blank
     }
+
     //Main gameplay loop (overidden by child classes)
     protected virtual void GameLoop(DiceSet diceSetCopy)
     {
@@ -101,11 +104,13 @@ class GameMode
         bool threadEndedOnTime = timerThread.Join(_durationSec * 1000); //Join by the duration specified for this game mode, store whether it Joined in time into a boolean
         timerThread.Join();//Temporary patch until I can find out how to prevent the timer end message bug from happening when the dice set is very large
     }
+
     //Show the start message
     private void ShowStartMsg()
     {
         Inp.GetInput($"Press Enter to Begin {_displayName}");
     }
+
     //Show the end message, and let the user check the current dice set
     private void ShowEndMsg(DiceSet diceCopy)
     {
@@ -119,6 +124,7 @@ class GameMode
         Console.WriteLine("Please check your words using the display above");
         Inp.GetInput("Press enter to continue");
     }
+
     //Display this game mode's description
     public void DisplayHelp()
     {
@@ -126,6 +132,7 @@ class GameMode
         Console.WriteLine("");
         Inp.GetInput("Press enter to continue");
     }
+
     //Open the settings menu
     public void OpenSettings()
     {
@@ -133,13 +140,14 @@ class GameMode
     }
 
     //Utility
+    //Count down function, it's meant to operate inside a thread
     protected void CountDown(int msecDuration, int refreshMsecDelay = 1000)
     {
-        Thread countDownThread = Thread.CurrentThread; //Store the current thread for the PausedSleep to interrupt
+        Thread countDownThread = Thread.CurrentThread; //Store the current thread for the PausedSleep to interrupt using the exit thread
         countDownThread.Name = "countDownThread"; //Name the thread for debugging
         try
         {
-            _paused = false;
+            _paused = false; //Unpause the game?
             if(_showCDown) //Check the show countdown setting, to make sure we need to display anything
             {
                 //Console.CursorVisible = false; //Disable the cursor marker [Credit: http://dontcodetired.com/blog/post/Creating-a-Spinner-Animation-in-a-Console-Application-in-C ] [Microsoft Docs: http://msdn.microsoft.com/en-us/library/system.console.cursorvisible%28v=vs.110%29.aspx ]
@@ -160,7 +168,7 @@ class GameMode
             }
             else //Simple thread sleep for the requested duration
             {
-                PausedSleep(_paused, new TimeSpan(0,0,0,0,msecDuration), (bool pauseStatus)=>{_paused = true; WritePauseStatus(pauseStatus);},() => {countDownThread.Interrupt();});
+                PausedSleep(_paused, new TimeSpan(0,0,0,0, msecDuration), (bool pauseStatus)=>{_paused = true; WritePauseStatus(pauseStatus);},() => {countDownThread.Interrupt();}); //These are the same inputs, just using a single PausedSleepThread
             }
         }
         catch(ThreadInterruptedException)
@@ -169,19 +177,26 @@ class GameMode
         }
     }
 
-    protected void WritePauseStatus(bool paused, string pauseMsg = "~ Paused Press 'p' to Continue ~")
+    //Function overload for counting down by seconds, needs a different name to make it not conflict due to having the same parameter types
+    protected void CountDownSec(int secDuration, int refreshMsecDelay = 1000)
     {
-        Console.Write((paused) ? pauseMsg : new string('\b',pauseMsg.Length) + new String(' ',pauseMsg.Length) + new string('\b',pauseMsg.Length));
+        CountDown(secDuration * 1000, refreshMsecDelay);
+    }
+    //Return the string representation of ticks, using a TimeSpan class to print it in MM:SS
+    protected string TicksToTimerStr(long ticks)
+    {
+        return (new TimeSpan(ticks)).ToString(@"mm\:ss"); //@ means absolute string. Found the formatting specifications for timespan here: https://learn.microsoft.com/en-us/dotnet/api/system.timespan.tostring?view=net-7.0#system-timespan-tostring(system-string)
     }
 
     //Paused Sleep function, developed in offline sandbox
     protected void PausedSleep(bool pauseInput, TimeSpan duration, Action<bool> setPausedFunction, Action exitAction, int msecPerCheck = 100)
     {
-        bool paused = false;
+        bool paused = false; //Boolean flags for the Threaded functions to use
         bool timerEnded = false;
         bool exiting = false;
-        //The primary reason why this is here and not in it's own function is so that it can access both paused and set paused function easily
-        Thread pauseThread = new Thread(()=>
+        //The primary reason why this is here and not in it's own function is so that it can access both "paused" and "setPausedFunction" easily. It's also stable here so I really don't want to accidently break it by turning it into a function
+        //This is threaded because Console.ReadKey() pauses the thread, so to silently track user input, we need it in it's own thread
+        Thread pauseInputThread = new Thread(() =>
             {
                 try
                 {
@@ -191,10 +206,10 @@ class GameMode
                         {
                             ConsoleKey ReadKey = Console.ReadKey(true).Key; //Console.readKey pauses the thread //Setting readkey to true hides it
                             if(ReadKey == ConsoleKey.X /* && !paused */) //Exit sequence
-                            {
+                            {//This thread is quite stubborn about exiting. We trigger a thread exception here using exitAction, then trigger a third one in the catch sequence to finally trigger the exception in the thread that called this (countdown)
                                 /* duration = new TimeSpan(0);
                                 paused = false; */
-                                exiting = true;
+                                exiting = true; //Tell this thread we are exiting
                                 exitAction(); //Activate the exit action
                             }
                             else if(ReadKey == ConsoleKey.P) //if p is pressed
@@ -206,19 +221,19 @@ class GameMode
                         Thread.Sleep(msecPerCheck); //If we don't restrict the while loop it will drive up CPU usage (it also gives a location to be interuppted)
                     }
                 }
-                catch(ThreadInterruptedException)
+                catch(ThreadInterruptedException) //Exiting was ordered
                 {
-                    if(exiting)
+                    if(exiting) //Update the exit status
                     {
-                        exiting = false;
+                        exiting = false; //Update the exit flag
                         exitAction(); //Return to main thread when interrupt is ordered, activate the exit action for the third time!
                     }
                 }
             }
         );
-        pauseThread.Name = "PauseThread";
-        //Sleeping timer, decrements by the desired timespan
-        pauseThread.Start(); //Start the pause thread
+        pauseInputThread.Name = "PauseInputThread"; //For debugging
+        //A Sleeping timer, decrements by the desired timespan
+        pauseInputThread.Start(); //Start the pause thread
         try
         {
             while(duration.Ticks > 0)
@@ -227,22 +242,24 @@ class GameMode
                 if(!paused) //When it's not paused
                 {
                     duration -= new TimeSpan(0,0,0,0,msecPerCheck); //Subtract from the remaining time
-                }
+                } //Otherwise continue sleeping infinitely
             }
             timerEnded = true; //Tell the pause thread the waiting is over
             paused = false; //Tell the original function that pausing is over
-            if(!pauseThread.Join(0)) //Tell it to join instantly, use it's Join status (which is a boolean) to activate this code
+            if(!pauseInputThread.Join(0)) //Tell it to join instantly, use it's Join status (which is a boolean) to activate this code
             {
-                pauseThread.Interrupt(); //When it fails to join in time, Interrupt it manually
+                pauseInputThread.Interrupt(); //When it fails to join in time, Interrupt it manually
             }
         }
-        catch(ThreadInterruptedException) //When this thread is interrupted, catch the error before forcing the other one to join
+        catch(ThreadInterruptedException) //When this thread is interrupted, catch the error before forcing the other one to join again
         {
-            pauseThread.Interrupt();
-            pauseThread.Join();
-            Thread.CurrentThread.Interrupt(); //Force the current thread to exit (I'm really not sure if this works)
+            pauseInputThread.Interrupt(); //Cause the pauseInputThread to throw an error to exit
+            pauseInputThread.Join(); //Tell the pauseInputThread to join
+            Thread.CurrentThread.Interrupt(); //Force the current thread to throw an error to exit (I'm really not sure if this works)
         }
     }
+
+    //Pause Input Thread
 
     //Paused sleep with no input control
     protected void PausedSleepNoControl(TimeSpan duration, Func<bool> checkExitStatus, int msecPerCheck = 100)
@@ -257,15 +274,10 @@ class GameMode
         }
     }
 
-    //Function overload for counting down by seconds, needs a different name to make it not conflict due to having the same parameter types
-    protected void CountDownSec(int secDuration, int refreshMsecDelay = 1000)
+    //Display Paused status in the console
+    protected void WritePauseStatus(bool paused, string pauseMsg = "~ Paused Press 'p' to Continue ~")
     {
-        CountDown(secDuration * 1000, refreshMsecDelay);
-    }
-    //Return the string representation of ticks, using a TimeSpan class to print it in MM:SS
-    protected string TicksToTimerStr(long ticks)
-    {
-        return (new TimeSpan(ticks)).ToString(@"mm\:ss"); //@ means absolute string. Found the formatting specifications for timespan here: https://learn.microsoft.com/en-us/dotnet/api/system.timespan.tostring?view=net-7.0#system-timespan-tostring(system-string)
+        Console.Write((paused) ? pauseMsg : new string('\b',pauseMsg.Length) + new String(' ',pauseMsg.Length) + new string('\b',pauseMsg.Length));
     }
 
     //Make a UiMenu for this class, to modify the game mode's settings
