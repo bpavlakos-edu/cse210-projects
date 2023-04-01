@@ -311,7 +311,7 @@ class DiceSet
                     new UiOption(()=>{EnterDiceCode(); throw new UiMenuRefreshException();},"&Enter Dice-List Code"), //Needs parenthesis (and a lambda by extension) because it has a parameter
                     new UiOption(()=>{EnterDiceCode(false); throw new UiMenuRefreshException();},"&Add New Dice Using Dice-List Code"),
                     new UiOption(()=>{RepeatAddDiceCode(); throw new UiMenuRefreshException();},"Re&peatedly Add Dice using Dice-List Code"),
-                    //new UiOption(()=>{RepeatAddDiceCode(); throw new UiMenuRefreshException();},"Repla&ce All Dice With A Dice-Code"),
+                    new UiOption(()=>{WriteDiceCodeToAll(); throw new UiMenuRefreshException();},"Repla&ce All Dice With a Dice-Code"),
                     new UiOption(()=>{DeleteDiceByUi(); throw new UiMenuRefreshException();},"&Delete Dice From List"),
                     new UiOption(()=>{FillToCountUi(); throw new UiMenuRefreshException();},"F&ill to Count"), //Force all sides to a specific side count
                     new UiOption(()=>{ReplaceAllRandom(); throw new UiMenuRefreshException();},"Replace All Dice Sides With Ra&ndom Letters"), //Fill With Random Letter
@@ -387,23 +387,27 @@ class DiceSet
     }
 
     //Get dice code string from user input
-    public string GetDiceCodeStringInput()
+    public string GetDiceCodeStringInput(bool acceptMulti = true)
     {
         Console.WriteLine("Dice-List Code Rules:"); //Print out Dice code instructions
         Console.WriteLine("Each letter represents 1 side of the dice");
         Console.WriteLine("Each dice can have a unique number of sides");
-        Console.WriteLine("Add \",\" to seperate each dice entry");
+        if(acceptMulti) //This flag will be used to alter the display string
+        {
+            Console.WriteLine("Add \",\" to seperate each dice entry");
+        }
         Console.WriteLine("\"?\" picks a random letter each time it's rolled in-game");
         Console.WriteLine("\"*\" picks a random letter to save as the side");
         Console.WriteLine("\"@\" picks a random vowel to save as the side");
         Console.WriteLine("\"#\" picks a random non-vowel to save as the side");
         Console.WriteLine("Invalid characters are ignored, letters aren't case-sensitive");
         Console.WriteLine("When the dice list is empty, it will automatically be filled by a single dice");
-        return Inp.GetInput("Enter Your Dice-List Code (Leave blank to cancel):", null, true); //Get the dice code input
+        string diceCodeReturn = Inp.GetInput($"Enter Your Dice{((acceptMulti) ? "-List ":"-")}Code (Leave blank to cancel):", null, true);
+        return (acceptMulti) ? diceCodeReturn : diceCodeReturn.Replace(",","") ; //Get the dice code input
     }
 
     //Get a dice code and count to add the dice code repeatedly
-    public void RepeatAddDiceCode()
+    private void RepeatAddDiceCode()
     {
         int? addCodeCount = Inp.GetIntInput(true, "Enter the number of dice to add using your dice code (leave blank to cancel): ",0);
         if(addCodeCount != null)
@@ -413,6 +417,18 @@ class DiceSet
             {
                 LoadDiceListCode(diceCode, false); //clearList should never be true on any cycle other than 0 //forces upper case (toLower = null), newLine = true
             }
+        }
+    }
+
+    //Use a dice code
+    private void WriteDiceCodeToAll()
+    {
+        Console.Clear();
+        Console.WriteLine("Replace All With Dice Code:");
+        string diceCode = GetDiceCodeStringInput(false); //Do not accept multiple items
+        if(diceCode != "") //Only accept non empty dice codes
+        {
+            SetAll(new Dice(diceCode));
         }
     }
 

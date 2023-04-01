@@ -26,8 +26,18 @@ class Dice
         _hidden = hidden;
     }
 
-    //Fill attributes with user input
+    //Create a dice using dice code
     public Dice(bool triggerFlag) //This boolean is here to activate this constructor
+    {
+        PrintDiceCodeRules();
+        SetSideList(Inp.GetInput("Enter Your Dice-Code (Leave blank to cancel):", null, true));
+        //Set everything else to default
+        _side = 0;
+        _curLetter = ' ';
+        _hidden = false;
+    }
+    //Fill attributes with user input
+    /*public Dice(bool triggerFlag) //This boolean is here to activate this constructor
     {
         string newSidesString = Inp.GetInput("Please enter the dice side letters (enter \"?\" for random): ");
         SetSideList(newSidesString);
@@ -35,7 +45,7 @@ class Dice
         _side = 0;
         _curLetter = ' ';
         _hidden = false;
-    }
+    } */
 
     //Fill attributes using a string as the char list
     public Dice(string diceCodeString, int side = 0, char curLetter = ' ', bool hidden = false)
@@ -204,6 +214,12 @@ class Dice
     public void SimpleDiceCode(bool clearList = true)
     {
         Console.WriteLine($"Current {Msc.Pluralize("Side",_sideList.Count)}: "+LettersToString(','));
+        PrintDiceCodeRules();
+        SetSideList(Inp.GetInput("Enter Your Dice-Code (Leave blank to cancel):", null, clearList)); //forces upper case (toLower = null), newLine = true
+        //throw new UiMenuRefreshException();
+    }
+    private void PrintDiceCodeRules()
+    {
         Console.WriteLine("Dice-Code Rules:");
         Console.WriteLine("Each letter represents 1 side of the dice");
         Console.WriteLine("Each dice can have a unique number of sides");
@@ -214,8 +230,6 @@ class Dice
         Console.WriteLine("\"#\" picks a random non-vowel to save as the side");
         Console.WriteLine("Invalid characters are ignored, letters aren't case-sensitive");
         //Console.WriteLine("When the dice list is empty, it will automatically be filled by a single dice");
-        SetSideList(Inp.GetInput("Enter Your Dice-Code (Leave blank to cancel):", null, clearList)); //forces upper case (toLower = null), newLine = true
-        //throw new UiMenuRefreshException();
     }
     //Scramble the order of dice sides
     public void ScrambleSides()
