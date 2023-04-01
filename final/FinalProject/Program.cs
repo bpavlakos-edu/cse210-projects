@@ -302,12 +302,12 @@ class Program
             Inp.GetInput("Press enter to continue");
         }
     }
-    //Delete the temporary config file
+    //Delete the temporary config file on program exit
     static void DeleteResetConfig()
     {
         try
         {
-            File.Delete("d_r_temp.cfg");
+            File.Delete("d_r_temp.cfg"); //Delete the file
         }
         //Silently Catch Exceptions
         catch(IOException){}
@@ -318,8 +318,8 @@ class Program
     //Load Default settings using the temporary config file, and immediately save them
     static void ResetAllSettings()
     {
-        LoadConfigFile("d_r_temp.cfg");
-        SaveConfigFile("doggle.cfg", false);
+        LoadConfigFile("d_r_temp.cfg"); //Load the config file that is generated on program startup
+        SaveConfigFile("doggle.cfg", false); //Overrwrite the default config file
     }
 
     //For testing basic functionality
