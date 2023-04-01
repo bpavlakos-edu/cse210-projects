@@ -309,17 +309,17 @@ class DiceSet
                     new UiOption(ShowDiceCode,"&Generate a Dice-List Code for Sharing"),
                     new UiOption(ExportDiceSetCode,"E&xport a Dice-List Code to a File"),
                     new UiOption(()=>{EnterDiceCode(); throw new UiMenuRefreshException();},"&Enter Dice-List Code"), //Needs parenthesis (and a lambda by extension) because it has a parameter
-                    new UiOption(()=>{Shuffle(); throw new UiMenuRefreshException();},"&Shuffle Dice-List"),
                     new UiOption(()=>{EnterDiceCode(false); throw new UiMenuRefreshException();},"&Add New Dice Using Dice-List Code"),
                     new UiOption(()=>{RepeatAddDiceCode(); throw new UiMenuRefreshException();},"Re&peatedly Add Dice using Dice-List Code"),
                     new UiOption(()=>{DeleteDiceByUi(); throw new UiMenuRefreshException();},"&Delete Dice From List"),
+                    new UiOption(()=>{FillToCountUi(); throw new UiMenuRefreshException();},"F&ill to Count"), //Force all sides to a specific side count
                     new UiOption(()=>{ReplaceAllRandom(); throw new UiMenuRefreshException();},"Replace all Dice Sides With Ra&ndom Letters"), //Fill With Random Letter
+                    new UiOption(()=>{Shuffle(); throw new UiMenuRefreshException();},"&Shuffle Dice-List"),
                     new UiOption(()=>{ScrambleAll(); throw new UiMenuRefreshException();},"S&cramble All Dice Letters"), //Scramble
                     new UiOption(()=>{Shuffle(); ScrambleAll(); throw new UiMenuRefreshException();},"Shuff&le and Scramble All Dice Letters"), //Use a lambda function to use shuffle and scramble all in quick succession
                     new UiOption(()=>{MixAllDiceSides(); throw new UiMenuRefreshException();},"&Mix All Dice Sides"), //Mix all dice sides together
                     new UiOption(()=>{ForceDiceSizeUi(); throw new UiMenuRefreshException();},"&Force All Dice Sides to Side Count"), //Force all sides to a specific side count
                     new UiOption(()=>{PrintDiceLetterFrequency(); throw new UiMenuRefreshException();},"Show Dice-List Letter Fre&quency"), //Force all sides to a specific side count
-                    new UiOption(()=>{FillToCountUi(); throw new UiMenuRefreshException();},"F&ill to Count"), //Force all sides to a specific side count
                     new UiOption(()=>{DiceListToDefault(); throw new UiMenuRefreshException();},"&Reset Dice-List to Default")
                     /*Additional Option Ideas:
                     Fill all with dice code
