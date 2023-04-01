@@ -215,76 +215,6 @@ class Dice
         SetSideList(Inp.GetInput("Enter Your Dice-Code (Leave blank to cancel):", null, clearList)); //forces upper case (toLower = null), newLine = true
         //throw new UiMenuRefreshException();
     }
-    //Advanced Dice Code
-    /*
-    public void DiceCodeConsole()
-    {
-        //Syntax:
-        //Commands:
-        //A = Set it to 1 side, being A
-        //ABCD = Set the sides to ABCD
-        //5A = set side 5 to A
-        //25A = set side 25 to A
-        //+ABCD = Add ABCD as sides to the end
-        //-ABCD = Remove all instances of ABCD
-        //25+ABCD = At slot 25 add the sides ABCD
-        //ABCD,EFGH = Set the sides to ABCDEFGH
-        //># = Skip number of sides
-        //$ = Reset the side list
-        //_ = Keep current side
-        //Special Characters:
-        //? = Randomly Pick a letter from A to Z
-        //* = Randomly Pick a letter to save as the side
-        
-    }
-    //Process the Dice Code
-    public void ProcessDiceCode(string diceCodeString)
-    {
-        List<char> newSideList = Msc.ListCopy<char>(_sideList,(char inChar) => {char returnChar = inChar; return returnChar;}); //Copy the list of chars, just use a simple lambda to copy the value of char to a new char variable to break the reference
-        char[] diceCodeBuffer = diceCodeString.ToCharArray(); //Initalize the diceCode buffer
-        int offset = 0;
-        int sideIndex = 0;
-        while(offset < diceCodeBuffer.Length)
-        {
-            char codeChar = diceCodeBuffer[offset];
-            if(char.IsAsciiDigit(codeChar))
-            {
-                sideIndex = GetNumber(diceCodeBuffer, offset) ?? sideIndex; //Only update when not null
-            }
-            else if(codeChar == '+') //Add Sides
-            {
-                //Get new index if it's an integer
-            }
-            else if(codeChar == '-') //Remove Sides
-            {
-                //Get new index if it's an integer
-            }
-            else if(codeChar == ',') //Ingnore command, prepare for next one
-            {
-
-            }
-        }
-    }
-    //Get an integer from a dice code buffer
-    public int? GetDiceCodeNumber(char[] diceCodeBuffer, int offset)
-    {
-        List<char> numberCharList = new List<char>();
-        while(char.IsNumber(diceCodeBuffer[offset]) == true && offset < diceCodeBuffer.Length)
-        {
-            numberCharList.Add(diceCodeBuffer[offset]);
-            offset++;
-        }
-        //Try and return the result
-        try
-        {
-            return int.Parse(new string(numberCharList.ToArray()));
-        }
-        catch(ArgumentNullException)
-        {
-            return null;
-        }
-    }
-    */
     //Scramble the order of dice sides
     public void ScrambleSides()
     {
@@ -383,4 +313,75 @@ class Dice
     */
 
     //File Loading Is Handled By Dice-Set Code in config file
+
+    //Advanced Dice Code
+    /*
+    public void DiceCodeConsole()
+    {
+        //Syntax:
+        //Commands:
+        //A = Set it to 1 side, being A
+        //ABCD = Set the sides to ABCD
+        //5A = set side 5 to A
+        //25A = set side 25 to A
+        //+ABCD = Add ABCD as sides to the end
+        //-ABCD = Remove all instances of ABCD
+        //25+ABCD = At slot 25 add the sides ABCD
+        //ABCD,EFGH = Set the sides to ABCDEFGH
+        //># = Skip number of sides
+        //$ = Reset the side list
+        //_ = Keep current side
+        //Special Characters:
+        //? = Randomly Pick a letter from A to Z
+        //* = Randomly Pick a letter to save as the side
+        
+    }
+    //Process the Dice Code
+    public void ProcessDiceCode(string diceCodeString)
+    {
+        List<char> newSideList = Msc.ListCopy<char>(_sideList,(char inChar) => {char returnChar = inChar; return returnChar;}); //Copy the list of chars, just use a simple lambda to copy the value of char to a new char variable to break the reference
+        char[] diceCodeBuffer = diceCodeString.ToCharArray(); //Initalize the diceCode buffer
+        int offset = 0;
+        int sideIndex = 0;
+        while(offset < diceCodeBuffer.Length)
+        {
+            char codeChar = diceCodeBuffer[offset];
+            if(char.IsAsciiDigit(codeChar))
+            {
+                sideIndex = GetNumber(diceCodeBuffer, offset) ?? sideIndex; //Only update when not null
+            }
+            else if(codeChar == '+') //Add Sides
+            {
+                //Get new index if it's an integer
+            }
+            else if(codeChar == '-') //Remove Sides
+            {
+                //Get new index if it's an integer
+            }
+            else if(codeChar == ',') //Ingnore command, prepare for next one
+            {
+
+            }
+        }
+    }
+    //Get an integer from a dice code buffer
+    public int? GetDiceCodeNumber(char[] diceCodeBuffer, int offset)
+    {
+        List<char> numberCharList = new List<char>();
+        while(char.IsNumber(diceCodeBuffer[offset]) == true && offset < diceCodeBuffer.Length)
+        {
+            numberCharList.Add(diceCodeBuffer[offset]);
+            offset++;
+        }
+        //Try and return the result
+        try
+        {
+            return int.Parse(new string(numberCharList.ToArray()));
+        }
+        catch(ArgumentNullException)
+        {
+            return null;
+        }
+    }
+    */
 }
