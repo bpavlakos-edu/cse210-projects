@@ -402,7 +402,7 @@ class DiceSet
     //Get a dice code and count to add the dice code repeatedly
     public void RepeatAddDiceCode()
     {
-        int? addCodeCount = Inp.GetIntInput(true, "Enter the number of dice to add using your dice code (leave blank to cancel): ");
+        int? addCodeCount = Inp.GetIntInput(true, "Enter the number of dice to add using your dice code (leave blank to cancel): ",0);
         if(addCodeCount != null)
         {
             string diceCode = GetDiceCodeInput(); //Get the dice code
@@ -487,8 +487,8 @@ class DiceSet
     //Fill to count by user input
     public void FillToCountUi()
     {
-        Console.WriteLine("Warning! This can cause permanent changes to your dice set!");
-        int? newCount = Inp.GetIntInput(true,"Select a count to set the dice-list to: ",1,null,false,_diceList.Count);
+        Console.WriteLine("---- Warning! This option makes permanent changes to your dice set! Please use it carefully! ----");
+        int? newCount = Inp.GetIntInput(true,"Select a count to set the dice-list to: ", 1, null, false, _diceList.Count);
         if(newCount != null)
         {
             FillToCount(newCount ?? _diceList.Count, Msc.ListCopy<Dice>(_diceList,(Dice inDice)=>{return new Dice(inDice);}).ToArray<Dice>());
@@ -567,7 +567,7 @@ class DiceSet
     //Fill using a list of dice
     public void FillToCount(int newDiceCount, params Dice[] inputDice) //Utilizes the params keyword, which lets us use each item as an individual parameter: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/params
     {
-        if(_diceList.Count >= newDiceCount)
+        if(_diceList.Count <= newDiceCount)
         {
             for(int i = 0; _diceList.Count < newDiceCount; i++)
             {
