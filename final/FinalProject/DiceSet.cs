@@ -311,7 +311,7 @@ class DiceSet
                     new UiOption(()=>{EnterDiceCode(); throw new UiMenuRefreshException();},"&Enter Dice-List Code"), //Needs parenthesis (and a lambda by extension) because it has a parameter
                     new UiOption(()=>{EnterDiceCode(false); throw new UiMenuRefreshException();},"&Add New Dice Using Dice-List Code"),
                     new UiOption(()=>{RepeatAddDiceCode(); throw new UiMenuRefreshException();},"Re&peatedly Add Dice using Dice-List Code"),
-                    new UiOption(()=>{WriteDiceCodeToAll(); throw new UiMenuRefreshException();},"Replace All Dice &With a Dice-Code"),
+                    new UiOption(()=>{ReplaceAllWithDiceCode(); throw new UiMenuRefreshException();},"Replace All Dice &With a Dice-Code"),
                     new UiOption(()=>{DeleteDiceByUi(); throw new UiMenuRefreshException();},"&Delete Dice From List"),
                     new UiOption(()=>{FillToCountUi(); throw new UiMenuRefreshException();},"F&ill to Count"), //Force all sides to a specific side count
                     new UiOption(()=>{ReplaceAllRandom(); throw new UiMenuRefreshException();},"Replace All Dice Sides With Ra&ndom Letters"), //Fill With Random Letter
@@ -421,14 +421,14 @@ class DiceSet
     }
 
     //Use a dice code
-    private void WriteDiceCodeToAll()
+    private void ReplaceAllWithDiceCode()
     {
         Console.Clear();
         Console.WriteLine("Replace All With Dice Code:");
         string diceCode = GetDiceCodeStringInput(false); //Do not accept multiple items
         if(diceCode != "") //Only accept non empty dice codes
         {
-            SetAll(new Dice(diceCode));
+            SetAll(diceCode); //Use the existing SetAll function
         }
     }
 
@@ -526,6 +526,11 @@ class DiceSet
     public void SetAll(char fillChar)
     {
         _diceList.ForEach((curDice) => {curDice.SetDice(fillChar);}); //Use the SetDice(char fillChar) setter method
+    }
+    //Set all to dice code
+    public void SetAll(string diceCode)
+    {
+        _diceList.ForEach((curDice) => {curDice.SetSideList(diceCode,true);}); //Use the SetDice(char fillChar) setter method
     }
 
     //Set the visibility of all dice
