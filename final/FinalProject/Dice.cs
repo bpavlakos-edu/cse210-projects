@@ -50,7 +50,7 @@ class Dice
     //Copy an existing Dice
     public Dice(Dice newDice) : this(newDice.GetSideList(), newDice.GetSide(), newDice.GetCurLetter(), newDice.GetHidden())
     {
-
+        //Uses the default constructor to fill in the variables
     }
 
     //Getters and Setters (Normal external access Getters and Setters were auto generated using my AutoGetterSetter Python Script in C# mode)
