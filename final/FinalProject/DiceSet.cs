@@ -12,13 +12,12 @@ https://stackoverflow.com/questions/14007405/how-create-a-new-deep-copy-clone-of
 So because I don't want to deal with any of this nonsense, I will brute force it into working
 */
 
-using UiMenu = QuickUtils.UiMenu;
-using UiOption = QuickUtils.UiOption;
-using Inp = QuickUtils.Inputs;
+using UiMenu = QuickUtils.UiMenu; //Ui Menu Class
+using UiOption = QuickUtils.UiOption; //UI Option
+using Inp = QuickUtils.Inputs; //User Input Methods
 using UiMenuExitException = QuickUtils.UiMenuExitException; //Exit exception for the menu to use
 using UiMenuRefreshException = QuickUtils.UiMenuRefreshException; //Refresh exception for the menu to use
-using Msc = QuickUtils.Misc;
-using System.Collections;
+using Msc = QuickUtils.Misc; //Misc methods for repetative operations
 
 class DiceSet
 {
@@ -29,7 +28,9 @@ class DiceSet
     protected bool _allowAutoFill = true; //Enable or disable auto filling of this dice set
     protected bool _allowQu = true; //Enable or disable displaying Q as Qu
     protected char[] _diceBorder = new char[]{'\u0000','\u0000'}; //Warning for settings menu! You must be able to reset this from the console!
-    protected bool _updating = false; //A flag for threaded functions to check to see if they can print to the console
+
+    //Threaded flag
+    private bool _updating = false; //A flag for threaded functions to check to see if they can print to the console
     
     //Constructors
     
@@ -190,6 +191,7 @@ class DiceSet
         SetWidth(newSize);
         SetHeight(newSize);
     }
+    //Quickly calculate the grid area
     public int GetGridArea()
     {
         return GetWidth() * GetHeight();
@@ -199,44 +201,7 @@ class DiceSet
 
     //Main Functionality
 
-    //Display the Letters in a grid
-    /*
-    public void DisplayOld(bool clearAll = false)
-    {
-        char dWallStart = (char) 0;
-        char dWallEnd = (char) 0;
-        //"Exists" uses predicates (inline functions) to search a list
-        //bool hasQu = _allowQu && _diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';});
-        bool hasQu = _diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';});
-        Console.Clear(); //Clear the console before starting
-        for(int y = 0; y < _height; y++)
-        {//Console.Write($"Y{y}");//Debugging
-            for(int x = 0; x < _width; x++)
-            {//Console.Write($"X{y} ");//Debugging
-                if(x != 0)
-                {
-                    Console.Write(""); //Write a space before entries
-                }
-                //Console.Write(""); //Write the dice start border
-                //consider writing X Y coordinates, make sure it doesn't shift the display
-                try
-                {
-                    Console.Write(_diceList[(y * _width) + x].ToDisplayString(hasQu, dWallStart, dWallEnd)); //Each Y value is equivalent to a full row of X
-                }
-                catch(Exception) //No dice, literally
-                {
-                    Console.Write((hasQu) ? "    " : " "); //Write 4 blank spaces "[__]"
-                    //Console.Write((hasQu && _allowQu) ? "    " : " "); //Write 4 blank spaces "[__]"
-                }
-                //Console.Write(""); //Write the dice end border
-                if(x == _width - 1)
-                {
-                    Console.WriteLine(""); //Write a new line
-                }
-            }
-        }
-    }*/
-
+    //Display the letters in a grid
     //Quick Dice Display, uses modulus, char[] buffers to display dice, if you think this is unecessary, try doing 70 x 70 grid with the original display function and compare it to this one, this is much faster!!!
     public void Display()
     {
@@ -347,7 +312,7 @@ class DiceSet
                     new UiOption(()=>{Shuffle(); throw new UiMenuRefreshException();},"&Shuffle Dice-List"),
                     new UiOption(()=>{EnterDiceCode(false); throw new UiMenuRefreshException();},"&Add New Dice Using Dice-List Code"),
                     new UiOption(()=>{RepeatAddDiceCode(); throw new UiMenuRefreshException();},"Re&peatedly Add Dice using Dice-List Code"),
-                    new UiOption(()=>{DeleteDice(); throw new UiMenuRefreshException();},"&Delete Dice From List"),
+                    new UiOption(()=>{DeleteDiceByUi(); throw new UiMenuRefreshException();},"&Delete Dice From List"),
                     new UiOption(()=>{ReplaceAllRandom(); throw new UiMenuRefreshException();},"Replace all Dice Sides With Ra&ndom Letters"), //Fill With Random Letter
                     new UiOption(()=>{ScrambleAll(); throw new UiMenuRefreshException();},"S&cramble All Dice Letters"), //Scramble
                     new UiOption(()=>{Shuffle(); ScrambleAll(); throw new UiMenuRefreshException();},"Shuff&le and Scramble All Dice Letters"), //Use a lambda function to use shuffle and scramble all in quick succession
@@ -368,6 +333,7 @@ class DiceSet
         }while(refreshUi);
     }
     //Ui Support Functions
+
     //Set to default dice list
     public void DiceListToDefault()
     {
@@ -400,6 +366,7 @@ class DiceSet
             new Dice(new List<char>{'S','F','A','Y','I','A'})
         };
     }
+
     //Print a diceListCode to the console
     public void ShowDiceCode()
     {
@@ -409,6 +376,7 @@ class DiceSet
         Console.WriteLine("");
         Inp.GetInput("Press enter to continue");
     }
+
     //Enter a diceList Code into the console
     public void EnterDiceCode(bool clearList = true, int addCodeCount = 1)
     {
@@ -488,10 +456,8 @@ class DiceSet
         }
     }
 
-    //Add a new dice to the list
-
     //Delete Dice using user input
-    public void DeleteDice()
+    public void DeleteDiceByUi()
     {
         PrintDiceList(); //Show the dice list
         List<int[]> deletionIndexes = Inp.GetRangeIntInput("Enter the ranges of sides to delete (\"-\" to make a range, \",\" to seperate numbers, \"!\" to select all): ",1,_diceList.Count,true,subtractNum:1,allowNull:true);
@@ -507,6 +473,29 @@ class DiceSet
             _diceList.Add(new Dice("?")); //Add ? to fill it
         }
     }
+
+    //Enter Dice Border with user input (Seperate because it needs to call a special method)
+    public void EnterDiceBorder()
+    {
+        string userInput = Inp.GetInput("Enter Dice Border Characters (Leave Blank to Cancel, Invalid values are Ignored): ");
+        if(userInput != "")
+        {
+            SetDiceBorder();
+        }
+    }
+
+    //Fill to count by user input
+    public void FillToCountUi()
+    {
+        Console.WriteLine("Warning! This can cause permanent changes to your dice set!");
+        int? newCount = Inp.GetIntInput(true,"Select a count to set the dice-list to: ",1,null,false,_diceList.Count);
+        if(newCount != null)
+        {
+            FillToCount(newCount ?? _diceList.Count, Msc.ListCopy<Dice>(_diceList,(Dice inDice)=>{return new Dice(inDice);}).ToArray<Dice>());
+        }
+    }
+
+    //Add a new dice to the list
 
     //Mass Dice Modification
     //Set all dice by a copy of a dice object
@@ -567,21 +556,13 @@ class DiceSet
             FillToCount(_width * _height, Msc.ListCopy<Dice>(_diceList,(Dice inDice)=>{return new Dice(inDice);}).ToArray<Dice>()); //Use a copy of our own list to fill the array
         }
     }
-    //Fill to count by user input
-    public void FillToCountUi()
-    {
-        Console.WriteLine("Warning! This can cause permanent changes to your dice set!");
-        int? newCount = Inp.GetIntInput(true,"Select a count to set the dice-list to: ",1,null,false,_diceList.Count);
-        if(newCount != null)
-        {
-            FillToCount(newCount ?? _diceList.Count, Msc.ListCopy<Dice>(_diceList,(Dice inDice)=>{return new Dice(inDice);}).ToArray<Dice>());
-        }
-    }
+
     //Boolean to quickly check the size, to make sure it's valid
     private bool CheckSize()
     {
         return _diceList.Count < (_width * _height);
     }
+
     //Fill the dice list to an integer
     //Fill using a list of dice
     public void FillToCount(int newDiceCount, params Dice[] inputDice) //Utilizes the params keyword, which lets us use each item as an individual parameter: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/params
@@ -690,7 +671,7 @@ class DiceSet
         }
     }
 
-    //Display dice letters
+    //Display dice letter frequency
     private void PrintDiceLetterFrequency()
     {
         Console.Clear();//Clear the console first
@@ -732,49 +713,7 @@ class DiceSet
         Inp.GetInput("Press enter to continue");
     }
 
-    //Enter Dice Border with user input
-    public void EnterDiceBorder()
-    {
-        string userInput = Inp.GetInput("Enter Dice Border Characters (Leave Blank to Cancel, Invalid values are Ignored): ");
-        if(userInput != "")
-        {
-            SetDiceBorder();
-        }
-    }
-
-    //Sort a list of chars and counters
-    //Sort a mixed list of char in index 0 and int in index 1, sort by value first and use characters to determine ties
-    /* public void SortCharCounterList(List<object[]> inputList) //Example where it tells you to use 1 and -1 to sort the lists is found here: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.sort?view=net-8.0#system-collections-generic-list-1-sort(system-comparison((-0)))
-    {
-        inputList.Sort((object[] a, object[] b) => 
-        {//1 = move away from index 0, -1 means move closer to index 0 
-            char aChar = (char) a[0]; //Load the values into something understandable
-            int aVal = (int) a[1]; 
-            char bChar = (char) b[0];
-            int bVal = (int) b[1];
-            if(aVal > bVal)
-            {
-                return -1; //When the int value is higher it should be sorted lower in the list
-            }
-            else if(aVal < bVal)
-            {
-                return 1; //When the int value is lower is should be sorted higher in the list
-            }
-            else //aVal == bVal (when the int value is equal, use the ascii value to determine what order to use)
-            {
-                aChar = (aChar == '?') ? '`' : aChar; //Treat '?' as the highest value which will make it be sorted in the last position
-                bChar = (bChar == '?') ? '`' : bChar;
-                return (aChar < bChar) ? -1 : 1; //If the value is lower, it should be sorted lower in the list
-            }
-        });
-    } */
-    /*//Tuple sorting
-    private void SortCharCounterList(List<(char, int)> inputCounterList)
-    {
-        inputCounterList.Sort(CompareCounterTuples);
-    }*/
-
-    //The sorting algorithim for tuples
+    //Sort a list of chars and counters //The sorting algorithim for tuples
     private int CompareCounterTuples((char, int) entryA, (char, int) entryB)
     {
         if(entryA.Item2 > entryB.Item2)
@@ -806,20 +745,6 @@ class DiceSet
         return charCounterDict;
     }
 
-    //Scan a DiceCode for chars using a charCounter dictionary
-
-    //Convert a dictionary to a list of objects
-    /*
-    private List<object[]> DictTo2dList<keyType, valType>(Dictionary<keyType, valType> dictionaryInput)
-    {
-        List<object[]> returnList = new List<object[]>();
-        foreach(keyType key in dictionaryInput.Keys) //Add all chars from the dictionary to 
-        {
-            returnList.Add(new object[]{key,dictionaryInput[key]});
-        }
-        return returnList;
-    }*/
-
     //Convert a Dictionary to a list of tuple
     private List<(keyType, valType)> DictToTupleList<keyType, valType>(Dictionary<keyType, valType> dictionaryInput)
     {
@@ -832,20 +757,11 @@ class DiceSet
         return returnList;
     }
 
-    //Convert a letter count item into a string
-/*     private string CharCounterItemToString(object[] charCountItem)
-    {
-        return new string((char) charCountItem[0], (int)charCountItem[1]); //Parse the known indexes into the correct data type, then use them to create a string
-    } */
-
     //Convert a letter count tuple into a string
     private string CharCounterTupleToString((char, int) charCountItem)
     {
         return new string(charCountItem.Item1, charCountItem.Item2); //Parse the known indexes into the correct data type, then use them to create a string
     }
-
-
-
 
     //Bit shifting
     //Compact a byte to 1 bit
@@ -902,4 +818,96 @@ class DiceSet
             }
         }
     }
+
+    //Obsolete Code:
+
+    //Display the Letters in a grid
+    /*
+    public void DisplayOld(bool clearAll = false)
+    {
+        char dWallStart = (char) 0;
+        char dWallEnd = (char) 0;
+        //"Exists" uses predicates (inline functions) to search a list
+        //bool hasQu = _allowQu && _diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';});
+        bool hasQu = _diceList.Exists((Dice inputDice) => {return inputDice.GetCurLetter() == 'Q';});
+        Console.Clear(); //Clear the console before starting
+        for(int y = 0; y < _height; y++)
+        {//Console.Write($"Y{y}");//Debugging
+            for(int x = 0; x < _width; x++)
+            {//Console.Write($"X{y} ");//Debugging
+                if(x != 0)
+                {
+                    Console.Write(""); //Write a space before entries
+                }
+                //Console.Write(""); //Write the dice start border
+                //consider writing X Y coordinates, make sure it doesn't shift the display
+                try
+                {
+                    Console.Write(_diceList[(y * _width) + x].ToDisplayString(hasQu, dWallStart, dWallEnd)); //Each Y value is equivalent to a full row of X
+                }
+                catch(Exception) //No dice, literally
+                {
+                    Console.Write((hasQu) ? "    " : " "); //Write 4 blank spaces "[__]"
+                    //Console.Write((hasQu && _allowQu) ? "    " : " "); //Write 4 blank spaces "[__]"
+                }
+                //Console.Write(""); //Write the dice end border
+                if(x == _width - 1)
+                {
+                    Console.WriteLine(""); //Write a new line
+                }
+            }
+        }
+    }*/
+
+    //Sort a list of chars and counters
+    //Sort a mixed list of char in index 0 and int in index 1, sort by value first and use characters to determine ties
+    /* public void SortCharCounterList(List<object[]> inputList) //Example where it tells you to use 1 and -1 to sort the lists is found here: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.sort?view=net-8.0#system-collections-generic-list-1-sort(system-comparison((-0)))
+    {
+        inputList.Sort((object[] a, object[] b) => 
+        {//1 = move away from index 0, -1 means move closer to index 0 
+            char aChar = (char) a[0]; //Load the values into something understandable
+            int aVal = (int) a[1]; 
+            char bChar = (char) b[0];
+            int bVal = (int) b[1];
+            if(aVal > bVal)
+            {
+                return -1; //When the int value is higher it should be sorted lower in the list
+            }
+            else if(aVal < bVal)
+            {
+                return 1; //When the int value is lower is should be sorted higher in the list
+            }
+            else //aVal == bVal (when the int value is equal, use the ascii value to determine what order to use)
+            {
+                aChar = (aChar == '?') ? '`' : aChar; //Treat '?' as the highest value which will make it be sorted in the last position
+                bChar = (bChar == '?') ? '`' : bChar;
+                return (aChar < bChar) ? -1 : 1; //If the value is lower, it should be sorted lower in the list
+            }
+        });
+    } */
+    /*//Tuple sorting
+    private void SortCharCounterList(List<(char, int)> inputCounterList)
+    {
+        inputCounterList.Sort(CompareCounterTuples);
+    }*/
+
+    //Scan a DiceCode for chars using a charCounter dictionary (never made this a method)
+
+    //Convert a dictionary to a list of objects
+    /*
+    private List<object[]> DictTo2dList<keyType, valType>(Dictionary<keyType, valType> dictionaryInput)
+    {
+        List<object[]> returnList = new List<object[]>();
+        foreach(keyType key in dictionaryInput.Keys) //Add all chars from the dictionary to 
+        {
+            returnList.Add(new object[]{key,dictionaryInput[key]});
+        }
+        return returnList;
+    }*/
+
+    //Convert a letter count item into a string
+    /*private string CharCounterItemToString(object[] charCountItem)
+    {
+        return new string((char) charCountItem[0], (int)charCountItem[1]); //Parse the known indexes into the correct data type, then use them to create a string
+    } */
 }
