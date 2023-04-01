@@ -40,8 +40,8 @@ class GmClassic : GameMode
         return base.MakeSettingsMenu("Main Menu > Options > Game Mode Options > Classic Mode Options:"); //Get the original menu, using the new default parameter
     }
 
+    //Overrides to change the gmName (Child class default values do not override default values of the Parent Class), and include additional fields
     //File loading
-    //An override to change the gmName because the rest is the same
     public override void LoadFromFile(string[] fileLines, ref int offset, string gmName = "gmClassic")
     {
         base.LoadFromFile(fileLines, ref offset, "gmClassic");

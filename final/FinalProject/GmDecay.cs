@@ -17,7 +17,7 @@ class GmDecay : GmGrow
         //All attributes are filled by the GmDecay class constructor
     }
     
-    //Override the virtual method I made in the grow class to make this easier
+    //Override the virtual method I made in the grow class to make controlling the gameplay loop easier
     protected override void GrowStart(DiceSet diceSetCopy, Func<bool> gmStatusCheck)
     {
         Grow(diceSetCopy, gmStatusCheck, false, "decayThread");
@@ -36,7 +36,7 @@ class GmDecay : GmGrow
         return settingsMenu;
     }
     //File loading
-    //An override to change the gmName because the rest is the same
+    //Overrides to change the gmName (Child class default values do not override default values of the Parent Class)
     public override void LoadFromFile(string[] fileLines, ref int offset, string gmName = "gmDecay")
     {
         base.LoadFromFile(fileLines, ref offset, "gmDecay");

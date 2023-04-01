@@ -43,7 +43,7 @@ class GmGrow : GameMode
         Thread growThread = new Thread(()=>{GrowStart(diceSetCopy,()=>{return hasEnded;});}); //Create a thread for blinking, yes that's two lambdas, one to put the function in the thread, the other is the Func<bool> parameter in the function we are calling, we use lambdas to pass parameters, since including them would store the result of the function not the function call (which is what we want)
         
         diceSetCopy.RollAll(); //Roll all the dice, which will display them
-        growThread.Start(); //Start the blink thread first, so the timer isn't cleared
+        growThread.Start(); //Start the grow thread first, so the timer isn't cleared
         timerThread.Start(); //Start the timer thread
         
         bool threadEndedOnTime = timerThread.Join(_durationSec * 1000); //Join by the duration specified for this game mode, store whether it Joined in time into a boolean
@@ -102,8 +102,8 @@ class GmGrow : GameMode
         return settingsMenu;
     }
 
+    //Overrides to change the gmName (Child class default values do not override default values of the Parent Class), and include additional fields
     //File loading
-    //An override to change the gmName because the rest is the same
     public override void LoadFromFile(string[] fileLines, ref int offset, string gmName = "gmGrow")
     {
         gmName = (gmName == "Null") ? "gmGrow" : gmName; //Correct the parameter, because when the base gamemode class is called from here the default value is null, but when a child calls this it's the parameter

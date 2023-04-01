@@ -14,7 +14,7 @@ class GmBlink : GameMode
     public GmBlink() : base()
     {
         _desc = "Blink Mode:_Same rules as classic mode_Randomly hides/shows dice periodically_It chooses dice to hide using the settings the game mode currently has_Suggested Grid Size: 5 by 5 or larger";
-        _displayName = "Blink Mode";
+        _displayName = "Blink Mode"; //Overwrite the default value
         //All other attributes are filled by the GameMode class constructor
     }
     //Fill Attributes Constructor
@@ -86,9 +86,9 @@ class GmBlink : GameMode
                 PausedSleepNoControl(new TimeSpan(0,0,0,0,_blinkMsecGap),gmStatusCheck); //Use paused sleep, but only fill the exit action, because that's all we need to exit this thread
             }
         }
-        catch(ThreadInterruptedException)
+        catch(ThreadInterruptedException) //Our paused sleep has terminated early
         {
-            blinkThread.Interrupt();
+            blinkThread.Interrupt(); //This will trigger a ThreadInterruptedException that can be caught by GameLoop() and GameStart() by extension
         }
     }
 
