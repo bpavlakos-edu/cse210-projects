@@ -34,6 +34,7 @@ namespace QuickUtils
         //It's a small sacrifice to have a reusable list copy function
         //Example of function call: 
         //ListCopy<Dice>(new List<Dice>{items}, (Dice inputDice) => {return new Dice(inputDice);});
+        //Generic list copy function, can copy custom classes if they have a constructor that individually copies each attribute from the class put in to the class instances attribute value (deep copy constructor)
         public static List<objType> ListCopy<objType>(List<objType> inputList, Func<objType,objType> objConstructorFun)// where objType : new() //Code that lets you use New() but not any other constructor
         {
             List<objType> returnList = new List<objType>(); //Create a list to store the items with
@@ -42,7 +43,7 @@ namespace QuickUtils
             //inputList.ForEach((objType inObj) => {objType newObj = new objType();}); //Attempted usage of a constructor
         }
 
-        //List Map (Similar to JavaScript)
+        //List Map (Similar to JavaScript "Map" function)
         //inType = input list data type
         //outType = expected output type
         //inputList = list to convert
@@ -51,6 +52,18 @@ namespace QuickUtils
         {
             List<outType> returnList = new List<outType>(); //Initalize the return list
             inputList.ForEach((inType inputValue) =>{returnList.Add(mappingFunction(inputValue));}); //Use the mapping function on each entry
+            return returnList;
+        }
+
+        //Convert a Dictionary to a list of tuple
+        public static List<(keyType, valType)> DictToTupleList<keyType, valType>(Dictionary<keyType, valType> dictionaryInput)
+        {
+            List<(keyType, valType)> returnList = new List<(keyType, valType)>();
+            foreach(keyType key in dictionaryInput.Keys) //Add all chars from the dictionary to 
+            {
+                //returnList.Add(new object[]{key,dictionaryInput[key]});
+                returnList.Add((key, dictionaryInput[key]));
+            }
             return returnList;
         }
 

@@ -695,7 +695,7 @@ class DiceSet
         //List<string> letterFrequencyAsStringList =  Msc.ListMap<object[], string>(sortedCharCountList, CharCounterItemToString); //Use each entry in the 2d list to generate a string representing it's frequency
         
         //Updated code uses the tuple data type instead (Read more about tuples here: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-tuples )
-        List<(char, int)> sortedCharCountList = DictToTupleList<char, int>(charCounterDict); //Create a 2d list, index 0 stores the char, index 1 stores the int
+        List<(char, int)> sortedCharCountList = Msc.DictToTupleList<char, int>(charCounterDict); //Create a 2d list, index 0 stores the char, index 1 stores the int
         sortedCharCountList.Sort(CompareCounterTuples); //Sort the list by number of times we found it. If equal, sort by alphabetical order (with ? being last)
         List<string> letterFrequencyAsStringList =  Msc.ListMap<(char, int), string>(sortedCharCountList, CharCounterTupleToString); //Use each entry in the 2d list to generate a string representing it's frequency
 
@@ -747,18 +747,6 @@ class DiceSet
         }
         charCounterDict.Add('?',0); //Add ? which isn't a letter and won't be added
         return charCounterDict;
-    }
-
-    //Convert a Dictionary to a list of tuple
-    private List<(keyType, valType)> DictToTupleList<keyType, valType>(Dictionary<keyType, valType> dictionaryInput)
-    {
-        List<(keyType, valType)> returnList = new List<(keyType, valType)>();
-        foreach(keyType key in dictionaryInput.Keys) //Add all chars from the dictionary to 
-        {
-            //returnList.Add(new object[]{key,dictionaryInput[key]});
-            returnList.Add((key, dictionaryInput[key]));
-        }
-        return returnList;
     }
 
     //Convert a letter count tuple into a string
