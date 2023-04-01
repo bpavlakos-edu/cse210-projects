@@ -3,6 +3,10 @@ namespace QuickUtils
 {
     static class Misc
     {
+
+        //Internal fields
+        //private static Random rngGen = new Random();
+        private static RandomNumberGenerator _randomGen = RandomNumberGenerator.Create(); //Random number generator, cryptographically secure (https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.randomnumbergenerator?view=net-7.0)
         
         //Display friendly strings for common data types, this was occuring too much in the code, and I want to control it from one place
         public static string BoolStr(bool inBool, string trueStr = "Enabled", string falseStr = "Disabled")
@@ -158,9 +162,6 @@ namespace QuickUtils
             return returnStr; //Return the string
         }
 
-        //private static Random rngGen = new Random();
-        private static RandomNumberGenerator _randomGen = RandomNumberGenerator.Create(); //Random number generator, cryptographically secure (https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.randomnumbergenerator?view=net-7.0)
-
         //Randomization function, to prevent stale randomness
         public static int RandomInt(int min, int max)
         {
@@ -182,5 +183,11 @@ namespace QuickUtils
             return new Random(RandomNumberGenerator.GetInt32(int.MaxValue)).NextDouble();  //Use the cryptographically secure random to generate the seed the regular random uses to make double values
         }
 
+        //String Grammar
+        //Pluralizer
+        public static string Pluralize(string singularStr, int count)
+        {
+            return (count != 1) ? singularStr+"s" : singularStr; //Use the ternary operator to append s to the string
+        }
     }
 }
