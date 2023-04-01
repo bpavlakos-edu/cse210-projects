@@ -1,11 +1,10 @@
-using System.Security.Cryptography;
+using System.Security.Cryptography; //For cryptographically secure random
 namespace QuickUtils
 {
     static class Misc
     {
-
-        //Internal fields
-        //private static Random rngGen = new Random();
+        //Internal Fields (Do not externally access these!!!)
+        //private static Random rngGen = new Random(); //Standard random can be used instead of RandomNumberGenerator
         private static RandomNumberGenerator _randomGen = RandomNumberGenerator.Create(); //Random number generator, cryptographically secure (https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.randomnumbergenerator?view=net-7.0)
         
         //Display friendly strings for common data types, this was occuring too much in the code, and I want to control it from one place
